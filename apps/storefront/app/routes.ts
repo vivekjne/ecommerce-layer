@@ -8,4 +8,7 @@ export default [
   route("api/chat", "routes/api.chat.ts"),
   route("api/tool-confirm", "routes/api.tool-confirm.ts"),
   route("api/cart", "routes/api.cart.ts"),
+  route("robots.txt", "routes/robots.txt.ts"),
+  route("sitemap.xml", "routes/sitemap.xml.ts"),
+  route("llms.txt", "routes/llms.txt.ts"),
 ] satisfies RouteConfig;

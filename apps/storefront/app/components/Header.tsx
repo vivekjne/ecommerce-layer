@@ -10,7 +10,7 @@ export function Header({ cartCount }: { cartCount: number }) {
           Acme Shop
         </Link>
 
-        <nav className="hidden items-center gap-6 text-sm font-medium text-neutral-600 dark:text-neutral-400 sm:flex">
+        <nav aria-label="Main" className="hidden items-center gap-6 text-sm font-medium text-neutral-600 dark:text-neutral-400 sm:flex">
           <NavLink to="/" end className={({ isActive }) => (isActive ? "text-neutral-900 dark:text-neutral-100" : "hover:text-neutral-900 dark:hover:text-neutral-100")}>
             Home
           </NavLink>
@@ -21,12 +21,15 @@ export function Header({ cartCount }: { cartCount: number }) {
 
         <Link
           to="/cart"
-          aria-label="View cart"
+          aria-label={cartCount > 0 ? `View cart, ${cartCount} item${cartCount === 1 ? "" : "s"}` : "View cart"}
           className="relative flex h-9 w-9 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-900 dark:hover:text-neutral-100"
         >
-          <CartIcon className="h-5 w-5" />
+          <CartIcon className="h-5 w-5" aria-hidden="true" />
           {cartCount > 0 && (
-            <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-indigo-600 px-1 text-[10px] font-bold text-white">
+            <span
+              aria-hidden="true"
+              className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-indigo-600 px-1 text-[10px] font-bold text-white"
+            >
               {cartCount > 99 ? "99+" : cartCount}
             </span>
           )}

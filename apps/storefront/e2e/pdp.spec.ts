@@ -7,8 +7,12 @@ test.describe("product detail page", () => {
     await expect(page.getByRole("heading", { name: "Midnight Runner Hoodie" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Add to cart" })).toBeEnabled();
 
-    await page.getByRole("button", { name: "Cobalt Blue" }).click();
-    await page.getByRole("button", { name: "M", exact: true }).click();
+    // The radio inputs are visually hidden (sr-only) with styled <label>s
+    // as the clickable pill — same as a real mouse user, click the label.
+    await page.getByText("Cobalt Blue", { exact: true }).click();
+    await page.getByText("M", { exact: true }).click();
+    await expect(page.getByRole("radio", { name: "Cobalt Blue" })).toBeChecked();
+    await expect(page.getByRole("radio", { name: "M", exact: true })).toBeChecked();
     await expect(page.getByRole("button", { name: "Add to cart" })).toBeEnabled();
   });
 

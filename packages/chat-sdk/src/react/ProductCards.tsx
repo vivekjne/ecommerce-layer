@@ -40,14 +40,20 @@ export function ProductCard({ product }: { product: Product }) {
 
 export function ProductCards({ products }: { products: Product[] }) {
   if (products.length === 0) {
-    return <div className="text-sm text-neutral-400 dark:text-neutral-500">No products found.</div>;
+    return (
+      <p role="status" className="text-sm text-neutral-400 dark:text-neutral-500">
+        No products found.
+      </p>
+    );
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+    <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <li key={product.id}>
+          <ProductCard product={product} />
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }

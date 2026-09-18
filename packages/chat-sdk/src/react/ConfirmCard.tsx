@@ -50,16 +50,22 @@ export function ConfirmCard({ toolName, input, onApprove, onDecline, confirmApi 
     }
   }
 
+  const label = ACTION_LABELS[toolName] ?? toolName;
+
   return (
-    <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/50 dark:bg-amber-950/30">
+    <div role="group" aria-label={`Confirm: ${label}`} className="rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/50 dark:bg-amber-950/30">
       <div className="flex items-center gap-2">
-        <AlertIcon className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-500" />
-        <div className="text-sm font-semibold text-amber-900 dark:text-amber-200">{ACTION_LABELS[toolName] ?? toolName}</div>
+        <AlertIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-500" />
+        <div className="text-sm font-semibold text-amber-900 dark:text-amber-200">{label}</div>
       </div>
       <pre className="mt-2 overflow-x-auto rounded-lg bg-white/60 p-2 text-xs text-neutral-600 dark:bg-black/20 dark:text-neutral-400">
         {JSON.stringify(input, null, 2)}
       </pre>
-      {status === "error" && <div className="mt-2 text-xs font-medium text-red-600 dark:text-red-400">{errorMessage}</div>}
+      {status === "error" && (
+        <div role="alert" className="mt-2 text-xs font-medium text-red-600 dark:text-red-400">
+          {errorMessage}
+        </div>
+      )}
       <div className="mt-3 flex gap-2">
         <button
           type="button"
@@ -67,7 +73,7 @@ export function ConfirmCard({ toolName, input, onApprove, onDecline, confirmApi 
           disabled={status === "loading"}
           className="inline-flex items-center gap-1.5 rounded-lg bg-neutral-900 px-3.5 py-1.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 dark:bg-white dark:text-neutral-900"
         >
-          {status === "loading" && <SpinnerIcon className="h-3.5 w-3.5" />}
+          {status === "loading" && <SpinnerIcon aria-hidden="true" className="h-3.5 w-3.5" />}
           {status === "loading" ? "Working…" : "Confirm"}
         </button>
         <button

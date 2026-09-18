@@ -1,11 +1,12 @@
 import type { Cart, CartLine, CheckoutSession } from "@commerce/core";
 import { Link, useFetcher, useLoaderData } from "react-router";
-import type { LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { QuantityStepper } from "../components/QuantityStepper.js";
 import { ExternalLinkIcon, TrashIcon } from "../components/icons.js";
 import { getAdapters } from "../lib/adapters.js";
 import { getCartId } from "../lib/cart-cookie.js";
 import { formatMoney } from "../lib/format.js";
+import { SITE_NAME } from "../lib/seo.js";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { commerce } = getAdapters();
@@ -13,6 +14,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const cart = cartId ? await commerce.getCart(cartId) : null;
   return { cart };
 }
+
+// A shopper's cart is dynamic, per-visitor content — nothing here should
+// end up in a search index.
+export const meta: MetaFunction = () => [{ title: `Your cart — ${SITE_NAME}` }, { name: "robots", content: "noindex, nofollow" }];
 
 function CartLineRow({ line }: { line: CartLine }) {
   const fetcher = useFetcher<{ cart?: Cart }>();
@@ -29,17 +34,17 @@ function CartLineRow({ line }: { line: CartLine }) {
   }
 
   return (
-    <div className={`flex items-center gap-4 py-5 transition-opacity ${removing ? "opacity-40" : ""}`}>
+    <li className={`flex items-center gap-4 py-5 transition-opacity ${removing ? "opacity-40" : ""}`}>
       {line.image ? (
-        <img src={line.image.url} alt={line.image.altText ?? line.title} className="h-20 w-20 shrink-0 rounded-xl object-cover" />
+        <img src={line.image.url} alt="" className="h-20 w-20 shrink-0 rounded-xl object-cover" />
       ) : (
-        <div className="h-20 w-20 shrink-0 rounded-xl bg-neutral-100 dark:bg-neutral-900" />
+        <div aria-hidden="true" className="h-20 w-20 shrink-0 rounded-xl bg-neutral-100 dark:bg-neutral-900" />
       )}
       <div className="min-w-0 flex-1">
         <div className="truncate text-sm font-medium text-neutral-900 dark:text-neutral-100">{line.title}</div>
         <div className="text-xs text-neutral-500 dark:text-neutral-400">{line.variantTitle}</div>
         <div className="mt-2">
-          <QuantityStepper value={quantity} onChange={updateQuantity} disabled={fetcher.state !== "idle"} />
+          <QuantityStepper value={quantity} onChange={updateQuantity} disabled={fetcher.state !== "idle"} label={`${line.title}, ${line.variantTitle}`} />
         </div>
       </div>
       <div className="shrink-0 text-right">
@@ -50,13 +55,14 @@ function CartLineRow({ line }: { line: CartLine }) {
           type="button"
           onClick={remove}
           disabled={fetcher.state !== "idle"}
+          aria-label={`Remove ${line.title}, ${line.variantTitle} from cart`}
           className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-red-600 hover:underline disabled:opacity-50 dark:text-red-400"
         >
-          <TrashIcon className="h-3 w-3" />
+          <TrashIcon aria-hidden="true" className="h-3 w-3" />
           Remove
         </button>
       </div>
-    </div>
+    </li>
   );
 }
 
@@ -73,7 +79,7 @@ function CheckoutButton({ cartId }: { cartId: string }) {
         className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-emerald-600 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-500"
       >
         Go to checkout
-        <ExternalLinkIcon className="h-4 w-4" />
+        <ExternalLinkIcon aria-hidden="true" className="h-4 w-4" />
       </a>
     );
   }
@@ -115,11 +121,11 @@ export default function CartRoute() {
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">Your cart</h1>
 
-      <div className="mt-6 divide-y divide-neutral-100 rounded-2xl border border-neutral-200 bg-white px-5 dark:divide-neutral-900 dark:border-neutral-800 dark:bg-neutral-950">
+      <ul className="mt-6 divide-y divide-neutral-100 rounded-2xl border border-neutral-200 bg-white px-5 dark:divide-neutral-900 dark:border-neutral-800 dark:bg-neutral-950">
         {cart.lines.map((line) => (
           <CartLineRow key={line.id} line={line} />
         ))}
-      </div>
+      </ul>
 
       <div className="mt-6 rounded-2xl border border-neutral-200 bg-white p-5 dark:border-neutral-800 dark:bg-neutral-950">
         <div className="flex items-center justify-between text-sm text-neutral-500 dark:text-neutral-400">
@@ -133,6 +139,9 @@ export default function CartRoute() {
           <span data-testid="cart-total" className="tabular-nums">
             {formatMoney(cart.total)}
           </span>
+        </div>
+        <div role="status" aria-live="polite" className="sr-only">
+          Cart total {formatMoney(cart.total)}
         </div>
         <div className="mt-5">
           <CheckoutButton cartId={cart.id} />

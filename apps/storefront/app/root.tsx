@@ -9,18 +9,32 @@ import {
   useRevalidator,
   type LinksFunction,
   type LoaderFunctionArgs,
+  type MetaFunction,
 } from "react-router";
 import stylesheet from "./app.css?url";
 import { Footer } from "./components/Footer.js";
 import { Header } from "./components/Header.js";
 import { getAdapters } from "./lib/adapters.js";
 import { getCartId } from "./lib/cart-cookie.js";
+import { SITE_DESCRIPTION, SITE_NAME } from "./lib/seo.js";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
   { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" },
   { rel: "stylesheet", href: stylesheet },
+];
+
+// Fallback meta for any route that doesn't set its own — every real page
+// does, and overrides this by rendering after it (leaf route meta comes
+// after ancestor meta in document order, so e.g. a duplicate <title> is
+// resolved by the browser using the last one).
+export const meta: MetaFunction = () => [
+  { title: SITE_NAME },
+  { name: "description", content: SITE_DESCRIPTION },
+  { property: "og:site_name", content: SITE_NAME },
+  { property: "og:type", content: "website" },
+  { name: "twitter:card", content: "summary" },
 ];
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -56,8 +70,14 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen flex-col bg-neutral-50 dark:bg-neutral-950">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-indigo-600 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+      >
+        Skip to content
+      </a>
       <Header cartCount={cartCount} />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <Outlet />
       </main>
       <Footer />
