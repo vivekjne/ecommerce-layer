@@ -16,9 +16,8 @@ import type { z } from "zod";
  * The tool set the chat model sees. Read tools carry `execute` and run
  * immediately. Write tools (add_to_cart, update_cart_line, remove_from_cart,
  * create_checkout) deliberately have NO `execute` — streamText then stops
- * after emitting the call instead of running it, so the host app's UI can
- * gate it behind a confirmation step. Only a confirmed call reaches
- * createWriteToolExecutors below.
+ * after emitting the call instead of running it, so the client renders a
+ * ConfirmCard. Only a confirmed call reaches createWriteToolExecutors below.
  */
 export function createShopperTools(commerce: CommerceAdapter): ToolSet {
   return {
@@ -67,23 +66,11 @@ export function createShopperTools(commerce: CommerceAdapter): ToolSet {
   };
 }
 
-export interface WriteToolExecutorOptions {
-  /**
-   * Cart id to fall back to when the model calls add_to_cart without one
-   * (e.g. the host app's own session already has a cart going — a shopper
-   * browsing the storefront and then asking the chat to add something
-   * should land in the same cart, not a new one the model doesn't know
-   * about). Only add_to_cart uses this: update_cart_line/remove_from_cart/
-   * create_checkout require a cartId in their schema already.
-   */
-  defaultCartId?: string;
-}
-
-/** The actual adapter calls behind write tools, run only after the host app confirms them. */
-export function createWriteToolExecutors(commerce: CommerceAdapter, options: WriteToolExecutorOptions = {}) {
+/** The actual adapter calls behind write tools, run only after ConfirmCard approval. */
+export function createWriteToolExecutors(commerce: CommerceAdapter) {
   return {
     add_to_cart: async (input: z.infer<typeof addToCartInputSchema>) => {
-      const cartId = input.cartId ?? options.defaultCartId ?? (await commerce.createCart()).id;
+      const cartId = input.cartId ?? (await commerce.createCart()).id;
       return commerce.addCartLine(cartId, input.variantId, input.quantity);
     },
     update_cart_line: (input: z.infer<typeof updateCartLineInputSchema>) =>

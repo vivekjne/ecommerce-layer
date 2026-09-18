@@ -1,25 +1,34 @@
-import { handleToolConfirmRequest } from "@commerce/chat-sdk";
+import { WRITE_TOOL_NAMES, type ToolName } from "@commerce/core";
 import type { ActionFunctionArgs } from "react-router";
 import { getAdapters } from "../lib/adapters.js";
-import { cartCookie, getCartId } from "../lib/cart-cookie.js";
+import { createWriteToolExecutors } from "../lib/tools.js";
 
+interface ToolConfirmBody {
+  tool: string;
+  input: unknown;
+}
+
+/**
+ * Runs a write tool's adapter call, and only this call — the model can
+ * propose add_to_cart/update_cart_line/remove_from_cart/create_checkout,
+ * but nothing reaches CommerceAdapter until the shopper approves the
+ * ConfirmCard in the UI and this endpoint is hit.
+ */
 export async function action({ request }: ActionFunctionArgs) {
+  const body = (await request.json()) as ToolConfirmBody;
+
+  if (!WRITE_TOOL_NAMES.has(body.tool as ToolName)) {
+    return Response.json({ error: `Not a write tool: ${body.tool}` }, { status: 400 });
+  }
+
   const { commerce } = getAdapters();
-  const defaultCartId = await getCartId(request);
+  const executors = createWriteToolExecutors(commerce);
+  const run = executors[body.tool as keyof typeof executors] as (input: unknown) => Promise<unknown>;
 
-  // Peek at which tool this is without consuming the body the handler needs.
-  const { tool } = (await request.clone().json()) as { tool?: string };
-  const response = await handleToolConfirmRequest({ request: request.clone(), commerce, defaultCartId });
-
-  // Only add_to_cart can hand back a brand-new cart id worth remembering —
-  // create_checkout's output also has an `id` field, but it's a checkout id.
-  if (defaultCartId || tool !== "add_to_cart") return response;
-
-  const body = (await response.clone().json()) as { output?: { id?: string } };
-  const newCartId = body.output?.id;
-  if (typeof newCartId !== "string") return response;
-
-  const headers = new Headers(response.headers);
-  headers.append("Set-Cookie", await cartCookie.serialize(newCartId));
-  return new Response(response.body, { status: response.status, headers });
+  try {
+    const output = await run(body.input);
+    return Response.json({ output });
+  } catch (err) {
+    return Response.json({ error: err instanceof Error ? err.message : "Unknown error" }, { status: 400 });
+  }
 }

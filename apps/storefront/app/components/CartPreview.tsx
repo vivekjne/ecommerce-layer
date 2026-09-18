@@ -1,5 +1,5 @@
 import type { Cart } from "@commerce/core";
-import { formatMoney } from "./format.js";
+import { formatMoney } from "../lib/format.js";
 import { CartIcon } from "./icons.js";
 
 export function CartPreview({ cart }: { cart: Cart }) {

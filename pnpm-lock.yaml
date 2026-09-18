@@ -79,12 +79,15 @@ importers:
 
   apps/storefront:
     dependencies:
+      '@ai-sdk/anthropic':
+        specifier: ^4.0.57
+        version: 4.0.57(zod@3.25.76)
+      '@ai-sdk/react':
+        specifier: ^4.0.109
+        version: 4.0.109(react@18.3.1)(zod@3.25.76)
       '@commerce/adapter-mock':
         specifier: workspace:*
         version: link:../../packages/adapter-mock
-      '@commerce/chat-sdk':
-        specifier: workspace:*
-        version: link:../../packages/chat-sdk
       '@commerce/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -94,6 +97,9 @@ importers:
       '@react-router/serve':
         specifier: 7.18.4
         version: 7.18.4(react-router@7.18.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.9.3)
+      ai:
+        specifier: ^7.0.106
+        version: 7.0.106(zod@3.25.76)
       isbot:
         specifier: ^5.2.2
         version: 5.2.2
@@ -106,6 +112,9 @@ importers:
       react-router:
         specifier: 7.18.4
         version: 7.18.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      zod:
+        specifier: ^3.25.76
+        version: 3.25.76
     devDependencies:
       '@react-router/dev':
         specifier: 7.18.4
@@ -144,43 +153,6 @@ importers:
       '@types/node':
         specifier: ^22.7.5
         version: 22.20.3
-      typescript:
-        specifier: ^5.6.3
-        version: 5.9.3
-      vitest:
-        specifier: ^5.0.1
-        version: 5.0.1(@types/node@22.20.3)(vite@6.4.3(@types/node@22.20.3)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13))
-
-  packages/chat-sdk:
-    dependencies:
-      '@ai-sdk/anthropic':
-        specifier: ^4.0.57
-        version: 4.0.57(zod@3.25.76)
-      '@ai-sdk/react':
-        specifier: ^4.0.109
-        version: 4.0.109(react@18.3.1)(zod@3.25.76)
-      '@commerce/core':
-        specifier: workspace:*
-        version: link:../core
-      ai:
-        specifier: ^7.0.106
-        version: 7.0.106(zod@3.25.76)
-      react:
-        specifier: ^18 || ^19
-        version: 18.3.1
-      zod:
-        specifier: ^3.25.76
-        version: 3.25.76
-    devDependencies:
-      '@commerce/adapter-mock':
-        specifier: workspace:*
-        version: link:../adapter-mock
-      '@types/node':
-        specifier: ^22.7.5
-        version: 22.20.3
-      '@types/react':
-        specifier: ^18.3.12
-        version: 18.3.31
       typescript:
         specifier: ^5.6.3
         version: 5.9.3

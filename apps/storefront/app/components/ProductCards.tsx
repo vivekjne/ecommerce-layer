@@ -1,5 +1,5 @@
 import type { Product } from "@commerce/core";
-import { formatMoney } from "./format.js";
+import { formatMoney } from "../lib/format.js";
 
 function priceLabel(product: Product): string {
   if (product.minPrice.amount === product.maxPrice.amount) {

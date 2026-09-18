@@ -1,8 +1,8 @@
 # Unified Commerce Layer — CLAUDE.md
 
 A hackathon project: a normalized, AI-native headless commerce layer over
-Shopify and BigCommerce, exposed as a REST API, an MCP server, and a full
-ecommerce storefront with an AI shopping chat mounted as a widget.
+Shopify and BigCommerce, exposed as a REST API, an MCP server, and an AI
+shopping chat storefront.
 
 ## Monorepo layout
 
@@ -17,22 +17,15 @@ packages/
   adapter-shopify/       CommerceAdapter via Storefront API,
                          MerchantAdapter via Admin GraphQL API
   adapter-bigcommerce/   same shape, against BigCommerce's APIs
-  chat-sdk/              the AI shopping chat, packaged as an SDK: tool
-                         builders, framework-agnostic request handlers
-                         (handleChatRequest/handleToolConfirmRequest), and
-                         a React ChatWidget + useShopChat hook. Consumed
-                         by apps/storefront (and any future host app),
-                         not owned by it.
 apps/
   api/                   REST API returning normalized JSON, backed by
                          whichever adapter getAdapters() resolves to
   mcp/                   MCP server exposing packages/core/src/tools.ts
                          schemas as MCP tools, calling an adapter directly
-  storefront/             React Router (framework mode) ecommerce
-                         storefront — home, catalog, product detail, cart,
-                         checkout handoff — with packages/chat-sdk's
-                         ChatWidget mounted globally as a floating
-                         assistant, sharing the same cart session
+  storefront/            React Router (framework mode) app with an AI
+                         shopping chat: Vercel AI SDK + Claude API,
+                         packages/core/src/systemPrompt.ts, and the same
+                         tool schemas
 ```
 
 Tooling: pnpm workspaces, Turborepo, TypeScript strict, Vitest.
@@ -60,12 +53,9 @@ Tooling: pnpm workspaces, Turborepo, TypeScript strict, Vitest.
    `add_to_cart`, `update_cart_line`, `remove_from_cart`,
    `create_checkout`, and any future price-mutating merchant action are
    never auto-executed off a model tool call. The tool call proposes the
-   action; a confirmation UI (`ConfirmCard` in `packages/chat-sdk`, the
+   action; a confirmation UI (`ConfirmCard` in the storefront, the
    equivalent in any MCP client) gates the actual adapter call. See
-   `WRITE_TOOL_NAMES` in `tools.ts`. This is specifically about
-   *model-initiated* writes — a shopper directly clicking Add to Cart on a
-   product page in `apps/storefront` is its own confirmation and executes
-   immediately; only the chat's proposed actions need the extra step.
+   `WRITE_TOOL_NAMES` in `tools.ts`.
 
 ## Fixed contract files
 

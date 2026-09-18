@@ -13,18 +13,16 @@ interface ConfirmCardProps {
   input: unknown;
   onApprove: (output: unknown) => void;
   onDecline: () => void;
-  /** Resource route that actually runs the write tool. Defaults to "/api/tool-confirm". */
-  confirmApi?: string;
 }
 
 /**
  * The human-confirmation gate CLAUDE.md requires for write tools. The model
  * calling add_to_cart/update_cart_line/remove_from_cart/create_checkout only
  * gets this far — nothing reaches CommerceAdapter until Confirm is clicked,
- * which POSTs to confirmApi and feeds the real result back to the chat via
- * addToolOutput.
+ * which POSTs to /api/tool-confirm and feeds the real result back to the
+ * chat via addToolOutput.
  */
-export function ConfirmCard({ toolName, input, onApprove, onDecline, confirmApi = "/api/tool-confirm" }: ConfirmCardProps) {
+export function ConfirmCard({ toolName, input, onApprove, onDecline }: ConfirmCardProps) {
   const [status, setStatus] = useState<"pending" | "loading" | "error">("pending");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -32,7 +30,7 @@ export function ConfirmCard({ toolName, input, onApprove, onDecline, confirmApi 
     setStatus("loading");
     setErrorMessage(null);
     try {
-      const res = await fetch(confirmApi, {
+      const res = await fetch("/api/tool-confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tool: toolName, input }),
