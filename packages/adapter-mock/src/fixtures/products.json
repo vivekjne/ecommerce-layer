@@ -1,0 +1,414 @@
+[
+  {
+    "id": "p1",
+    "handle": "midnight-runner-hoodie",
+    "title": "Midnight Runner Hoodie",
+    "description": "A brushed-fleece pullover hoodie built for cool-weather runs, with a kangaroo pocket and reflective drawcords.",
+    "vendor": "Acme Apparel",
+    "productType": "Hoodie",
+    "tags": ["hoodie", "unisex", "fleece"],
+    "images": [{ "url": "https://picsum.photos/seed/midnight-runner-hoodie/800/800", "altText": "Midnight Runner Hoodie" }],
+    "options": [
+      { "name": "Color", "values": ["Midnight Navy", "Cobalt Blue", "Heather Grey"] },
+      { "name": "Size", "values": ["S", "M", "L"] }
+    ],
+    "variants": [
+      { "id": "p1-v1", "title": "Midnight Navy / M", "sku": "HOOD-MN-M", "price": 6800, "compareAtPrice": 7800, "inventoryQuantity": 18, "selectedOptions": [{ "name": "Color", "value": "Midnight Navy" }, { "name": "Size", "value": "M" }] },
+      { "id": "p1-v2", "title": "Cobalt Blue / M", "sku": "HOOD-CB-M", "price": 6800, "inventoryQuantity": 22, "selectedOptions": [{ "name": "Color", "value": "Cobalt Blue" }, { "name": "Size", "value": "M" }] },
+      { "id": "p1-v3", "title": "Heather Grey / L", "sku": "HOOD-HG-L", "price": 6800, "inventoryQuantity": 9, "selectedOptions": [{ "name": "Color", "value": "Heather Grey" }, { "name": "Size", "value": "L" }] }
+    ]
+  },
+  {
+    "id": "p2",
+    "handle": "cloud-step-sneakers",
+    "title": "Cloud Step Sneakers",
+    "description": "Lightweight everyday sneakers with a cushioned midsole and breathable knit upper for all-day comfort.",
+    "vendor": "Cloud Co",
+    "productType": "Footwear",
+    "tags": ["sneakers", "running", "unisex"],
+    "images": [{ "url": "https://picsum.photos/seed/cloud-step-sneakers/800/800", "altText": "Cloud Step Sneakers" }],
+    "options": [
+      { "name": "Color", "values": ["Sky", "Chalk White", "Jet Black"] },
+      { "name": "Size", "values": ["8", "9", "10"] }
+    ],
+    "variants": [
+      { "id": "p2-v1", "title": "Sky / 9", "sku": "SNK-SKY-9", "price": 8900, "compareAtPrice": 9900, "inventoryQuantity": 14, "selectedOptions": [{ "name": "Color", "value": "Sky" }, { "name": "Size", "value": "9" }] },
+      { "id": "p2-v2", "title": "Chalk White / 9", "sku": "SNK-CW-9", "price": 8900, "inventoryQuantity": 11, "selectedOptions": [{ "name": "Color", "value": "Chalk White" }, { "name": "Size", "value": "9" }] },
+      { "id": "p2-v3", "title": "Jet Black / 10", "sku": "SNK-JB-10", "price": 8900, "inventoryQuantity": 6, "selectedOptions": [{ "name": "Color", "value": "Jet Black" }, { "name": "Size", "value": "10" }] }
+    ]
+  },
+  {
+    "id": "p3",
+    "handle": "trailblazer-backpack",
+    "title": "Trailblazer Backpack",
+    "description": "A 28-liter daypack with a padded laptop sleeve, water-bottle pockets, and weatherproof zippers.",
+    "vendor": "Acme Apparel",
+    "productType": "Bags",
+    "tags": ["backpack", "travel"],
+    "images": [{ "url": "https://picsum.photos/seed/trailblazer-backpack/800/800", "altText": "Trailblazer Backpack" }],
+    "options": [{ "name": "Color", "values": ["Olive", "Charcoal"] }],
+    "variants": [
+      { "id": "p3-v1", "title": "Olive", "sku": "BKP-OL", "price": 5400, "inventoryQuantity": 25, "selectedOptions": [{ "name": "Color", "value": "Olive" }] },
+      { "id": "p3-v2", "title": "Charcoal", "sku": "BKP-CH", "price": 5400, "inventoryQuantity": 17, "selectedOptions": [{ "name": "Color", "value": "Charcoal" }] }
+    ]
+  },
+  {
+    "id": "p4",
+    "handle": "everyday-crew-tee",
+    "title": "Everyday Crew Tee",
+    "description": "A soft, breathable cotton-blend crewneck tee that works as well layered as it does on its own.",
+    "vendor": "Acme Apparel",
+    "productType": "Tops",
+    "tags": ["tee", "unisex", "basics"],
+    "images": [{ "url": "https://picsum.photos/seed/everyday-crew-tee/800/800", "altText": "Everyday Crew Tee" }],
+    "options": [
+      { "name": "Color", "values": ["Sky", "Sunset Orange", "Heather Grey"] },
+      { "name": "Size", "values": ["S", "M", "L", "XL"] }
+    ],
+    "variants": [
+      { "id": "p4-v1", "title": "Sky / M", "sku": "TEE-SKY-M", "price": 2800, "inventoryQuantity": 40, "selectedOptions": [{ "name": "Color", "value": "Sky" }, { "name": "Size", "value": "M" }] },
+      { "id": "p4-v2", "title": "Sunset Orange / M", "sku": "TEE-SO-M", "price": 2800, "inventoryQuantity": 33, "selectedOptions": [{ "name": "Color", "value": "Sunset Orange" }, { "name": "Size", "value": "M" }] },
+      { "id": "p4-v3", "title": "Heather Grey / XL", "sku": "TEE-HG-XL", "price": 2800, "inventoryQuantity": 28, "selectedOptions": [{ "name": "Color", "value": "Heather Grey" }, { "name": "Size", "value": "XL" }] }
+    ]
+  },
+  {
+    "id": "p5",
+    "handle": "alpine-shell-jacket",
+    "title": "Alpine Shell Jacket",
+    "description": "A packable waterproof shell with taped seams and pit zips, built for sudden weather on the trail.",
+    "vendor": "Summit Gear",
+    "productType": "Outerwear",
+    "tags": ["jacket", "waterproof", "hiking"],
+    "images": [{ "url": "https://picsum.photos/seed/alpine-shell-jacket/800/800", "altText": "Alpine Shell Jacket" }],
+    "options": [
+      { "name": "Color", "values": ["Cobalt Blue", "Storm Grey"] },
+      { "name": "Size", "values": ["S", "M", "L"] }
+    ],
+    "variants": [
+      { "id": "p5-v1", "title": "Cobalt Blue / M", "sku": "JKT-CB-M", "price": 12000, "inventoryQuantity": 12, "selectedOptions": [{ "name": "Color", "value": "Cobalt Blue" }, { "name": "Size", "value": "M" }] },
+      { "id": "p5-v2", "title": "Storm Grey / L", "sku": "JKT-SG-L", "price": 12000, "inventoryQuantity": 8, "selectedOptions": [{ "name": "Color", "value": "Storm Grey" }, { "name": "Size", "value": "L" }] }
+    ]
+  },
+  {
+    "id": "p6",
+    "handle": "classic-denim-jeans",
+    "title": "Classic Denim Jeans",
+    "description": "A straight-fit five-pocket jean in rigid denim that breaks in with wear and holds its shape.",
+    "vendor": "Acme Apparel",
+    "productType": "Bottoms",
+    "tags": ["jeans", "denim"],
+    "images": [{ "url": "https://picsum.photos/seed/classic-denim-jeans/800/800", "altText": "Classic Denim Jeans" }],
+    "options": [
+      { "name": "Color", "values": ["Indigo", "Black Wash"] },
+      { "name": "Size", "values": ["30", "32", "34"] }
+    ],
+    "variants": [
+      { "id": "p6-v1", "title": "Indigo / 32", "sku": "JEA-IN-32", "price": 7600, "inventoryQuantity": 30, "selectedOptions": [{ "name": "Color", "value": "Indigo" }, { "name": "Size", "value": "32" }] },
+      { "id": "p6-v2", "title": "Black Wash / 34", "sku": "JEA-BW-34", "price": 7600, "inventoryQuantity": 19, "selectedOptions": [{ "name": "Color", "value": "Black Wash" }, { "name": "Size", "value": "34" }] }
+    ]
+  },
+  {
+    "id": "p7",
+    "handle": "summit-wool-beanie",
+    "title": "Summit Wool Beanie",
+    "description": "A ribbed merino wool beanie that regulates temperature and stays soft against sensitive skin.",
+    "vendor": "Summit Gear",
+    "productType": "Accessories",
+    "tags": ["beanie", "wool", "winter"],
+    "images": [{ "url": "https://picsum.photos/seed/summit-wool-beanie/800/800", "altText": "Summit Wool Beanie" }],
+    "options": [{ "name": "Color", "values": ["Midnight Navy", "Charcoal"] }],
+    "variants": [
+      { "id": "p7-v1", "title": "Midnight Navy", "sku": "BEA-MN", "price": 2200, "inventoryQuantity": 45, "selectedOptions": [{ "name": "Color", "value": "Midnight Navy" }] },
+      { "id": "p7-v2", "title": "Charcoal", "sku": "BEA-CH", "price": 2200, "inventoryQuantity": 38, "selectedOptions": [{ "name": "Color", "value": "Charcoal" }] }
+    ]
+  },
+  {
+    "id": "p8",
+    "handle": "trail-mix-socks-3-pack",
+    "title": "Trail Mix Socks (3-Pack)",
+    "description": "Cushioned crew socks in a mixed-color three-pack, with arch support and moisture-wicking yarn.",
+    "vendor": "Acme Apparel",
+    "productType": "Accessories",
+    "tags": ["socks", "basics"],
+    "images": [{ "url": "https://picsum.photos/seed/trail-mix-socks/800/800", "altText": "Trail Mix Socks 3-Pack" }],
+    "options": [{ "name": "Color", "values": ["Assorted"] }],
+    "variants": [
+      { "id": "p8-v1", "title": "Assorted", "sku": "SOC-AST", "price": 1600, "inventoryQuantity": 3, "selectedOptions": [{ "name": "Color", "value": "Assorted" }] }
+    ]
+  },
+  {
+    "id": "p9",
+    "handle": "steel-vacuum-bottle-24oz",
+    "title": "Steel Vacuum Bottle 24oz",
+    "description": "A double-walled stainless steel bottle that keeps drinks cold for 24 hours or hot for 12.",
+    "vendor": "Cloud Co",
+    "productType": "Accessories",
+    "tags": ["bottle", "hydration"],
+    "images": [{ "url": "https://picsum.photos/seed/steel-vacuum-bottle/800/800", "altText": "Steel Vacuum Bottle 24oz" }],
+    "options": [{ "name": "Color", "values": ["Cobalt Blue", "Jet Black"] }],
+    "variants": [
+      { "id": "p9-v1", "title": "Cobalt Blue", "sku": "BTL-CB", "price": 2400, "inventoryQuantity": 27, "selectedOptions": [{ "name": "Color", "value": "Cobalt Blue" }] },
+      { "id": "p9-v2", "title": "Jet Black", "sku": "BTL-JB", "price": 2400, "inventoryQuantity": 24, "selectedOptions": [{ "name": "Color", "value": "Jet Black" }] }
+    ]
+  },
+  {
+    "id": "p10",
+    "handle": "weekender-duffel-bag",
+    "title": "Weekender Duffel Bag",
+    "description": "A 45-liter canvas duffel with reinforced handles and a detachable strap, sized for a long weekend.",
+    "vendor": "Summit Gear",
+    "productType": "Bags",
+    "tags": ["duffel", "travel"],
+    "images": [{ "url": "https://picsum.photos/seed/weekender-duffel-bag/800/800", "altText": "Weekender Duffel Bag" }],
+    "options": [{ "name": "Color", "values": ["Olive", "Charcoal"] }],
+    "variants": [
+      { "id": "p10-v1", "title": "Olive", "sku": "DUF-OL", "price": 8800, "inventoryQuantity": 13, "selectedOptions": [{ "name": "Color", "value": "Olive" }] },
+      { "id": "p10-v2", "title": "Charcoal", "sku": "DUF-CH", "price": 8800, "inventoryQuantity": 10, "selectedOptions": [{ "name": "Color", "value": "Charcoal" }] }
+    ]
+  },
+  {
+    "id": "p11",
+    "handle": "featherlight-rain-jacket",
+    "title": "Featherlight Rain Jacket",
+    "description": "An ultralight packable rain shell that stuffs into its own pocket and weighs under 200 grams.",
+    "vendor": "Summit Gear",
+    "productType": "Outerwear",
+    "tags": ["jacket", "rain", "packable"],
+    "images": [{ "url": "https://picsum.photos/seed/featherlight-rain-jacket/800/800", "altText": "Featherlight Rain Jacket" }],
+    "options": [
+      { "name": "Color", "values": ["Sky", "Sunset Orange"] },
+      { "name": "Size", "values": ["S", "M", "L"] }
+    ],
+    "variants": [
+      { "id": "p11-v1", "title": "Sky / M", "sku": "RJK-SKY-M", "price": 9800, "inventoryQuantity": 16, "selectedOptions": [{ "name": "Color", "value": "Sky" }, { "name": "Size", "value": "M" }] },
+      { "id": "p11-v2", "title": "Sunset Orange / L", "sku": "RJK-SO-L", "price": 9800, "inventoryQuantity": 7, "selectedOptions": [{ "name": "Color", "value": "Sunset Orange" }, { "name": "Size", "value": "L" }] }
+    ]
+  },
+  {
+    "id": "p12",
+    "handle": "performance-joggers",
+    "title": "Performance Joggers",
+    "description": "Tapered stretch-woven joggers with zippered pockets, built for the gym or the commute.",
+    "vendor": "Acme Apparel",
+    "productType": "Bottoms",
+    "tags": ["joggers", "athleisure"],
+    "images": [{ "url": "https://picsum.photos/seed/performance-joggers/800/800", "altText": "Performance Joggers" }],
+    "options": [
+      { "name": "Color", "values": ["Heather Grey", "Midnight Navy"] },
+      { "name": "Size", "values": ["S", "M", "L"] }
+    ],
+    "variants": [
+      { "id": "p12-v1", "title": "Heather Grey / M", "sku": "JOG-HG-M", "price": 5200, "inventoryQuantity": 21, "selectedOptions": [{ "name": "Color", "value": "Heather Grey" }, { "name": "Size", "value": "M" }] },
+      { "id": "p12-v2", "title": "Midnight Navy / L", "sku": "JOG-MN-L", "price": 5200, "inventoryQuantity": 14, "selectedOptions": [{ "name": "Color", "value": "Midnight Navy" }, { "name": "Size", "value": "L" }] }
+    ]
+  },
+  {
+    "id": "p13",
+    "handle": "retro-court-sneakers",
+    "title": "Retro Court Sneakers",
+    "description": "A low-top leather sneaker with a vulcanized rubber sole, styled after 90s tennis courts.",
+    "vendor": "Cloud Co",
+    "productType": "Footwear",
+    "tags": ["sneakers", "retro"],
+    "images": [{ "url": "https://picsum.photos/seed/retro-court-sneakers/800/800", "altText": "Retro Court Sneakers" }],
+    "options": [
+      { "name": "Color", "values": ["Chalk White", "Cobalt Blue"] },
+      { "name": "Size", "values": ["8", "9", "10"] }
+    ],
+    "variants": [
+      { "id": "p13-v1", "title": "Chalk White / 9", "sku": "RCS-CW-9", "price": 8200, "inventoryQuantity": 18, "selectedOptions": [{ "name": "Color", "value": "Chalk White" }, { "name": "Size", "value": "9" }] },
+      { "id": "p13-v2", "title": "Cobalt Blue / 10", "sku": "RCS-CB-10", "price": 8200, "inventoryQuantity": 5, "selectedOptions": [{ "name": "Color", "value": "Cobalt Blue" }, { "name": "Size", "value": "10" }] }
+    ]
+  },
+  {
+    "id": "p14",
+    "handle": "canvas-utility-cap",
+    "title": "Canvas Utility Cap",
+    "description": "A structured six-panel cap in heavyweight cotton canvas with an adjustable brass buckle strap.",
+    "vendor": "Summit Gear",
+    "productType": "Accessories",
+    "tags": ["cap", "headwear"],
+    "images": [{ "url": "https://picsum.photos/seed/canvas-utility-cap/800/800", "altText": "Canvas Utility Cap" }],
+    "options": [{ "name": "Color", "values": ["Olive", "Sand"] }],
+    "variants": [
+      { "id": "p14-v1", "title": "Olive", "sku": "CAP-OL", "price": 2600, "inventoryQuantity": 32, "selectedOptions": [{ "name": "Color", "value": "Olive" }] },
+      { "id": "p14-v2", "title": "Sand", "sku": "CAP-SA", "price": 2600, "inventoryQuantity": 29, "selectedOptions": [{ "name": "Color", "value": "Sand" }] }
+    ]
+  },
+  {
+    "id": "p15",
+    "handle": "merino-base-layer-top",
+    "title": "Merino Base Layer Top",
+    "description": "A midweight merino wool base layer that regulates temperature and resists odor on multi-day trips.",
+    "vendor": "Summit Gear",
+    "productType": "Tops",
+    "tags": ["base layer", "merino", "hiking"],
+    "images": [{ "url": "https://picsum.photos/seed/merino-base-layer-top/800/800", "altText": "Merino Base Layer Top" }],
+    "options": [
+      { "name": "Color", "values": ["Charcoal", "Sky"] },
+      { "name": "Size", "values": ["S", "M", "L"] }
+    ],
+    "variants": [
+      { "id": "p15-v1", "title": "Charcoal / M", "sku": "BSL-CH-M", "price": 4600, "inventoryQuantity": 15, "selectedOptions": [{ "name": "Color", "value": "Charcoal" }, { "name": "Size", "value": "M" }] },
+      { "id": "p15-v2", "title": "Sky / L", "sku": "BSL-SKY-L", "price": 4600, "inventoryQuantity": 11, "selectedOptions": [{ "name": "Color", "value": "Sky" }, { "name": "Size", "value": "L" }] }
+    ]
+  },
+  {
+    "id": "p16",
+    "handle": "quilted-puffer-vest",
+    "title": "Quilted Puffer Vest",
+    "description": "A lightweight quilted vest with synthetic fill, sized to layer easily over a hoodie or shirt.",
+    "vendor": "Acme Apparel",
+    "productType": "Outerwear",
+    "tags": ["vest", "puffer", "layering"],
+    "images": [{ "url": "https://picsum.photos/seed/quilted-puffer-vest/800/800", "altText": "Quilted Puffer Vest" }],
+    "options": [
+      { "name": "Color", "values": ["Midnight Navy", "Sunset Orange"] },
+      { "name": "Size", "values": ["S", "M", "L"] }
+    ],
+    "variants": [
+      { "id": "p16-v1", "title": "Midnight Navy / M", "sku": "VST-MN-M", "price": 9200, "inventoryQuantity": 9, "selectedOptions": [{ "name": "Color", "value": "Midnight Navy" }, { "name": "Size", "value": "M" }] },
+      { "id": "p16-v2", "title": "Sunset Orange / L", "sku": "VST-SO-L", "price": 9200, "inventoryQuantity": 6, "selectedOptions": [{ "name": "Color", "value": "Sunset Orange" }, { "name": "Size", "value": "L" }] }
+    ]
+  },
+  {
+    "id": "p17",
+    "handle": "everyday-tote-bag",
+    "title": "Everyday Tote Bag",
+    "description": "A roomy cotton canvas tote with an interior pocket, reinforced base, and comfortable shoulder straps.",
+    "vendor": "Acme Apparel",
+    "productType": "Bags",
+    "tags": ["tote", "everyday"],
+    "images": [{ "url": "https://picsum.photos/seed/everyday-tote-bag/800/800", "altText": "Everyday Tote Bag" }],
+    "options": [{ "name": "Color", "values": ["Natural", "Black"] }],
+    "variants": [
+      { "id": "p17-v1", "title": "Natural", "sku": "TOT-NAT", "price": 3400, "inventoryQuantity": 36, "selectedOptions": [{ "name": "Color", "value": "Natural" }] },
+      { "id": "p17-v2", "title": "Black", "sku": "TOT-BLK", "price": 3400, "inventoryQuantity": 31, "selectedOptions": [{ "name": "Color", "value": "Black" }] }
+    ]
+  },
+  {
+    "id": "p18",
+    "handle": "stretch-fit-cap",
+    "title": "Stretch Fit Cap",
+    "description": "A structured stretch-fit cap with a curved brim, sized S/M and L/XL rather than adjustable.",
+    "vendor": "Cloud Co",
+    "productType": "Accessories",
+    "tags": ["cap", "headwear", "discontinued"],
+    "images": [{ "url": "https://picsum.photos/seed/stretch-fit-cap/800/800", "altText": "Stretch Fit Cap" }],
+    "options": [{ "name": "Color", "values": ["Jet Black", "Cobalt Blue"] }],
+    "variants": [
+      { "id": "p18-v1", "title": "Jet Black", "sku": "SFC-JB", "price": 2400, "inventoryQuantity": 0, "selectedOptions": [{ "name": "Color", "value": "Jet Black" }] },
+      { "id": "p18-v2", "title": "Cobalt Blue", "sku": "SFC-CB", "price": 2400, "inventoryQuantity": 0, "selectedOptions": [{ "name": "Color", "value": "Cobalt Blue" }] }
+    ]
+  },
+  {
+    "id": "p19",
+    "handle": "trailrunner-shorts",
+    "title": "Trailrunner Shorts",
+    "description": "Quick-dry running shorts with a liner and a zippered pocket for keys or a gel packet.",
+    "vendor": "Summit Gear",
+    "productType": "Bottoms",
+    "tags": ["shorts", "running"],
+    "images": [{ "url": "https://picsum.photos/seed/trailrunner-shorts/800/800", "altText": "Trailrunner Shorts" }],
+    "options": [
+      { "name": "Color", "values": ["Storm Grey", "Sky"] },
+      { "name": "Size", "values": ["S", "M", "L"] }
+    ],
+    "variants": [
+      { "id": "p19-v1", "title": "Storm Grey / M", "sku": "SHO-SG-M", "price": 4800, "inventoryQuantity": 20, "selectedOptions": [{ "name": "Color", "value": "Storm Grey" }, { "name": "Size", "value": "M" }] },
+      { "id": "p19-v2", "title": "Sky / L", "sku": "SHO-SKY-L", "price": 4800, "inventoryQuantity": 17, "selectedOptions": [{ "name": "Color", "value": "Sky" }, { "name": "Size", "value": "L" }] }
+    ]
+  },
+  {
+    "id": "p20",
+    "handle": "insulated-flask-16oz",
+    "title": "Insulated Flask 16oz",
+    "description": "A slim insulated flask with a leakproof cap, sized to fit most bike bottle cages and bag pockets.",
+    "vendor": "Cloud Co",
+    "productType": "Accessories",
+    "tags": ["flask", "hydration"],
+    "images": [{ "url": "https://picsum.photos/seed/insulated-flask-16oz/800/800", "altText": "Insulated Flask 16oz" }],
+    "options": [{ "name": "Color", "values": ["Sand", "Cobalt Blue"] }],
+    "variants": [
+      { "id": "p20-v1", "title": "Sand", "sku": "FLK-SA", "price": 2600, "inventoryQuantity": 23, "selectedOptions": [{ "name": "Color", "value": "Sand" }] },
+      { "id": "p20-v2", "title": "Cobalt Blue", "sku": "FLK-CB", "price": 2600, "inventoryQuantity": 19, "selectedOptions": [{ "name": "Color", "value": "Cobalt Blue" }] }
+    ]
+  },
+  {
+    "id": "p21",
+    "handle": "lightweight-packable-jacket",
+    "title": "Lightweight Packable Jacket",
+    "description": "A windproof packable jacket that compresses into its own chest pocket for easy carrying on the go.",
+    "vendor": "Summit Gear",
+    "productType": "Outerwear",
+    "tags": ["jacket", "packable"],
+    "images": [],
+    "options": [
+      { "name": "Color", "values": ["Sunset Orange", "Midnight Navy"] },
+      { "name": "Size", "values": ["S", "M"] }
+    ],
+    "variants": [
+      { "id": "p21-v1", "title": "Sunset Orange / S", "sku": "PKJ-SO-S", "price": 7400, "inventoryQuantity": 14, "selectedOptions": [{ "name": "Color", "value": "Sunset Orange" }, { "name": "Size", "value": "S" }] },
+      { "id": "p21-v2", "title": "Midnight Navy / M", "sku": "PKJ-MN-M", "price": 7400, "inventoryQuantity": 10, "selectedOptions": [{ "name": "Color", "value": "Midnight Navy" }, { "name": "Size", "value": "M" }] }
+    ]
+  },
+  {
+    "id": "p22",
+    "handle": "classic-logo-tee",
+    "title": "Classic Logo Tee",
+    "description": "A heavyweight cotton tee with a small embroidered logo at the chest, cut for a relaxed fit.",
+    "vendor": "Acme Apparel",
+    "productType": "Tops",
+    "tags": ["tee", "logo", "basics"],
+    "images": [{ "url": "https://picsum.photos/seed/classic-logo-tee/800/800", "altText": "Classic Logo Tee" }],
+    "options": [
+      { "name": "Color", "values": ["Chalk White", "Jet Black"] },
+      { "name": "Size", "values": ["S", "M", "L"] }
+    ],
+    "variants": [
+      { "id": "p22-v1", "title": "Chalk White / M", "sku": "LGT-CW-M", "price": 2600, "inventoryQuantity": 44, "selectedOptions": [{ "name": "Color", "value": "Chalk White" }, { "name": "Size", "value": "M" }] },
+      { "id": "p22-v2", "title": "Jet Black / L", "sku": "LGT-JB-L", "price": 2600, "inventoryQuantity": 37, "selectedOptions": [{ "name": "Color", "value": "Jet Black" }, { "name": "Size", "value": "L" }] }
+    ]
+  },
+  {
+    "id": "p23",
+    "handle": "trail-gaiters",
+    "title": "Trail Gaiters",
+    "description": "Low-profile gaiters that keep gravel and mud out of your shoes on rough, uneven trails.",
+    "vendor": "Summit Gear",
+    "productType": "Accessories",
+    "tags": ["gaiters", "hiking"],
+    "images": [{ "url": "https://picsum.photos/seed/trail-gaiters/800/800", "altText": "Trail Gaiters" }],
+    "options": [{ "name": "Color", "values": ["Charcoal"] }],
+    "variants": [
+      { "id": "p23-v1", "title": "Charcoal", "sku": "GAI-CH", "price": 3200, "inventoryQuantity": 2, "selectedOptions": [{ "name": "Color", "value": "Charcoal" }] }
+    ]
+  },
+  {
+    "id": "p24",
+    "handle": "reflective-running-vest",
+    "title": "Reflective Running Vest",
+    "description": "A high-visibility vest with 360-degree reflective trim for early morning or evening runs.",
+    "vendor": "Cloud Co",
+    "productType": "Accessories",
+    "tags": ["vest", "running", "safety"],
+    "images": [{ "url": "https://picsum.photos/seed/reflective-running-vest/800/800", "altText": "Reflective Running Vest" }],
+    "options": [{ "name": "Color", "values": ["Sunset Orange"] }],
+    "variants": [
+      { "id": "p24-v1", "title": "Sunset Orange", "sku": "RRV-SO", "price": 5600, "inventoryQuantity": 0, "selectedOptions": [{ "name": "Color", "value": "Sunset Orange" }] }
+    ]
+  },
+  {
+    "id": "p25",
+    "handle": "trail-poncho",
+    "title": "Trail Poncho",
+    "description": "Coming soon.",
+    "vendor": "Summit Gear",
+    "productType": "Outerwear",
+    "tags": ["jacket", "coming-soon"],
+    "status": "draft",
+    "images": [],
+    "options": [],
+    "variants": []
+  }
+]
