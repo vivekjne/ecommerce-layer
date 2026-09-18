@@ -11,18 +11,15 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^4.0.57",
-    "@ai-sdk/react": "^4.0.109",
     "@commerce/adapter-mock": "workspace:*",
+    "@commerce/chat-sdk": "workspace:*",
     "@commerce/core": "workspace:*",
     "@react-router/node": "7.18.4",
     "@react-router/serve": "7.18.4",
-    "ai": "^7.0.106",
     "isbot": "^5.2.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router": "7.18.4",
-    "zod": "^3.25.76"
+    "react-router": "7.18.4"
   },
   "devDependencies": {
     "@react-router/dev": "7.18.4",

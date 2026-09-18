@@ -1,5 +1,20 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, type LinksFunction } from "react-router";
+import { ChatWidget } from "@commerce/chat-sdk/react";
+import {
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
+  useRevalidator,
+  type LinksFunction,
+  type LoaderFunctionArgs,
+} from "react-router";
 import stylesheet from "./app.css?url";
+import { Footer } from "./components/Footer.js";
+import { Header } from "./components/Header.js";
+import { getAdapters } from "./lib/adapters.js";
+import { getCartId } from "./lib/cart-cookie.js";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -8,13 +23,21 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
 ];
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  const { commerce } = getAdapters();
+  const cartId = await getCartId(request);
+  const cart = cartId ? await commerce.getCart(cartId) : null;
+  const cartCount = cart ? cart.lines.reduce((sum, line) => sum + line.quantity, 0) : 0;
+  return { cartCount };
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Commerce Layer Chat</title>
+        <title>Acme Shop</title>
         <Meta />
         <Links />
       </head>
@@ -28,7 +51,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const { cartCount } = useLoaderData<typeof loader>();
+  const revalidator = useRevalidator();
+
+  return (
+    <div className="flex min-h-screen flex-col bg-neutral-50 dark:bg-neutral-950">
+      <Header cartCount={cartCount} />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Footer />
+      {/* The chat's own cart writes go through a plain fetch, not a React Router
+          action, so the header's cart count needs an explicit nudge to refresh. */}
+      <ChatWidget onCartChanged={() => revalidator.revalidate()} />
+    </div>
+  );
 }
 
 export function ErrorBoundary({ error }: { error: unknown }) {

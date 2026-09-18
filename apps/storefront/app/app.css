@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* @commerce/chat-sdk is a sibling workspace package (reached through the
+   node_modules symlink, outside this app's own directory tree), so
+   Tailwind's automatic source scan won't find class names in it on its
+   own — point it there explicitly. */
+@source "../../../packages/chat-sdk/src";
+
 @theme {
   --font-sans:
     "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;

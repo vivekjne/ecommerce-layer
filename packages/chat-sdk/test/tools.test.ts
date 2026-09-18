@@ -1,6 +1,6 @@
 import { createMockAdapters } from "@commerce/adapter-mock";
 import { describe, expect, it } from "vitest";
-import { createShopperTools, createWriteToolExecutors } from "../app/lib/tools.js";
+import { createShopperTools, createWriteToolExecutors } from "../src/tools.js";
 
 describe("createShopperTools", () => {
   it("exposes all 7 tools with read tools carrying execute and write tools not", () => {
@@ -50,5 +50,17 @@ describe("createWriteToolExecutors", () => {
 
     const removed = await executors.remove_from_cart({ cartId: cart.id, lineId: cart.lines[0]!.id });
     expect(removed.lines.length).toBe(0);
+  });
+
+  it("falls back to defaultCartId when add_to_cart is called without one", async () => {
+    const { commerce } = createMockAdapters();
+    const existingCart = await commerce.createCart();
+    const executors = createWriteToolExecutors(commerce, { defaultCartId: existingCart.id });
+
+    const search = await commerce.searchProducts({ first: 1 });
+    const variantId = search.edges[0]!.node.variants[0]!.id;
+
+    const cart = await executors.add_to_cart({ variantId, quantity: 1 });
+    expect(cart.id).toBe(existingCart.id);
   });
 });
