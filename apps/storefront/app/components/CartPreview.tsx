@@ -1,30 +1,42 @@
 import type { Cart } from "@commerce/core";
 import { formatMoney } from "../lib/format.js";
+import { CartIcon } from "./icons.js";
 
 export function CartPreview({ cart }: { cart: Cart }) {
   if (cart.lines.length === 0) {
-    return <div className="cart-preview empty-state">Cart is empty.</div>;
+    return (
+      <div className="flex items-center gap-2 rounded-2xl border border-dashed border-neutral-300 p-4 text-sm text-neutral-400 dark:border-neutral-700 dark:text-neutral-500">
+        <CartIcon className="h-4 w-4" />
+        Cart is empty.
+      </div>
+    );
   }
 
   return (
-    <div className="cart-preview">
-      {cart.lines.map((line) => (
-        <div key={line.id} className="cart-line">
-          {line.image && <img src={line.image.url} alt={line.image.altText ?? line.title} className="cart-line-image" />}
-          <div className="cart-line-body">
-            <div className="cart-line-title">
-              {line.title} — {line.variantTitle}
+    <div className="rounded-2xl border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
+      <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
+        {cart.lines.map((line) => (
+          <div key={line.id} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
+            {line.image ? (
+              <img src={line.image.url} alt={line.image.altText ?? line.title} className="h-12 w-12 shrink-0 rounded-lg object-cover" />
+            ) : (
+              <div className="h-12 w-12 shrink-0 rounded-lg bg-neutral-100 dark:bg-neutral-800" />
+            )}
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-sm font-medium text-neutral-900 dark:text-neutral-100">{line.title}</div>
+              <div className="truncate text-xs text-neutral-500 dark:text-neutral-400">
+                {line.variantTitle} · Qty {line.quantity} × {formatMoney(line.unitPrice)}
+              </div>
             </div>
-            <div className="cart-line-meta">
-              Qty {line.quantity} × {formatMoney(line.unitPrice)}
+            <div className="shrink-0 text-sm font-semibold tabular-nums text-neutral-900 dark:text-neutral-100">
+              {formatMoney(line.lineTotal)}
             </div>
           </div>
-          <div className="cart-line-total">{formatMoney(line.lineTotal)}</div>
-        </div>
-      ))}
-      <div className="cart-total">
+        ))}
+      </div>
+      <div className="mt-3 flex items-center justify-between border-t border-neutral-200 pt-3 text-sm font-semibold text-neutral-900 dark:border-neutral-800 dark:text-neutral-100">
         <span>Total</span>
-        <span>{formatMoney(cart.total)}</span>
+        <span className="tabular-nums">{formatMoney(cart.total)}</span>
       </div>
     </div>
   );
