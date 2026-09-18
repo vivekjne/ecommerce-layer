@@ -9,5 +9,5 @@
     "rootDirs": [".", "./.react-router/types"],
     "baseUrl": "."
   },
-  "include": ["app", "vite.config.ts", "react-router.config.ts", ".react-router/types/**/*", "test"]
+  "include": ["app", "vite.config.ts", "react-router.config.ts", "playwright.config.ts", ".react-router/types/**/*", "test", "e2e"]
 }

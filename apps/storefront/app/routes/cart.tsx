@@ -43,7 +43,9 @@ function CartLineRow({ line }: { line: CartLine }) {
         </div>
       </div>
       <div className="shrink-0 text-right">
-        <div className="text-sm font-semibold tabular-nums text-neutral-900 dark:text-neutral-100">{formatMoney(line.lineTotal)}</div>
+        <div data-testid="line-total" className="text-sm font-semibold tabular-nums text-neutral-900 dark:text-neutral-100">
+          {formatMoney(line.lineTotal)}
+        </div>
         <button
           type="button"
           onClick={remove}
@@ -122,11 +124,15 @@ export default function CartRoute() {
       <div className="mt-6 rounded-2xl border border-neutral-200 bg-white p-5 dark:border-neutral-800 dark:bg-neutral-950">
         <div className="flex items-center justify-between text-sm text-neutral-500 dark:text-neutral-400">
           <span>Subtotal</span>
-          <span className="tabular-nums">{formatMoney(cart.subtotal)}</span>
+          <span data-testid="cart-subtotal" className="tabular-nums">
+            {formatMoney(cart.subtotal)}
+          </span>
         </div>
         <div className="mt-2 flex items-center justify-between text-base font-semibold text-neutral-900 dark:text-neutral-100">
           <span>Total</span>
-          <span className="tabular-nums">{formatMoney(cart.total)}</span>
+          <span data-testid="cart-total" className="tabular-nums">
+            {formatMoney(cart.total)}
+          </span>
         </div>
         <div className="mt-5">
           <CheckoutButton cartId={cart.id} />
