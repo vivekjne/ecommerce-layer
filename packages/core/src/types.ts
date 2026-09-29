@@ -196,4 +196,4 @@ export interface AuditCatalogResult {
 // Platform identity
 // ---------------------------------------------------------------------------
 
-export type Platform = "shopify" | "bigcommerce" | "mock";
+export type Platform = "shopify" | "bigcommerce" | "native" | "mock";

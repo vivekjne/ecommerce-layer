@@ -5,7 +5,9 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
   useLoaderData,
+  useLocation,
   useRevalidator,
   type LinksFunction,
   type LoaderFunctionArgs,
@@ -67,6 +69,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   const { cartCount } = useLoaderData<typeof loader>();
   const revalidator = useRevalidator();
+  const { pathname } = useLocation();
+
+  // The admin is a separate back-office app with its own layout (routes/admin.tsx).
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) return <Outlet />;
 
   return (
     <div className="flex min-h-screen flex-col bg-neutral-50 dark:bg-neutral-950">
@@ -89,13 +95,23 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: { error: unknown }) {
-  const message = error instanceof Error ? error.message : "Unknown error";
+  const notFound = isRouteErrorResponse(error) && error.status === 404;
+  const title = notFound ? "Page not found" : "Something went wrong";
+  // Never show raw server error messages to shoppers in production.
+  const detail = notFound
+    ? "The page you're looking for doesn't exist or has moved."
+    : import.meta.env.DEV && error instanceof Error
+      ? error.message
+      : "Please try again in a moment.";
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-50 p-8 dark:bg-neutral-950">
+    <main className="flex min-h-screen items-center justify-center bg-neutral-50 p-8 dark:bg-neutral-950">
       <div className="max-w-md rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-        <h1 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">Something went wrong</h1>
-        <pre className="mt-2 overflow-x-auto text-sm text-neutral-500 dark:text-neutral-400">{message}</pre>
+        <h1 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">{title}</h1>
+        <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">{detail}</p>
+        <a href="/" className="mt-4 inline-block text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400">
+          Back to the shop
+        </a>
       </div>
-    </div>
+    </main>
   );
 }

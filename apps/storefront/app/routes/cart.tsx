@@ -1,8 +1,8 @@
-import type { Cart, CartLine, CheckoutSession } from "@commerce/core";
+import type { Cart, CartLine } from "@commerce/core";
 import { Link, useFetcher, useLoaderData } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { QuantityStepper } from "../components/QuantityStepper.js";
-import { ExternalLinkIcon, TrashIcon } from "../components/icons.js";
+import { TrashIcon } from "../components/icons.js";
 import { getAdapters } from "../lib/adapters.js";
 import { getCartId } from "../lib/cart-cookie.js";
 import { formatMoney } from "../lib/format.js";
@@ -20,7 +20,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export const meta: MetaFunction = () => [{ title: `Your cart — ${SITE_NAME}` }, { name: "robots", content: "noindex, nofollow" }];
 
 function CartLineRow({ line }: { line: CartLine }) {
-  const fetcher = useFetcher<{ cart?: Cart }>();
+  const fetcher = useFetcher<{ cart?: Cart; error?: string }>();
   const pendingQuantity = fetcher.formData?.get("quantity");
   const quantity = pendingQuantity ? Number(pendingQuantity) : line.quantity;
   const removing = fetcher.formData?.get("intent") === "remove";
@@ -46,6 +46,11 @@ function CartLineRow({ line }: { line: CartLine }) {
         <div className="mt-2">
           <QuantityStepper value={quantity} onChange={updateQuantity} disabled={fetcher.state !== "idle"} label={`${line.title}, ${line.variantTitle}`} />
         </div>
+        {fetcher.data?.error ? (
+          <p role="alert" className="mt-2 text-xs text-red-600 dark:text-red-400">
+            {fetcher.data.error}
+          </p>
+        ) : null}
       </div>
       <div className="shrink-0 text-right">
         <div data-testid="line-total" className="text-sm font-semibold tabular-nums text-neutral-900 dark:text-neutral-100">
@@ -66,34 +71,25 @@ function CartLineRow({ line }: { line: CartLine }) {
   );
 }
 
-function CheckoutButton({ cartId }: { cartId: string }) {
-  const fetcher = useFetcher<{ checkout?: CheckoutSession; error?: string }>();
-  const checkout = fetcher.data?.checkout;
-
-  if (checkout) {
-    return (
-      <a
-        href={checkout.url}
-        target="_blank"
-        rel="noreferrer"
-        className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-emerald-600 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-500"
-      >
-        Go to checkout
-        <ExternalLinkIcon aria-hidden="true" className="h-4 w-4" />
-      </a>
-    );
-  }
+function CheckoutButton() {
+  // A successful checkout redirects to the checkout page; only errors come back as data.
+  const fetcher = useFetcher<{ error?: string }>();
+  const busy = fetcher.state !== "idle";
 
   return (
     <fetcher.Form method="post" action="/api/cart">
       <input type="hidden" name="intent" value="checkout" />
-      <input type="hidden" name="cartId" value={cartId} />
+      {fetcher.data?.error ? (
+        <p role="alert" className="mb-3 text-sm text-red-600 dark:text-red-400">
+          {fetcher.data.error}
+        </p>
+      ) : null}
       <button
         type="submit"
-        disabled={fetcher.state !== "idle"}
+        disabled={busy}
         className="w-full rounded-xl bg-neutral-900 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:opacity-90 disabled:opacity-50 dark:bg-white dark:text-neutral-900"
       >
-        {fetcher.state !== "idle" ? "Preparing checkout…" : "Checkout"}
+        {busy ? "Preparing checkout…" : "Checkout"}
       </button>
     </fetcher.Form>
   );
@@ -144,7 +140,7 @@ export default function CartRoute() {
           Cart total {formatMoney(cart.total)}
         </div>
         <div className="mt-5">
-          <CheckoutButton cartId={cart.id} />
+          <CheckoutButton />
         </div>
       </div>
     </div>

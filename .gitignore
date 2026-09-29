@@ -12,3 +12,6 @@ coverage/
 test-results/
 playwright-report/
 blob-report/
+
+# Native backend SQLite database (dev)
+data/

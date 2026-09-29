@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@commerce/adapter-mock": "workspace:*",
+    "@commerce/adapter-native": "workspace:*",
     "@commerce/core": "workspace:*",
     "express": "^4.21.1"
   },

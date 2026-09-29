@@ -1,6 +1,14 @@
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import type { ActionFunctionArgs } from "react-router";
+import { getAdapters } from "../app/lib/adapters.js";
 import { action } from "../app/routes/api.cart.js";
+
+// Variant ids are opaque to everything outside the adapter, so take real ones from the catalog.
+let variantIds: string[];
+beforeAll(async () => {
+  const page = await getAdapters().commerce.searchProducts({ first: 10, filters: { availableForSale: true } });
+  variantIds = page.edges.flatMap((e) => e.node.variants.filter((v) => v.inventoryQuantity >= 3).map((v) => v.id));
+});
 
 function postForm(fields: Record<string, string>, cookie?: string): Promise<Response> {
   const body = new URLSearchParams(fields);
@@ -12,7 +20,7 @@ function postForm(fields: Record<string, string>, cookie?: string): Promise<Resp
 
 describe("api.cart action", () => {
   it("add creates a cart and sets a cart_id cookie", async () => {
-    const response = await postForm({ intent: "add", variantId: "mock:variant:p1-v1", quantity: "2" });
+    const response = await postForm({ intent: "add", variantId: variantIds[0]!, quantity: "2" });
     expect(response.status).toBe(200);
 
     const body = (await response.json()) as { cart: { lines: { quantity: number }[] } };
@@ -26,8 +34,14 @@ describe("api.cart action", () => {
     expect(res.status).toBe(400);
   });
 
-  it("runs a full add -> update -> checkout -> remove flow via the returned cookie", async () => {
-    const addRes = await postForm({ intent: "add", variantId: "mock:variant:p2-v1", quantity: "1" });
+  it("reports insufficient stock as a 409 with a shopper-facing message", async () => {
+    const res = await postForm({ intent: "add", variantId: variantIds[0]!, quantity: "100000" });
+    expect(res.status).toBe(409);
+    expect(((await res.json()) as { error: string }).error).toMatch(/left in stock|sold out/);
+  });
+
+  it("runs a full add -> update -> remove -> checkout flow via the returned cookie", async () => {
+    const addRes = await postForm({ intent: "add", variantId: variantIds[1]!, quantity: "1" });
     const cookiePair = addRes.headers.get("Set-Cookie")!.split(";")[0]!;
     const addBody = (await addRes.json()) as { cart: { id: string; lines: { id: string }[] } };
     const lineId = addBody.cart.lines[0]!.id;
@@ -36,12 +50,16 @@ describe("api.cart action", () => {
     const updateBody = (await updateRes.json()) as { cart: { lines: { quantity: number }[] } };
     expect(updateBody.cart.lines[0]!.quantity).toBe(3);
 
-    const checkoutRes = await postForm({ intent: "checkout" }, cookiePair);
-    const checkoutBody = (await checkoutRes.json()) as { checkout: { url: string } };
-    expect(() => new URL(checkoutBody.checkout.url)).not.toThrow();
-
     const removeRes = await postForm({ intent: "remove", lineId }, cookiePair);
     const removeBody = (await removeRes.json()) as { cart: { lines: unknown[] } };
     expect(removeBody.cart.lines.length).toBe(0);
+
+    const emptyCheckout = await postForm({ intent: "checkout" }, cookiePair);
+    expect(emptyCheckout.status).toBe(400);
+
+    await postForm({ intent: "add", variantId: variantIds[1]!, quantity: "1" }, cookiePair);
+    const checkoutRes = await postForm({ intent: "checkout" }, cookiePair);
+    expect(checkoutRes.status).toBe(302);
+    expect(checkoutRes.headers.get("Location")).toMatch(/\/checkout\/checkout_/);
   });
 });

@@ -13,7 +13,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const lines = [
     `# ${SITE_NAME}`,
     "",
-    "> A demo ecommerce storefront over a normalized, AI-native commerce layer. Prices and inventory are mock data for demonstration, not a real store.",
+    "> A demo ecommerce storefront over a normalized, AI-native commerce layer. It is a demonstration store: payments run in test mode and no real orders are shipped.",
     "",
     "## Shop",
     "",

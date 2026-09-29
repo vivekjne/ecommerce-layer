@@ -13,8 +13,8 @@ const executablePath = existsSync(preinstalledChromium) ? preinstalledChromium :
 
 export default defineConfig({
   testDir: "./e2e",
-  // All specs share one dev-server process and one in-memory mock adapter
-  // singleton (getAdapters() in app/lib/adapters.ts) — there's no per-test
+  // All specs share one dev-server process and one in-memory native backend
+  // (getAdapters() in app/lib/adapters.ts) — there's no per-test
   // backend isolation, so running specs concurrently races real requests
   // against shared state. Serialize instead of trading reliability for
   // speed on a suite this small.
@@ -30,8 +30,12 @@ export default defineConfig({
   },
   webServer: {
     command: `pnpm dev --port ${PORT}`,
+    // A fresh in-memory database per run, so tests never touch (or depend on)
+    // the dev database, and checkout URLs point at this server.
+    env: { DATABASE_PATH: ":memory:", PUBLIC_STOREFRONT_URL: `http://localhost:${PORT}`, ADMIN_PASSWORD: "e2e-admin" },
     url: `http://localhost:${PORT}`,
-    reuseExistingServer: !process.env.CI,
+    // Never reuse: a server started without the env above would share the dev database.
+    reuseExistingServer: false,
     timeout: 60_000,
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],

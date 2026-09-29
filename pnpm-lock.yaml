@@ -20,6 +20,9 @@ importers:
       '@commerce/adapter-mock':
         specifier: workspace:*
         version: link:../../packages/adapter-mock
+      '@commerce/adapter-native':
+        specifier: workspace:*
+        version: link:../../packages/adapter-native
       '@commerce/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -54,6 +57,9 @@ importers:
       '@commerce/adapter-mock':
         specifier: workspace:*
         version: link:../../packages/adapter-mock
+      '@commerce/adapter-native':
+        specifier: workspace:*
+        version: link:../../packages/adapter-native
       '@commerce/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -82,6 +88,9 @@ importers:
       '@commerce/adapter-mock':
         specifier: workspace:*
         version: link:../../packages/adapter-mock
+      '@commerce/adapter-native':
+        specifier: workspace:*
+        version: link:../../packages/adapter-native
       '@commerce/chat-sdk':
         specifier: workspace:*
         version: link:../../packages/chat-sdk
@@ -139,6 +148,22 @@ importers:
         version: 5.0.1(@types/node@22.20.3)(vite@6.4.3(@types/node@22.20.3)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13))
 
   packages/adapter-mock:
+    dependencies:
+      '@commerce/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@types/node':
+        specifier: ^22.7.5
+        version: 22.20.3
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^5.0.1
+        version: 5.0.1(@types/node@22.20.3)(vite@6.4.3(@types/node@22.20.3)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13))
+
+  packages/adapter-native:
     dependencies:
       '@commerce/core':
         specifier: workspace:*

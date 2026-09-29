@@ -11,6 +11,11 @@ packages/
   core/                  normalized types, adapter interfaces, tool schemas,
                          system prompt — the shared contract every other
                          package is written against
+  adapter-native/        our own commerce backend (the MVP's primary
+                         platform): catalog, carts, checkout, orders and
+                         inventory in SQLite (node:sqlite), exposed as a
+                         CommerceAdapter + MerchantAdapter plus its own
+                         checkout/order/admin services
   adapter-mock/          in-memory CommerceAdapter + MerchantAdapter, seeded
                          from fixture data — demo fallback, also the
                          reference implementation for the contract tests
@@ -43,6 +48,11 @@ Tooling: pnpm workspaces, Turborepo, TypeScript strict, Vitest.
    `apps/mcp`, and `apps/storefront` only ever call a `CommerceAdapter` /
    `MerchantAdapter`. If you're writing a `fetch()` to `myshopify.com` or
    a BigCommerce API host anywhere else, stop — it belongs in an adapter.
+   The one carve-out: `apps/storefront`'s hosted-checkout (`/checkout/:id`),
+   order-status (`/orders/:id`) and `/admin` routes *are* the native
+   platform's own surfaces (the equivalent of Shopify's checkout pages and
+   admin), so they call `@commerce/adapter-native`'s services through
+   `requireNativeBackend()` and 404 on any other platform.
 
 2. **Money is always an integer in minor units** (`{ amount: number,
    currencyCode: string }`, e.g. `1999` for $19.99). Never a float dollar

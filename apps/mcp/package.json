@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@commerce/adapter-mock": "workspace:*",
+    "@commerce/adapter-native": "workspace:*",
     "@commerce/core": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.30.0",
     "zod": "^3.23.8"

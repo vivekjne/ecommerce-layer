@@ -29,15 +29,14 @@ test.describe("cart", () => {
     await expect(page.getByText("Your cart is empty")).toBeVisible();
   });
 
-  test("checkout reveals a hosted checkout link", async ({ page }) => {
+  test("Checkout takes the shopper to the hosted checkout page", async ({ page }) => {
     await addHoodieToCart(page);
     await page.goto("/cart");
 
     await page.getByRole("button", { name: "Checkout" }).click();
 
-    const checkoutLink = page.getByRole("link", { name: /Go to checkout/ });
-    await expect(checkoutLink).toBeVisible();
-    await expect(checkoutLink).toHaveAttribute("href", /^https:\/\//);
-    await expect(checkoutLink).toHaveAttribute("target", "_blank");
+    await expect(page).toHaveURL(/\/checkout\/checkout_/);
+    await expect(page.getByRole("heading", { name: "Checkout", level: 1 })).toBeVisible();
+    await expect(page.getByText("Midnight Runner Hoodie")).toBeVisible();
   });
 });

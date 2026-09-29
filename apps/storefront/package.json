@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@commerce/adapter-mock": "workspace:*",
+    "@commerce/adapter-native": "workspace:*",
     "@commerce/chat-sdk": "workspace:*",
     "@commerce/core": "workspace:*",
     "@react-router/node": "7.18.4",

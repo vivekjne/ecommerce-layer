@@ -1,23 +1,44 @@
 # apps/storefront
 
 A full ecommerce storefront on React Router 7 (framework mode, classic
-SSR — not RSC), backed by `@commerce/adapter-mock`. The AI shopping chat
+SSR — not RSC), backed by our own commerce backend,
+`@commerce/adapter-native` (`COMMERCE_PLATFORM=mock` switches to the
+in-memory mock adapter). The AI shopping chat
 is a floating widget from `@commerce/chat-sdk`, not this app's own code —
 see `packages/chat-sdk/README.md` for how that SDK boundary works.
 
 ## Run it
 
 ```
-export ANTHROPIC_API_KEY=sk-ant-...
+export ANTHROPIC_API_KEY=sk-ant-...   # only the chat needs this
 pnpm --filter @commerce/storefront dev
 ```
+
+The first run creates and seeds `data/commerce.db` at the workspace root.
+Delete that file to reset the store. Admin is at `/admin`. In local dev
+the password is `admin` until `ADMIN_PASSWORD` is set.
+
+| Variable | Needed | Purpose |
+| --- | --- | --- |
+| `ANTHROPIC_API_KEY` | for the chat | Model calls |
+| `ADMIN_PASSWORD` | production | Admin sign-in (admin is disabled in production without it) |
+| `SESSION_SECRET` | production | Signs the admin session cookie |
+| `PUBLIC_STOREFRONT_URL` | production | This site's public origin, used in checkout URLs |
+| `DATABASE_PATH` | optional | SQLite file location (put it on a persistent volume) |
+| `COMMERCE_PLATFORM` | optional | `native` (default) or `mock` |
 
 ## Pages
 
 - `/` — home: hero, category tiles, featured products
 - `/products` — catalog: search, category filter, cursor-paginated "Load more"
 - `/products/:handle` — product detail: variant selection, quantity, Add to Cart
-- `/cart` — cart: quantity/remove controls, checkout handoff
+- `/cart` — cart: quantity/remove controls, Checkout
+- `/checkout/:id` — the native backend's hosted checkout: contact, address,
+  shipping method, test-mode payment
+- `/orders/:id` — order confirmation/status (unguessable id, `noindex`)
+- `/admin` — back office: dashboard (revenue, orders to fulfill, low
+  stock), orders (fulfill, cancel and refund), products (edit details,
+  price, compare-at, inventory, status; add products)
 
 ## Cart session
 
@@ -34,6 +55,17 @@ conversation to the *same* cart:
   "add this to my cart" in the chat lands in the cart the shopper's
   already looking at, and a newly-created cart from a chat action gets
   written back to the cookie.
+
+## Checkout and admin are the native platform's surfaces
+
+`/checkout/:id`, `/orders/:id` and `/admin` are the native backend's own
+hosted pages, the equivalent of Shopify's checkout and admin. They call
+`@commerce/adapter-native`'s services via `requireNativeBackend()` and
+404 on any other platform, where checkout happens at the URL that
+platform's `createCheckout` returns. Every admin loader and action calls
+`requireAdmin()` itself, because child loaders run in parallel with the
+layout's. The session cookie is `httpOnly` and `SameSite=Strict` (the
+CSRF defense for the admin's form POSTs).
 
 ## Write-action gating
 
@@ -61,7 +93,8 @@ pnpm --filter @commerce/storefront test:e2e:ui     # Playwright UI mode
 ```
 
 `playwright.config.ts` starts its own dev server on port 5183
-(`webServer`), so these don't need one already running. Coverage is the
+(`webServer`) against a fresh in-memory database, so these don't need a
+server already running and never touch your dev data. Coverage is the
 deterministic, non-LLM parts of the app — the pieces that don't need an
 `ANTHROPIC_API_KEY` and won't flake on a real model's output:
 
@@ -71,7 +104,13 @@ deterministic, non-LLM parts of the app — the pieces that don't need an
 - `e2e/pdp.spec.ts` — variant selection, unknown-handle 404, Add to Cart
   updating both the button and the header cart badge
 - `e2e/cart.spec.ts` — empty state, quantity/remove controls with live
-  total recalculation, checkout handoff
+  total recalculation, Checkout landing on the hosted checkout
+- `e2e/checkout.spec.ts` — full purchase to confirmation (shipping method
+  changes the total, cart resets afterwards), per-field validation with
+  focus moved to the error summary, declined card
+- `e2e/admin.spec.ts` — sign-in gate and redirect back, fulfilling a new
+  order, an inventory edit showing up on the PDP, a created product being
+  purchasable
 - `e2e/chat-widget.spec.ts` — open/close, persistence across client-side
   navigation (it's mounted once in `root.tsx`), a suggestion chip sending
   a user message

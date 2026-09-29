@@ -1,14 +1,16 @@
 import { createMockAdapters } from "@commerce/adapter-mock";
+import { createNativeBackend } from "@commerce/adapter-native";
 import type { CommerceAdapter, MerchantAdapter } from "@commerce/core";
 
 let cached: { commerce: CommerceAdapter; merchant: MerchantAdapter } | undefined;
 
-/**
- * Only the mock adapter exists so far, so this always resolves to it.
- * Once packages/adapter-shopify/adapter-bigcommerce exist, this is where
- * a PLATFORM env var picks between them.
- */
+/** COMMERCE_PLATFORM picks the backend: "native" (default, SQLite) or "mock" (in-memory). */
 export function getAdapters(): { commerce: CommerceAdapter; merchant: MerchantAdapter } {
-  cached ??= createMockAdapters();
+  if (!cached) {
+    const platform = process.env.COMMERCE_PLATFORM ?? "native";
+    if (platform === "mock") cached = createMockAdapters();
+    else if (platform === "native") cached = createNativeBackend();
+    else throw new Error(`Unsupported COMMERCE_PLATFORM "${platform}" — expected "native" or "mock".`);
+  }
   return cached;
 }

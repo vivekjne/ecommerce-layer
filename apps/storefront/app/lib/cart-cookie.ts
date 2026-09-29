@@ -2,7 +2,7 @@ import { createCookie } from "react-router";
 
 /**
  * Tracks the shopper's cart id across page navigations and chat turns.
- * Unsigned: a mock cart id isn't sensitive, and there's nothing to protect
+ * Unsigned: cart ids are random and unguessable, and there's nothing to protect
  * against forging (worst case, someone points their own cookie at a cart
  * id that already exists).
  */
