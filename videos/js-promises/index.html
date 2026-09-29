@@ -3,8 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1920, height=1080" />
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="assets/gsap.min.js"></script>
     <style>
+      :root {
+        --bg: #0b0d12;
+        --panel: #141824;
+        --line: #262c3d;
+        --text: #eef0f6;
+        --muted: #8b93a7;
+        --accent: #f7c948;
+        --pending: #7aa2ff;
+        --ok: #3ddc97;
+        --err: #ff5d73;
+        --kw: #c792ea;
+        --fn: #82aaff;
+        --str: #c3e88d;
+        --num: #f78c6c;
+      }
       * {
         margin: 0;
         padding: 0;
@@ -16,21 +31,348 @@
         width: 1920px;
         height: 1080px;
         overflow: hidden;
-        background: #0a0a0a;
+        background: var(--bg);
       }
       #root {
+        position: relative;
         width: 100%;
         height: 100%;
+        font-family: Inter, "Helvetica Neue", Arial, ui-sans-serif, system-ui, sans-serif;
+        color: var(--text);
+      }
+      .clip {
+        position: absolute;
+        inset: 0;
+        padding: 110px 140px;
+      }
+      .eyebrow {
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+      h2 {
+        font-size: 72px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin-top: 14px;
+      }
+      .sub {
+        font-size: 34px;
+        color: var(--muted);
+        margin-top: 18px;
+        line-height: 1.4;
+      }
+      .code {
+        font-family: "JetBrains Mono", "DejaVu Sans Mono", ui-monospace, Menlo, monospace;
+        font-size: 34px;
+        line-height: 1.6;
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 24px;
+        padding: 40px 48px;
+        white-space: pre;
+      }
+      .code .ln {
+        display: block;
+        border-radius: 8px;
+        padding: 0 12px;
+        margin: 0 -12px;
+      }
+      .kw { color: var(--kw); }
+      .fn { color: var(--fn); }
+      .str { color: var(--str); }
+      .num { color: var(--num); }
+      .cm { color: #5c6680; font-style: italic; }
+      .ok { color: var(--ok); }
+      .err { color: var(--err); }
+
+      /* Scene 1 — title */
+      #s1 {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+        text-align: center;
       }
-      #title {
-        color: #f4f4f5;
-        font-size: 72px;
-        font-weight: 600;
-        letter-spacing: -0.03em;
+      #s1 .logo {
+        font-family: "DejaVu Sans Mono", ui-monospace, monospace;
+        font-size: 44px;
+        font-weight: 700;
+        color: #0b0d12;
+        background: var(--accent);
+        width: 120px;
+        height: 120px;
+        border-radius: 20px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        padding: 12px 14px;
+      }
+      #s1 h1 {
+        font-size: 132px;
+        font-weight: 800;
+        letter-spacing: -0.045em;
+        margin-top: 48px;
+      }
+      #s1 h1 span { color: var(--accent); }
+      #s1 .sub { font-size: 42px; }
+
+      /* Scene 2 — analogy */
+      .row {
+        display: flex;
+        gap: 48px;
+        margin-top: 80px;
+        align-items: stretch;
+      }
+      .card {
+        flex: 1;
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 28px;
+        padding: 44px;
+        min-height: 400px;
+      }
+      .card .icon {
+        font-size: 96px;
+        line-height: 1;
+      }
+      .card h3 {
+        font-size: 44px;
+        margin-top: 28px;
+      }
+      .card p {
+        font-size: 30px;
+        color: var(--muted);
+        margin-top: 16px;
+        line-height: 1.45;
+      }
+      .ticket {
+        display: inline-block;
+        margin-top: 24px;
+        font-family: "DejaVu Sans Mono", monospace;
+        font-size: 28px;
+        padding: 10px 20px;
+        border-radius: 12px;
+        border: 2px dashed var(--pending);
+        color: var(--pending);
+      }
+
+      /* Scene 3 — states */
+      #states {
+        position: absolute;
+        left: 140px;
+        right: 140px;
+        top: 360px;
+        height: 560px;
+      }
+      .state {
+        position: absolute;
+        width: 380px;
+        height: 170px;
+        border-radius: 90px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        font-weight: 700;
+        border: 4px solid;
+      }
+      .state small {
+        font-size: 26px;
+        font-weight: 500;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      #st-pending { left: 40px; top: 195px; border-color: var(--pending); color: var(--pending); background: rgba(122, 162, 255, 0.08); }
+      #st-ok { right: 40px; top: 0; border-color: var(--ok); color: var(--ok); background: rgba(61, 220, 151, 0.08); }
+      #st-err { right: 40px; top: 390px; border-color: var(--err); color: var(--err); background: rgba(255, 93, 115, 0.08); }
+      #states svg {
+        position: absolute;
+        inset: 0;
+        overflow: visible;
+      }
+      .note {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 70px;
+        font-size: 32px;
+        color: var(--text);
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 999px;
+        padding: 16px 36px;
+        white-space: nowrap;
+      }
+
+      /* Scene 4/6 — code + output */
+      .split {
+        display: flex;
+        gap: 48px;
+        margin-top: 56px;
+        align-items: flex-start;
+      }
+      .split .code { flex: 1.6; }
+      .console {
+        flex: 1;
+        font-family: "DejaVu Sans Mono", ui-monospace, monospace;
+        font-size: 30px;
+        line-height: 1.7;
+        background: #07080c;
+        border: 2px solid var(--line);
+        border-radius: 24px;
+        padding: 32px 36px;
+        min-height: 300px;
+      }
+      .console .title {
+        font-size: 22px;
+        color: var(--muted);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+      .console .out { display: block; }
+
+      /* Scene 5 — chaining */
+      #chain {
+        position: absolute;
+        left: 140px;
+        right: 140px;
+        top: 420px;
+        height: 420px;
+      }
+      .step {
+        position: absolute;
+        top: 60px;
+        width: 330px;
+        height: 150px;
+        border-radius: 24px;
+        background: var(--panel);
+        border: 3px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: "DejaVu Sans Mono", monospace;
+        font-size: 27px;
+      }
+      .step small {
+        font-family: Inter, Arial, sans-serif;
+        font-size: 24px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+      #c1 { left: 0; }
+      #c2 { left: 430px; }
+      #c3 { left: 860px; }
+      #c4 { left: 1290px; top: 250px; border-color: var(--err); }
+      #c4 { color: var(--err); }
+      .token {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 56px;
+        padding: 0 22px;
+        border-radius: 28px;
+        display: flex;
+        align-items: center;
+        font-family: "DejaVu Sans Mono", monospace;
+        font-size: 26px;
+        font-weight: 700;
+        color: #0b0d12;
+        background: var(--ok);
+        white-space: nowrap;
+      }
+      .arrow {
+        position: absolute;
+        top: 128px;
+        height: 4px;
+        width: 100px;
+        background: var(--line);
+      }
+      .arrow::after {
+        content: "";
+        position: absolute;
+        right: -4px;
+        top: -10px;
+        border-left: 18px solid var(--line);
+        border-top: 12px solid transparent;
+        border-bottom: 12px solid transparent;
+      }
+      #a1 { left: 330px; }
+      #a2 { left: 760px; }
+
+      /* Scene 7 — combinators */
+      .combos {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 36px;
+        margin-top: 56px;
+      }
+      .combo {
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 24px;
+        padding: 30px 36px;
+      }
+      .combo .name {
+        font-family: "DejaVu Sans Mono", monospace;
+        font-size: 34px;
+        color: var(--fn);
+      }
+      .combo .desc {
+        font-size: 24px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .bars { margin-top: 20px; }
+      .bar-track {
+        height: 22px;
+        border-radius: 11px;
+        background: #1d2231;
+        margin-top: 12px;
+        overflow: hidden;
+      }
+      .bar {
+        height: 100%;
+        width: 100%;
+        border-radius: 11px;
+        transform-origin: left center;
+      }
+      .bar.g { background: var(--ok); }
+      .bar.r { background: var(--err); }
+      .result {
+        margin-top: 18px;
+        font-family: "DejaVu Sans Mono", monospace;
+        font-size: 26px;
+        opacity: 0;
+      }
+
+      /* Scene 8 — outro */
+      #s8 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .recap {
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        gap: 26px;
+      }
+      .recap div {
+        font-size: 42px;
+        display: flex;
+        gap: 24px;
+        align-items: baseline;
+      }
+      .recap b {
+        color: var(--accent);
+        font-family: "DejaVu Sans Mono", monospace;
+        min-width: 70px;
       }
     </style>
   </head>
@@ -39,15 +381,289 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="10"
+      data-duration="75"
       data-width="1920"
       data-height="1080"
     >
-      <h1 id="title" class="clip" data-start="0" data-duration="10" data-track-index="0">Title</h1>
+      <!-- 1 · Title -->
+      <section id="s1" class="clip" data-start="0" data-duration="6" data-track-index="0">
+        <div class="logo">JS</div>
+        <h1>JavaScript <span>Promises</span></h1>
+        <p class="sub">A value that isn't ready <em>yet</em>.</p>
+      </section>
+
+      <!-- 2 · Analogy -->
+      <section id="s2" class="clip" data-start="6" data-duration="11" data-track-index="0">
+        <div class="eyebrow">The idea</div>
+        <h2>It's like ordering coffee</h2>
+        <div class="row">
+          <div class="card" id="k1">
+            <div class="icon">🧾</div>
+            <h3>You get a receipt</h3>
+            <p>Not the coffee — a promise that coffee is coming.</p>
+            <div class="ticket">order #42 · pending</div>
+          </div>
+          <div class="card" id="k2">
+            <div class="icon">📱</div>
+            <h3>You keep going</h3>
+            <p>Check your phone, chat, grab a seat. Nothing is blocked.</p>
+          </div>
+          <div class="card" id="k3">
+            <div class="icon">☕</div>
+            <h3>Later, it settles</h3>
+            <p><span class="ok">Here's your latte</span> — or <span class="err">"sorry, we're out of milk."</span></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3 · States -->
+      <section id="s3" class="clip" data-start="17" data-duration="11" data-track-index="0">
+        <div class="eyebrow">Three states</div>
+        <h2>Pending, then settled — exactly once</h2>
+        <div id="states">
+          <svg viewBox="0 0 1640 560" width="1640" height="560">
+            <path id="p-ok" d="M 425 250 C 700 250, 800 85, 1215 85" fill="none" stroke="#3ddc97" stroke-width="6" stroke-linecap="round" />
+            <path id="p-err" d="M 425 310 C 700 310, 800 475, 1215 475" fill="none" stroke="#ff5d73" stroke-width="6" stroke-linecap="round" />
+            <text x="540" y="150" fill="#3ddc97" font-size="30" font-family="DejaVu Sans Mono, monospace" id="t-ok">resolve(value)</text>
+            <text x="540" y="430" fill="#ff5d73" font-size="30" font-family="DejaVu Sans Mono, monospace" id="t-err">reject(error)</text>
+          </svg>
+          <div class="state" id="st-pending">pending<small>still waiting…</small></div>
+          <div class="state" id="st-ok">fulfilled<small>has a value</small></div>
+          <div class="state" id="st-err">rejected<small>has a reason</small></div>
+        </div>
+        <div class="note" id="s3-note">Once settled, a promise never changes state again.</div>
+      </section>
+
+      <!-- 4 · Create & consume -->
+      <section id="s4" class="clip" data-start="28" data-duration="12" data-track-index="0">
+        <div class="eyebrow">Create &amp; consume</div>
+        <h2>new Promise → .then / .catch</h2>
+        <div class="split">
+<div class="code" id="code4"><span class="ln" id="l4-1"><span class="kw">const</span> order = <span class="kw">new</span> <span class="fn">Promise</span>((resolve, reject) =&gt; {</span><span class="ln" id="l4-2">  <span class="fn">setTimeout</span>(() =&gt; {</span><span class="ln" id="l4-3">    <span class="kw">if</span> (milk) <span class="fn">resolve</span>(<span class="str">"latte"</span>);</span><span class="ln" id="l4-4">    <span class="kw">else</span> <span class="fn">reject</span>(<span class="kw">new</span> <span class="fn">Error</span>(<span class="str">"no milk"</span>));</span><span class="ln" id="l4-5">  }, <span class="num">2000</span>);</span><span class="ln" id="l4-6">});</span><span class="ln"> </span><span class="ln" id="l4-7">order</span><span class="ln" id="l4-8">  .<span class="fn">then</span>(drink =&gt; console.<span class="fn">log</span>(drink))</span><span class="ln" id="l4-9">  .<span class="fn">catch</span>(err =&gt; console.<span class="fn">log</span>(err.message))</span><span class="ln" id="l4-10">  .<span class="fn">finally</span>(() =&gt; console.<span class="fn">log</span>(<span class="str">"done"</span>));</span></div>
+          <div class="console">
+            <div class="title">console</div>
+            <span class="out" id="o4-0" style="color: var(--muted)">⏳ waiting 2s…</span>
+            <span class="out ok" id="o4-1">latte</span>
+            <span class="out" id="o4-2">done</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 · Chaining -->
+      <section id="s5" class="clip" data-start="40" data-duration="11" data-track-index="0">
+        <div class="eyebrow">Chaining</div>
+        <h2>Each .then returns a new promise</h2>
+        <p class="sub">Values flow down the chain. One error skips straight to .catch.</p>
+        <div id="chain">
+          <div class="step" id="c1">getUser()<small>→ user</small></div>
+          <div class="arrow" id="a1"></div>
+          <div class="step" id="c2">.then(getOrders)<small>→ orders</small></div>
+          <div class="arrow" id="a2"></div>
+          <div class="step" id="c3">.then(render)<small>→ page</small></div>
+          <div class="step" id="c4">.catch(show)<small>handles any failure</small></div>
+          <div class="token" id="tok">{ id: 7 }</div>
+        </div>
+      </section>
+
+      <!-- 6 · async / await -->
+      <section id="s6" class="clip" data-start="51" data-duration="11" data-track-index="0">
+        <div class="eyebrow">async / await</div>
+        <h2>Same promises, reads top to bottom</h2>
+        <div class="split">
+<div class="code" id="code6"><span class="ln" id="l6-1"><span class="kw">async function</span> <span class="fn">showOrders</span>() {</span><span class="ln" id="l6-2">  <span class="kw">try</span> {</span><span class="ln" id="l6-3">    <span class="kw">const</span> user   = <span class="kw">await</span> <span class="fn">getUser</span>();</span><span class="ln" id="l6-4">    <span class="kw">const</span> orders = <span class="kw">await</span> <span class="fn">getOrders</span>(user);</span><span class="ln" id="l6-5">    <span class="fn">render</span>(orders);</span><span class="ln" id="l6-6">  } <span class="kw">catch</span> (err) {</span><span class="ln" id="l6-7">    <span class="fn">show</span>(err);</span><span class="ln" id="l6-8">  }</span><span class="ln" id="l6-9">}</span></div>
+          <div class="console">
+            <div class="title">remember</div>
+            <span class="out" id="o6-1"><b class="kw">await</b> pauses this function — not the page.</span>
+            <span class="out" id="o6-2" style="margin-top: 20px"><b class="kw">async</b> functions always return a promise.</span>
+            <span class="out" id="o6-3" style="margin-top: 20px"><b class="kw">try/catch</b> replaces .catch().</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7 · Combinators -->
+      <section id="s7" class="clip" data-start="62" data-duration="8" data-track-index="0">
+        <div class="eyebrow">Many promises at once</div>
+        <h2>Promise combinators</h2>
+        <div class="combos">
+          <div class="combo" id="cb1">
+            <div class="name">Promise.all</div>
+            <div class="desc">waits for all — fails fast on any rejection</div>
+            <div class="bars">
+              <div class="bar-track"><div class="bar g"></div></div>
+              <div class="bar-track"><div class="bar g"></div></div>
+              <div class="bar-track"><div class="bar g"></div></div>
+            </div>
+            <div class="result ok">→ [a, b, c]</div>
+          </div>
+          <div class="combo" id="cb2">
+            <div class="name">Promise.allSettled</div>
+            <div class="desc">waits for all — reports every outcome</div>
+            <div class="bars">
+              <div class="bar-track"><div class="bar g"></div></div>
+              <div class="bar-track"><div class="bar r"></div></div>
+              <div class="bar-track"><div class="bar g"></div></div>
+            </div>
+            <div class="result">→ [<span class="ok">ok</span>, <span class="err">fail</span>, <span class="ok">ok</span>]</div>
+          </div>
+          <div class="combo" id="cb3">
+            <div class="name">Promise.race</div>
+            <div class="desc">first to settle wins, success or failure</div>
+            <div class="bars">
+              <div class="bar-track"><div class="bar g"></div></div>
+              <div class="bar-track"><div class="bar r"></div></div>
+              <div class="bar-track"><div class="bar g"></div></div>
+            </div>
+            <div class="result err">→ fail (it was fastest)</div>
+          </div>
+          <div class="combo" id="cb4">
+            <div class="name">Promise.any</div>
+            <div class="desc">first to fulfill wins, ignores failures</div>
+            <div class="bars">
+              <div class="bar-track"><div class="bar g"></div></div>
+              <div class="bar-track"><div class="bar r"></div></div>
+              <div class="bar-track"><div class="bar g"></div></div>
+            </div>
+            <div class="result ok">→ c</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8 · Recap -->
+      <section id="s8" class="clip" data-start="70" data-duration="5" data-track-index="0">
+        <div class="eyebrow">Recap</div>
+        <h2>Promises in four lines</h2>
+        <div class="recap">
+          <div><b>01</b>A promise is a placeholder for a future value.</div>
+          <div><b>02</b>It's pending, then fulfilled or rejected — once.</div>
+          <div><b>03</b>Chain with .then / .catch, or use async / await.</div>
+          <div><b>04</b>Combine many with all, allSettled, race, any.</div>
+        </div>
+      </section>
     </div>
+
     <script>
       const tl = gsap.timeline({ paused: true });
-      // Example: tl.fromTo("#title", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6 }, 0);
+      const E = "power3.out";
+
+      // Standard scene entrance: eyebrow + heading + sub rise in.
+      function enter(scene, t) {
+        tl.from(`${scene} .eyebrow, ${scene} h2, ${scene} > .sub`, { opacity: 0, y: 30, duration: 0.6, stagger: 0.12, ease: E }, t);
+      }
+      function exit(scene, t) {
+        tl.to(scene, { opacity: 0, duration: 0.4, ease: "power2.in" }, t);
+      }
+
+      // 1 · Title (0–6)
+      tl.from("#s1 .logo", { scale: 0.4, rotation: -12, opacity: 0, duration: 0.8, ease: "back.out(1.8)" }, 0.2);
+      tl.from("#s1 h1", { opacity: 0, y: 50, duration: 0.8, ease: E }, 0.6);
+      tl.from("#s1 .sub", { opacity: 0, y: 20, duration: 0.7, ease: E }, 1.2);
+      exit("#s1", 5.6);
+
+      // 2 · Analogy (6–17)
+      enter("#s2", 6.2);
+      tl.from("#k1", { opacity: 0, y: 60, duration: 0.7, ease: E }, 7.4);
+      tl.from("#k2", { opacity: 0, y: 60, duration: 0.7, ease: E }, 9.6);
+      tl.from("#k3", { opacity: 0, y: 60, duration: 0.7, ease: E }, 11.8);
+      tl.to("#k3", { borderColor: "#3ddc97", duration: 0.5 }, 13.2);
+      tl.to("#s2 .ticket", { borderColor: "#3ddc97", color: "#3ddc97", duration: 0.5 }, 13.2);
+      exit("#s2", 16.6);
+
+      // 3 · States (17–28)
+      enter("#s3", 17.2);
+      tl.from("#st-pending", { opacity: 0, scale: 0.6, duration: 0.7, ease: "back.out(1.6)" }, 18.2);
+      tl.to("#st-pending", { scale: 1.06, duration: 0.5, yoyo: true, repeat: 3, ease: "sine.inOut" }, 19);
+      ["#p-ok", "#p-err"].forEach((p) => {
+        const len = 1000;
+        tl.set(p, { strokeDasharray: len, strokeDashoffset: len }, 17);
+      });
+      tl.to("#p-ok", { strokeDashoffset: 0, duration: 1, ease: "power2.inOut" }, 21.2);
+      tl.from("#t-ok", { opacity: 0, duration: 0.4 }, 21.8);
+      tl.from("#st-ok", { opacity: 0, x: 60, duration: 0.6, ease: E }, 22.1);
+      tl.to("#p-err", { strokeDashoffset: 0, duration: 1, ease: "power2.inOut" }, 23);
+      tl.from("#t-err", { opacity: 0, duration: 0.4 }, 23.6);
+      tl.from("#st-err", { opacity: 0, x: 60, duration: 0.6, ease: E }, 23.9);
+      tl.from("#s3-note", { opacity: 0, y: 30, duration: 0.6, ease: E }, 25);
+      exit("#s3", 27.6);
+
+      // 4 · Create & consume (28–40)
+      enter("#s4", 28.2);
+      tl.from("#code4 .ln", { opacity: 0, x: -20, duration: 0.35, stagger: 0.18, ease: E }, 29);
+      tl.from("#s4 .console", { opacity: 0, y: 30, duration: 0.6, ease: E }, 29.2);
+      tl.from("#o4-0", { opacity: 0, duration: 0.3 }, 31.4);
+      const hl = (sel, t, color = "rgba(122,162,255,0.18)", d = 1.2) => {
+        tl.to(sel, { backgroundColor: color, duration: 0.25 }, t);
+        tl.to(sel, { backgroundColor: "rgba(0,0,0,0)", duration: 0.25 }, t + d);
+      };
+      hl("#l4-2, #l4-5", 31.4);
+      hl("#l4-3", 33, "rgba(61,220,151,0.18)");
+      tl.to("#o4-0", { opacity: 0.35, duration: 0.3 }, 34.2);
+      hl("#l4-8", 34.4, "rgba(61,220,151,0.18)");
+      tl.from("#o4-1", { opacity: 0, x: -20, duration: 0.4, ease: E }, 34.6);
+      hl("#l4-10", 36.2);
+      tl.from("#o4-2", { opacity: 0, x: -20, duration: 0.4, ease: E }, 36.4);
+      exit("#s4", 39.6);
+
+      // 5 · Chaining (40–51)
+      enter("#s5", 40.2);
+      tl.from("#c1, #a1, #c2, #a2, #c3", { opacity: 0, y: 30, duration: 0.5, stagger: 0.15, ease: E }, 41);
+      tl.from("#c4", { opacity: 0, y: 30, duration: 0.5, ease: E }, 42);
+      // Happy path: token rides across the steps, changing value.
+      tl.set("#tok", { x: 70, y: 0, opacity: 0, backgroundColor: "#3ddc97" }, 40);
+      tl.to("#tok", { opacity: 1, duration: 0.3 }, 42.6);
+      tl.to("#c1", { borderColor: "#3ddc97", duration: 0.3 }, 42.6);
+      tl.to("#tok", { x: 470, duration: 0.8, ease: "power2.inOut" }, 43.3);
+      tl.set("#tok", { textContent: "[3 orders]" }, 43.7);
+      tl.to("#c2", { borderColor: "#3ddc97", duration: 0.3 }, 44.1);
+      tl.to("#tok", { x: 930, duration: 0.8, ease: "power2.inOut" }, 44.7);
+      tl.set("#tok", { textContent: "<page/>" }, 45.1);
+      tl.to("#c3", { borderColor: "#3ddc97", duration: 0.3 }, 45.5);
+      // Failure path: reset, getOrders throws, jump to .catch.
+      tl.to("#tok", { opacity: 0, duration: 0.3 }, 46.4);
+      tl.to("#c1, #c2, #c3", { borderColor: "#262c3d", duration: 0.3 }, 46.4);
+      tl.set("#tok", { x: 70, textContent: "{ id: 7 }", backgroundColor: "#3ddc97" }, 46.8);
+      tl.to("#tok", { opacity: 1, duration: 0.3 }, 47);
+      tl.to("#tok", { x: 470, duration: 0.7, ease: "power2.inOut" }, 47.4);
+      tl.to("#c2", { borderColor: "#ff5d73", duration: 0.2 }, 48.1);
+      tl.set("#tok", { textContent: "Error: 500", backgroundColor: "#ff5d73" }, 48.1);
+      tl.to("#c3", { opacity: 0.3, duration: 0.3 }, 48.4);
+      tl.to("#tok", { x: 1340, y: 190, duration: 1, ease: "power2.inOut" }, 48.5);
+      tl.to("#c4", { backgroundColor: "rgba(255,93,115,0.12)", duration: 0.3 }, 49.5);
+      exit("#s5", 50.6);
+
+      // 6 · async / await (51–62)
+      enter("#s6", 51.2);
+      tl.from("#code6 .ln", { opacity: 0, x: -20, duration: 0.35, stagger: 0.16, ease: E }, 52);
+      tl.from("#s6 .console", { opacity: 0, y: 30, duration: 0.6, ease: E }, 52.4);
+      hl("#l6-3, #l6-4", 54, "rgba(199,146,234,0.18)", 1.8);
+      tl.from("#o6-1", { opacity: 0, x: -20, duration: 0.4, ease: E }, 54.2);
+      hl("#l6-1", 56.3, "rgba(199,146,234,0.18)", 1.5);
+      tl.from("#o6-2", { opacity: 0, x: -20, duration: 0.4, ease: E }, 56.5);
+      hl("#l6-2, #l6-6, #l6-7", 58.5, "rgba(255,93,115,0.16)", 1.8);
+      tl.from("#o6-3", { opacity: 0, x: -20, duration: 0.4, ease: E }, 58.7);
+      exit("#s6", 61.6);
+
+      // 7 · Combinators (62–70) — bar duration = how long each task takes.
+      enter("#s7", 62.2);
+      tl.from(".combo", { opacity: 0, y: 30, duration: 0.5, stagger: 0.1, ease: E }, 62.8);
+      const T0 = 63.8;
+      const speeds = [1.6, 0.9, 2.2]; // task durations, same for every combinator
+      document.querySelectorAll(".combo").forEach((combo, ci) => {
+        const bars = combo.querySelectorAll(".bar");
+        bars.forEach((bar, bi) => {
+          tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: speeds[bi], ease: "none", immediateRender: true }, T0);
+        });
+        // When does each combinator settle?
+        const settle = [T0 + 2.2, T0 + 2.2, T0 + 0.9, T0 + 1.6][ci];
+        tl.to(combo.querySelector(".result"), { opacity: 1, duration: 0.3 }, settle);
+        tl.to(combo, { borderColor: ci === 2 ? "#ff5d73" : "#3ddc97", duration: 0.3 }, settle);
+      });
+      exit("#s7", 69.6);
+
+      // 8 · Recap (70–75)
+      enter("#s8", 70.1);
+      tl.from(".recap div", { opacity: 0, x: -40, duration: 0.5, stagger: 0.35, ease: E }, 70.8);
+
+      window.__timelines = window.__timelines || {};
       window.__timelines["main"] = tl;
       tl.seek(0);
     </script>
