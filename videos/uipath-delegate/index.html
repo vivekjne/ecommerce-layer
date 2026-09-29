@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      :root {
+        --bg: #fff6e5;
+        --ink: #1f2140;
+        --muted: #5b5f86;
+        --coral: #e0334d;
+        --sun: #ffc93c;
+        --mint: #06d6a0;
+        --sky: #0a7fbf;
+        --grape: #7b61ff;
+        --ui: #e8400f;
+        --mono: "JetBrains Mono", "DejaVu Sans Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: Inter, "Helvetica Neue", Arial, ui-sans-serif, system-ui, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 10% 15%, #ffe1d6 0, transparent 38%),
+          radial-gradient(circle at 90% 85%, #d9f7ff 0, transparent 40%),
+          radial-gradient(circle at 88% 10%, #fff0b8 0, transparent 30%),
+          var(--bg);
+      }
+      .clip { position: absolute; inset: 0; padding: 90px 140px; }
+      .eyebrow {
+        display: inline-block;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #fff;
+        background: var(--ui);
+        padding: 8px 18px;
+        border-radius: 999px;
+      }
+      h2 { font-size: 66px; font-weight: 800; letter-spacing: -0.03em; margin-top: 18px; }
+      .sub { font-size: 32px; color: var(--muted); margin-top: 12px; line-height: 1.4; }
+
+      /* characters */
+      .char { position: absolute; }
+      .char svg { display: block; width: 100%; height: auto; overflow: visible; }
+      .char .label { text-align: center; font-size: 26px; font-weight: 700; margin-top: 4px; color: var(--muted); }
+      .bubble {
+        position: absolute;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 28px;
+        padding: 16px 28px;
+        font-size: 32px;
+        font-weight: 700;
+        white-space: nowrap;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+      }
+      .bubble::after {
+        content: "";
+        position: absolute;
+        bottom: -22px;
+        left: 60px;
+        border-left: 16px solid transparent;
+        border-right: 16px solid transparent;
+        border-top: 22px solid var(--ink);
+      }
+      .bubble.right::after { left: auto; right: 60px; }
+      .note {
+        position: absolute;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 20px;
+        padding: 18px 24px;
+        font-family: var(--mono);
+        font-size: 24px;
+        line-height: 1.6;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+        white-space: nowrap;
+      }
+      .note .m { color: var(--muted); }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 30px;
+        font-weight: 800;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 999px;
+        padding: 12px 28px;
+      }
+
+      /* 1 · title */
+      #s1 { display: flex; flex-direction: column; align-items: center; padding-top: 140px; text-align: center; }
+      #s1 h1 { font-size: 132px; font-weight: 900; letter-spacing: -0.045em; line-height: 1; }
+      #s1 h1 span { color: var(--ui); }
+      #s1 .sub { font-size: 40px; margin-top: 22px; }
+      .fine { position: absolute; left: 0; right: 0; text-align: center; font-size: 22px; color: var(--muted); }
+
+      /* 2 · problem windows */
+      .win {
+        position: absolute;
+        width: 340px;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+      }
+      .win header { background: var(--ink); color: #fff; font-size: 24px; font-weight: 700; padding: 10px 18px; }
+      .win .ln { height: 14px; border-radius: 7px; background: #e6e8f5; margin: 16px 20px; }
+      .win .ln:nth-child(3) { width: 60%; }
+
+      /* 3 · surfaces */
+      .surf {
+        position: absolute;
+        width: 440px;
+        height: 130px;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 0 28px;
+        font-size: 36px;
+        font-weight: 800;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+      }
+      .surf .ic { font-size: 54px; }
+
+      /* 4 · ask cards */
+      .ask {
+        position: absolute;
+        top: 300px;
+        width: 500px;
+        height: 300px;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 28px;
+        padding: 26px 30px;
+        box-shadow: 0 10px 0 rgba(31, 33, 64, 0.12);
+      }
+      .ask h3 { font-size: 40px; font-weight: 800; }
+      .ask .body { margin-top: 20px; font-family: var(--mono); font-size: 27px; line-height: 1.5; min-height: 100px; }
+      .wv { display: flex; gap: 10px; align-items: center; height: 110px; margin-top: 14px; }
+      .wv i { display: block; width: 18px; height: 100px; border-radius: 9px; background: var(--grape); transform-origin: 50% 50%; }
+      .recbox { position: relative; margin-top: 12px; height: 150px; border-radius: 16px; background: #eef0fb; border: 3px solid var(--ink); }
+      #rec { position: absolute; left: 16px; top: 14px; font-family: var(--mono); font-weight: 800; font-size: 24px; color: var(--coral); }
+      #cur { position: absolute; left: 60px; top: 90px; font-size: 34px; }
+
+      /* 5 · architecture */
+      .box {
+        position: absolute;
+        top: 260px;
+        width: 760px;
+        height: 580px;
+        border: 5px dashed var(--ink);
+        border-radius: 36px;
+        background: rgba(255, 255, 255, 0.55);
+      }
+      #boxL { left: 140px; }
+      #boxR { left: 1020px; }
+      .boxlabel {
+        position: absolute;
+        left: 28px;
+        top: -26px;
+        font-size: 28px;
+        font-weight: 800;
+        background: var(--ink);
+        color: #fff;
+        padding: 8px 22px;
+        border-radius: 999px;
+      }
+      .block {
+        position: absolute;
+        left: 24px;
+        width: 704px;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 22px;
+        padding: 14px 26px;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+      }
+      #boxL .block { height: 130px; }
+      #boxR .block { height: 100px; }
+      .block .t { font-size: 32px; font-weight: 800; }
+      .block .d { font-size: 23px; color: var(--muted); margin-top: 4px; }
+      .chips { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+      .chip { font-size: 20px; font-weight: 700; border-radius: 999px; padding: 4px 14px; border: 3px solid var(--ink); background: #fff; }
+      .chip.hot { background: var(--sun); }
+      .harrow { position: absolute; left: 900px; width: 120px; height: 6px; background: var(--ink); border-radius: 3px; }
+      .harrow::after {
+        content: "";
+        position: absolute;
+        right: -6px;
+        top: -11px;
+        border-left: 20px solid var(--ink);
+        border-top: 14px solid transparent;
+        border-bottom: 14px solid transparent;
+      }
+      .harrow span { position: absolute; top: -36px; left: 0; width: 120px; text-align: center; font-family: var(--mono); font-size: 19px; font-weight: 800; }
+      .pkt {
+        position: absolute;
+        left: 142px;
+        top: 381px;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #c2320a;
+        border: 4px solid var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 900;
+      }
+      .cap {
+        position: absolute;
+        left: 400px;
+        width: 1120px;
+        top: 880px;
+        text-align: center;
+        font-size: 34px;
+        font-weight: 800;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 999px;
+        padding: 14px 28px;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+      }
+
+      /* 6 · governance */
+      .cl div { font-size: 24px; }
+      .cl .ok { color: #0a8a5f; font-weight: 800; }
+      .cl .no { color: var(--coral); font-weight: 800; }
+
+      /* 7 · routines */
+      .step {
+        position: absolute;
+        top: 340px;
+        width: 380px;
+        height: 250px;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 28px;
+        padding: 26px 28px;
+        box-shadow: 0 10px 0 rgba(31, 33, 64, 0.12);
+      }
+      .step .e { font-size: 60px; line-height: 1; }
+      .step h3 { font-size: 36px; font-weight: 800; margin-top: 12px; }
+      .step p { font-size: 25px; color: var(--muted); margin-top: 8px; line-height: 1.35; }
+      .sarrow { position: absolute; top: 440px; font-size: 44px; font-weight: 900; }
+
+      /* 8 · recap */
+      .tips { display: flex; flex-direction: column; gap: 20px; margin-top: 40px; width: 1130px; }
+      .tip {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 33px;
+        font-weight: 700;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 22px;
+        padding: 16px 28px;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.1);
+      }
+      .tip .ic { font-size: 42px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="123" data-width="1920" data-height="1080">
+      <!-- Background music: original track from scripts/make-music.mjs -->
+      <audio id="bgm" src="assets/music.mp3" data-start="0" data-duration="123" data-volume="0.42" data-fade-in="1" data-fade-out="3"></audio>
+
+      <!-- 1 · Title (0–8) -->
+      <section id="s1" class="clip" data-start="0" data-duration="8" data-track-index="0">
+        <h1>UiPath <span>Delegate</span></h1>
+        <p class="sub">Your AI teammate that works right on your desktop</p>
+        <div class="char" id="sam1" data-kind="sam" style="left: 590px; top: 500px; width: 240px"></div>
+        <div class="char" id="dly1" data-kind="delly" style="left: 1090px; top: 480px; width: 260px"></div>
+        <div class="fine" id="fine1" style="top: 1000px">Unofficial explainer · based on UiPath's public product descriptions</div>
+      </section>
+
+      <!-- 2 · Problem (8–21) -->
+      <section id="s2" class="clip" data-start="8" data-duration="13" data-track-index="0">
+        <div class="eyebrow">The problem</div>
+        <h2>Work lives in too many places</h2>
+        <p class="sub">Copy. Paste. Switch window. Repeat.</p>
+        <div class="win" id="w1" style="left: 200px; top: 400px"><header>📧 Email</header><div class="ln"></div><div class="ln"></div><div class="ln"></div></div>
+        <div class="win" id="w2" style="left: 1380px; top: 400px"><header>📊 Spreadsheet</header><div class="ln"></div><div class="ln"></div><div class="ln"></div></div>
+        <div class="win" id="w3" style="left: 200px; top: 730px"><header>🌐 Web portal</header><div class="ln"></div><div class="ln"></div><div class="ln"></div></div>
+        <div class="win" id="w4" style="left: 1380px; top: 730px"><header>🖥️ Legacy terminal</header><div class="ln"></div><div class="ln"></div><div class="ln"></div></div>
+        <div class="char" id="sam2" data-kind="sam" data-label="Sam · an employee" style="left: 750px; top: 470px; width: 300px"></div>
+        <div class="bubble" id="bub2" style="left: 1000px; top: 380px">Too many tabs… 😵</div>
+      </section>
+
+      <!-- 3 · Meet Delegate (21–35) -->
+      <section id="s3" class="clip" data-start="21" data-duration="14" data-track-index="0">
+        <div class="eyebrow">Meet Delegate</div>
+        <h2>A desktop agent that works on your behalf</h2>
+        <div class="char" id="dly3" data-kind="delly" data-label="Delly · your Delegate" style="left: 230px; top: 470px; width: 400px"></div>
+        <div class="bubble" id="bub3" style="left: 200px; top: 340px">Hi! I click, type and copy — in any app.</div>
+        <div class="surf" id="sf1" style="left: 860px; top: 430px"><span class="ic">🖥️</span>Desktop apps</div>
+        <div class="surf" id="sf2" style="left: 1340px; top: 430px"><span class="ic">🌐</span>Browsers</div>
+        <div class="surf" id="sf3" style="left: 860px; top: 600px"><span class="ic">⌨️</span>Terminals</div>
+        <div class="surf" id="sf4" style="left: 1340px; top: 600px"><span class="ic">🗄️</span>Mainframes</div>
+        <div class="pill" id="os3" style="position: absolute; left: 1020px; top: 780px">🪟 Windows &nbsp;·&nbsp; 🍎 macOS</div>
+      </section>
+
+      <!-- 4 · Ask (35–49) -->
+      <section id="s4" class="clip" data-start="35" data-duration="14" data-track-index="0">
+        <div class="eyebrow">Give it a task</div>
+        <h2>Type it, say it, or show it</h2>
+        <div class="ask" id="ask1" style="left: 140px">
+          <h3>⌨️ Type it</h3>
+          <div class="body typed" id="typed1">Reconcile this week's invoices</div>
+        </div>
+        <div class="ask" id="ask2" style="left: 710px">
+          <h3>🎙️ Say it</h3>
+          <div class="wv" id="wv"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="body" style="min-height: 0; margin-top: 4px; font-size: 24px">“Send the report to my team”</div>
+        </div>
+        <div class="ask" id="ask3" style="left: 1280px">
+          <h3>🎬 Show it</h3>
+          <div class="recbox"><div id="rec">● REC</div><div id="cur">🖱️</div></div>
+          <div class="body" style="min-height: 0; margin-top: 12px; font-size: 24px">Do it once — Delegate learns</div>
+        </div>
+        <div class="char" id="sam4" data-kind="sam" data-label="Sam" style="left: 200px; top: 660px; width: 210px"></div>
+        <div class="char" id="dly4" data-kind="delly" data-label="Delly" style="left: 1500px; top: 650px; width: 220px"></div>
+        <div class="bubble" id="bub4" style="left: 1130px; top: 715px; font-size: 30px">Got it! 👍</div>
+      </section>
+
+      <!-- 5 · Architecture (49–81) -->
+      <section id="s5" class="clip" data-start="49" data-duration="32" data-track-index="0">
+        <div class="eyebrow">Architecture</div>
+        <h2>How Delegate fits together</h2>
+
+        <div class="box" id="boxL">
+          <div class="boxlabel">🖥️ Your computer</div>
+          <div class="block" id="a1" style="top: 78px">
+            <div class="t">Delegate app</div>
+            <div class="chips"><span class="chip">Assistant</span><span class="chip hot">Delegate</span><span class="chip">Cartographer</span></div>
+          </div>
+          <div class="block" id="a2" style="top: 226px">
+            <div class="t">Robot + Extensions</div>
+            <div class="d">Carry out the clicks and keystrokes</div>
+          </div>
+          <div class="block" id="a3" style="top: 374px">
+            <div class="t">Your real apps</div>
+            <div class="chips"><span class="chip">Desktop apps</span><span class="chip">Browser</span><span class="chip">Terminal</span><span class="chip">Mainframe</span></div>
+          </div>
+        </div>
+
+        <div class="box" id="boxR">
+          <div class="boxlabel">☁️ UiPath Platform</div>
+          <div class="block" id="b1" style="top: 80px"><div class="t">Identity &amp; permissions</div><div class="d">Acts as you — only within your access</div></div>
+          <div class="block" id="b2" style="top: 202px"><div class="t">AI Trust Layer</div><div class="d">Governs the AI model calls Delegate makes</div></div>
+          <div class="block" id="b3" style="top: 324px"><div class="t">Audit trail</div><div class="d">Every action is recorded</div></div>
+          <div class="block" id="b4" style="top: 446px"><div class="t">Delegate Store</div><div class="d">Share routines with your team</div></div>
+        </div>
+
+        <div class="harrow" id="h1" style="top: 387px"><span>identity</span></div>
+        <div class="harrow" id="h2" style="top: 509px"><span>AI calls</span></div>
+        <div class="harrow" id="h3" style="top: 631px"><span>audit</span></div>
+        <div class="harrow" id="h4" style="top: 753px"><span>share</span></div>
+        <div class="pkt" id="pkt">▶</div>
+        <div class="pkt" id="pkt2" style="left: 1022px; top: 368px">▶</div>
+
+        <div class="cap" id="c1">① You ask Delegate — in the Delegate app on your computer</div>
+        <div class="cap" id="c2">② The Robot runtime carries out the actions</div>
+        <div class="cap" id="c3">③ …through the screens of your real apps, even legacy ones</div>
+        <div class="cap" id="c4">④ Every action runs under your identity and permissions</div>
+        <div class="cap" id="c5">⑤ AI model calls pass through the AI Trust Layer</div>
+        <div class="cap" id="c6">⑥ Every step lands in the audit trail</div>
+        <div class="cap" id="c7">⑦ Finished tasks become routines you can share</div>
+        <div class="fine" style="top: 1030px">Simplified view based on UiPath's public descriptions</div>
+
+        <div class="char" id="dly5" data-kind="delly" style="left: 250px; top: 868px; width: 150px"></div>
+        <div class="char" id="gus5" data-kind="gus" style="left: 1530px; top: 868px; width: 150px"></div>
+      </section>
+
+      <!-- 6 · Governance (81–95) -->
+      <section id="s6" class="clip" data-start="81" data-duration="16" data-track-index="0">
+        <div class="eyebrow">Trust</div>
+        <h2>Every action is checked, then recorded</h2>
+        <div class="note" id="req6a" style="left: 130px; top: 330px">📝 Request: update invoice #1042<br /><span class="m">in the mainframe app</span></div>
+        <div class="note" id="req6b" style="left: 130px; top: 330px">📝 Request: export payroll.xlsx<br /><span class="m">from the HR system</span></div>
+        <div class="note cl" id="chk6a" style="left: 1140px; top: 330px; width: 640px">
+          <div class="ok" id="ka1">✓ Signed in as Sam (enterprise identity)</div>
+          <div class="ok" id="ka2">✓ Permission granted: edit invoices</div>
+          <div class="ok" id="ka3">✓ Allowed → Delegate acts</div>
+        </div>
+        <div class="note cl" id="chk6b" style="left: 1140px; top: 330px; width: 640px">
+          <div class="ok" id="kb1">✓ Signed in as Sam (enterprise identity)</div>
+          <div class="no" id="kb2">✗ No permission: export payroll</div>
+          <div class="no" id="kb3">⛔ Blocked → nothing happens</div>
+        </div>
+        <div class="note" id="aud6" style="left: 1140px; top: 640px; width: 640px; font-size: 21px">
+          <b style="font-size: 26px">📜 Audit trail</b>
+          <div id="lg1">10:42 Sam→Delegate: updated invoice #1042</div>
+          <div id="lg2" style="color: var(--coral)">10:44 Sam→Delegate: payroll export BLOCKED</div>
+        </div>
+        <div class="char" id="sam6" data-kind="sam" data-label="Sam" style="left: 110px; top: 620px; width: 200px"></div>
+        <div class="char" id="dly6" data-kind="delly" data-label="Delly" style="left: 470px; top: 600px; width: 220px"></div>
+        <div class="char" id="gus6" data-kind="gus" data-label="Guardrails" style="left: 840px; top: 570px; width: 240px"></div>
+        <div class="pill" id="flow6" style="position: absolute; left: 380px; top: 935px; font-size: 28px">Check identity → check permission → act → record</div>
+      </section>
+
+      <!-- 7 · Routines (95–110) -->
+      <section id="s7" class="clip" data-start="97" data-duration="15" data-track-index="0">
+        <div class="eyebrow">Do it once</div>
+        <h2>Turn a task into a reusable routine</h2>
+        <p class="sub">Routines are reusable and schedulable — and run deterministically wherever possible.</p>
+        <div class="step" id="st1" style="left: 140px"><div class="e">✅</div><h3>Task done</h3><p>Delegate finishes the job</p></div>
+        <div class="sarrow" id="sa1" style="left: 524px">→</div>
+        <div class="step" id="st2" style="left: 560px"><div class="e">💾</div><h3>Save as routine</h3><p>Same steps, next time</p></div>
+        <div class="sarrow" id="sa2" style="left: 944px">→</div>
+        <div class="step" id="st3" style="left: 980px"><div class="e">📅</div><h3>Schedule it</h3><p>e.g. every Monday, 9:00</p></div>
+        <div class="sarrow" id="sa3" style="left: 1364px">→</div>
+        <div class="step" id="st4" style="left: 1400px"><div class="e">🏪</div><h3>Share it</h3><p>Publish to the Delegate Store</p></div>
+        <div class="char" id="sam7" data-kind="sam" data-label="Sam" style="left: 160px; top: 660px; width: 200px"></div>
+        <div class="char" id="dly7" data-kind="delly" data-label="Delly" style="left: 640px; top: 645px; width: 210px"></div>
+        <div class="char" id="pal7" data-kind="pal" data-label="Teammate" style="left: 1500px; top: 655px; width: 200px"></div>
+        <div class="pill" id="rt7" style="position: absolute; left: 900px; top: 760px; background: var(--sun); font-size: 28px">🔁 routine</div>
+        <div class="bubble right" id="bub7" style="left: 1230px; top: 606px; font-size: 30px">Thanks, I'll use it! 🎉</div>
+      </section>
+
+      <!-- 8 · Recap (110–121) -->
+      <section id="s8" class="clip" data-start="112" data-duration="11" data-track-index="0">
+        <div class="eyebrow">Recap</div>
+        <h2>UiPath Delegate in five lines</h2>
+        <div class="tips">
+          <div class="tip"><span class="ic">🗣️</span>Ask by prompt, voice, or screen recording</div>
+          <div class="tip"><span class="ic">🖱️</span>Works in real apps on Windows &amp; macOS</div>
+          <div class="tip"><span class="ic">🛡️</span>Runs under enterprise identity, permissions &amp; audit</div>
+          <div class="tip"><span class="ic">🔁</span>Save it as a routine — schedule it, share it</div>
+          <div class="tip"><span class="ic">🗺️</span>Bonus: Cartographer maps processes for analysts</div>
+        </div>
+        <div class="char" id="sam8" data-kind="sam" style="left: 1290px; top: 650px; width: 190px"></div>
+        <div class="char" id="dly8" data-kind="delly" style="left: 1490px; top: 630px; width: 200px"></div>
+        <div class="char" id="gus8" data-kind="gus" style="left: 1700px; top: 650px; width: 170px"></div>
+        <div class="fine" style="top: 1010px">Unofficial explainer · based on UiPath's public product descriptions</div>
+      </section>
+    </div>
+
+    <script>
+      // ---------------- Characters (inline SVG) ----------------
+      const INK = "#1f2140";
+      function blob(body, belly, extra) {
+        return `<svg viewBox="0 0 240 290">
+          <ellipse cx="120" cy="280" rx="80" ry="10" fill="rgba(31,33,64,.12)"/>
+          <g class="fx"><g class="inner">
+            <g class="arm-l"><path d="M44 170 q-36 6 -40 44" stroke="${body}" stroke-width="20" stroke-linecap="round" fill="none"/></g>
+            <g class="arm-r"><path d="M196 170 q36 6 40 44" stroke="${body}" stroke-width="20" stroke-linecap="round" fill="none"/></g>
+            <ellipse cx="88" cy="262" rx="26" ry="14" fill="${body}"/>
+            <ellipse cx="152" cy="262" rx="26" ry="14" fill="${body}"/>
+            <path d="M112 44 q6 -34 34 -26 q-18 6 -16 28z" fill="${body}"/>
+            <rect x="30" y="40" width="180" height="222" rx="90" fill="${body}"/>
+            <ellipse cx="120" cy="196" rx="58" ry="46" fill="${belly}"/>
+            ${extra}
+            <ellipse cx="74" cy="156" rx="14" ry="9" fill="#ff9bb3" opacity=".8"/>
+            <ellipse cx="166" cy="156" rx="14" ry="9" fill="#ff9bb3" opacity=".8"/>
+            <g class="eyes">
+              <ellipse cx="92" cy="122" rx="21" ry="23" fill="#fff"/><ellipse cx="148" cy="122" rx="21" ry="23" fill="#fff"/>
+              <circle cx="95" cy="126" r="10" fill="${INK}"/><circle cx="151" cy="126" r="10" fill="${INK}"/>
+              <circle cx="99" cy="121" r="3.5" fill="#fff"/><circle cx="155" cy="121" r="3.5" fill="#fff"/>
+            </g>
+            <path class="m-happy" d="M100 158 q20 24 40 0" stroke="${INK}" stroke-width="6" stroke-linecap="round" fill="none"/>
+            <path class="m-sad" d="M102 170 q18 -16 36 0" stroke="${INK}" stroke-width="6" stroke-linecap="round" fill="none" opacity="0"/>
+            <ellipse class="m-talk" cx="120" cy="164" rx="14" ry="11" fill="#7a1f3a" opacity="0"/>
+          </g></g>
+        </svg>`;
+      }
+      const SHIELD = `<path d="M120 168 l28 9 v24 q0 20 -28 30 q-28 -10 -28 -30 v-24z" fill="#fff" stroke="${INK}" stroke-width="4"/>
+        <path d="M107 200 l10 10 l18 -20" stroke="#06a37a" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+      const BOT = `<svg viewBox="0 0 260 320">
+        <ellipse cx="130" cy="312" rx="90" ry="10" fill="rgba(31,33,64,.12)"/>
+        <g class="fx"><g class="inner">
+          <g class="ant"><line x1="130" y1="40" x2="130" y2="10" stroke="${INK}" stroke-width="6"/><circle class="bulb" cx="130" cy="10" r="12" fill="#e8400f" stroke="${INK}" stroke-width="4"/></g>
+          <g class="arm-l"><rect x="22" y="200" width="36" height="80" rx="18" fill="#05b98a"/></g>
+          <g class="arm-r"><rect x="202" y="200" width="36" height="80" rx="18" fill="#05b98a"/></g>
+          <rect x="66" y="188" width="128" height="110" rx="28" fill="#05b98a" stroke="${INK}" stroke-width="5"/>
+          <circle cx="130" cy="243" r="30" fill="#e8400f" stroke="${INK}" stroke-width="4"/>
+          <text x="130" y="255" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-weight="800" font-size="34" fill="#fff">D</text>
+          <rect class="head" x="30" y="40" width="200" height="150" rx="40" fill="#06d6a0" stroke="${INK}" stroke-width="5"/>
+          <rect x="54" y="62" width="152" height="106" rx="26" fill="${INK}"/>
+          <g class="eyes-n"><rect x="88" y="94" width="22" height="32" rx="11" fill="#7cf3ff"/><rect x="150" y="94" width="22" height="32" rx="11" fill="#7cf3ff"/></g>
+          <g class="eyes-h" opacity="0"><path d="M86 118 q13 -22 26 0 M148 118 q13 -22 26 0" stroke="#7cf3ff" stroke-width="7" stroke-linecap="round" fill="none"/></g>
+          <g class="eyes-a" opacity="0"><path d="M84 96 l28 14 M176 96 l-28 14" stroke="#ff5d73" stroke-width="7" stroke-linecap="round"/><circle cx="100" cy="122" r="9" fill="#ff5d73"/><circle cx="160" cy="122" r="9" fill="#ff5d73"/></g>
+          <g class="eyes-q" opacity="0"><rect x="88" y="104" width="22" height="18" rx="9" fill="#7cf3ff"/><rect x="150" y="96" width="22" height="30" rx="11" fill="#7cf3ff"/></g>
+          <path class="m-n" d="M112 146 h36" stroke="#7cf3ff" stroke-width="6" stroke-linecap="round"/>
+          <rect class="m-talk" x="112" y="138" width="36" height="14" rx="7" fill="#7cf3ff" opacity="0"/>
+        </g></g>
+      </svg>`;
+      const KINDS = {
+        sam: { svg: () => blob("#7b61ff", "#a594ff", ""), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+        pal: { svg: () => blob("#ff6fa5", "#ffa3c6", ""), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+        gus: { svg: () => blob("#ffc93c", "#ffe28a", SHIELD), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+        delly: { svg: () => BOT, ar: "220 205", al: "40 205", o: "130 312", mo: "130 145" },
+      };
+      document.querySelectorAll(".char").forEach((el) => {
+        const k = KINDS[el.dataset.kind];
+        const label = el.dataset.label ? `<div class="label">${el.dataset.label}</div>` : "";
+        el.innerHTML = k.svg() + label;
+        el.dataset.ar = k.ar; el.dataset.al = k.al; el.dataset.o = k.o; el.dataset.mo = k.mo;
+      });
+      // typed-text: split into spans so it can be revealed deterministically
+      document.querySelectorAll(".typed").forEach((el) => {
+        const txt = el.textContent;
+        el.textContent = "";
+        [...txt].forEach((c) => { const s = document.createElement("span"); s.textContent = c; el.appendChild(s); });
+      });
+
+      // ---------------- Timeline ----------------
+      const tl = gsap.timeline({ paused: true });
+      const E = "power2.out";
+      const POP = "back.out(1.5)";
+      const D = (sel) => document.querySelector(sel).dataset;
+
+      // scene + object helpers (everything is slow on purpose)
+      function enter(scene, t) {
+        tl.fromTo(`${scene} .eyebrow, ${scene} h2, ${scene} > .sub`, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.2, ease: E }, t);
+      }
+      function exit(scene, t) { tl.to(scene, { opacity: 0, duration: 0.6, ease: "power2.in" }, t); }
+      function show(sel, t, o = {}) {
+        tl.fromTo(sel, { opacity: 0, scale: o.s ?? 0.75, y: o.y ?? 30, x: o.x ?? 0 },
+          { opacity: 1, scale: 1, y: 0, x: 0, duration: o.d ?? 0.9, ease: o.ease ?? POP, transformOrigin: o.origin ?? "50% 50%" }, t);
+      }
+      function hide(sel, t, d = 0.5) { tl.to(sel, { opacity: 0, duration: d }, t); }
+
+      // character helpers
+      function pop(sel, t) { show(sel, t, { s: 0.5, y: 60, d: 1.1, origin: "50% 100%" }); }
+      function walk(sel, t, fromX, dur = 2.6) {
+        tl.fromTo(sel, { opacity: 0, x: fromX }, { opacity: 1, x: 0, duration: dur, ease: "power1.out" }, t);
+        tl.to(`${sel} .inner`, { y: -20, duration: dur / 10, yoyo: true, repeat: 9, ease: "sine.inOut" }, t);
+      }
+      function bob(sel, t0, t1, amp = 7, period = 1.8) {
+        const reps = Math.max(1, Math.floor((t1 - t0) / (period / 2)) - 1);
+        tl.to(`${sel} .inner`, { y: -amp, duration: period / 2, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0);
+      }
+      function breathe(sel, t0, t1) {
+        const reps = Math.max(1, Math.floor((t1 - t0) / 1.6) - 1);
+        tl.to(`${sel} .fx`, { scaleY: 1.03, svgOrigin: D(sel).o, duration: 1.6, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0);
+      }
+      function tilt(sel, t, deg = 6, dur = 0.7) {
+        tl.to(`${sel} .fx`, { rotation: deg, svgOrigin: D(sel).o, duration: dur, yoyo: true, repeat: 1, ease: "sine.inOut" }, t);
+      }
+      function wobble(sel, t, times = 3, deg = 7) {
+        tl.to(`${sel} .fx`, { rotation: deg, svgOrigin: D(sel).o, duration: 0.5, yoyo: true, repeat: times * 2 - 1, ease: "sine.inOut" }, t);
+      }
+      function wave(sel, t, times = 3) {
+        tl.to(`${sel} .arm-r`, { rotation: -55, svgOrigin: D(sel).ar, duration: 0.45, yoyo: true, repeat: times * 2 - 1, ease: "sine.inOut" }, t);
+      }
+      function armUp(sel, side, t, deg, hold) {
+        const o = D(sel)[side === "r" ? "ar" : "al"];
+        tl.to(`${sel} .arm-${side}`, { rotation: side === "r" ? -deg : deg, svgOrigin: o, duration: 0.6, ease: "sine.inOut" }, t);
+        tl.to(`${sel} .arm-${side}`, { rotation: 0, svgOrigin: o, duration: 0.6, ease: "sine.inOut" }, t + hold);
+      }
+      function jump(sel, t, h = 60, n = 2) {
+        tl.to(`${sel} .fx`, { y: -h, duration: 0.45, yoyo: true, repeat: n * 2 - 1, ease: "sine.inOut" }, t);
+      }
+      function cheer(sel, t) { armUp(sel, "r", t, 140, 2.2); armUp(sel, "l", t, 140, 2.2); jump(sel, t + 0.2, 55, 2); }
+      function nod(sel, t) { tl.to(`${sel} .fx`, { y: 10, duration: 0.3, yoyo: true, repeat: 3, ease: "sine.inOut" }, t); }
+      function blink(sel, t) {
+        const g = document.querySelector(sel).querySelector(".eyes") ? ".eyes" : ".eyes-n";
+        tl.to(`${sel} ${g}`, { scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.12, yoyo: true, repeat: 1 }, t);
+      }
+      function wiggle(sel, t, n = 2) {
+        tl.to(`${sel} .ant`, { rotation: 16, svgOrigin: "130 40", duration: 0.3, yoyo: true, repeat: n * 2 - 1, ease: "sine.inOut" }, t);
+      }
+      function mood(sel, m, t) {
+        tl.set(`${sel} .m-happy`, { opacity: m === "happy" ? 1 : 0 }, t);
+        tl.set(`${sel} .m-sad`, { opacity: m === "sad" ? 1 : 0 }, t);
+      }
+      function talk(sel, t0, t1, restore = "happy") {
+        const isBot = document.querySelector(sel).querySelector(".m-n");
+        const base = isBot ? ".m-n" : `.m-${restore}`;
+        tl.set(`${sel} ${base}`, { opacity: 0 }, t0);
+        tl.set(`${sel} .m-talk`, { opacity: 1 }, t0);
+        tl.fromTo(`${sel} .m-talk`, { scaleY: 0.25 }, { scaleY: 1, svgOrigin: D(sel).mo, duration: 0.26, yoyo: true, repeat: Math.max(1, Math.floor((t1 - t0) / 0.26) - 1), ease: "sine.inOut", immediateRender: false }, t0);
+        tl.set(`${sel} .m-talk`, { opacity: 0 }, t1);
+        tl.set(`${sel} ${base}`, { opacity: 1 }, t1);
+      }
+      function face(sel, f, t) {
+        ["n", "h", "a", "q"].forEach((x) => tl.set(`${sel} .eyes-${x}`, { opacity: x === f ? 1 : 0 }, t));
+        tl.set(`${sel} .bulb`, { fill: { n: "#e8400f", h: "#06d6a0", a: "#ff5d73", q: "#0a7fbf" }[f] }, t);
+      }
+      function shake(sel, t) { tl.to(sel, { x: "+=14", duration: 0.08, yoyo: true, repeat: 7, ease: "none" }, t); }
+
+      // ===== 1 · Title (0–8) =====
+      tl.fromTo("#s1 h1", { opacity: 0, y: 50, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: POP }, 0.3);
+      tl.fromTo("#s1 .sub", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1, ease: E }, 1.5);
+      tl.fromTo("#fine1", { opacity: 0 }, { opacity: 1, duration: 1 }, 2.5);
+      walk("#sam1", 2.0, -520, 2.8);
+      walk("#dly1", 2.6, 520, 2.8);
+      wave("#sam1", 5.2, 3);
+      wave("#dly1", 5.5, 3);
+      face("#dly1", "h", 5.4);
+      wiggle("#dly1", 5.4, 2);
+      blink("#sam1", 6.6);
+      exit("#s1", 7.3);
+
+      // ===== 2 · Problem (8–21) =====
+      enter("#s2", 8.2);
+      pop("#sam2", 9.2);
+      breathe("#sam2", 10.3, 20.4);
+      show("#w1", 10.6, { x: -80 }); shake("#w1", 11.7);
+      show("#w2", 12.4, { x: 80 });
+      show("#w3", 14.0, { x: -80 });
+      show("#w4", 15.6, { x: 80 });
+      mood("#sam2", "sad", 12.0);
+      wobble("#sam2", 12.6, 2, 4);
+      wobble("#sam2", 15.6, 3, 8);
+      show("#bub2", 17.2, { s: 0.4, origin: "0% 100%" });
+      blink("#sam2", 18.6);
+      hide("#bub2", 19.8);
+      exit("#s2", 20.3);
+
+      // ===== 3 · Meet Delegate (21–35) =====
+      enter("#s3", 21.2);
+      walk("#dly3", 22.0, -600, 3.0);
+      face("#dly3", "h", 25.0);
+      wiggle("#dly3", 25.0, 2);
+      wave("#dly3", 25.2, 3);
+      show("#bub3", 26.0, { s: 0.4, origin: "0% 100%" });
+      talk("#dly3", 26.2, 28.4);
+      hide("#bub3", 29.2);
+      bob("#dly3", 25.5, 34.2, 8);
+      show("#sf1", 27.2, { x: 60 }); tilt("#dly3", 27.6, 4);
+      show("#sf2", 28.9, { x: 60 });
+      show("#sf3", 30.6, { x: 60 }); tilt("#dly3", 30.8, -4);
+      show("#sf4", 32.3, { x: 60 });
+      show("#os3", 33.3, { s: 0.6 });
+      exit("#s3", 34.3);
+
+      // ===== 4 · Ask (35–49) =====
+      enter("#s4", 35.2);
+      pop("#sam4", 36.2); pop("#dly4", 36.5);
+      bob("#sam4", 37.4, 48.4, 6); bob("#dly4", 37.6, 48.4, 5);
+      face("#dly4", "q", 36.6);
+      show("#ask1", 37.4, { y: 50 });
+      tl.fromTo("#typed1 span", { opacity: 0 }, { opacity: 1, duration: 0.02, stagger: 0.075 }, 38.6);
+      talk("#sam4", 38.6, 40.8);
+      face("#dly4", "h", 41.0); nod("#dly4", 41.0);
+      show("#ask2", 41.8, { y: 50 });
+      tl.fromTo("#wv i", { scaleY: 0.2 }, { scaleY: 1, duration: 0.4, stagger: 0.07, yoyo: true, repeat: 9, ease: "sine.inOut", immediateRender: false }, 42.8);
+      talk("#sam4", 42.8, 45.2);
+      nod("#dly4", 45.4);
+      show("#ask3", 46.0, { y: 50 });
+      tl.fromTo("#rec", { opacity: 1 }, { opacity: 0.15, duration: 0.5, yoyo: true, repeat: 5, immediateRender: false }, 46.6);
+      tl.fromTo("#cur", { x: 0, y: 0 }, { x: 260, y: -40, duration: 1.1, ease: "power1.inOut", immediateRender: false }, 46.8);
+      tl.to("#cur", { x: 120, y: 10, duration: 0.9, ease: "power1.inOut" }, 48.0);
+      show("#bub4", 47.0, { s: 0.4, origin: "100% 100%" });
+      wave("#dly4", 47.2, 2);
+      exit("#s4", 48.4);
+
+      // ===== 5 · Architecture (49–81) =====
+      enter("#s5", 49.2);
+      pop("#dly5", 50.0); pop("#gus5", 50.3);
+      bob("#dly5", 51.2, 80.4, 5); bob("#gus5", 51.4, 80.4, 5);
+      breathe("#gus5", 51.4, 80.4);
+      face("#dly5", "h", 50.6);
+      wave("#dly5", 51.0, 2);
+      show("#boxL", 51.0, { y: 40, s: 0.92, d: 1.0 });
+      const hl = (sel, t) => tl.to(sel, { backgroundColor: "#fff1d0", duration: 0.5 }, t);
+      const capShow = (id, t0, t1) => { show(id, t0, { s: 0.85, y: 20, d: 0.7 }); hide(id, t1, 0.4); };
+
+      // packets ride the left edge of each block column so they never cross text
+      const goto = (id, dy, t, d = 1.1) => tl.to(id, { y: dy, duration: d, ease: "power2.inOut" }, t);
+      show("#pkt", 52.6, { s: 0.2 });
+
+      show("#a1", 52.0, { y: 30 }); hl("#a1", 52.6); capShow("#c1", 52.3, 55.6); nod("#dly5", 53.0);
+      show("#a2", 56.0, { y: 30 }); goto("#pkt", 148, 56.4); hl("#a2", 57.0); capShow("#c2", 56.2, 59.6); wiggle("#dly5", 57.0, 2);
+      show("#a3", 60.0, { y: 30 }); goto("#pkt", 296, 60.4); hl("#a3", 61.0); capShow("#c3", 60.2, 63.6);
+      show("#boxR", 63.8, { y: 40, s: 0.92, d: 1.0 });
+      show("#b1", 64.8, { x: 40 }); show("#h1", 64.8, { s: 0.3, origin: "0% 50%" }); show("#pkt2", 65.4, { s: 0.2 }); hl("#b1", 66.4);
+      capShow("#c4", 64.6, 68.0); nod("#gus5", 65.8);
+      show("#b2", 68.4, { x: 40 }); show("#h2", 68.4, { s: 0.3, origin: "0% 50%" }); goto("#pkt2", 122, 68.8); hl("#b2", 69.6);
+      capShow("#c5", 68.4, 72.0); tilt("#gus5", 69.4, 5);
+      show("#b3", 72.4, { x: 40 }); show("#h3", 72.4, { s: 0.3, origin: "0% 50%" }); goto("#pkt2", 244, 72.8); hl("#b3", 73.6);
+      capShow("#c6", 72.4, 76.0); nod("#gus5", 73.6);
+      show("#b4", 76.4, { x: 40 }); show("#h4", 76.4, { s: 0.3, origin: "0% 50%" }); goto("#pkt2", 366, 76.8); hl("#b4", 77.6);
+      show("#c7", 76.4, { s: 0.85, y: 20, d: 0.7 });
+      cheer("#dly5", 78.0);
+      exit("#s5", 80.3);
+
+      // ===== 6 · Governance (81–97) =====
+      enter("#s6", 81.2);
+      pop("#sam6", 82.0); pop("#dly6", 82.3); pop("#gus6", 82.6);
+      bob("#sam6", 83.4, 96.2, 6); bob("#dly6", 83.6, 96.2, 5); breathe("#gus6", 83.4, 96.2);
+      face("#dly6", "q", 83.0);
+      show("#req6a", 83.4, { x: -60, s: 0.9 }); nod("#dly6", 84.0);
+      show("#chk6a", 84.8, { y: 20, s: 0.95, d: 0.6 });
+      show("#ka1", 85.0, { x: 40, s: 0.95, d: 0.7 });
+      show("#ka2", 86.2, { x: 40, s: 0.95, d: 0.7 });
+      show("#ka3", 87.4, { x: 40, s: 0.95, d: 0.7 });
+      face("#dly6", "h", 87.6); nod("#gus6", 85.2); nod("#gus6", 86.6); jump("#dly6", 88.0, 30, 1);
+      show("#aud6", 88.4, { y: 30, s: 0.95 });
+      show("#lg1", 89.0, { x: 30, s: 1, d: 0.7 });
+      show("#flow6", 89.4, { s: 0.85, d: 0.7 });
+      // second request — blocked
+      hide("#req6a", 90.8); hide("#chk6a", 90.8);
+      show("#req6b", 91.2, { x: -60, s: 0.9 }); face("#dly6", "q", 91.2);
+      show("#chk6b", 91.8, { y: 20, s: 0.95, d: 0.6 });
+      show("#kb1", 92.2, { x: 40, s: 0.95, d: 0.7 });
+      show("#kb2", 93.4, { x: 40, s: 0.95, d: 0.7 }); shake("#gus6", 93.4); face("#dly6", "a", 93.8);
+      show("#kb3", 94.6, { x: 40, s: 0.95, d: 0.7 });
+      show("#lg2", 95.4, { x: 30, s: 1, d: 0.7 });
+      exit("#s6", 96.4);
+
+      // ===== 7 · Routines (97–112) =====
+      enter("#s7", 97.2);
+      pop("#sam7", 98.4); pop("#dly7", 98.7); pop("#pal7", 99.0);
+      bob("#sam7", 99.8, 111.4, 6); bob("#dly7", 100.0, 111.4, 5); bob("#pal7", 100.2, 111.4, 6);
+      show("#st1", 100.0, { y: 50 }); face("#dly7", "h", 100.2); cheer("#sam7", 100.8);
+      show("#sa1", 102.0, { s: 0.3 }); show("#st2", 102.4, { y: 50 }); tilt("#dly7", 102.8, 5);
+      show("#sa2", 104.2, { s: 0.3 }); show("#st3", 104.6, { y: 50 }); wave("#dly7", 105.0, 2);
+      show("#sa3", 106.4, { s: 0.3 }); show("#st4", 106.8, { y: 50 });
+      show("#rt7", 107.4, { s: 0.4 });
+      tl.to("#rt7", { x: 640, y: -20, duration: 1.8, ease: "power2.inOut" }, 107.8);
+      tl.to("#rt7", { opacity: 0, duration: 0.4 }, 109.6);
+      show("#bub7", 109.8, { s: 0.4, origin: "80% 100%" });
+      cheer("#pal7", 109.8);
+      exit("#s7", 111.6);
+
+      // ===== 8 · Recap (112–123) =====
+      enter("#s8", 112.2);
+      tl.fromTo(".tip", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.8, stagger: 1.2, ease: E }, 113.0);
+      pop("#sam8", 113.4); pop("#dly8", 113.7); pop("#gus8", 114.0);
+      face("#dly8", "h", 114.0);
+      bob("#sam8", 115.0, 122.6, 6); bob("#dly8", 115.2, 122.6, 5); bob("#gus8", 115.4, 122.6, 6);
+      wave("#sam8", 116.0, 3); wiggle("#dly8", 116.4, 3); wave("#gus8", 117.0, 3);
+      cheer("#dly8", 119.4); cheer("#sam8", 119.8); cheer("#gus8", 120.2);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
