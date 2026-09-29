@@ -1,0 +1,10 @@
+**/node_modules
+**/build
+**/.react-router
+**/.turbo
+**/test-results
+**/playwright-report
+data
+.git
+.env
+.env.*
