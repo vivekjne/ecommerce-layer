@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      :root {
+        --bg: #fff6e5;
+        --ink: #1f2140;
+        --muted: #5b5f86;
+        --coral: #e0334d;
+        --sun: #ffc93c;
+        --mint: #06d6a0;
+        --sky: #0a7fbf;
+        --grape: #7b61ff;
+        --orange: #ff8a3d;
+        --card: #ffffff;
+        --hdr: #e3336f;
+        --pay: #8b5cf6;
+        --sig: #0a7fbf;
+        --mono: "JetBrains Mono", "DejaVu Sans Mono", ui-monospace, monospace;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg);
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: Inter, "Helvetica Neue", Arial, ui-sans-serif, system-ui, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 12% 18%, #ffe1ea 0, transparent 38%),
+          radial-gradient(circle at 88% 82%, #d9f7ff 0, transparent 40%),
+          radial-gradient(circle at 85% 12%, #fff0b8 0, transparent 30%),
+          var(--bg);
+      }
+      .clip {
+        position: absolute;
+        inset: 0;
+        padding: 90px 140px;
+      }
+      .eyebrow {
+        display: inline-block;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #fff;
+        background: var(--grape);
+        padding: 8px 18px;
+        border-radius: 999px;
+      }
+      h2 {
+        font-size: 68px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        margin-top: 18px;
+      }
+      .sub {
+        font-size: 32px;
+        color: var(--muted);
+        margin-top: 12px;
+        line-height: 1.4;
+      }
+      .mono { font-family: var(--mono); }
+
+      /* Characters */
+      .char {
+        position: absolute;
+      }
+      .char svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+      }
+      .char .label {
+        text-align: center;
+        font-size: 26px;
+        font-weight: 700;
+        margin-top: 4px;
+        color: var(--muted);
+      }
+      .bubble {
+        position: absolute;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 28px;
+        padding: 16px 28px;
+        font-size: 32px;
+        font-weight: 700;
+        white-space: nowrap;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+      }
+      .bubble::after {
+        content: "";
+        position: absolute;
+        bottom: -22px;
+        left: 60px;
+        border-left: 16px solid transparent;
+        border-right: 16px solid transparent;
+        border-top: 22px solid var(--ink);
+      }
+      .bubble.right::after { left: auto; right: 60px; }
+
+      /* Flying things */
+      .ticket {
+        position: absolute;
+        width: 230px;
+        height: 76px;
+        border-radius: 16px;
+        display: flex;
+        overflow: hidden;
+        border: 4px solid var(--ink);
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.15);
+        font-family: var(--mono);
+        font-weight: 800;
+        font-size: 26px;
+        color: #fff;
+      }
+      .ticket i { flex: 1; display: flex; align-items: center; justify-content: center; font-style: normal; }
+      .ticket i:nth-child(1) { background: var(--hdr); }
+      .ticket i:nth-child(2) { background: var(--pay); flex: 1.6; }
+      .ticket i:nth-child(3) { background: var(--sig); }
+      .ticket.refresh { background: var(--mint); justify-content: center; align-items: center; color: var(--ink); font-size: 22px; }
+      .note {
+        position: absolute;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 20px;
+        padding: 18px 24px;
+        font-family: var(--mono);
+        font-size: 24px;
+        line-height: 1.5;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+        white-space: nowrap;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 30px;
+        font-weight: 700;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 999px;
+        padding: 12px 28px;
+      }
+      .pill b {
+        display: inline-flex;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 24px;
+      }
+
+      /* 1 · Title */
+      #s1 { display: flex; flex-direction: column; align-items: center; padding-top: 150px; text-align: center; }
+      #s1 h1 { font-size: 128px; font-weight: 900; letter-spacing: -0.045em; line-height: 1; }
+      #s1 h1 .j { color: var(--hdr); }
+      #s1 h1 .w { color: var(--pay); }
+      #s1 h1 .t { color: var(--sig); }
+      #s1 .sub { font-size: 40px; margin-top: 22px; }
+
+      /* 4 · Anatomy */
+      #jwt-str {
+        position: absolute;
+        left: 140px;
+        right: 140px;
+        top: 280px;
+        font-family: var(--mono);
+        font-size: 31px;
+        font-weight: 700;
+        word-break: break-all;
+        line-height: 1.45;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 24px;
+        padding: 22px 30px;
+      }
+      #jwt-str .h { color: var(--hdr); }
+      #jwt-str .p { color: var(--pay); }
+      #jwt-str .s { color: var(--sig); }
+      #jwt-str .d { color: var(--ink); }
+      .parts {
+        position: absolute;
+        left: 140px;
+        right: 140px;
+        top: 540px;
+        display: flex;
+        gap: 36px;
+      }
+      .part {
+        flex: 1;
+        border-radius: 26px;
+        border: 4px solid var(--ink);
+        background: #fff;
+        overflow: hidden;
+        box-shadow: 0 10px 0 rgba(31, 33, 64, 0.12);
+      }
+      .part header {
+        font-size: 30px;
+        font-weight: 800;
+        color: #fff;
+        padding: 14px 26px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .part header small { font-size: 20px; font-weight: 600; opacity: 0.9; }
+      .part pre {
+        font-family: var(--mono);
+        font-size: 25px;
+        line-height: 1.55;
+        padding: 20px 26px;
+      }
+      #part-h header { background: var(--hdr); }
+      #part-p header { background: var(--pay); }
+      #part-s header { background: var(--sig); }
+      #warn {
+        position: absolute;
+        left: 140px;
+        top: 925px;
+        font-size: 30px;
+        font-weight: 700;
+        background: var(--sun);
+        border: 4px solid var(--ink);
+        border-radius: 999px;
+        padding: 14px 32px;
+      }
+
+      /* 5 · Checklist */
+      .checks {
+        position: absolute;
+        left: 700px;
+        top: 300px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .check {
+        font-size: 30px;
+        font-weight: 700;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 18px;
+        padding: 10px 22px;
+      }
+      .check span { color: var(--mint); margin-right: 10px; }
+
+      /* 7 · Timer */
+      #timer {
+        position: absolute;
+        left: 500px;
+        top: 620px;
+        width: 230px;
+      }
+      #timer .track { height: 16px; border-radius: 8px; background: #fff; border: 3px solid var(--ink); overflow: hidden; }
+      #timer .fill { height: 100%; width: 100%; background: var(--mint); transform-origin: left center; }
+      #timer .txt { font-family: var(--mono); font-size: 22px; font-weight: 700; margin-top: 6px; text-align: center; }
+
+      /* 8 · Recap */
+      .tips { display: flex; flex-direction: column; gap: 22px; margin-top: 44px; width: 1100px; }
+      .tip {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 36px;
+        font-weight: 700;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 22px;
+        padding: 18px 28px;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.1);
+      }
+      .tip .ic { font-size: 44px; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="80"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Background music: original track from scripts/make-music.mjs -->
+      <audio
+        id="bgm"
+        src="assets/music.mp3"
+        data-start="0"
+        data-duration="80"
+        data-volume="0.45"
+        data-fade-in="0.8"
+        data-fade-out="2.5"
+      ></audio>
+
+      <!-- 1 · Title (0–6) -->
+      <section id="s1" class="clip" data-start="0" data-duration="6" data-track-index="0">
+        <h1><span class="j">J</span><span class="w">W</span><span class="t">T</span> Auth</h1>
+        <p class="sub">How a tiny signed token proves who you are</p>
+        <div class="char" id="ava1" data-kind="ava" style="left: 620px; top: 520px; width: 230px"></div>
+        <div class="char" id="bot1" data-kind="bot" style="left: 1070px; top: 490px; width: 250px"></div>
+      </section>
+
+      <!-- 2 · The problem (6–15) -->
+      <section id="s2" class="clip" data-start="6" data-duration="9" data-track-index="0">
+        <div class="eyebrow">The problem</div>
+        <h2>HTTP forgets you on every request</h2>
+        <p class="sub">Each request arrives alone. How does the server know it's Ava?</p>
+        <div class="char" id="ava2" data-kind="ava" data-label="Ava · the client" style="left: 240px; top: 560px; width: 260px"></div>
+        <div class="char" id="bot2" data-kind="bot" data-label="Botley · the API" style="left: 1400px; top: 520px; width: 280px"></div>
+        <div class="note" id="env1" style="left: 520px; top: 700px">GET /orders</div>
+        <div class="note" id="env2" style="left: 520px; top: 700px">GET /profile</div>
+        <div class="bubble right" id="who" style="left: 1080px; top: 400px">Who are you? 🤔</div>
+      </section>
+
+      <!-- 3 · Login (15–26) -->
+      <section id="s3" class="clip" data-start="15" data-duration="11" data-track-index="0">
+        <div class="eyebrow">Logging in</div>
+        <h2>Log in once, get a signed pass</h2>
+        <div style="display: flex; gap: 24px; margin-top: 26px">
+          <div class="pill" id="st1"><b style="background: var(--coral)">1</b>Send credentials</div>
+          <div class="pill" id="st2"><b style="background: var(--grape)">2</b>Server signs a JWT</div>
+          <div class="pill" id="st3"><b style="background: var(--sky)">3</b>Client keeps it</div>
+        </div>
+        <div class="char" id="ava3" data-kind="ava" data-label="Ava" style="left: 240px; top: 560px; width: 260px"></div>
+        <div class="char" id="bot3" data-kind="bot" data-label="Botley" style="left: 1400px; top: 520px; width: 280px"></div>
+        <div class="note" id="creds" style="left: 520px; top: 640px">POST /login<br />ava@mail.com · ••••••</div>
+        <div class="bubble right" id="checking" style="left: 1120px; top: 400px">Checking… ✅</div>
+        <div class="ticket" id="tk3" style="left: 1170px; top: 700px"><i>H</i><i>JWT</i><i>S</i></div>
+      </section>
+
+      <!-- 4 · Anatomy (26–41) -->
+      <section id="s4" class="clip" data-start="26" data-duration="15" data-track-index="0">
+        <div class="eyebrow">Inside the token</div>
+        <h2>Three parts, joined by dots</h2>
+        <div id="jwt-str"><span class="h">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</span><span class="d">.</span><span class="p">eyJzdWIiOiI0MiIsIm5hbWUiOiJBdmEiLCJyb2xlIjoidXNlciIsImV4cCI6MTc1OTE2MDAwMH0</span><span class="d">.</span><span class="s">Sfl4xwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</span></div>
+        <div class="parts">
+          <div class="part" id="part-h">
+            <header>Header <small>which algorithm</small></header>
+<pre>{
+  "alg": "HS256",
+  "typ": "JWT"
+}</pre>
+          </div>
+          <div class="part" id="part-p">
+            <header>Payload <small>the claims</small></header>
+<pre>{
+  "sub": "42",
+  "name": "Ava",
+  "role": "user",
+  "exp": 1759160000
+}</pre>
+          </div>
+          <div class="part" id="part-s">
+            <header>Signature <small>tamper seal</small></header>
+<pre>HMACSHA256(
+  base64url(header)
+  + "." +
+  base64url(payload),
+  <b style="color: var(--coral)">secret</b> 🔑
+)</pre>
+          </div>
+        </div>
+        <div id="warn">⚠️ Encoded, not encrypted — anyone can read the payload. Never put secrets in it.</div>
+      </section>
+
+      <!-- 5 · Using the token (41–53) -->
+      <section id="s5" class="clip" data-start="41" data-duration="12" data-track-index="0">
+        <div class="eyebrow">Every request</div>
+        <h2>Show the token, get in</h2>
+        <div class="char" id="ava5" data-kind="ava" data-label="Ava" style="left: 240px; top: 560px; width: 260px"></div>
+        <div class="char" id="bot5" data-kind="bot" data-label="Botley" style="left: 1400px; top: 520px; width: 280px"></div>
+        <div class="note" id="req5" style="left: 520px; top: 590px">GET /orders<br /><span style="color: var(--muted)">Authorization:</span> Bearer <span style="color: var(--hdr)">eyJ</span><span style="color: var(--pay)">…</span><span style="color: var(--sig)">…</span></div>
+        <div class="checks">
+          <div class="check" id="ck1"><span>✓</span>Signature matches the secret</div>
+          <div class="check" id="ck2"><span>✓</span>Not expired (exp)</div>
+          <div class="check" id="ck3"><span>✓</span>sub 42 · role user</div>
+        </div>
+        <div class="note" id="res5" style="left: 1080px; top: 800px; background: #d7fbe9">200 OK · 📦 3 orders</div>
+      </section>
+
+      <!-- 6 · Tampering (53–64) -->
+      <section id="s6" class="clip" data-start="53" data-duration="11" data-track-index="0">
+        <div class="eyebrow" style="background: var(--coral)">Tampering</div>
+        <h2>Edit the payload? The seal breaks.</h2>
+        <div class="char" id="mal6" data-kind="mallory" data-label="Mallory" style="left: 240px; top: 560px; width: 260px"></div>
+        <div class="char" id="bot6" data-kind="bot" data-label="Botley" style="left: 1400px; top: 520px; width: 280px"></div>
+        <div class="note" id="edit6" style="left: 140px; top: 300px">
+          "role": "<span id="role-old" style="text-decoration: line-through; color: var(--muted)">user</span> → <span id="role-new" style="color: var(--coral); font-weight: 800">admin</span>"
+        </div>
+        <div class="note" id="cmp6" style="left: 640px; top: 480px">
+          token says: <span style="color: var(--sig)">Sfl4xwRJSMeK…</span><br />
+          computed: &nbsp; <span style="color: var(--coral)">9Xq2LmT0bQ7v…</span> ❌
+        </div>
+        <div class="ticket" id="tk6" style="left: 520px; top: 700px"><i>H</i><i>JWT</i><i>S</i></div>
+        <div class="bubble right" id="deny" style="left: 1060px; top: 330px; color: var(--coral)">401 Unauthorized 🚫</div>
+      </section>
+
+      <!-- 7 · Expiry & refresh (64–73) -->
+      <section id="s7" class="clip" data-start="64" data-duration="9" data-track-index="0">
+        <div class="eyebrow" style="background: var(--sky)">Expiry</div>
+        <h2>Short-lived tokens + a refresh token</h2>
+        <div class="char" id="ava7" data-kind="ava" data-label="Ava" style="left: 240px; top: 560px; width: 260px"></div>
+        <div class="char" id="bot7" data-kind="bot" data-label="Botley" style="left: 1400px; top: 520px; width: 280px"></div>
+        <div class="ticket" id="tk7" style="left: 500px; top: 520px"><i>H</i><i>JWT</i><i>S</i></div>
+        <div id="timer">
+          <div class="track"><div class="fill"></div></div>
+          <div class="txt" id="timer-txt">exp in 15 min</div>
+        </div>
+        <div class="bubble right" id="expired" style="left: 1060px; top: 360px">401 · token expired ⏰</div>
+        <div class="ticket refresh" id="rf7" style="left: 500px; top: 760px">refresh token ♻️</div>
+        <div class="ticket" id="tk7b" style="left: 1170px; top: 700px"><i>H</i><i>NEW</i><i>S</i></div>
+      </section>
+
+      <!-- 8 · Recap (73–80) -->
+      <section id="s8" class="clip" data-start="73" data-duration="7" data-track-index="0">
+        <div class="eyebrow">Cheat sheet</div>
+        <h2>JWT, the safe way</h2>
+        <div class="tips">
+          <div class="tip"><span class="ic">🔏</span>Always verify the signature — and pin the algorithm</div>
+          <div class="tip"><span class="ic">⏱️</span>Keep access tokens short-lived; refresh them</div>
+          <div class="tip"><span class="ic">🙈</span>Payload is readable — no passwords or secrets</div>
+          <div class="tip"><span class="ic">🔒</span>HTTPS only; prefer httpOnly, Secure cookies</div>
+        </div>
+        <div class="char" id="ava8" data-kind="ava" style="left: 1320px; top: 600px; width: 220px"></div>
+        <div class="char" id="bot8" data-kind="bot" style="left: 1560px; top: 570px; width: 230px"></div>
+      </section>
+    </div>
+
+    <script>
+      // ---------- Characters (inline SVG, injected before the timeline is built) ----------
+      const INK = "#1f2140";
+      function blob(body, belly, extra) {
+        return `<svg viewBox="0 0 240 290">
+          <ellipse cx="120" cy="280" rx="80" ry="10" fill="rgba(31,33,64,.12)"/>
+          <g class="inner">
+            <g class="arm-l"><path d="M44 170 q-36 6 -40 44" stroke="${body}" stroke-width="20" stroke-linecap="round" fill="none"/></g>
+            <g class="arm-r"><path d="M196 170 q36 6 40 44" stroke="${body}" stroke-width="20" stroke-linecap="round" fill="none"/></g>
+            <ellipse cx="88" cy="262" rx="26" ry="14" fill="${body}"/>
+            <ellipse cx="152" cy="262" rx="26" ry="14" fill="${body}"/>
+            <path d="M112 44 q6 -34 34 -26 q-18 6 -16 28z" fill="${body}"/>
+            <rect x="30" y="40" width="180" height="222" rx="90" fill="${body}"/>
+            <ellipse cx="120" cy="196" rx="58" ry="46" fill="${belly}"/>
+            <ellipse cx="74" cy="156" rx="14" ry="9" fill="#ff9bb3" opacity=".8"/>
+            <ellipse cx="166" cy="156" rx="14" ry="9" fill="#ff9bb3" opacity=".8"/>
+            <g class="eyes">
+              <ellipse cx="92" cy="122" rx="21" ry="23" fill="#fff"/>
+              <ellipse cx="148" cy="122" rx="21" ry="23" fill="#fff"/>
+              <circle cx="95" cy="126" r="10" fill="${INK}"/>
+              <circle cx="151" cy="126" r="10" fill="${INK}"/>
+              <circle cx="99" cy="121" r="3.5" fill="#fff"/>
+              <circle cx="155" cy="121" r="3.5" fill="#fff"/>
+            </g>
+            ${extra}
+            <path class="m-happy" d="M100 158 q20 24 40 0" stroke="${INK}" stroke-width="6" stroke-linecap="round" fill="none"/>
+            <path class="m-sad" d="M102 170 q18 -16 36 0" stroke="${INK}" stroke-width="6" stroke-linecap="round" fill="none" opacity="0"/>
+          </g>
+        </svg>`;
+      }
+      const MASK = `<path d="M52 104 q68 -22 136 0 v30 q-68 -16 -136 0z" fill="${INK}"/>
+        <ellipse cx="92" cy="120" rx="14" ry="9" fill="#fff"/><ellipse cx="148" cy="120" rx="14" ry="9" fill="#fff"/>
+        <circle cx="96" cy="121" r="5" fill="${INK}"/><circle cx="152" cy="121" r="5" fill="${INK}"/>`;
+      const BOT = `<svg viewBox="0 0 260 320">
+        <ellipse cx="130" cy="312" rx="90" ry="10" fill="rgba(31,33,64,.12)"/>
+        <g class="inner">
+          <line x1="130" y1="40" x2="130" y2="10" stroke="${INK}" stroke-width="6"/>
+          <circle class="bulb" cx="130" cy="10" r="12" fill="#ffc93c" stroke="${INK}" stroke-width="4"/>
+          <g class="arm-l"><rect x="22" y="200" width="36" height="80" rx="18" fill="#05b98a"/></g>
+          <g class="arm-r"><rect x="202" y="200" width="36" height="80" rx="18" fill="#05b98a"/></g>
+          <rect x="66" y="188" width="128" height="110" rx="28" fill="#038a66" stroke="${INK}" stroke-width="5"/>
+          <text x="130" y="258" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-weight="700" font-size="30" fill="#fff">API</text>
+          <rect class="head" x="30" y="40" width="200" height="150" rx="40" fill="#06d6a0" stroke="${INK}" stroke-width="5"/>
+          <rect x="54" y="62" width="152" height="106" rx="26" fill="${INK}"/>
+          <g class="eyes-n"><rect x="88" y="94" width="22" height="32" rx="11" fill="#7cf3ff"/><rect x="150" y="94" width="22" height="32" rx="11" fill="#7cf3ff"/></g>
+          <g class="eyes-h" opacity="0"><path d="M86 118 q13 -22 26 0 M148 118 q13 -22 26 0" stroke="#7cf3ff" stroke-width="7" stroke-linecap="round" fill="none"/></g>
+          <g class="eyes-a" opacity="0"><path d="M84 96 l28 14 M176 96 l-28 14" stroke="#ff5d73" stroke-width="7" stroke-linecap="round"/><circle cx="100" cy="122" r="9" fill="#ff5d73"/><circle cx="160" cy="122" r="9" fill="#ff5d73"/></g>
+          <g class="eyes-q" opacity="0"><rect x="88" y="104" width="22" height="18" rx="9" fill="#7cf3ff"/><rect x="150" y="96" width="22" height="30" rx="11" fill="#7cf3ff"/></g>
+          <path class="m-n" d="M112 146 h36" stroke="#7cf3ff" stroke-width="6" stroke-linecap="round"/>
+        </g>
+      </svg>`;
+      const KINDS = {
+        ava: () => blob("#7b61ff", "#a594ff", ""),
+        mallory: () => blob("#ff8a3d", "#ffb27d", MASK),
+        bot: () => BOT,
+      };
+      document.querySelectorAll(".char").forEach((el) => {
+        const label = el.dataset.label ? `<div class="label">${el.dataset.label}</div>` : "";
+        el.innerHTML = KINDS[el.dataset.kind]() + label;
+      });
+
+      // ---------- Timeline ----------
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out";
+      const POP = "back.out(1.8)";
+
+      function enter(scene, t) {
+        tl.from(`${scene} .eyebrow, ${scene} h2, ${scene} > .sub`, { opacity: 0, y: 30, duration: 0.55, stagger: 0.1, ease: E }, t);
+      }
+      function exit(scene, t) {
+        tl.to(scene, { opacity: 0, duration: 0.4, ease: "power2.in" }, t);
+      }
+      function popIn(sel, t) {
+        tl.from(sel, { opacity: 0, scale: 0.5, y: 40, duration: 0.6, ease: POP, transformOrigin: "50% 100%" }, t);
+      }
+      // Idle bob on the inner group, so it doesn't fight entrance tweens on the wrapper.
+      function bob(sel, t0, t1, amp = 8) {
+        const period = 0.7;
+        const reps = Math.max(0, Math.floor((t1 - t0) / period) - 1);
+        tl.to(`${sel} .inner`, { y: -amp, duration: period / 2, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0);
+      }
+      function blink(sel, t) {
+        tl.to(`${sel} .eyes`, { scaleY: 0.1, duration: 0.07, yoyo: true, repeat: 1, transformOrigin: "50% 50%" }, t);
+      }
+      function wave(sel, t, times = 3) {
+        tl.to(`${sel} .arm-r`, { rotation: -35, duration: 0.18, yoyo: true, repeat: times * 2 - 1, svgOrigin: "196 170", ease: "sine.inOut" }, t);
+      }
+      function avaMood(sel, mood, t) {
+        tl.set(`${sel} .m-happy`, { opacity: mood === "happy" ? 1 : 0 }, t);
+        tl.set(`${sel} .m-sad`, { opacity: mood === "sad" ? 1 : 0 }, t);
+      }
+      function botFace(sel, face, t) {
+        ["n", "h", "a", "q"].forEach((f) => tl.set(`${sel} .eyes-${f}`, { opacity: f === face ? 1 : 0 }, t));
+        const bulb = { n: "#ffc93c", h: "#06d6a0", a: "#ff5d73", q: "#1fa2ff" }[face];
+        tl.set(`${sel} .bulb`, { fill: bulb }, t);
+      }
+      function shake(sel, t) {
+        tl.to(sel, { x: "+=14", duration: 0.06, yoyo: true, repeat: 5, ease: "none" }, t);
+      }
+      function fly(sel, t, dx, dy, d = 0.9) {
+        tl.fromTo(sel, { x: 0, y: 0, opacity: 1 }, { x: dx, y: dy, duration: d, ease: "power2.inOut", immediateRender: false }, t);
+      }
+
+      // 1 · Title (0–6)
+      tl.from("#s1 h1 span", { opacity: 0, y: 60, scale: 0.6, duration: 0.6, stagger: 0.12, ease: POP }, 0.2);
+      tl.from("#s1 h1", { opacity: 0, duration: 0.3 }, 0.2);
+      tl.from("#s1 .sub", { opacity: 0, y: 20, duration: 0.6, ease: E }, 0.9);
+      popIn("#ava1", 1.3);
+      popIn("#bot1", 1.5);
+      bob("#ava1", 2, 5.6);
+      bob("#bot1", 2.2, 5.6, 5);
+      wave("#ava1", 2.2);
+      botFace("#bot1", "h", 2.6);
+      blink("#ava1", 4.1);
+      exit("#s1", 5.6);
+
+      // 2 · Problem (6–15)
+      enter("#s2", 6.2);
+      popIn("#ava2", 6.8);
+      popIn("#bot2", 7);
+      bob("#ava2", 7.6, 14.6);
+      tl.set("#env1, #env2, #who", { opacity: 0 }, 6);
+      fly("#env1", 8.0, 700, 0);
+      tl.to("#env1", { opacity: 0, duration: 0.2 }, 8.9);
+      botFace("#bot2", "q", 9);
+      tl.to("#who", { opacity: 1, duration: 0.01 }, 9);
+      tl.from("#who", { scale: 0.4, duration: 0.45, ease: POP, transformOrigin: "80% 100%" }, 9);
+      tl.to("#who", { opacity: 0, duration: 0.2 }, 10.4);
+      fly("#env2", 10.8, 700, 0);
+      tl.to("#env2", { opacity: 0, duration: 0.2 }, 11.7);
+      tl.to("#who", { opacity: 1, duration: 0.01 }, 11.8);
+      tl.fromTo("#who", { scale: 0.4 }, { scale: 1, duration: 0.45, ease: POP, transformOrigin: "80% 100%", immediateRender: false }, 11.8);
+      avaMood("#ava2", "sad", 12.2);
+      blink("#ava2", 13);
+      shake("#bot2", 12.4);
+      exit("#s2", 14.6);
+
+      // 3 · Login (15–26)
+      enter("#s3", 15.2);
+      popIn("#ava3", 15.6);
+      popIn("#bot3", 15.8);
+      bob("#ava3", 16.4, 25.6);
+      tl.set("#creds, #checking, #tk3", { opacity: 0 }, 15);
+      tl.from("#st1", { scale: 0.8, duration: 0.4, ease: POP }, 16.6);
+      fly("#creds", 17.0, 560, 0, 1.1);
+      tl.to("#creds", { opacity: 0, duration: 0.2 }, 18.1);
+      botFace("#bot3", "q", 18.2);
+      tl.to("#checking", { opacity: 1, duration: 0.01 }, 18.3);
+      tl.from("#checking", { scale: 0.4, duration: 0.45, ease: POP, transformOrigin: "80% 100%" }, 18.3);
+      tl.from("#st2", { opacity: 0.25, scale: 0.8, duration: 0.4, ease: POP }, 19.2);
+      botFace("#bot3", "h", 19.6);
+      tl.to("#checking", { opacity: 0, duration: 0.2 }, 20.4);
+      tl.to("#tk3", { opacity: 1, duration: 0.01 }, 20.4);
+      tl.from("#tk3", { scale: 0.2, rotation: -20, duration: 0.5, ease: POP }, 20.4);
+      tl.to("#tk3", { x: -690, y: 40, rotation: -8, duration: 1.1, ease: "power2.inOut" }, 21.2);
+      tl.from("#st3", { opacity: 0.25, scale: 0.8, duration: 0.4, ease: POP }, 22.3);
+      wave("#ava3", 22.4);
+      blink("#ava3", 24);
+      exit("#s3", 25.6);
+
+      // 4 · Anatomy (26–41)
+      enter("#s4", 26.2);
+      tl.from("#jwt-str", { opacity: 0, y: 30, duration: 0.6, ease: E }, 27);
+      const pulse = (sel, t) => tl.fromTo(sel, { backgroundColor: "rgba(255,201,60,0)" }, { backgroundColor: "rgba(255,201,60,0.45)", duration: 0.3, yoyo: true, repeat: 3, immediateRender: false }, t);
+      pulse("#jwt-str .h", 28.4);
+      tl.from("#part-h", { opacity: 0, y: 60, scale: 0.9, duration: 0.6, ease: POP }, 28.6);
+      pulse("#jwt-str .p", 30.8);
+      tl.from("#part-p", { opacity: 0, y: 60, scale: 0.9, duration: 0.6, ease: POP }, 31);
+      pulse("#jwt-str .s", 33.4);
+      tl.from("#part-s", { opacity: 0, y: 60, scale: 0.9, duration: 0.6, ease: POP }, 33.6);
+      tl.from("#warn", { opacity: 0, y: 30, scale: 0.9, duration: 0.6, ease: POP }, 36);
+      tl.to("#warn", { rotation: -1.5, duration: 0.15, yoyo: true, repeat: 5, ease: "sine.inOut" }, 36.8);
+      exit("#s4", 40.6);
+
+      // 5 · Using the token (41–53)
+      enter("#s5", 41.2);
+      popIn("#ava5", 41.6);
+      popIn("#bot5", 41.8);
+      bob("#ava5", 42.4, 52.6);
+      tl.set("#req5, #res5", { opacity: 0 }, 41);
+      tl.set(".check", { opacity: 0 }, 41);
+      fly("#req5", 43, 460, 0, 1.1);
+      botFace("#bot5", "q", 44.2);
+      [["#ck1", 44.6], ["#ck2", 45.6], ["#ck3", 46.6]].forEach(([s, t]) => {
+        tl.to(s, { opacity: 1, duration: 0.01 }, t);
+        tl.from(s, { x: 40, scale: 0.9, duration: 0.45, ease: POP }, t);
+      });
+      botFace("#bot5", "h", 47.6);
+      tl.to("#req5", { opacity: 0, duration: 0.3 }, 47.8);
+      tl.to("#res5", { opacity: 1, duration: 0.01 }, 48.2);
+      tl.fromTo("#res5", { x: 0 }, { x: -560, duration: 1.1, ease: "power2.inOut", immediateRender: false }, 48.3);
+      wave("#ava5", 49.6);
+      blink("#ava5", 51);
+      exit("#s5", 52.6);
+
+      // 6 · Tampering (53–64)
+      enter("#s6", 53.2);
+      popIn("#mal6", 53.6);
+      popIn("#bot6", 53.8);
+      bob("#mal6", 54.4, 63.6, 6);
+      tl.set("#cmp6, #tk6, #deny, #role-new", { opacity: 0 }, 53);
+      tl.from("#edit6", { opacity: 0, y: 20, duration: 0.5, ease: E }, 54.6);
+      tl.to("#role-new", { opacity: 1, duration: 0.01 }, 56);
+      tl.from("#role-new", { scale: 0.3, duration: 0.4, ease: POP }, 56);
+      tl.to("#tk6", { opacity: 1, duration: 0.3 }, 57);
+      tl.to("#tk6", { x: 650, duration: 1, ease: "power2.inOut" }, 57.4);
+      tl.to("#tk6", { opacity: 0, duration: 0.2 }, 58.4);
+      botFace("#bot6", "q", 58.5);
+      tl.to("#cmp6", { opacity: 1, duration: 0.01 }, 58.8);
+      tl.from("#cmp6", { y: 30, scale: 0.9, duration: 0.5, ease: POP }, 58.8);
+      botFace("#bot6", "a", 60.3);
+      shake("#bot6", 60.3);
+      tl.to("#deny", { opacity: 1, duration: 0.01 }, 60.5);
+      tl.from("#deny", { scale: 0.4, duration: 0.45, ease: POP, transformOrigin: "80% 100%" }, 60.5);
+      avaMood("#mal6", "sad", 61.2);
+      exit("#s6", 63.6);
+
+      // 7 · Expiry & refresh (64–73)
+      enter("#s7", 64.2);
+      popIn("#ava7", 64.6);
+      popIn("#bot7", 64.8);
+      bob("#ava7", 65.4, 72.6);
+      tl.set("#expired, #tk7b", { opacity: 0 }, 64);
+      tl.from("#tk7, #timer", { opacity: 0, y: 20, duration: 0.5, ease: E }, 65.2);
+      tl.fromTo("#timer .fill", { scaleX: 1 }, { scaleX: 0, duration: 2.2, ease: "none", immediateRender: false }, 65.8);
+      tl.to("#timer .fill", { backgroundColor: "#ff5d73", duration: 1 }, 66.8);
+      tl.set("#timer-txt", { textContent: "expired" }, 68);
+      tl.to("#tk7", { filter: "grayscale(1)", opacity: 0.55, duration: 0.3 }, 68);
+      botFace("#bot7", "a", 68.3);
+      tl.to("#expired", { opacity: 1, duration: 0.01 }, 68.3);
+      tl.from("#expired", { scale: 0.4, duration: 0.45, ease: POP, transformOrigin: "80% 100%" }, 68.3);
+      avaMood("#ava7", "sad", 68.5);
+      tl.from("#rf7", { opacity: 0, y: 20, duration: 0.4, ease: E }, 69);
+      tl.to("#expired", { opacity: 0, duration: 0.2 }, 69.4);
+      tl.to("#rf7", { x: 650, y: -40, duration: 0.9, ease: "power2.inOut" }, 69.5);
+      tl.to("#rf7", { opacity: 0, duration: 0.2 }, 70.4);
+      botFace("#bot7", "h", 70.5);
+      tl.to("#tk7b", { opacity: 1, duration: 0.01 }, 70.6);
+      tl.from("#tk7b", { scale: 0.2, rotation: 20, duration: 0.4, ease: POP }, 70.6);
+      tl.to("#tk7", { opacity: 0, duration: 0.2 }, 71);
+      tl.to("#tk7b", { x: -670, y: -180, duration: 0.9, ease: "power2.inOut" }, 71.1);
+      avaMood("#ava7", "happy", 71.9);
+      exit("#s7", 72.6);
+
+      // 8 · Recap (73–80)
+      enter("#s8", 73.2);
+      tl.from(".tip", { opacity: 0, x: -50, duration: 0.5, stagger: 0.4, ease: E }, 73.8);
+      popIn("#ava8", 74);
+      popIn("#bot8", 74.2);
+      botFace("#bot8", "h", 74.2);
+      bob("#ava8", 74.8, 80);
+      bob("#bot8", 75, 80, 5);
+      wave("#ava8", 76.5, 4);
+      blink("#ava8", 78.4);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
