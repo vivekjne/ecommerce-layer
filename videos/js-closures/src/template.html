@@ -1,0 +1,1046 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      :root {
+        --bg: #fff6e5;
+        --ink: #1f2140;
+        --muted: #5b5f86;
+        --coral: #d92d48;
+        --sun: #ffc93c;
+        --mint: #0a8a5f;
+        --sky: #0a7fbf;
+        --grape: #6a4df0;
+        --orange: #c2410c;
+        --mono: "JetBrains Mono", "DejaVu Sans Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: Inter, "Helvetica Neue", Arial, ui-sans-serif, system-ui, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 8% 12%, #ffe1ea 0, transparent 36%),
+          radial-gradient(circle at 92% 88%, #d9f7ff 0, transparent 40%),
+          radial-gradient(circle at 90% 8%, #fff0b8 0, transparent 30%),
+          var(--bg);
+      }
+      .clip { position: absolute; inset: 0; padding: 80px 140px; }
+      .ov { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
+      .ov line, .ov path { fill: none; stroke-width: 5; stroke-linecap: round; }
+      .eyebrow {
+        display: inline-block;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #fff;
+        background: var(--grape);
+        padding: 8px 18px;
+        border-radius: 999px;
+      }
+      h2 { font-size: 60px; font-weight: 800; letter-spacing: -0.03em; margin-top: 14px; }
+      #badge {
+        position: absolute;
+        right: 60px;
+        top: 50px;
+        font-size: 22px;
+        font-weight: 800;
+        background: var(--ink);
+        color: #fff;
+        padding: 8px 18px;
+        border-radius: 999px;
+        z-index: 5;
+      }
+
+      /* characters (persistent, bottom corners) */
+      .char { position: absolute; z-index: 40; }
+      .char svg { display: block; width: 100%; height: auto; overflow: visible; }
+      #sam { left: 40px; top: 838px; width: 170px; }
+      #byte { left: 1712px; top: 838px; width: 170px; }
+      #mal { left: 1510px; top: 838px; width: 170px; }
+      #guard { left: 1510px; top: 838px; width: 170px; }
+
+      /* captions */
+      #captions { position: absolute; inset: 0; z-index: 50; pointer-events: none; }
+      .cline {
+        position: absolute;
+        left: 250px;
+        top: 918px;
+        width: 1240px;
+        height: 128px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 38px;
+        font-weight: 800;
+        line-height: 1.25;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 28px;
+        padding: 8px 26px;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.14);
+      }
+      .cw { color: #7d84ab; padding: 0 0.06em; border-radius: 8px; background-color: rgba(255, 201, 60, 0); }
+
+      /* generic cards */
+      .card {
+        position: absolute;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 22px;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+      }
+      .card .hd { color: #fff; font-size: 24px; font-weight: 800; padding: 8px 20px; border-radius: 16px 16px 0 0; }
+      .env { border-color: var(--sky); }
+      .env .hd { background: var(--sky); }
+      .fnc { border-color: var(--grape); }
+      .fnc .hd { background: var(--grape); }
+      .er { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 28px; padding: 10px 22px; }
+      .er .vn { color: var(--muted); }
+      .vv { display: inline-block; font-weight: 800; }
+      .bp { font-size: 76px; line-height: 1; display: inline-block; }
+      .chip {
+        position: absolute;
+        font-family: var(--mono);
+        font-size: 26px;
+        font-weight: 700;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 999px;
+        padding: 6px 20px;
+        white-space: nowrap;
+      }
+      .tag { position: absolute; font-size: 26px; font-weight: 800; background: var(--sun); border: 4px solid var(--ink); border-radius: 999px; padding: 6px 20px; white-space: nowrap; }
+      .room { position: absolute; border-radius: 28px; }
+      .room .rl { position: absolute; left: 22px; top: 12px; font-family: var(--mono); font-weight: 800; font-size: 26px; }
+
+      /* code + console */
+      .code {
+        position: absolute;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 22px;
+        padding: 22px 30px;
+        font-family: var(--mono);
+        font-weight: 600;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+        white-space: pre;
+      }
+      .code .cl { display: block; padding: 0 12px; margin: 0 -12px; border-radius: 8px; background-color: rgba(255, 201, 60, 0); }
+      .kw { color: #8a2be2; }
+      .st { color: #0a8a5f; }
+      .nu { color: #c2410c; }
+      .cm { color: #6b7280; font-style: italic; }
+      .fn { color: #0a6fb0; }
+      .cons {
+        position: absolute;
+        background: #1f2140;
+        color: #e9ecff;
+        border: 4px solid var(--ink);
+        border-radius: 22px;
+        padding: 14px 28px 16px;
+        font-family: var(--mono);
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.16);
+      }
+      .cons .ct { font-size: 20px; letter-spacing: 0.14em; text-transform: uppercase; color: #aab0dc; margin-bottom: 6px; }
+      .cons .out { display: block; font-size: 32px; line-height: 1.5; color: #7cf3b0; }
+      .cons .out.err { color: #ff9aa8; }
+      .cons .out.dim { color: #aab0dc; }
+
+      /* countdown */
+      .cd { position: absolute; width: 230px; height: 230px; border-radius: 50%; background: var(--sun); border: 6px solid var(--ink); box-shadow: 0 10px 0 rgba(31, 33, 64, 0.16); }
+      .cd .cdn { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 130px; font-weight: 900; }
+      .cd .cdl { position: absolute; left: 0; right: 0; bottom: -58px; text-align: center; font-size: 34px; font-weight: 800; }
+
+      /* title / recap */
+      #s1 { text-align: center; padding-top: 110px; }
+      #s1 .kick { display: block; margin-bottom: 14px; font-size: 30px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grape); }
+      #s1 h1 { font-size: 170px; font-weight: 900; letter-spacing: -0.05em; line-height: 1.1; margin-top: 4px; }
+      #s1 p { font-size: 40px; color: var(--muted); margin-top: 10px; }
+      .rc { position: absolute; left: 140px; width: 1120px; height: 150px; display: flex; align-items: center; gap: 28px; padding: 0 34px; font-size: 36px; font-weight: 800; line-height: 1.25; }
+      .rc .ic { font-size: 68px; }
+      .rc small { display: block; font-size: 26px; font-weight: 600; color: var(--muted); margin-top: 4px; }
+      .fine { position: absolute; font-size: 22px; color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute">
+      <defs>
+        <marker id="ahInk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1f2140" /></marker>
+        <marker id="ahRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d92d48" /></marker>
+        <marker id="ahGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0a8a5f" /></marker>
+        <marker id="ahGrape" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#6a4df0" /></marker>
+      </defs>
+    </svg>
+
+    <div id="root" data-composition-id="main" data-start="0" data-duration="{{total}}" data-width="1920" data-height="1080">
+      <audio id="vo" src="assets/voiceover.mp3" data-start="0" data-duration="{{total}}" data-volume="1"></audio>
+      <audio id="bgm" src="assets/music.mp3" data-start="0" data-duration="{{total}}" data-volume="1" data-fade-in="2" data-fade-out="4"></audio>
+
+      <div id="badge">JavaScript Demystified</div>
+
+      <!-- 1 · Title -->
+      <section id="s1" class="clip" data-start="{{s1.start}}" data-duration="{{s1.dur}}" data-track-index="0">
+        <div class="kick">JavaScript Demystified</div>
+        <h1>Closures</h1>
+        <p>One simple idea that looks scary</p>
+      </section>
+
+      <!-- 2 · Puzzle -->
+      <section id="s2" class="clip" data-start="{{s2.start}}" data-duration="{{s2.dur}}" data-track-index="0">
+        <div class="eyebrow">The puzzle</div>
+        <h2>What does this print?</h2>
+        <div class="code" id="code2" style="left: 140px; top: 270px; width: 830px; font-size: 30px; line-height: 46px"></div>
+        <div class="cons" id="cons2" style="left: 1030px; top: 270px; width: 750px; height: 250px">
+          <div class="ct">console</div>
+          <span class="out" id="o2a">1</span><span class="out" id="o2b">2</span><span class="out" id="o2c">3</span>
+        </div>
+        <div class="card" id="gone2" style="left: 1030px; top: 590px; width: 750px; padding: 22px 28px; font-size: 32px; font-weight: 800; line-height: 1.35">
+          <span class="nu" style="color: var(--coral)">makeCounter</span> has finished.<br />Shouldn't <span class="fn" style="color: var(--sky)">count</span> be gone? 🤔
+        </div>
+        <div class="cd" id="cd2" style="left: 1290px; top: 590px"><span class="cdn">3</span><span class="cdn">2</span><span class="cdn">1</span><div class="cdl">Think!</div></div>
+      </section>
+
+      <!-- 3 · Scope -->
+      <section id="s3" class="clip" data-start="{{s3.start}}" data-duration="{{s3.dur}}" data-track-index="0">
+        <div class="eyebrow">Step 1 · scope</div>
+        <h2>Variables live in rooms</h2>
+        <div class="code" id="code3" style="left: 140px; top: 270px; width: 850px; font-size: 30px; line-height: 46px"></div>
+        <div class="cons" id="cons3" style="left: 140px; top: 640px; width: 850px; height: 200px">
+          <div class="ct">console</div>
+          <span class="out" id="o3a">blue</span><span class="out err" id="o3b">ReferenceError: secret is not defined</span>
+        </div>
+        <div class="room" id="glob3" style="left: 1040px; top: 270px; width: 740px; height: 570px; border: 5px dashed var(--ink); background: rgba(255,255,255,.5)"><div class="rl">global room</div></div>
+        <div class="room" id="room3" style="left: 1090px; top: 370px; width: 380px; height: 330px; border: 5px solid var(--sky); background: #e3f4ff"><div class="rl" style="color: var(--sky)">greet()</div></div>
+        <div class="chip" id="chip3" style="left: 1120px; top: 500px; border-color: var(--sky)">secret = <span class="st">"blue"</span></div>
+        <div class="card" id="peek3" style="left: 1520px; top: 470px; width: 230px; padding: 16px 14px; text-align: center; font-family: var(--mono); font-size: 22px; font-weight: 700">
+          <div style="font-size: 56px; line-height: 1">👀</div>console.log(secret)
+        </div>
+        <svg class="ov"><line id="arr3" x1="1510" y1="540" x2="1478" y2="540" stroke="#d92d48" marker-end="url(#ahRed)" /></svg>
+        <div class="tag" id="x3" style="left: 1474px; top: 428px; background: #ffd0d6; color: var(--coral)">✗ blocked</div>
+      </section>
+
+      <!-- 4 · Lexical scope -->
+      <section id="s4" class="clip" data-start="{{s4.start}}" data-duration="{{s4.dur}}" data-track-index="0">
+        <div class="eyebrow">Step 2 · lexical scope</div>
+        <h2>Inner rooms can look outward</h2>
+        <div class="code" id="code4" style="left: 140px; top: 270px; width: 770px; font-size: 27px; line-height: 42px"></div>
+        <div class="cons" id="cons4" style="left: 140px; top: 800px; width: 770px; height: 100px; padding-top: 10px"><span class="out" id="o4a" style="font-size: 32px">Hello Sam</span></div>
+        <div class="room" id="glob4" style="left: 960px; top: 270px; width: 820px; height: 520px; border: 5px dashed var(--ink); background: rgba(255,255,255,.5)"><div class="rl">global room</div></div>
+        <div class="chip" id="chipG4" style="left: 1420px; top: 296px; border-color: var(--mint)">greeting = <span class="st">"Hello"</span></div>
+        <div class="room" id="out4" style="left: 1000px; top: 370px; width: 740px; height: 390px; border: 5px solid var(--sky); background: #e3f4ff"><div class="rl" style="color: var(--sky)">outer()</div></div>
+        <div class="chip" id="chipU4" style="left: 1520px; top: 420px; border-color: var(--sky)">user = <span class="st">"Sam"</span></div>
+        <div class="room" id="in4" style="left: 1040px; top: 480px; width: 440px; height: 250px; border: 5px solid var(--grape); background: #efeaff"><div class="rl" style="color: var(--grape)">inner()</div></div>
+        <div class="fine" id="in4t" style="left: 1064px; top: 560px; font-family: var(--mono); font-size: 22px; color: var(--ink)">console.log(greeting, user)</div>
+        <svg class="ov">
+          <line id="lk1" x1="1260" y1="480" x2="1260" y2="378" stroke="#6a4df0" stroke-dasharray="10 10" marker-end="url(#ahGrape)" />
+          <line id="lk2" x1="1300" y1="368" x2="1300" y2="278" stroke="#6a4df0" stroke-dasharray="10 10" marker-end="url(#ahGrape)" />
+        </svg>
+        <div class="tag" id="lex4" style="left: 960px; top: 802px; width: 720px; white-space: normal; text-align: center; font-size: 26px; padding: 8px 22px; border-radius: 28px">Lexical = where you <u>write</u> the code decides what it can see</div>
+        <div id="mag4" style="position: absolute; left: 1210px; top: 620px; font-size: 68px; line-height: 1">🔍</div>
+        <div class="tag" id="miss4a" style="left: 1170px; top: 690px; background: #ffd0d6; color: var(--coral); font-size: 22px; padding: 4px 14px">not here</div>
+        <div class="tag" id="miss4b" style="left: 1200px; top: 390px; background: #ffd0d6; color: var(--coral); font-size: 22px; padding: 4px 14px">not here</div>
+      </section>
+
+      <!-- 5 · Environments & the backpack -->
+      <section id="s5" class="clip" data-start="{{s5.start}}" data-duration="{{s5.dur}}" data-track-index="0">
+        <div class="eyebrow">Step 3 · the backpack</div>
+        <h2>Every function remembers where it was born</h2>
+        <div class="card env" id="env5" style="left: 140px; top: 290px; width: 620px; height: 210px">
+          <div class="hd">lexical environment of outer()</div>
+          <div class="er"><span class="vn">variables</span><span>user = <span class="st">"Sam"</span></span></div>
+          <div class="er" id="er5o"><span class="vn">outer link</span><span>→ global environment</span></div>
+        </div>
+        <div class="card env" id="envG5" style="left: 140px; top: 570px; width: 620px; height: 140px">
+          <div class="hd">global environment</div>
+          <div class="er"><span class="vn">variables</span><span>greeting = <span class="st">"Hello"</span></span></div>
+        </div>
+        <div class="card fnc" id="fn5" style="left: 1010px; top: 290px; width: 770px; height: 260px">
+          <div class="hd">function inner()</div>
+          <div style="padding: 18px 28px; font-size: 27px; line-height: 1.5">
+            <span class="bp" id="bp5">🎒</span>
+            <span id="bpt5" style="display: inline-block; vertical-align: top; margin-left: 14px; font-family: var(--mono); font-weight: 700">backpack:<br />user, greeting</span>
+          </div>
+        </div>
+        <svg class="ov">
+          <line id="arr5a" x1="1010" y1="410" x2="766" y2="410" stroke="#6a4df0" marker-end="url(#ahGrape)" />
+          <line id="arr5b" x1="450" y1="502" x2="450" y2="566" stroke="#0a7fbf" marker-end="url(#ahInk)" />
+        </svg>
+        <div class="tag" id="tg5a" style="left: 780px; top: 350px; font-size: 22px; padding: 4px 14px; font-family: var(--mono)">[[Environment]]</div>
+        <div class="card" id="def5" style="left: 140px; top: 745px; width: 1540px; height: 140px; padding: 20px 34px; background: #fff7d6">
+          <div style="font-size: 38px; font-weight: 800; line-height: 1.3">Closure = <span style="color: var(--grape)">a function</span> + <span style="color: var(--sky)">its lexical environment</span> 🎒</div>
+          <div style="font-size: 22px; color: var(--muted); margin-top: 8px">Definition adapted from MDN Web Docs · javascript.info</div>
+        </div>
+      </section>
+
+      <!-- 6 · Slow motion -->
+      <section id="s6" class="clip" data-start="{{s6.start}}" data-duration="{{s6.dur}}" data-track-index="0">
+        <div class="eyebrow">Slow motion</div>
+        <h2>Watch makeCounter run</h2>
+        <div class="code" id="code6" style="left: 140px; top: 270px; width: 700px; font-size: 26px; line-height: 40px"></div>
+        <div class="fine" style="left: 880px; top: 268px; font-size: 26px; font-weight: 800; color: var(--ink)">Call stack</div>
+        <div class="card" id="frG6" style="left: 880px; top: 790px; width: 240px; height: 80px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 800; font-size: 26px; background: #eef0fb">global</div>
+        <div class="card" id="frM6" style="left: 880px; top: 700px; width: 240px; height: 80px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 800; font-size: 24px; background: #dff7ec">makeCounter()</div>
+        <div class="card" id="frC6" style="left: 880px; top: 700px; width: 240px; height: 80px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 800; font-size: 26px; background: #efeaff">counter()</div>
+        <div class="room" id="mem6" style="left: 1160px; top: 270px; width: 620px; height: 560px; border: 5px dashed var(--ink); background: rgba(255,255,255,.5)"><div class="rl">memory</div></div>
+        <div class="card env" id="E6" style="left: 1190px; top: 330px; width: 560px; height: 210px">
+          <div class="hd">environment of makeCounter()</div>
+          <div class="er"><span class="vn">count</span><span class="vv" id="cnt6">0</span></div>
+          <div class="er"><span class="vn">outer link</span><span>→ global</span></div>
+        </div>
+        <div class="card fnc" id="F6" style="left: 1190px; top: 630px; width: 560px; height: 190px">
+          <div class="hd">the inner function</div>
+          <div style="padding: 14px 24px; font-size: 26px; font-family: var(--mono); font-weight: 700"><span class="bp" style="font-size: 64px">🎒</span> <span style="vertical-align: top; display: inline-block; margin-left: 10px">backpack →<br />makeCounter env</span></div>
+        </div>
+        <div class="tag" id="tag6" style="left: 1620px; top: 574px; font-family: var(--mono); font-size: 22px; padding: 2px 14px">counter</div>
+        <svg class="ov"><line id="ar6" x1="1470" y1="626" x2="1470" y2="546" stroke="#6a4df0" marker-end="url(#ahGrape)" /></svg>
+        <div id="trash6" style="position: absolute; left: 1680px; top: 296px; font-size: 64px; line-height: 1">🗑️</div>
+        <div class="tag" id="alive6" style="left: 1230px; top: 556px; background: #d5f5e6; color: var(--mint); font-size: 24px; padding: 4px 16px">alive ✓ still referenced</div>
+        <div id="mag6" style="position: absolute; left: 1130px; top: 730px; font-size: 60px; line-height: 1">🔍</div>
+        <div class="tag" id="out6" style="left: 1010px; top: 620px; font-family: var(--mono); font-size: 26px">→ 1</div>
+      </section>
+
+      <!-- 7 · Independent closures -->
+      <section id="s7" class="clip" data-start="{{s7.start}}" data-duration="{{s7.dur}}" data-track-index="0">
+        <div class="eyebrow">Fresh every time</div>
+        <h2>Each call gets its own environment</h2>
+        <div class="code" id="code7" style="left: 140px; top: 270px; width: 760px; font-size: 30px; line-height: 46px"></div>
+        <div class="cons" id="cons7" style="left: 140px; top: 620px; width: 760px; height: 250px">
+          <div class="ct">console</div>
+          <span class="out" id="o7a">a() → 1</span><span class="out" id="o7b">a() → 2</span><span class="out" id="o7c">b() → 1</span>
+        </div>
+        <div class="card env" id="EA7" style="left: 960px; top: 290px; width: 380px; height: 190px"><div class="hd">environment A</div><div class="er"><span class="vn">count</span><span class="vv" id="cA7">0</span></div></div>
+        <div class="card env" id="EB7" style="left: 1400px; top: 290px; width: 380px; height: 190px"><div class="hd">environment B</div><div class="er"><span class="vn">count</span><span class="vv" id="cB7">0</span></div></div>
+        <div class="card fnc" id="FA7" style="left: 960px; top: 580px; width: 380px; height: 120px"><div class="hd">counter A</div><div style="padding: 6px 22px"><span class="bp" style="font-size: 52px">🎒</span></div></div>
+        <div class="card fnc" id="FB7" style="left: 1400px; top: 580px; width: 380px; height: 120px"><div class="hd">counter B</div><div style="padding: 6px 22px"><span class="bp" style="font-size: 52px">🎒</span></div></div>
+        <svg class="ov">
+          <line id="aA7" x1="1150" y1="578" x2="1150" y2="486" stroke="#6a4df0" marker-end="url(#ahGrape)" />
+          <line id="aB7" x1="1590" y1="578" x2="1590" y2="486" stroke="#6a4df0" marker-end="url(#ahGrape)" />
+        </svg>
+        <div class="tag" id="ns7" style="left: 1180px; top: 380px; background: #ffd0d6; color: var(--coral); font-size: 22px; padding: 4px 14px">not shared</div>
+        <div class="cd" id="cd7" style="left: 1280px; top: 730px; width: 170px; height: 170px"><span class="cdn" style="font-size: 96px">3</span><span class="cdn" style="font-size: 96px">2</span><span class="cdn" style="font-size: 96px">1</span></div>
+      </section>
+
+      <!-- 8 · Live reference -->
+      <section id="s8" class="clip" data-start="{{s8.start}}" data-duration="{{s8.dur}}" data-track-index="0">
+        <div class="eyebrow">A live link</div>
+        <h2>Closures see the current value</h2>
+        <div class="code" id="code8" style="left: 140px; top: 270px; width: 830px; font-size: 30px; line-height: 46px"></div>
+        <div class="cons" id="cons8" style="left: 140px; top: 690px; width: 830px; height: 130px"><span class="out" id="o8a" style="margin-top: 10px">bye</span></div>
+        <div class="card env" id="var8" style="left: 1130px; top: 300px; width: 560px; height: 190px"><div class="hd">variable</div><div class="er" style="font-size: 44px; padding-top: 22px"><span class="vn">message</span><span class="vv" id="msg8">"hi"</span></div></div>
+        <div class="card fnc" id="fn8" style="left: 1130px; top: 620px; width: 560px; height: 170px"><div class="hd">function show()</div><div style="padding: 10px 24px; font-size: 26px; font-family: var(--mono); font-weight: 700"><span class="bp" style="font-size: 60px">🎒</span> <span style="vertical-align: top; display: inline-block; margin-left: 10px">link to message</span></div></div>
+        <svg class="ov"><line id="ar8" x1="1410" y1="616" x2="1410" y2="496" stroke="#6a4df0" marker-end="url(#ahGrape)" /></svg>
+        <div class="tag" id="lk8" style="left: 1440px; top: 540px; font-size: 24px">link, not a copy</div>
+      </section>
+
+      <!-- 9 · Private data -->
+      <section id="s9" class="clip" data-start="{{s9.start}}" data-duration="{{s9.dur}}" data-track-index="0">
+        <div class="eyebrow">Use it · private data</div>
+        <h2>Hide variables inside a closure</h2>
+        <div class="code" id="code9" style="left: 140px; top: 270px; width: 810px; font-size: 25px; line-height: 38px"></div>
+        <div class="room" id="vault9" style="left: 1010px; top: 290px; width: 770px; height: 320px; border: 5px dashed var(--grape); background: #f3efff"><div class="rl" style="color: var(--grape); font-size: 24px">🔒 private: only these functions can reach it</div></div>
+        <div class="chip" id="bal9" style="left: 1400px; top: 420px; font-size: 34px; border-color: var(--grape)">balance = <span class="vv" id="balv9">100</span></div>
+        <div class="chip" id="dep9" style="left: 1040px; top: 400px; font-size: 24px; background: #dff7ec">deposit()</div>
+        <div class="chip" id="get9" style="left: 1040px; top: 490px; font-size: 24px; background: #dff7ec">getBalance()</div>
+        <div class="cons" id="cons9" style="left: 1010px; top: 650px; width: 770px; height: 180px">
+          <div class="ct">console</div>
+          <span class="out" id="o9a">account.deposit(50) → 150</span><span class="out err" id="o9b">account.balance → undefined</span>
+        </div>
+      </section>
+
+      <!-- 10 · Factories -->
+      <section id="s10" class="clip" data-start="{{s10.start}}" data-duration="{{s10.dur}}" data-track-index="0">
+        <div class="eyebrow">Use it · factories</div>
+        <h2>One function, many personalities</h2>
+        <div class="code" id="code10" style="left: 140px; top: 270px; width: 840px; font-size: 30px; line-height: 46px"></div>
+        <div class="card fnc" id="f5" style="left: 1040px; top: 290px; width: 340px; height: 290px"><div class="hd">add5</div><div style="padding: 12px 22px; font-family: var(--mono); font-weight: 700; font-size: 28px"><span class="bp" style="font-size: 64px">🎒</span><br />x = 5<div style="margin-top: 14px; color: var(--mint)" id="r5">add5(2) → 7</div></div></div>
+        <div class="card fnc" id="f10" style="left: 1430px; top: 290px; width: 340px; height: 290px"><div class="hd">add10</div><div style="padding: 12px 22px; font-family: var(--mono); font-weight: 700; font-size: 28px"><span class="bp" style="font-size: 64px">🎒</span><br />x = 10<div style="margin-top: 14px; color: var(--mint)" id="r10">add10(2) → 12</div></div></div>
+        <div class="fine" id="ev10h" style="left: 1040px; top: 620px; font-size: 26px; font-weight: 800; color: var(--ink)">Closures are everywhere:</div>
+        <div class="chip" id="ev10a" style="left: 1040px; top: 670px; font-family: Inter, sans-serif; font-size: 28px">⏱️ timers</div>
+        <div class="chip" id="ev10b" style="left: 1240px; top: 670px; font-family: Inter, sans-serif; font-size: 28px">🖱️ click handlers</div>
+        <div class="chip" id="ev10c" style="left: 1040px; top: 750px; font-family: Inter, sans-serif; font-size: 28px">📞 callbacks</div>
+      </section>
+
+      <!-- 11 · The loop trap -->
+      <section id="s11" class="clip" data-start="{{s11.start}}" data-duration="{{s11.dur}}" data-track-index="0">
+        <div class="eyebrow" style="background: var(--coral)">The classic trap</div>
+        <h2>Closures in a loop</h2>
+        <div class="code" id="code11" style="left: 140px; top: 270px; width: 830px; font-size: 32px; line-height: 50px"></div>
+        <div class="cons" id="cons11" style="left: 140px; top: 620px; width: 830px; height: 230px">
+          <div class="ct">console</div>
+          <span class="out" id="o11a" style="position: absolute; left: 32px; top: 64px">3</span><span class="out" id="o11b" style="position: absolute; left: 32px; top: 112px">3</span><span class="out" id="o11c" style="position: absolute; left: 32px; top: 160px">3</span>
+          <span class="out" id="o11d" style="position: absolute; left: 32px; top: 64px">0</span><span class="out" id="o11e" style="position: absolute; left: 32px; top: 112px">1</span><span class="out" id="o11f" style="position: absolute; left: 32px; top: 160px">2</span>
+        </div>
+        <div class="card env" id="E11" style="left: 1140px; top: 300px; width: 400px; height: 190px"><div class="hd">ONE shared i</div><div class="er" style="font-size: 44px; padding-top: 20px"><span class="vn">i</span><span class="vv" id="i11">0</span></div></div>
+        <div class="card fnc" id="g1" style="left: 1010px; top: 670px; width: 220px; height: 80px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 800; font-size: 24px">timer 1</div>
+        <div class="card fnc" id="g2" style="left: 1260px; top: 670px; width: 220px; height: 80px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 800; font-size: 24px">timer 2</div>
+        <div class="card fnc" id="g3" style="left: 1510px; top: 670px; width: 220px; height: 80px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 800; font-size: 24px">timer 3</div>
+        <svg class="ov" id="svgA11">
+          <line x1="1120" y1="666" x2="1240" y2="496" stroke="#d92d48" marker-end="url(#ahRed)" />
+          <line x1="1370" y1="666" x2="1340" y2="496" stroke="#d92d48" marker-end="url(#ahRed)" />
+          <line x1="1620" y1="666" x2="1450" y2="496" stroke="#d92d48" marker-end="url(#ahRed)" />
+        </svg>
+        <div class="card env" id="B1" style="left: 1000px; top: 300px; width: 230px; height: 150px"><div class="hd" style="font-size: 20px">own i</div><div class="er" style="font-size: 38px"><span class="vn">i</span><span class="vv">0</span></div></div>
+        <div class="card env" id="B2" style="left: 1260px; top: 300px; width: 230px; height: 150px"><div class="hd" style="font-size: 20px">own i</div><div class="er" style="font-size: 38px"><span class="vn">i</span><span class="vv">1</span></div></div>
+        <div class="card env" id="B3" style="left: 1520px; top: 300px; width: 230px; height: 150px"><div class="hd" style="font-size: 20px">own i</div><div class="er" style="font-size: 38px"><span class="vn">i</span><span class="vv">2</span></div></div>
+        <svg class="ov" id="svgB11">
+          <line x1="1115" y1="666" x2="1115" y2="456" stroke="#0a8a5f" marker-end="url(#ahGreen)" />
+          <line x1="1375" y1="666" x2="1375" y2="456" stroke="#0a8a5f" marker-end="url(#ahGreen)" />
+          <line x1="1635" y1="666" x2="1635" y2="456" stroke="#0a8a5f" marker-end="url(#ahGreen)" />
+        </svg>
+        <div class="cd" id="cd11" style="left: 1300px; top: 505px; width: 140px; height: 140px"><span class="cdn" style="font-size: 84px">3</span><span class="cdn" style="font-size: 84px">2</span><span class="cdn" style="font-size: 84px">1</span></div>
+        <div class="tag" id="same11" style="left: 1230px; top: 570px; background: #ffd0d6; color: var(--coral); font-size: 24px">all share the same i</div>
+        <div class="tag" id="fix11" style="left: 1150px; top: 570px; background: #d5f5e6; color: var(--mint); font-size: 24px">let → a fresh i per round</div>
+      </section>
+
+      <!-- 12 · Memory -->
+      <section id="s12" class="clip" data-start="{{s12.start}}" data-duration="{{s12.dur}}" data-track-index="0">
+        <div class="eyebrow">Keep in mind</div>
+        <h2>Closures keep variables alive</h2>
+        <div class="code" id="code12" style="left: 140px; top: 270px; width: 830px; font-size: 30px; line-height: 46px"></div>
+        <div class="card env" id="E12" style="left: 1040px; top: 300px; width: 700px; height: 230px"><div class="hd">environment</div><div class="er" style="padding-top: 22px"><span class="vn">bigData</span><span>[ 1,000,000 items ]</span></div></div>
+        <div class="card fnc" id="F12" style="left: 1040px; top: 640px; width: 700px; height: 150px"><div class="hd">handler (function)</div><div style="padding: 10px 24px; font-size: 26px; font-family: var(--mono); font-weight: 700"><span class="bp" style="font-size: 60px">🎒</span> <span style="vertical-align: top; display: inline-block; margin-left: 10px">holds the environment</span></div></div>
+        <svg class="ov"><line id="ar12" x1="1390" y1="636" x2="1390" y2="536" stroke="#6a4df0" marker-end="url(#ahGrape)" /></svg>
+        <div class="tag" id="alive12" style="left: 1440px; top: 560px; background: #d5f5e6; color: var(--mint); font-size: 24px">kept alive</div>
+        <div class="tag" id="cut12" style="left: 1440px; top: 560px; background: #ffd0d6; color: var(--coral); font-size: 24px">link cut ✂️</div>
+        <div class="tag" id="free12" style="left: 1090px; top: 470px; background: #d5f5e6; color: var(--mint); font-size: 30px">♻️ cleaned up, memory freed</div>
+      </section>
+
+      <!-- 13 · Recap -->
+      <section id="s13" class="clip" data-start="{{s13.start}}" data-duration="{{s13.dur}}" data-track-index="0">
+        <div class="eyebrow">Recap</div>
+        <h2>Closures in three ideas</h2>
+        <div class="card rc" id="rc1" style="top: 290px"><span class="ic">🎒</span><div>A function + the variables around where it was created</div></div>
+        <div class="card rc" id="rc2" style="top: 470px"><span class="ic">🔗</span><div>A live link, not a copy. Kept alive as long as the function lives</div></div>
+        <div class="card rc" id="rc3" style="top: 650px"><span class="ic">🛠️</span><div>Great for private data, factories, callbacks<small>In loops, use let instead of var</small></div></div>
+        <div class="fine" id="src13" style="left: 140px; top: 850px; font-size: 22px">Sources: MDN Web Docs, "Closures" · javascript.info, "Variable scope, closure"</div>
+        <div class="tag" id="next13" style="right: 140px; top: 200px; font-size: 30px; background: var(--sun)">Next episode: <span style="font-family: var(--mono)">this</span></div>
+      </section>
+
+      <div id="captions"></div>
+
+      <div class="char" id="sam" data-kind="sam"></div>
+      <div class="char" id="byte" data-kind="byte"></div>
+      <div class="char" id="mal" data-kind="mal"></div>
+      <div class="char" id="guard" data-kind="guard"></div>
+    </div>
+
+    <script>
+      const T = /*__TIMING__*/ null;
+      const CODE = {
+        code2: `function makeCounter() {
+  let count = 0;
+  return function () {
+    count++;
+    return count;
+  };
+}
+
+const counter = makeCounter();
+console.log(counter());
+console.log(counter());
+console.log(counter());`,
+        code3: `function greet() {
+  const secret = "blue";
+  console.log(secret);   // works
+}
+greet();
+console.log(secret);     // ReferenceError`,
+        code4: `const greeting = "Hello";
+
+function outer() {
+  const user = "Sam";
+
+  function inner() {
+    console.log(greeting, user);
+  }
+  inner();
+}
+outer();`,
+        code6: `function makeCounter() {
+  let count = 0;
+  return function () {
+    count++;
+    return count;
+  };
+}
+
+const counter = makeCounter();
+counter(); // 1
+counter(); // 2
+counter(); // 3`,
+        code7: `const a = makeCounter();
+const b = makeCounter();
+
+a(); // 1
+a(); // 2
+b(); // 1`,
+        code8: `let message = "hi";
+
+function show() {
+  console.log(message);
+}
+
+message = "bye";
+show();   // "bye"`,
+        code9: `function createAccount(balance) {
+  return {
+    deposit(amount) {
+      balance += amount;
+      return balance;
+    },
+    getBalance() {
+      return balance;
+    }
+  };
+}
+
+const account = createAccount(100);
+account.deposit(50);   // 150
+account.balance;       // undefined`,
+        code10: `function makeAdder(x) {
+  return function (y) {
+    return x + y;
+  };
+}
+
+const add5  = makeAdder(5);
+const add10 = makeAdder(10);
+add5(2);    // 7
+add10(2);   // 12`,
+        code11: `for (var i = 0; i < 3; i++) {
+  setTimeout(function () {
+    console.log(i);
+  }, 100);
+}`,
+        code12: `let handler = makeHandler(bigData);
+
+// ... later, when no longer needed:
+handler = null;   // let go`,
+      };
+
+      // ---------------- code highlighting ----------------
+      const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      const KW = "function|const|let|var|return|for|new|if|else";
+      const RE = new RegExp("(\\/\\/.*$)|(\"[^\"]*\"|'[^']*')|\\b(" + KW + ")\\b|\\b(\\d+)\\b|\\b([A-Za-z_$][\\w$]*)(?=\\()", "g");
+      function highlight(line) {
+        return esc(line).replace(RE, (m, cm, st, kw, nu, fn) =>
+          cm ? '<span class="cm">' + cm + "</span>" : st ? '<span class="st">' + st + "</span>" : kw ? '<span class="kw">' + kw + "</span>" : nu ? '<span class="nu">' + nu + "</span>" : '<span class="fn">' + fn + "</span>"
+        );
+      }
+      Object.keys(CODE).forEach((id) => {
+        document.getElementById(id).innerHTML = CODE[id]
+          .split("\n")
+          .map((l) => '<span class="cl">' + (l ? highlight(l) : "&nbsp;") + "</span>")
+          .join("");
+      });
+
+      // ---------------- characters ----------------
+      const INK = "#1f2140";
+      function blob(body, belly, extra) {
+        return `<svg viewBox="0 0 240 290">
+          <ellipse cx="120" cy="280" rx="80" ry="10" fill="rgba(31,33,64,.12)"/>
+          <g class="fx"><g class="inner">
+            <g class="arm-l"><path d="M44 170 q-36 6 -40 44" stroke="${body}" stroke-width="20" stroke-linecap="round" fill="none"/></g>
+            <g class="arm-r"><path d="M196 170 q36 6 40 44" stroke="${body}" stroke-width="20" stroke-linecap="round" fill="none"/></g>
+            <ellipse cx="88" cy="262" rx="26" ry="14" fill="${body}"/><ellipse cx="152" cy="262" rx="26" ry="14" fill="${body}"/>
+            <path d="M112 44 q6 -34 34 -26 q-18 6 -16 28z" fill="${body}"/>
+            <rect x="30" y="40" width="180" height="222" rx="90" fill="${body}"/>
+            <ellipse cx="120" cy="196" rx="58" ry="46" fill="${belly}"/>
+            ${extra}
+            <ellipse cx="74" cy="156" rx="14" ry="9" fill="#ff9bb3" opacity=".8"/><ellipse cx="166" cy="156" rx="14" ry="9" fill="#ff9bb3" opacity=".8"/>
+            <g class="eyes">
+              <ellipse cx="92" cy="122" rx="21" ry="23" fill="#fff"/><ellipse cx="148" cy="122" rx="21" ry="23" fill="#fff"/>
+              <circle cx="95" cy="126" r="10" fill="${INK}"/><circle cx="151" cy="126" r="10" fill="${INK}"/>
+              <circle cx="99" cy="121" r="3.5" fill="#fff"/><circle cx="155" cy="121" r="3.5" fill="#fff"/>
+            </g>
+            <path class="m-happy" d="M100 158 q20 24 40 0" stroke="${INK}" stroke-width="6" stroke-linecap="round" fill="none"/>
+            <path class="m-sad" d="M102 170 q18 -16 36 0" stroke="${INK}" stroke-width="6" stroke-linecap="round" fill="none" opacity="0"/>
+            <ellipse class="m-talk" cx="120" cy="164" rx="14" ry="11" fill="#7a1f3a" opacity="0"/>
+          </g></g>
+        </svg>`;
+      }
+      const SHIELD = `<path d="M120 168 l28 9 v24 q0 20 -28 30 q-28 -10 -28 -30 v-24z" fill="#fff" stroke="${INK}" stroke-width="4"/><path d="M107 200 l10 10 l18 -20" stroke="#06a37a" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+      const MASK = `<path d="M52 104 q68 -22 136 0 v30 q-68 -16 -136 0z" fill="${INK}"/><ellipse cx="92" cy="120" rx="14" ry="9" fill="#fff"/><ellipse cx="148" cy="120" rx="14" ry="9" fill="#fff"/><circle cx="96" cy="121" r="5" fill="${INK}"/><circle cx="152" cy="121" r="5" fill="${INK}"/>`;
+      const BOT = `<svg viewBox="0 0 260 320">
+        <ellipse cx="130" cy="312" rx="90" ry="10" fill="rgba(31,33,64,.12)"/>
+        <g class="fx"><g class="inner">
+          <g class="ant"><line x1="130" y1="40" x2="130" y2="10" stroke="${INK}" stroke-width="6"/><circle class="bulb" cx="130" cy="10" r="12" fill="#c2410c" stroke="${INK}" stroke-width="4"/></g>
+          <g class="arm-l"><rect x="22" y="200" width="36" height="80" rx="18" fill="#05b98a"/></g>
+          <g class="arm-r"><rect x="202" y="200" width="36" height="80" rx="18" fill="#05b98a"/></g>
+          <rect x="66" y="188" width="128" height="110" rx="28" fill="#038a66" stroke="${INK}" stroke-width="5"/>
+          <text x="130" y="258" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-weight="800" font-size="34" fill="#fff">JS</text>
+          <rect class="head" x="30" y="40" width="200" height="150" rx="40" fill="#06d6a0" stroke="${INK}" stroke-width="5"/>
+          <rect x="54" y="62" width="152" height="106" rx="26" fill="${INK}"/>
+          <g class="eyes-n"><rect x="88" y="94" width="22" height="32" rx="11" fill="#7cf3ff"/><rect x="150" y="94" width="22" height="32" rx="11" fill="#7cf3ff"/></g>
+          <g class="eyes-h" opacity="0"><path d="M86 118 q13 -22 26 0 M148 118 q13 -22 26 0" stroke="#7cf3ff" stroke-width="7" stroke-linecap="round" fill="none"/></g>
+          <g class="eyes-a" opacity="0"><path d="M84 96 l28 14 M176 96 l-28 14" stroke="#ff5d73" stroke-width="7" stroke-linecap="round"/><circle cx="100" cy="122" r="9" fill="#ff5d73"/><circle cx="160" cy="122" r="9" fill="#ff5d73"/></g>
+          <g class="eyes-q" opacity="0"><rect x="88" y="104" width="22" height="18" rx="9" fill="#7cf3ff"/><rect x="150" y="96" width="22" height="30" rx="11" fill="#7cf3ff"/></g>
+          <path class="m-n" d="M112 146 h36" stroke="#7cf3ff" stroke-width="6" stroke-linecap="round"/>
+          <rect class="m-talk" x="112" y="138" width="36" height="14" rx="7" fill="#7cf3ff" opacity="0"/>
+        </g></g>
+      </svg>`;
+      const KINDS = {
+        sam: { svg: () => blob("#7b61ff", "#a594ff", ""), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+        mal: { svg: () => blob("#ff8a3d", "#ffb27d", MASK), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+        guard: { svg: () => blob("#ffc93c", "#ffe28a", SHIELD), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+        byte: { svg: () => BOT, ar: "220 205", al: "40 205", o: "130 312", mo: "130 145" },
+      };
+      document.querySelectorAll(".char").forEach((el) => {
+        const k = KINDS[el.dataset.kind];
+        el.innerHTML = k.svg();
+        el.dataset.ar = k.ar; el.dataset.al = k.al; el.dataset.o = k.o; el.dataset.mo = k.mo;
+      });
+
+      // ---------------- captions (word-by-word, timed from the voice) ----------------
+      const capEl = document.getElementById("captions");
+      Object.keys(T.lines).forEach((id) => {
+        const ln = T.lines[id];
+        const div = document.createElement("div");
+        div.className = "cline";
+        div.id = "cap-" + id;
+        div.innerHTML = "<span>" + ln.words.map((w, i) => '<span class="cw" id="cw-' + id + "-" + i + '">' + esc(w.w) + "</span>").join(" ") + "</span>";
+        capEl.appendChild(div);
+      });
+
+      // ---------------- timeline helpers ----------------
+      const tl = gsap.timeline({ paused: true });
+      const E = "power2.out";
+      const POP = "back.out(1.5)";
+      const S = (id) => T.scenes[id].start;
+      const SE = (id) => T.scenes[id].start + T.scenes[id].dur;
+      const L = (id, off = 0) => T.lines[id].start + off;
+      const LE = (id, off = 0) => T.lines[id].start + T.lines[id].dur + off;
+      const W = (id, i) => T.lines[id].start + T.lines[id].words[i].t;
+      const D = (sel) => document.querySelector(sel).dataset;
+      const $$ = (sel) => gsap.utils.toArray(sel);
+
+      function enter(scene) {
+        tl.fromTo("#" + scene + " .eyebrow, #" + scene + " h2", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.18, ease: E }, S(scene) + 0.25);
+      }
+      function leave(scene) { tl.to("#" + scene, { opacity: 0, duration: 0.5, ease: "power2.in" }, SE(scene) - 0.55); }
+      function show(sel, t, o = {}) {
+        tl.fromTo(sel, { opacity: 0, scale: o.s ?? 0.8, y: o.y ?? 24, x: o.x ?? 0 },
+          { opacity: 1, scale: 1, y: 0, x: 0, duration: o.d ?? 0.8, ease: o.ease ?? POP, transformOrigin: o.origin ?? "50% 50%" }, t);
+      }
+      function fade(sel, t, d = 0.6) { tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power1.out" }, t); }
+      function hide(sel, t, d = 0.4) { tl.to(sel, { opacity: 0, duration: d }, t); }
+      function pulse(sel, t, scale = 1.35) { tl.fromTo(sel, { scale: 1 }, { scale, duration: 0.25, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "50% 50%", immediateRender: false }, t); }
+      function setText(sel, text, t) { tl.set(sel, { textContent: text }, t); pulse(sel, t); }
+      function glow(sel, t, color, dur = 1.6) {
+        tl.to(sel, { borderColor: color, duration: 0.3 }, t);
+        return dur;
+      }
+      function hl(id, ns, t0, dur, color = "rgba(255,201,60,.6)") {
+        const els = ns.map((n) => $$("#" + id + " .cl")[n - 1]);
+        tl.to(els, { backgroundColor: color, duration: 0.25 }, t0);
+        tl.to(els, { backgroundColor: "rgba(255,201,60,0)", duration: 0.4 }, t0 + dur);
+      }
+      function reveal(id, ns, t0, stagger = 0.16) {
+        const els = ns.map((n) => $$("#" + id + " .cl")[n - 1]);
+        tl.fromTo(els, { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.5, stagger, ease: E }, t0);
+      }
+      function codeIn(id, t, hidden = []) {
+        fade("#" + id, t, 0.7);
+        if (hidden.length) tl.set(hidden.map((n) => $$("#" + id + " .cl")[n - 1]), { opacity: 0 }, 0);
+      }
+      function out(sel, t) { tl.fromTo(sel, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.5, ease: E }, t); }
+      function countdown(id, t0, step) {
+        show("#" + id, t0, { s: 0.5, d: 0.5 });
+        const nums = $$("#" + id + " .cdn");
+        nums.forEach((n, i) => {
+          tl.fromTo(n, { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)", transformOrigin: "50% 50%" }, t0 + 0.2 + i * step);
+          tl.to(n, { opacity: 0, duration: 0.2 }, t0 + 0.2 + (i + 1) * step - 0.2);
+        });
+        hide("#" + id, t0 + 0.2 + nums.length * step, 0.3);
+      }
+
+      // characters ------------------------------------------------------
+      function pop(sel, t) { show(sel, t, { s: 0.5, y: 60, d: 1.0, origin: "50% 100%" }); }
+      function bob(sel, t0, t1, amp = 6, period = 1.8) {
+        const reps = Math.max(1, Math.floor((t1 - t0) / (period / 2)) - 1);
+        tl.to(sel + " .inner", { y: -amp, duration: period / 2, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0);
+      }
+      function breathe(sel, t0, t1) {
+        const reps = Math.max(1, Math.floor((t1 - t0) / 1.6) - 1);
+        tl.to(sel + " .fx", { scaleY: 1.03, svgOrigin: D(sel).o, duration: 1.6, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0);
+      }
+      function tilt(sel, t, deg = 6, dur = 0.7) { tl.to(sel + " .fx", { rotation: deg, svgOrigin: D(sel).o, duration: dur, yoyo: true, repeat: 1, ease: "sine.inOut" }, t); }
+      function wobble(sel, t, times = 3, deg = 6) { tl.to(sel + " .fx", { rotation: deg, svgOrigin: D(sel).o, duration: 0.45, yoyo: true, repeat: times * 2 - 1, ease: "sine.inOut" }, t); }
+      function wave(sel, t, times = 3) { tl.to(sel + " .arm-r", { rotation: -55, svgOrigin: D(sel).ar, duration: 0.45, yoyo: true, repeat: times * 2 - 1, ease: "sine.inOut" }, t); }
+      function armUp(sel, side, t, deg, hold) {
+        const o = D(sel)[side === "r" ? "ar" : "al"];
+        tl.to(sel + " .arm-" + side, { rotation: side === "r" ? -deg : deg, svgOrigin: o, duration: 0.6, ease: "sine.inOut" }, t);
+        tl.to(sel + " .arm-" + side, { rotation: 0, svgOrigin: o, duration: 0.6, ease: "sine.inOut" }, t + hold);
+      }
+      function jump(sel, t, h = 50, n = 2) { tl.to(sel + " .fx", { y: -h, duration: 0.45, yoyo: true, repeat: n * 2 - 1, ease: "sine.inOut" }, t); }
+      function cheer(sel, t) { armUp(sel, "r", t, 140, 2.0); armUp(sel, "l", t, 140, 2.0); jump(sel, t + 0.2, 45, 2); }
+      function nod(sel, t) { tl.to(sel + " .fx", { y: 10, duration: 0.3, yoyo: true, repeat: 3, ease: "sine.inOut" }, t); }
+      function blink(sel, t) {
+        const g = document.querySelector(sel).querySelector(".eyes") ? ".eyes" : ".eyes-n";
+        tl.to(sel + " " + g, { scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.12, yoyo: true, repeat: 1 }, t);
+      }
+      function wiggle(sel, t, n = 2) { tl.to(sel + " .ant", { rotation: 16, svgOrigin: "130 40", duration: 0.3, yoyo: true, repeat: n * 2 - 1, ease: "sine.inOut" }, t); }
+      function mood(sel, m, t) {
+        tl.set(sel + " .m-happy", { opacity: m === "happy" ? 1 : 0 }, t);
+        tl.set(sel + " .m-sad", { opacity: m === "sad" ? 1 : 0 }, t);
+      }
+      function talk(sel, t0, t1) {
+        tl.set(sel + " .m-n", { opacity: 0 }, t0);
+        tl.set(sel + " .m-talk", { opacity: 1 }, t0);
+        tl.fromTo(sel + " .m-talk", { scaleY: 0.3 }, { scaleY: 1.5, svgOrigin: D(sel).mo, duration: 0.24, yoyo: true, repeat: Math.max(1, Math.floor((t1 - t0) / 0.24) - 1), ease: "sine.inOut", immediateRender: false }, t0);
+        tl.set(sel + " .m-talk", { opacity: 0 }, t1);
+        tl.set(sel + " .m-n", { opacity: 1 }, t1);
+      }
+      function face(sel, f, t) {
+        ["n", "h", "a", "q"].forEach((x) => tl.set(sel + " .eyes-" + x, { opacity: x === f ? 1 : 0 }, t));
+        tl.set(sel + " .bulb", { fill: { n: "#c2410c", h: "#0a8a5f", a: "#d92d48", q: "#0a7fbf" }[f] }, t);
+      }
+      function shake(sel, t) { tl.to(sel, { x: "+=12", duration: 0.08, yoyo: true, repeat: 7, ease: "none" }, t); }
+      function walkIn(sel, t, fromX, dur = 1.8) {
+        tl.fromTo(sel, { opacity: 0, x: fromX }, { opacity: 1, x: 0, duration: dur, ease: "power1.out" }, t);
+        tl.to(sel + " .inner", { y: -18, duration: dur / 8, yoyo: true, repeat: 7, ease: "sine.inOut" }, t);
+      }
+
+      // ===================== captions timeline =====================
+      Object.keys(T.lines).forEach((id) => {
+        const ln = T.lines[id];
+        const t0 = ln.start, t1 = ln.start + ln.dur;
+        tl.fromTo("#cap-" + id, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.2, ease: "power1.out" }, t0 - 0.05);
+        tl.to("#cap-" + id, { opacity: 0, duration: 0.2 }, t1 + 0.3);
+        ln.words.forEach((w, i) => {
+          const a = t0 + w.t;
+          const b = i + 1 < ln.words.length ? t0 + ln.words[i + 1].t : t1;
+          const sel = "#cw-" + id + "-" + i;
+          tl.to(sel, { color: "#1f2140", backgroundColor: "rgba(255,201,60,0.75)", duration: 0.08 }, a);
+          tl.to(sel, { backgroundColor: "rgba(255,201,60,0)", duration: 0.15 }, Math.max(a + 0.09, b - 0.05));
+        });
+        // Byte narrates: his mouth moves with the voice
+        talk("#byte", t0 + 0.02, t1 - 0.02);
+      });
+      // gentle idle life for the corner characters, whole video
+      bob("#sam", 0.5, T.total - 1, 5, 2.0);
+      bob("#byte", 0.8, T.total - 1, 5, 2.2);
+      breathe("#sam", 0.5, T.total - 1);
+      for (let t = 4; t < T.total - 2; t += 4.7) { blink("#sam", t); blink("#byte", t + 1.1); }
+
+      // hidden-by-default extras
+      tl.set("#mal, #guard", { opacity: 0 }, 0);
+      fade("#badge", S("s2"), 0.8);
+
+      // ===================== 1 · Title =====================
+      const BIG = { sam: { x: 595, y: -170, s: 2.0 }, byte: { x: -597, y: -170, s: 2.0 } };
+      tl.set("#s1 .kick, #s1 h1, #s1 p", { opacity: 0 }, 0);
+      tl.fromTo("#s1 .kick", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: E }, 0.3);
+      tl.fromTo("#s1 h1", { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: POP }, 0.6);
+      tl.fromTo("#s1 p", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: E }, L("s1c"));
+      tl.fromTo("#sam", { opacity: 0, x: -300, y: BIG.sam.y, scale: BIG.sam.s }, { opacity: 1, x: BIG.sam.x, y: BIG.sam.y, scale: BIG.sam.s, duration: 2.0, ease: "power1.out", transformOrigin: "50% 100%" }, 0.4);
+      tl.fromTo("#byte", { opacity: 0, x: 300, y: BIG.byte.y, scale: BIG.byte.s }, { opacity: 1, x: BIG.byte.x, y: BIG.byte.y, scale: BIG.byte.s, duration: 2.0, ease: "power1.out", transformOrigin: "50% 100%" }, 0.6);
+      wave("#sam", L("s1a"), 3); wave("#byte", L("s1a", 0.6), 3);
+      face("#byte", "h", L("s1a")); wiggle("#byte", L("s1b"), 2);
+      mood("#sam", "sad", L("s1c", 1.5)); wobble("#sam", L("s1c", 1.5), 2, 5);
+      mood("#sam", "happy", L("s1d", 1.5)); cheer("#sam", L("s1d", 3.0));
+      const walkBack = LE("s1d", 0.8);
+      tl.to("#sam", { x: 0, y: 0, scale: 1, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, walkBack);
+      tl.to("#byte", { x: 0, y: 0, scale: 1, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, walkBack);
+      tl.to("#s1", { opacity: 0, duration: 0.6 }, walkBack);
+
+      // ===================== 2 · Puzzle =====================
+      enter("s2");
+      codeIn("code2", L("s2a"), [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12]);
+      face("#byte", "q", L("s2a"));
+      reveal("code2", [1, 2, 3, 4, 5, 6, 7], L("s2b"), 0.22);
+      hl("code2", [1], L("s2b", 1.0), 2.0);
+      hl("code2", [2], L("s2c", 0.6), 2.4);
+      hl("code2", [3, 4, 5, 6], L("s2d", 0.3), 4.6);
+      reveal("code2", [9], L("s2e", 0.6));
+      hl("code2", [9], L("s2e", 1.0), 5);
+      reveal("code2", [10, 11, 12], L("s2f", 0.3), 0.35);
+      hl("code2", [10, 11, 12], L("s2f", 1.0), 1.8);
+      mood("#sam", "sad", L("s2g"));
+      show("#gone2", L("s2h", 0.3), { y: 30 });
+      hl("code2", [2], L("s2h", 0.3), 3.5, "rgba(217,45,72,.35)");
+      shake("#gone2", L("s2h", 2.2));
+      hide("#gone2", L("s2i", 0.0));
+      countdown("cd2", LE("s2i", 0.15), 1.25);
+      wobble("#sam", L("s2i", 0.5), 2, 4);
+      fade("#cons2", L("s2a", 1.0), 0.6);
+      [0, 1, 2].forEach((i) => {
+        out("#o2" + "abc"[i], W("s2j", i));
+        hl("code2", [10 + i], W("s2j", i), 0.9);
+      });
+      face("#byte", "h", L("s2j")); mood("#sam", "happy", L("s2j"));
+      cheer("#byte", L("s2k", 0.3)); jump("#sam", L("s2k", 1.5), 40, 1);
+      leave("s2");
+
+      // ===================== 3 · Scope =====================
+      enter("s3");
+      codeIn("code3", L("s3a", 0.4));
+      fade("#cons3", L("s3a", 0.6), 0.5);
+      tl.set("#o3a, #o3b", { opacity: 0 }, 0);
+      show("#glob3", L("s3b", 0.5), { s: 0.9, d: 0.9 });
+      show("#room3", L("s3c", 0.6), { s: 0.7, d: 0.9 });
+      hl("code3", [1, 4], L("s3c", 0.6), 2.4);
+      show("#chip3", L("s3d", 1.2), { s: 0.4 });
+      hl("code3", [2], L("s3d", 1.2), 2.6);
+      hl("code3", [3], L("s3e", 0.3), 2.2, "rgba(10,138,95,.35)");
+      out("#o3a", L("s3e", 0.7)); pulse("#chip3", L("s3e", 0.7), 1.15); tilt("#byte", L("s3e", 0.7), 4);
+      show("#peek3", L("s3f", 0.4), { x: 60, s: 0.8 });
+      fade("#arr3", L("s3f", 1.2), 0.5);
+      show("#x3", L("s3f", 1.6), { s: 0.4 });
+      hl("code3", [6], L("s3f", 1.2), 3.2, "rgba(217,45,72,.35)");
+      out("#o3b", L("s3f", 2.4)); face("#byte", "a", L("s3f", 2.4)); mood("#sam", "sad", L("s3f", 2.4)); shake("#room3", L("s3f", 1.8));
+      face("#byte", "n", L("s4a"));
+      leave("s3");
+
+      // ===================== 4 · Lexical scope =====================
+      enter("s4");
+      codeIn("code4", L("s4a", 0.2));
+      mood("#sam", "happy", S("s4"));
+      show("#glob4", L("s4a", 0.3), { s: 0.9, d: 0.9 });
+      show("#out4", L("s4a", 1.0), { s: 0.9, d: 0.9 });
+      show("#chipG4", L("s4b", 0.4), { s: 0.5 });
+      show("#chipU4", L("s4b", 1.2), { s: 0.5 });
+      show("#in4", L("s4b", 2.2), { s: 0.9, d: 0.9 });
+      fade("#in4t", L("s4b", 3.0), 0.5);
+      fade("#lk1", L("s4c", 1.2), 0.6); fade("#lk2", L("s4c", 2.6), 0.6);
+      hl("code4", [6, 7, 8], L("s4c", 0.2), 3.4);
+      show("#lex4", L("s4d", 0.4), { s: 0.8, d: 0.9 });
+      wiggle("#byte", L("s4d", 0.5), 2);
+      // engine lookup for `user`
+      fade("#mag4", L("s4f", 0.2), 0.5);
+      hl("code4", [7], L("s4f", 0.3), 3.0);
+      show("#miss4a", L("s4g", 1.2), { s: 0.5, d: 0.5 });
+      tl.to("#mag4", { x: 340, y: -130, duration: 1.4, ease: "power2.inOut" }, L("s4h", 0.2));
+      pulse("#chipU4", L("s4h", 1.6), 1.2); glow("#chipU4", L("s4h", 1.6), "#0a8a5f");
+      hide("#miss4a", L("s4h", 0.2));
+      // engine lookup for `greeting`
+      tl.to("#mag4", { x: 0, y: 0, duration: 1.0, ease: "power2.inOut" }, L("s4i", 0.0));
+      show("#miss4a", L("s4i", 1.0), { s: 0.5, d: 0.4 });
+      tl.to("#mag4", { x: 100, y: -190, duration: 0.9, ease: "power2.inOut" }, L("s4i", 1.6));
+      hide("#miss4a", L("s4i", 1.7)); show("#miss4b", L("s4i", 2.4), { s: 0.5, d: 0.4 });
+      hide("#miss4b", L("s4j", 0.2));
+      tl.to("#mag4", { x: 130, y: -330, duration: 1.3, ease: "power2.inOut" }, L("s4j", 0.3));
+      pulse("#chipG4", L("s4j", 1.8), 1.2); glow("#chipG4", L("s4j", 1.8), "#0a8a5f");
+      fade("#cons4", L("s4k", 0.0), 0.5); out("#o4a", L("s4k", 0.4));
+      cheer("#sam", L("s4k", 0.6));
+      hide("#mag4", L("s4k", 1.6));
+      leave("s4");
+
+      // ===================== 5 · Environments & the backpack =====================
+      enter("s5");
+      tl.set("#er5o", { opacity: 0 }, 0);
+      show("#env5", L("s5b", 0.4), { y: 30 });
+      fade("#er5o", L("s5c", 0.4), 0.5);
+      show("#envG5", L("s5c", 1.6), { y: 30 });
+      fade("#arr5b", L("s5c", 2.4), 0.6);
+      show("#fn5", L("s5d", 0.2), { x: 60, s: 0.85 });
+      face("#byte", "q", L("s5d"));
+      fade("#arr5a", L("s5e", 1.2), 0.7); show("#tg5a", L("s5e", 1.6), { s: 0.5, d: 0.5 });
+      tl.fromTo("#bp5, #bpt5", { opacity: 0 }, { opacity: 1, duration: 0.6 }, L("s5f", 0.0));
+      tl.fromTo("#bp5", { scale: 0.3, rotation: -20 }, { scale: 1, rotation: 0, duration: 0.9, ease: "back.out(2)", transformOrigin: "50% 50%", immediateRender: false }, L("s5f", 0.0));
+      tl.to("#bp5", { rotation: 8, duration: 0.5, yoyo: true, repeat: 3, ease: "sine.inOut", transformOrigin: "50% 50%" }, L("s5g", 0.4));
+      pulse("#env5", L("s5g", 2.8), 1.03);
+      show("#def5", L("s5h", 0.3), { y: 30, s: 0.9 });
+      face("#byte", "h", L("s5h")); cheer("#sam", L("s5h", 1.0));
+      leave("s5");
+
+      // ===================== 6 · Slow motion =====================
+      enter("s6");
+      codeIn("code6", L("s6a", 0.3));
+      show("#frG6", L("s6a", 0.8), { y: 30 });
+      show("#mem6", L("s6a", 1.4), { s: 0.9, d: 0.9 });
+      tl.set("#frM6, #frC6, #E6, #F6, #ar6, #tag6, #trash6, #alive6, #mag6, #out6", { opacity: 0 }, 0);
+      hl("code6", [9], L("s6b", 0.3), 2.0); show("#frM6", L("s6b", 0.5), { y: -30 });
+      hl("code6", [2], L("s6c", 0.2), 3.0); show("#E6", L("s6c", 0.6), { s: 0.8, d: 0.9 });
+      hl("code6", [3, 4, 5, 6], L("s6d", 0.2), 4.5);
+      show("#F6", L("s6d", 1.4), { y: 30 }); show("#tag6", L("s6d", 2.0), { s: 0.5, d: 0.5 }); fade("#ar6", L("s6d", 2.8), 0.7);
+      hl("code6", [9], L("s6e", 0.2), 2.6);
+      hide("#frM6", L("s6e", 1.0), 0.6);
+      tl.fromTo("#trash6", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.6, ease: POP, transformOrigin: "50% 50%" }, L("s6f", 0.3));
+      tl.to("#E6", { borderColor: "#d92d48", duration: 0.4 }, L("s6f", 0.4));
+      shake("#E6", L("s6f", 0.6));
+      hide("#trash6", L("s6g", 0.2));
+      tl.to("#E6", { borderColor: "#0a8a5f", duration: 0.4 }, L("s6g", 0.5));
+      show("#alive6", L("s6g", 0.9), { s: 0.6, d: 0.6 });
+      tl.to("#ar6", { opacity: 0.35, duration: 0.3, yoyo: true, repeat: 5 }, L("s6g", 1.6));
+      face("#byte", "h", L("s6g", 2.0));
+      hide("#alive6", L("s6h", 0.0));
+      hl("code6", [10], L("s6h", 0.2), 2.6); show("#frC6", L("s6h", 0.4), { y: -30 });
+      fade("#mag6", L("s6h", 2.2), 0.4);
+      tl.to("#mag6", { x: 0, y: -175, duration: 1.0, ease: "power2.inOut" }, L("s6i", 0.3));
+      tl.to("#mag6", { x: 290, y: -175, duration: 1.2, ease: "power2.inOut" }, L("s6i", 1.6));
+      pulse("#cnt6", L("s6i", 2.8), 1.3);
+      hide("#mag6", L("s6j", 0.0));
+      setText("#cnt6", "1", W("s6j", 2));
+      tl.set("#out6", { textContent: "→ 1" }, W("s6j", 2)); show("#out6", W("s6j", 2), { s: 0.5, d: 0.5 });
+      hl("code6", [11], W("s6k", 6), 1.4); setText("#cnt6", "2", W("s6k", 6));
+      tl.set("#out6", { textContent: "→ 2" }, W("s6k", 6)); pulse("#out6", W("s6k", 6), 1.25);
+      hl("code6", [12], W("s6k", 11), 1.4); setText("#cnt6", "3", W("s6k", 11));
+      tl.set("#out6", { textContent: "→ 3" }, W("s6k", 11)); pulse("#out6", W("s6k", 11), 1.25);
+      hide("#frC6", L("s6l", 0.0), 0.5);
+      cheer("#sam", L("s6l", 0.8)); face("#byte", "h", L("s6l"));
+      leave("s6");
+
+      // ===================== 7 · Independent closures =====================
+      enter("s7");
+      codeIn("code7", L("s7a", 0.2), [1, 2, 4, 5, 6]);
+      tl.set("#o7a, #o7b, #o7c", { opacity: 0 }, 0);
+      tl.set("#EB7, #FA7, #FB7, #aA7, #aB7, #ns7, #cd7", { opacity: 0 }, 0);
+      fade("#cons7", L("s7a", 0.6), 0.5);
+      show("#EA7", L("s7a", 1.6), { s: 0.8, d: 0.9 });
+      show("#EB7", L("s7b", 0.4), { s: 0.8, d: 0.9 }); show("#ns7", L("s7b", 1.6), { s: 0.5, d: 0.5 });
+      reveal("code7", [1], L("s7c", 0.3)); hl("code7", [1], L("s7c", 0.3), 1.2);
+      show("#FA7", L("s7c", 0.7), { y: 30 }); fade("#aA7", L("s7c", 1.2), 0.5);
+      reveal("code7", [2], L("s7c", 1.6)); hl("code7", [2], L("s7c", 1.6), 1.2);
+      show("#FB7", L("s7c", 2.0), { y: 30 }); fade("#aB7", L("s7c", 2.5), 0.5);
+      reveal("code7", [4, 5], L("s7d", 0.2), 0.3);
+      hl("code7", [4], W("s7d", 6), 1.2); setText("#cA7", "1", W("s7d", 6)); out("#o7a", W("s7d", 6));
+      hl("code7", [5], W("s7d", 8), 1.2); setText("#cA7", "2", W("s7d", 8)); out("#o7b", W("s7d", 8));
+      reveal("code7", [6], L("s7e", 0.4)); hl("code7", [6], L("s7e", 0.4), 2.8);
+      face("#byte", "q", L("s7e"));
+      countdown("cd7", LE("s7e", 0.15), 0.8);
+      setText("#cB7", "1", L("s7f", 0.2)); out("#o7c", L("s7f", 0.2));
+      face("#byte", "h", L("s7f")); cheer("#sam", L("s7f", 0.8));
+      leave("s7");
+
+      // ===================== 8 · Live reference =====================
+      enter("s8");
+      codeIn("code8", L("s8a", 0.2), [7, 8]);
+      tl.set("#o8a", { opacity: 0 }, 0);
+      fade("#cons8", L("s8a", 0.8), 0.5);
+      show("#var8", L("s8b", 0.4), { s: 0.8, d: 0.9 });
+      show("#fn8", L("s8b", 1.8), { y: 30 });
+      fade("#ar8", L("s8b", 2.8), 0.6); show("#lk8", L("s8b", 3.4), { s: 0.5, d: 0.5 });
+      reveal("code8", [7], L("s8c", 0.8)); hl("code8", [7], L("s8c", 0.8), 2.4);
+      setText("#msg8", '"bye"', L("s8c", 1.8));
+      tl.to("#var8", { borderColor: "#d92d48", duration: 0.3, yoyo: true, repeat: 1 }, L("s8c", 1.8));
+      reveal("code8", [8], L("s8d", 0.2)); hl("code8", [8], L("s8d", 0.2), 2.6);
+      out("#o8a", L("s8d", 2.0)); tl.to("#ar8", { opacity: 0.35, duration: 0.3, yoyo: true, repeat: 5 }, L("s8d", 1.0));
+      nod("#byte", L("s8e", 0.2)); cheer("#sam", L("s8e", 0.8));
+      leave("s8");
+
+      // ===================== 9 · Private data =====================
+      enter("s9");
+      codeIn("code9", L("s9b", 0.3), [13, 14, 15]);
+      tl.set("#o9a, #o9b", { opacity: 0 }, 0);
+      tl.set("#bal9, #dep9, #get9", { opacity: 0 }, 0);
+      fade("#cons9", L("s9c", 0.4), 0.5);
+      show("#vault9", L("s9c", 0.6), { s: 0.9, d: 0.9 });
+      show("#bal9", L("s9c", 1.8), { s: 0.5 });
+      hl("code9", [1, 2], L("s9c", 0.8), 2.4);
+      walkIn("#guard", L("s9c", 0.8), 300, 1.6);
+      show("#dep9", L("s9d", 0.8), { x: -40, s: 0.6 }); show("#get9", L("s9d", 1.6), { x: -40, s: 0.6 });
+      hl("code9", [3, 4, 5, 6, 7, 8, 9], L("s9d", 0.6), 3.4, "rgba(10,138,95,.3)");
+      reveal("code9", [13, 14], L("s9e", 0.2), 0.4);
+      hl("code9", [14], L("s9e", 0.8), 2.4);
+      setText("#balv9", "150", L("s9e", 2.2)); out("#o9a", L("s9e", 2.2));
+      reveal("code9", [15], L("s9f", 0.3)); hl("code9", [15], L("s9f", 0.3), 3.0, "rgba(217,45,72,.3)");
+      out("#o9b", L("s9f", 2.0)); face("#byte", "a", L("s9f", 2.0)); shake("#vault9", L("s9f", 2.0));
+      nod("#guard", L("s9g", 0.4)); face("#byte", "h", L("s9g", 0.2)); tl.to("#vault9", { borderColor: "#0a8a5f", duration: 0.4 }, L("s9g", 0.4));
+      hide("#guard", SE("s9") - 0.7, 0.5);
+      leave("s9");
+
+      // ===================== 10 · Factories =====================
+      enter("s10");
+      codeIn("code10", L("s10a", 0.3), [7, 8, 9, 10]);
+      tl.set("#f5, #f10, #ev10h, #ev10a, #ev10b, #ev10c", { opacity: 0 }, 0);
+      hl("code10", [1, 2, 3, 4, 5], L("s10b", 0.8), 4.0);
+      reveal("code10", [7], L("s10c", 0.2)); hl("code10", [7], L("s10c", 0.2), 1.6);
+      show("#f5", L("s10c", 0.6), { y: 30 });
+      reveal("code10", [9], L("s10c", 1.6)); tl.fromTo("#r5", { opacity: 0 }, { opacity: 1, duration: 0.5 }, L("s10c", 1.8));
+      reveal("code10", [8], L("s10d", 0.2)); hl("code10", [8], L("s10d", 0.2), 1.6);
+      show("#f10", L("s10d", 0.6), { y: 30 });
+      reveal("code10", [10], L("s10d", 1.6)); tl.fromTo("#r10", { opacity: 0 }, { opacity: 1, duration: 0.5 }, L("s10d", 1.8));
+      tl.to("#f5 .bp, #f10 .bp", { rotation: 10, duration: 0.4, yoyo: true, repeat: 3, ease: "sine.inOut", transformOrigin: "50% 50%" }, L("s10e", 0.4));
+      fade("#ev10h", L("s10f", 0.3), 0.5);
+      show("#ev10a", L("s10f", 1.0), { s: 0.5, d: 0.5 }); show("#ev10b", L("s10f", 1.8), { s: 0.5, d: 0.5 }); show("#ev10c", L("s10f", 2.6), { s: 0.5, d: 0.5 });
+      cheer("#byte", L("s10f", 1.2));
+      leave("s10");
+
+      // ===================== 11 · The loop trap =====================
+      enter("s11");
+      tl.set("#o11a, #o11b, #o11c, #o11d, #o11e, #o11f", { opacity: 0 }, 0);
+      tl.set("#B1, #B2, #B3, #svgB11, #fix11, #same11", { opacity: 0 }, 0);
+      tl.set("#g1, #g2, #g3, #svgA11, #E11", { opacity: 0 }, 0);
+      walkIn("#mal", L("s11a", 0.4), 300, 1.6);
+      codeIn("code11", L("s11a", 0.6), [1, 2, 3, 4, 5]);
+      reveal("code11", [1, 2, 3, 4, 5], L("s11b", 0.2), 0.25);
+      fade("#cons11", L("s11b", 0.6), 0.5);
+      show("#E11", L("s11b", 1.2), { s: 0.8, d: 0.9 });
+      show("#g1", L("s11b", 1.9), { y: 30 }); show("#g2", L("s11b", 2.3), { y: 30 }); show("#g3", L("s11b", 2.7), { y: 30 });
+      hl("code11", [2, 3, 4], L("s11b", 1.4), 3.0);
+      face("#byte", "q", L("s11c"));
+      countdown("cd11", LE("s11c", 0.15), 1.25);
+      [0, 1, 2].forEach((i) => out("#o11" + "abc"[i], W("s11d", i)));
+      setText("#i11", "3", L("s11d", 0.2));
+      face("#byte", "a", L("s11d")); mood("#sam", "sad", L("s11d"));
+      fade("#svgA11", L("s11e", 0.4), 0.6);
+      hl("code11", [1], L("s11e", 1.2), 3.0, "rgba(217,45,72,.35)");
+      tl.to("#E11", { borderColor: "#d92d48", duration: 0.4 }, L("s11e", 1.2));
+      show("#same11", L("s11g", 0.2), { s: 0.6, d: 0.6 });
+      shake("#E11", L("s11g", 0.6));
+      hide("#same11", L("s11h", 0.0));
+      face("#byte", "n", L("s11h"));
+      tl.set("#code11 .cl:first-child .kw:nth-of-type(2)", { textContent: "let" }, L("s11h", 0.8));
+      hl("code11", [1], L("s11h", 0.8), 2.0, "rgba(10,138,95,.35)");
+      mood("#sam", "happy", L("s11h", 0.8));
+      hide("#E11, #svgA11, #g1, #g2, #g3, #o11a, #o11b, #o11c", L("s11i", 0.6), 0.5);
+      show("#B1", L("s11i", 1.4), { y: 30 }); show("#B2", L("s11i", 2.0), { y: 30 }); show("#B3", L("s11i", 2.6), { y: 30 });
+      show("#fix11", L("s11i", 3.0), { s: 0.6, d: 0.6 });
+      show("#g1", L("s11j", 0.4), { y: 30 }); show("#g2", L("s11j", 0.8), { y: 30 }); show("#g3", L("s11j", 1.2), { y: 30 });
+      fade("#svgB11", L("s11j", 1.6), 0.6);
+      [0, 1, 2].forEach((i) => out("#o11" + "def"[i], W("s11k", i + 3)));
+      face("#byte", "h", L("s11k")); cheer("#sam", L("s11k", 1.2));
+      hide("#mal", SE("s11") - 0.9, 0.5);
+      leave("s11");
+
+      // ===================== 12 · Memory =====================
+      enter("s12");
+      codeIn("code12", L("s12b", 0.2), [3]);
+      tl.set("#cut12, #free12", { opacity: 0 }, 0);
+      tl.set("#alive12", { opacity: 0 }, 0);
+      show("#E12", L("s12b", 0.6), { s: 0.8, d: 0.9 });
+      show("#F12", L("s12b", 1.8), { y: 30 }); fade("#ar12", L("s12b", 3.0), 0.6);
+      show("#alive12", L("s12b", 3.6), { s: 0.6, d: 0.6 });
+      hl("code12", [1], L("s12b", 1.4), 3.2);
+      nod("#byte", L("s12c", 0.2));
+      reveal("code12", [3], L("s12d", 3.6)); hl("code12", [3], L("s12d", 3.6), 3.4, "rgba(217,45,72,.3)");
+      hide("#alive12", L("s12d", 3.4), 0.3); show("#cut12", L("s12d", 3.8), { s: 0.6, d: 0.5 });
+      tl.to("#ar12", { opacity: 0, duration: 0.5 }, L("s12d", 4.0));
+      hide("#F12", L("s12e", 0.4), 0.7);
+      hide("#E12, #cut12", L("s12e", 1.6), 0.9); show("#free12", L("s12e", 2.0), { s: 0.6, d: 0.7 });
+      face("#byte", "h", L("s12e", 0.2)); cheer("#sam", L("s12e", 1.4));
+      leave("s12");
+
+      // ===================== 13 · Recap =====================
+      enter("s13");
+      tl.set("#next13, #src13", { opacity: 0 }, 0);
+      const RC = { sam: { x: 1295, y: -140, s: 1.7 }, byte: { x: -77, y: -140, s: 1.7 } };
+      tl.to("#sam", { x: RC.sam.x, y: RC.sam.y, scale: RC.sam.s, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, S("s13") + 0.4);
+      tl.to("#byte", { x: RC.byte.x, y: RC.byte.y, scale: RC.byte.s, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, S("s13") + 0.4);
+      face("#byte", "h", L("s13a"));
+      show("#rc1", L("s13b", 0.5), { x: -60, s: 0.9 }); wave("#sam", L("s13b", 1.0), 2);
+      show("#rc2", L("s13c", 0.4), { x: -60, s: 0.9 });
+      show("#rc3", L("s13d", 0.4), { x: -60, s: 0.9 });
+      pulse("#rc3", L("s13e", 0.4), 1.03);
+      fade("#src13", L("s13f", 0.2), 0.8);
+      cheer("#sam", L("s13f", 0.4)); cheer("#byte", L("s13f", 0.8));
+      show("#next13", L("s13g", 0.2), { s: 0.6, d: 0.7 });
+      wave("#byte", L("s13g", 0.6), 3);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

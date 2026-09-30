@@ -1,0 +1,171 @@
+{
+  "_notes": "One sentence per line. [shown|spoken] = caption text vs. what the voice says. 'after' = extra silence (seconds) after the line, used for 'what prints?' countdowns.",
+  "scenes": [
+    {
+      "id": "s1",
+      "lines": [
+        { "id": "s1a", "text": "Welcome to JavaScript Demystified." },
+        { "id": "s1b", "text": "Today's topic is closures." },
+        { "id": "s1c", "text": "Closures have a reputation for being confusing." },
+        { "id": "s1d", "text": "But by the end of this video, you will see that a closure is just one simple idea." }
+      ]
+    },
+    {
+      "id": "s2",
+      "lines": [
+        { "id": "s2a", "text": "Let's start with a puzzle." },
+        { "id": "s2b", "text": "Here is a function called [makeCounter|make counter]." },
+        { "id": "s2c", "text": "Inside, it creates a variable named count, starting at zero." },
+        { "id": "s2d", "text": "Then it returns a small function, which adds one to count, and gives back the result." },
+        { "id": "s2e", "text": "We call [makeCounter|make counter] once, and keep the returned function in a variable called counter." },
+        { "id": "s2f", "text": "Then we call counter, three times." },
+        { "id": "s2g", "text": "Here is the strange part." },
+        { "id": "s2h", "text": "[makeCounter|make counter] has already finished, so its variable count should be gone." },
+        { "id": "s2i", "text": "So, what do you think gets printed?", "after": 4.2 },
+        { "id": "s2j", "text": "One. Two. Three." },
+        { "id": "s2k", "text": "The counter still remembers count, even though [makeCounter|make counter] finished long ago." },
+        { "id": "s2l", "text": "That memory is called a closure. Let's see how it works." }
+      ]
+    },
+    {
+      "id": "s3",
+      "lines": [
+        { "id": "s3a", "text": "First, we need one small idea: scope." },
+        { "id": "s3b", "text": "Scope decides which variables a piece of code is allowed to see." },
+        { "id": "s3c", "text": "Think of a function as a room." },
+        { "id": "s3d", "text": "Variables created inside are the things inside that room." },
+        { "id": "s3e", "text": "Code inside the room can use them." },
+        { "id": "s3f", "text": "But code outside cannot see in. If we try, JavaScript throws a reference error." }
+      ]
+    },
+    {
+      "id": "s4",
+      "lines": [
+        { "id": "s4a", "text": "Rooms can be nested." },
+        { "id": "s4b", "text": "A function written inside another function sits in a room, inside a bigger room." },
+        { "id": "s4c", "text": "The inner function can look outward, through the walls, into every room around it." },
+        { "id": "s4d", "text": "This is called lexical scope." },
+        { "id": "s4e", "text": "Lexical simply means: where you write the code decides what it can see." },
+        { "id": "s4f", "text": "Watch how the engine finds the variable user." },
+        { "id": "s4g", "text": "It checks the inner room first, and does not find it." },
+        { "id": "s4h", "text": "So it checks the next room outward, and finds it there." },
+        { "id": "s4i", "text": "Now greeting. Not in inner. Not in outer." },
+        { "id": "s4j", "text": "So the engine keeps going, and finds it in the global room." },
+        { "id": "s4k", "text": "And the code prints: Hello Sam." }
+      ]
+    },
+    {
+      "id": "s5",
+      "lines": [
+        { "id": "s5a", "text": "Here is what the engine really does." },
+        { "id": "s5b", "text": "Every time a function runs, it creates a small record, called a lexical environment." },
+        { "id": "s5c", "text": "It holds the function's local variables, plus a link to the environment outside it." },
+        { "id": "s5d", "text": "And here is the key." },
+        { "id": "s5e", "text": "When a function is created, it remembers the environment where it was born." },
+        { "id": "s5f", "text": "Picture a backpack." },
+        { "id": "s5g", "text": "The function packs its surrounding variables, and carries them wherever it goes." },
+        { "id": "s5h", "text": "A function, together with its backpack, is a closure." },
+        { "id": "s5i", "text": "In JavaScript, every function is a closure, created at the moment the function is created." }
+      ]
+    },
+    {
+      "id": "s6",
+      "lines": [
+        { "id": "s6a", "text": "Now let's replay the puzzle in slow motion." },
+        { "id": "s6b", "text": "We call [makeCounter|make counter]." },
+        { "id": "s6c", "text": "The engine creates an environment, with count set to zero." },
+        { "id": "s6d", "text": "Next, the inner function is created. Its backpack points to that environment." },
+        { "id": "s6e", "text": "[makeCounter|make counter] returns the inner function, and finishes." },
+        { "id": "s6f", "text": "Normally, its environment would be thrown away." },
+        { "id": "s6g", "text": "But the returned function still points to it, so the environment stays alive." },
+        { "id": "s6h", "text": "Now we call counter. It looks for count, and does not find it locally." },
+        { "id": "s6i", "text": "So it follows its backpack, and finds count in the surviving environment." },
+        { "id": "s6j", "text": "It adds one. Count is now one." },
+        { "id": "s6k", "text": "Call it again, and count becomes two. Again, and it becomes three." },
+        { "id": "s6l", "text": "The same count, every time. That is how counter remembers." }
+      ]
+    },
+    {
+      "id": "s7",
+      "lines": [
+        { "id": "s7a", "text": "Every call to [makeCounter|make counter] creates a brand new environment." },
+        { "id": "s7b", "text": "So counters made separately do not share anything." },
+        { "id": "s7c", "text": "We make counter A, and counter B." },
+        { "id": "s7d", "text": "Call A twice, and it prints one, then two." },
+        { "id": "s7e", "text": "Now call B. What do you think it prints?", "after": 3.2 },
+        { "id": "s7f", "text": "One. B has its own count." }
+      ]
+    },
+    {
+      "id": "s8",
+      "lines": [
+        { "id": "s8a", "text": "One more important detail." },
+        { "id": "s8b", "text": "A closure keeps a link to the variable itself, not a copy of its value." },
+        { "id": "s8c", "text": "Here, we change message after the function is created." },
+        { "id": "s8d", "text": "When we call show, it prints the new value: bye." },
+        { "id": "s8e", "text": "It always sees the current value." }
+      ]
+    },
+    {
+      "id": "s9",
+      "lines": [
+        { "id": "s9a", "text": "So what are closures good for?" },
+        { "id": "s9b", "text": "First: private data." },
+        { "id": "s9c", "text": "Here, balance lives inside [createAccount|create account]. Nothing outside can touch it directly." },
+        { "id": "s9d", "text": "The only way to change it is through the functions we chose to share." },
+        { "id": "s9e", "text": "Deposit fifty, and the balance becomes one hundred fifty." },
+        { "id": "s9f", "text": "But asking for account dot balance gives undefined." },
+        { "id": "s9g", "text": "The variable is safely hidden." }
+      ]
+    },
+    {
+      "id": "s10",
+      "lines": [
+        { "id": "s10a", "text": "Second: function factories." },
+        { "id": "s10b", "text": "[makeAdder|make adder] takes a number, and returns a new function that remembers it." },
+        { "id": "s10c", "text": "[add5|add five] always adds five." },
+        { "id": "s10d", "text": "[add10|add ten] always adds ten." },
+        { "id": "s10e", "text": "Each one carries its own backpack." },
+        { "id": "s10f", "text": "Closures also power timers, click handlers, and callbacks, every single day." }
+      ]
+    },
+    {
+      "id": "s11",
+      "lines": [
+        { "id": "s11a", "text": "Now, the most famous closure trap." },
+        { "id": "s11b", "text": "This loop starts three timers. Each one prints i." },
+        { "id": "s11c", "text": "What do you think it prints?", "after": 4.2 },
+        { "id": "s11d", "text": "Three, three, three." },
+        { "id": "s11e", "text": "Why? Because var creates only one variable i, shared by the whole loop." },
+        { "id": "s11f", "text": "By the time the timers fire, the loop has finished, and i is three." },
+        { "id": "s11g", "text": "All three functions share the same i." },
+        { "id": "s11h", "text": "The fix is let." },
+        { "id": "s11i", "text": "With let, every round of the loop gets its own fresh i." },
+        { "id": "s11j", "text": "So each function gets its own backpack." },
+        { "id": "s11k", "text": "Now it prints zero, one, two." }
+      ]
+    },
+    {
+      "id": "s12",
+      "lines": [
+        { "id": "s12a", "text": "One last thing to remember." },
+        { "id": "s12b", "text": "A closure keeps its variables alive for as long as the function itself is alive." },
+        { "id": "s12c", "text": "That is usually exactly what you want." },
+        { "id": "s12d", "text": "But if a function holds on to something big, and you no longer need it, let go of the function." },
+        { "id": "s12e", "text": "Then the environment can be cleaned up, and the memory freed." }
+      ]
+    },
+    {
+      "id": "s13",
+      "lines": [
+        { "id": "s13a", "text": "Let's recap." },
+        { "id": "s13b", "text": "One. A closure is a function, together with the variables around the place where it was created." },
+        { "id": "s13c", "text": "Two. It keeps a live link to those variables, not a copy." },
+        { "id": "s13d", "text": "Three. Use closures for private data, function factories, and callbacks." },
+        { "id": "s13e", "text": "And in loops, use let instead of var." },
+        { "id": "s13f", "text": "That's closures, demystified. Thanks for watching." },
+        { "id": "s13g", "text": "Next time: the mysterious keyword, this." }
+      ]
+    }
+  ]
+}
