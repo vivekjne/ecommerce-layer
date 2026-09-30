@@ -1,0 +1,196 @@
+{
+ "scenes": [
+  {
+   "id": "s1",
+   "title": "Hook",
+   "lines": [
+    {
+     "id": "s1a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What is the Temporal Dead Zone in JavaScript?"
+    },
+    {
+     "id": "s1b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "It is a short period where a variable already exists, but you are not allowed to use it yet. Let us see why."
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "Hoisting",
+   "lines": [
+    {
+     "id": "s2a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Before JavaScript runs your code, it reads through the scope, and creates a box in memory for every variable. This step is called hoisting."
+    },
+    {
+     "id": "s2b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Only after that, it runs your lines, one at a time."
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "var",
+   "lines": [
+    {
+     "id": "s3a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A {var} box is created early, and filled with {undefined}."
+    },
+    {
+     "id": "s3b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "So reading it too soon does not fail. You just get {undefined}."
+    },
+    {
+     "id": "s3c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Then the line runs, and the box gets its real value."
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "let",
+   "lines": [
+    {
+     "id": "s4a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A {let} box is also created early. But it is locked."
+    },
+    {
+     "id": "s4b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "It stays locked, until the line that declares it runs."
+    },
+    {
+     "id": "s4c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Read it while it is locked, and JavaScript throws a ReferenceError."
+    },
+    {
+     "id": "s4d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The message says: cannot access b before initialization."
+    },
+    {
+     "id": "s4e",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The time while the box is locked, is the Temporal Dead Zone."
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "typeof",
+   "lines": [
+    {
+     "id": "s5a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Does [typeof|type of|c] protect me?"
+    },
+    {
+     "id": "s5b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Not inside the dead zone. [typeof|type of|c] on a locked variable throws too."
+    },
+    {
+     "id": "s5c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "It only gives {undefined} for names that were never declared at all."
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "Time",
+   "lines": [
+    {
+     "id": "s6a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "So is it about where the code is written?"
+    },
+    {
+     "id": "s6b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "No. It is about when the program runs."
+    },
+    {
+     "id": "s6c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "This function reads x, and it works, because it runs after the declaration."
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "title": "Shadow",
+   "lines": [
+    {
+     "id": "s7a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Any interview trap?"
+    },
+    {
+     "id": "s7b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Yes. Shadowing. An outer x exists, and the block declares its own x, using {let}."
+    },
+    {
+     "id": "s7c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The whole block is now in the dead zone for that name, so reading x above the declaration throws."
+    }
+   ]
+  },
+  {
+   "id": "s8",
+   "title": "Wrap",
+   "lines": [
+    {
+     "id": "s8a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The same rule applies to {const}, and to {class} declarations."
+    },
+    {
+     "id": "s8b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The dead zone turns silent bugs into loud errors. That is why {let} and {const} are safer than {var}."
+    },
+    {
+     "id": "s8c",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Got it. Same variable, but with a guard."
+    }
+   ]
+  }
+ ]
+}

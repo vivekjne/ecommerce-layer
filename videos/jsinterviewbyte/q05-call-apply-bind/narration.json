@@ -1,0 +1,160 @@
+{
+ "scenes": [
+  {
+   "id": "s1",
+   "title": "Hook",
+   "lines": [
+    {
+     "id": "s1a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What is the difference between [call|call|c], [apply|apply|c], and [bind|bind|c]?"
+    },
+    {
+     "id": "s1b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "All three let you choose what {this} means inside a function. The difference is when the function runs, and how you pass the arguments."
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "this",
+   "lines": [
+    {
+     "id": "s2a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "First, {this}. Inside a function, {this} is the object the function is working on."
+    },
+    {
+     "id": "s2b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Here is a function that reads [this.name|this dot name|c]. And two objects, john and jimmy."
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "Call",
+   "lines": [
+    {
+     "id": "s3a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "[call|Call|c] plugs an object into {this}, and runs the function right now. Arguments go in one by one."
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "Apply",
+   "lines": [
+    {
+     "id": "s4a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "[apply|Apply|c] does the same. But the arguments come in as an array."
+    },
+    {
+     "id": "s4b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A trick to remember: call is for commas, apply is for arrays."
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "Bind",
+   "lines": [
+    {
+     "id": "s5a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "[bind|Bind|c] does not run anything. It returns a new function, with {this} fixed for good."
+    },
+    {
+     "id": "s5b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "You can preset arguments too. Here Hi is already filled in."
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "Twist",
+   "lines": [
+    {
+     "id": "s6a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What if I call a bound function with a different {this}?"
+    },
+    {
+     "id": "s6b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "It is ignored. A bound function keeps its first {this}."
+    },
+    {
+     "id": "s6c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "And bind returns a new function. The original stays untouched."
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "title": "Real use",
+   "lines": [
+    {
+     "id": "s7a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Why do people use bind in real code?"
+    },
+    {
+     "id": "s7b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Because a method loses its {this} when you pass it around as a callback."
+    },
+    {
+     "id": "s7c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Take the method out of the object, call it, and this dot name is {undefined}."
+    },
+    {
+     "id": "s7d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Bind it to the object first, and it works again."
+    }
+   ]
+  },
+  {
+   "id": "s8",
+   "title": "Wrap",
+   "lines": [
+    {
+     "id": "s8a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "So call and apply run now. Bind gives you a function for later."
+    },
+    {
+     "id": "s8b",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Got it. Call, apply, now. Bind, later."
+    }
+   ]
+  }
+ ]
+}

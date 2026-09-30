@@ -1,0 +1,178 @@
+{
+ "scenes": [
+  {
+   "id": "s1",
+   "title": "Hook",
+   "lines": [
+    {
+     "id": "s1a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What is a closure in JavaScript?"
+    },
+    {
+     "id": "s1b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A closure is a function that remembers the variables around it, even after the outer code has finished."
+    },
+    {
+     "id": "s1c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "That sounds abstract. So let us watch one happen."
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "Scope",
+   "lines": [
+    {
+     "id": "s2a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "First, a quick idea. Every {function} gets its own private box of variables. That box is called its scope."
+    },
+    {
+     "id": "s2b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Normally, when the function finishes, the box is thrown away. And the variables inside are gone."
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "Counter",
+   "lines": [
+    {
+     "id": "s3a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Look at [makeCounter|make counter|c]. It creates a variable with {let}, called [count|count|c], starting at zero. Then it will {return} an inner function."
+    },
+    {
+     "id": "s3b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The outer function ends, so its box should vanish. But the inner function still needs [count|count|c]."
+    },
+    {
+     "id": "s3c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "So JavaScript keeps the box alive, and attaches it to the inner function, like a backpack. That backpack is the closure."
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "Calls",
+   "lines": [
+    {
+     "id": "s4a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Now call [counter|counter|c]. It opens the backpack, adds one to [count|count|c], and returns one."
+    },
+    {
+     "id": "s4b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Call it again, and the same backpack is used. Now [count|count|c] is two."
+    },
+    {
+     "id": "s4c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Make a second counter, and it gets a brand new backpack. Its count starts again at one."
+    },
+    {
+     "id": "s4d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "And outside code cannot touch a backpack. Asking for [typeof|type of|c] count gives undefined."
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "Loop trap",
+   "lines": [
+    {
+     "id": "s5a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What about the famous loop question?"
+    },
+    {
+     "id": "s5b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "With {var}, the loop has just one shared variable, named [i|i|c]. All three timers hold the same backpack."
+    },
+    {
+     "id": "s5c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "When the timers finally run, the loop has finished, and [i|i|c] is three. So you see three, three, three."
+    },
+    {
+     "id": "s5d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "With {let}, every turn of the loop gets its own fresh variable. Each timer keeps its own copy: zero, one, two."
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "Factory",
+   "lines": [
+    {
+     "id": "s6a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Where would I use this in real code?"
+    },
+    {
+     "id": "s6b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "In function factories. [makeAdder|make adder|c] remembers the number you gave it."
+    },
+    {
+     "id": "s6c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Add five to three is eight. Add ten to three is thirteen. Each function carries its own backpack."
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "title": "Wrap",
+   "lines": [
+    {
+     "id": "s7a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Closures give you private state, function factories, and callbacks that remember their context."
+    },
+    {
+     "id": "s7b",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "So a closure is a function, plus the backpack of variables it remembers."
+    },
+    {
+     "id": "s7c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Exactly. That is your interview answer."
+    }
+   ]
+  }
+ ]
+}

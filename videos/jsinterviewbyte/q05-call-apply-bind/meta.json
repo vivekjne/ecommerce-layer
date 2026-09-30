@@ -1,0 +1,7 @@
+{
+ "id": "jb05-call-apply-bind",
+ "name": "JSInterviewByte 05",
+ "tag": "JS \u00b7 Q5",
+ "question": "call vs apply vs bind",
+ "questionHtml": "What is the difference between <code>call</code>, <code>apply</code> and <code>bind</code>?"
+}

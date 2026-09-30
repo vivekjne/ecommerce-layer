@@ -1,0 +1,7 @@
+{
+ "id": "jb04-promise-all",
+ "name": "JSInterviewByte 04",
+ "tag": "JS \u00b7 Q4",
+ "question": "Does Promise.all cancel?",
+ "questionHtml": "Does <code>Promise.all()</code> cancel the other promises?"
+}

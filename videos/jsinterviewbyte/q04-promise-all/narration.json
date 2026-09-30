@@ -1,0 +1,154 @@
+{
+ "scenes": [
+  {
+   "id": "s1",
+   "title": "Hook",
+   "lines": [
+    {
+     "id": "s1a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Does [Promise.all|Promise dot all|c] cancel the other promises when one of them fails?"
+    },
+    {
+     "id": "s1b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "No. It only rejects right away. The other promises keep running. Let us prove it."
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "Promise",
+   "lines": [
+    {
+     "id": "s2a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "First, what is a promise? Think of it as a receipt for a result that will arrive later."
+    },
+    {
+     "id": "s2b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "It starts as pending. Later it becomes fulfilled with a value, or rejected with an error."
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "All",
+   "lines": [
+    {
+     "id": "s3a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "[Promise.all|Promise dot all|c] takes several promises, and gives you one promise back. It waits until every one is fulfilled."
+    },
+    {
+     "id": "s3b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "But if any one of them is rejected, the combined promise is rejected immediately."
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "Demo",
+   "lines": [
+    {
+     "id": "s4a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Here are three tasks. [A|A|c] takes three hundred milliseconds. One fails after one hundred. And [C|C|c] takes two hundred."
+    },
+    {
+     "id": "s4b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "At one hundred milliseconds, the combined promise is rejected, and we print rejected."
+    },
+    {
+     "id": "s4c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "But look. [C|C|c] and [A|A|c] still finish afterward. Nothing was cancelled."
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "Why",
+   "lines": [
+    {
+     "id": "s5a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Why can it not cancel them?"
+    },
+    {
+     "id": "s5b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A promise has no cancel method. It is only the receipt."
+    },
+    {
+     "id": "s5c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Cancelling means stopping the work behind the promise, and that is up to the work itself."
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "Fix",
+   "lines": [
+    {
+     "id": "s6a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The standard tool is [AbortController|abort controller|c]. Give every task the same signal."
+    },
+    {
+     "id": "s6b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "When one fails, call [abort|abort|c]. Each task hears the signal, and can stop its own work."
+    },
+    {
+     "id": "s6c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Now only rejected is printed. [A|A|c] and [C|C|c] never finish."
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "title": "Settled",
+   "lines": [
+    {
+     "id": "s7a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "And if I want to wait for everything?"
+    },
+    {
+     "id": "s7b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Use [Promise.allSettled|Promise dot all settled|c]. It never rejects, and it reports every result."
+    },
+    {
+     "id": "s7c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Remember: [Promise.all|Promise dot all|c] combines results. It does not cancel work."
+    }
+   ]
+  }
+ ]
+}

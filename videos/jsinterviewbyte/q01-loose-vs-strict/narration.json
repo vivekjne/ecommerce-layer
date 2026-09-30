@@ -1,0 +1,202 @@
+{
+ "scenes": [
+  {
+   "id": "s1",
+   "title": "Hook",
+   "lines": [
+    {
+     "id": "s1a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What is the difference between [==|double equals|c] and [===|triple equals|c] in JavaScript?"
+    },
+    {
+     "id": "s1b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Both compare two values. But they follow different rules. Let us see how."
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "Types",
+   "lines": [
+    {
+     "id": "s2a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Every value in JavaScript has a type. Numbers, strings, and booleans are three of them."
+    },
+    {
+     "id": "s2b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The number one and the string one look almost the same. But they are different types."
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "Strict",
+   "lines": [
+    {
+     "id": "s3a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "[===|Triple equals|c] is strict. It asks two questions, in order. Same type? Then same value?"
+    },
+    {
+     "id": "s3b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "If the types differ, the answer is {false}. It never even looks at the values."
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "Loose",
+   "lines": [
+    {
+     "id": "s4a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "[==|Double equals|c] is loose. If the types differ, it first converts one side. Then it compares."
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "Demo one",
+   "lines": [
+    {
+     "id": "s5a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Take the string one, and the number one. With [==|double equals|c], the string is converted to a number. Now both are one, so the result is {true}."
+    },
+    {
+     "id": "s5b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "With [===|triple equals|c], the types are different. It stops at the first question. The result is {false}."
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "Demo two",
+   "lines": [
+    {
+     "id": "s6a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Same idea for zero and {false}. Double equals converts {false} to the number zero, so they match."
+    },
+    {
+     "id": "s6b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Triple equals sees a number and a boolean. Different types, so {false}."
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "title": "Special pair",
+   "lines": [
+    {
+     "id": "s7a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "One special pair. {null} double equals {undefined} is {true}. But {null} triple equals {undefined} is {false}."
+    }
+   ]
+  },
+  {
+   "id": "s8",
+   "title": "NaN",
+   "lines": [
+    {
+     "id": "s8a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What about not a number?"
+    },
+    {
+     "id": "s8b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "[NaN|N a N|c] is the odd one. It is never equal to anything, not even itself."
+    },
+    {
+     "id": "s8c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Both operators say {false}. To test for it, use [Number.isNaN|Number dot is N a N|c]."
+    }
+   ]
+  },
+  {
+   "id": "s9",
+   "title": "Objects",
+   "lines": [
+    {
+     "id": "s9a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Arrays and objects are compared by reference, not by content."
+    },
+    {
+     "id": "s9b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "These two empty arrays look identical. But each one lives in its own place in memory."
+    },
+    {
+     "id": "s9c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Both operators compare the places. Different places, so {false}."
+    },
+    {
+     "id": "s9d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "But two names that point at the same array are equal."
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "title": "Rule",
+   "lines": [
+    {
+     "id": "s10a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "So the rule is simple. Use [===|triple equals|c] by default. It never surprises you."
+    },
+    {
+     "id": "s10b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "One common exception is [x == null|x double equals null|c]. It is {true} for {null} and for {undefined}, and nothing else."
+    },
+    {
+     "id": "s10c",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Triple equals by default. Double equals only for null checks."
+    },
+    {
+     "id": "s10d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Exactly. That is your interview answer."
+    }
+   ]
+  }
+ ]
+}

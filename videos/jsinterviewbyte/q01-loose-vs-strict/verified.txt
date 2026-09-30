@@ -1,0 +1,18 @@
+ok  0: "1" == 1 -> "true"
+ok  1: "1" === 1 -> "false"
+ok  2: 0 == false -> "true"
+ok  3: 0 === false -> "false"
+ok  4: null == undefined -> "true"
+ok  5: null === undefined -> "false"
+ok  6: NaN == NaN -> "false"
+ok  7: NaN === NaN -> "false"
+ok  8: Number.isNaN(NaN) -> "true"
+ok  9: (script) -> ["false"]
+ok  10: (script) -> ["true"]
+ok  11: [] == [] -> "false"
+ok  12: undefined == null -> "true"
+ok  13: 0 == null -> "false"
+ok  14: "" == null -> "false"
+ok  15: typeof "1" -> "string"
+ok  16: typeof 1 -> "number"
+ok  17: typeof true -> "boolean"

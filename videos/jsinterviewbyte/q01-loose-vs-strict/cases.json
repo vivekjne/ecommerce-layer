@@ -1,0 +1,78 @@
+[
+ {
+  "code": "\"1\" == 1",
+  "expect": "true"
+ },
+ {
+  "code": "\"1\" === 1",
+  "expect": "false"
+ },
+ {
+  "code": "0 == false",
+  "expect": "true"
+ },
+ {
+  "code": "0 === false",
+  "expect": "false"
+ },
+ {
+  "code": "null == undefined",
+  "expect": "true"
+ },
+ {
+  "code": "null === undefined",
+  "expect": "false"
+ },
+ {
+  "code": "NaN == NaN",
+  "expect": "false"
+ },
+ {
+  "code": "NaN === NaN",
+  "expect": "false"
+ },
+ {
+  "code": "Number.isNaN(NaN)",
+  "expect": "true"
+ },
+ {
+  "script": "const a = [];\nconst c = [];\nconsole.log(a === c);",
+  "expect": [
+   "false"
+  ]
+ },
+ {
+  "script": "const a = [];\nconst b = a;\nconsole.log(a === b);",
+  "expect": [
+   "true"
+  ]
+ },
+ {
+  "code": "[] == []",
+  "expect": "false"
+ },
+ {
+  "code": "undefined == null",
+  "expect": "true"
+ },
+ {
+  "code": "0 == null",
+  "expect": "false"
+ },
+ {
+  "code": "\"\" == null",
+  "expect": "false"
+ },
+ {
+  "code": "typeof \"1\"",
+  "expect": "string"
+ },
+ {
+  "code": "typeof 1",
+  "expect": "number"
+ },
+ {
+  "code": "typeof true",
+  "expect": "boolean"
+ }
+]
