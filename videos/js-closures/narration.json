@@ -51,7 +51,7 @@
         { "id": "s4h", "text": "So it checks the next room outward, and finds it there." },
         { "id": "s4i", "text": "Now greeting. Not in inner. Not in outer." },
         { "id": "s4j", "text": "So the engine keeps going, and finds it in the global room." },
-        { "id": "s4k", "text": "And the code prints: Hello Sam." }
+        { "id": "s4k", "text": "And the code will print: Hello Sam." }
       ]
     },
     {
@@ -80,7 +80,7 @@
         { "id": "s6g", "text": "But the returned function still points to it, so the environment stays alive." },
         { "id": "s6h", "text": "Now we call counter. It looks for count, and does not find it locally." },
         { "id": "s6i", "text": "So it follows its backpack, and finds count in the surviving environment." },
-        { "id": "s6j", "text": "It adds one. Count is now one." },
+        { "id": "s6j", "text": "It adds one, and count is now one." },
         { "id": "s6k", "text": "Call it again, and count becomes two. Again, and it becomes three." },
         { "id": "s6l", "text": "The same count, every time. That is how counter remembers." }
       ]
