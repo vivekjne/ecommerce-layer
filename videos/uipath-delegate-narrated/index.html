@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      :root {
+        --bg: #fff6e5;
+        --ink: #1f2140;
+        --muted: #4f5478;
+        --coral: #d92d48;
+        --sun: #ffc93c;
+        --mint: #0a8a5f;
+        --sky: #0a7fbf;
+        --grape: #6a4df0;
+        --teal: #0b7a85;
+        --cyan: #21c7d6;
+        --navy: #121a30;
+        --mono: "JetBrains Mono", "DejaVu Sans Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: Inter, "Helvetica Neue", Arial, ui-sans-serif, system-ui, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 8% 12%, #ffe1ea 0, transparent 36%),
+          radial-gradient(circle at 92% 88%, #d3f5f8 0, transparent 40%),
+          radial-gradient(circle at 90% 8%, #fff0b8 0, transparent 30%),
+          var(--bg);
+      }
+      .clip { position: absolute; inset: 0; padding: 80px 140px; }
+      .ov { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
+      .ov line, .ov path { fill: none; stroke-width: 5; stroke-linecap: round; }
+      .eyebrow {
+        display: inline-block;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #fff;
+        background: var(--teal);
+        padding: 8px 18px;
+        border-radius: 999px;
+      }
+      h2 { font-size: 60px; font-weight: 800; letter-spacing: -0.03em; margin-top: 14px; }
+      #badge {
+        position: absolute;
+        right: 60px;
+        top: 50px;
+        font-size: 22px;
+        font-weight: 800;
+        background: var(--ink);
+        color: #fff;
+        padding: 8px 18px;
+        border-radius: 999px;
+        z-index: 5;
+      }
+
+      /* characters (persistent, bottom corners) */
+      .char { position: absolute; z-index: 40; }
+      .char svg { display: block; width: 100%; height: auto; overflow: visible; }
+      #sam { left: 40px; top: 838px; width: 170px; }
+      #byte { left: 1712px; top: 838px; width: 170px; }
+      #guard { left: 1510px; top: 838px; width: 170px; }
+
+      /* captions */
+      #captions { position: absolute; inset: 0; z-index: 50; pointer-events: none; }
+      .cline {
+        position: absolute;
+        left: 250px;
+        top: 918px;
+        width: 1240px;
+        height: 128px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 38px;
+        font-weight: 800;
+        line-height: 1.25;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 28px;
+        padding: 8px 26px;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.14);
+      }
+      .cw { color: #7d84ab; padding: 0 0.06em; border-radius: 8px; background-color: rgba(255, 201, 60, 0); }
+
+      /* generic cards, icon tiles, pills */
+      .u-card {
+        position: absolute;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 26px;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+      }
+      .u-card.dashed { border-style: dashed; background: rgba(255, 255, 255, 0.6); box-shadow: none; }
+      .u-tile {
+        width: 112px;
+        height: 112px;
+        border-radius: 26px;
+        background: var(--navy);
+        border: 4px solid var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+      }
+      .u-tile img { width: 68px; height: 68px; display: block; }
+      .u-tile.sm { width: 84px; height: 84px; border-radius: 20px; }
+      .u-tile.sm img { width: 50px; height: 50px; }
+      .u-card h3 { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+      .u-card p { font-size: 26px; line-height: 1.38; color: var(--muted); font-weight: 500; }
+      .u-pill {
+        position: absolute;
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 30px;
+        font-weight: 800;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 999px;
+        padding: 10px 26px;
+        white-space: nowrap;
+        box-shadow: 0 6px 0 rgba(31, 33, 64, 0.12);
+      }
+      .u-tag {
+        display: inline-block;
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 6px 16px;
+        border-radius: 999px;
+        color: #fff;
+        background: var(--teal);
+        white-space: nowrap;
+      }
+      .u-tag.amber { background: var(--sun); color: var(--ink); }
+      .u-tag.green { background: var(--mint); }
+      .u-tag.blue { background: var(--sky); }
+      .u-tag.red { background: var(--coral); }
+      .u-tag.ink { background: var(--ink); }
+
+      /* title */
+      #s1 { text-align: center; padding-top: 110px; }
+      #s1 .kick { display: block; margin-bottom: 14px; font-size: 30px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); }
+      #s1 h1 { font-size: 150px; font-weight: 900; letter-spacing: -0.05em; line-height: 1.1; margin-top: 4px; }
+      #s1 h1 span { color: var(--teal); }
+      #s1 p { font-size: 46px; color: var(--muted); margin-top: 10px; font-weight: 700; }
+
+      /* 2 · hook */
+      .u-chip {
+        position: absolute;
+        top: 300px;
+        width: 380px;
+        height: 110px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 34px;
+        font-weight: 800;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 24px;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+      }
+      .u-box { position: absolute; top: 500px; width: 520px; height: 230px; padding: 28px 32px; text-align: center; }
+      .u-box h3 { font-size: 46px; }
+      .u-box p { margin-top: 10px; }
+
+      /* 3/6/12/13 · enumerated cards */
+      .u-col { top: 290px; width: 390px; height: 420px; padding: 26px 28px; }
+      .u-col h3 { margin-top: 22px; font-size: 38px; }
+      .u-col p { margin-top: 12px; font-size: 27px; }
+
+      /* 4 · ways */
+      .u-way4 { top: 290px; width: 390px; height: 330px; padding: 30px 28px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+      .u-way4 .u-tile { width: 132px; height: 132px; }
+      .u-way4 .u-tile img { width: 80px; height: 80px; }
+      .u-way4 h3 { margin-top: 22px; font-size: 38px; }
+      .u-banner { position: absolute; left: 140px; width: 1640px; height: 96px; display: flex; align-items: center; justify-content: center; gap: 20px; font-size: 34px; font-weight: 800; text-align: center; }
+
+      /* 5 · use cases */
+      .u-uc { top: 240px; width: 540px; height: 428px; padding: 22px 26px; }
+      .u-uc .row { display: flex; align-items: center; gap: 18px; }
+      .u-uc .num { font-family: var(--mono); font-size: 44px; font-weight: 800; color: var(--muted); }
+      .u-uc h3 { margin-top: 14px; font-size: 34px; }
+      .u-uc p { margin-top: 10px; font-size: 24px; }
+      .u-uc .tg { position: absolute; left: 26px; bottom: 20px; }
+      .u-fut { top: 680px; width: 815px; height: 146px; padding: 16px 26px; }
+      .u-fut .hd5 { display: flex; align-items: center; gap: 14px; }
+      .u-fut h3 { font-size: 32px; }
+      .u-fut p { font-size: 25px; margin-top: 4px; line-height: 1.32; }
+
+      /* 6 · reasons (2x2) */
+      .u-rs { width: 810px; height: 270px; padding: 24px 28px; display: flex; gap: 26px; }
+      .u-rs .tx { flex: 1; }
+      .u-rs h3 { font-size: 35px; }
+      .u-rs p { font-size: 25px; margin-top: 8px; line-height: 1.34; }
+
+      /* 7 · PSE prompts */
+      .u-ps { width: 810px; height: 138px; padding: 14px 24px; display: flex; gap: 20px; align-items: center; }
+      .u-ps .num { font-family: var(--mono); font-size: 36px; font-weight: 800; color: var(--teal); width: 56px; flex: none; }
+      .u-ps h3 { font-size: 31px; }
+      .u-ps p { font-size: 26px; line-height: 1.3; margin-top: 4px; }
+
+      /* 8-11 · four ways */
+      #dots { position: absolute; right: 140px; top: 132px; display: flex; gap: 10px; z-index: 6; }
+      .u-dot { font-size: 20px; font-weight: 800; padding: 6px 16px; border-radius: 999px; border: 3px solid var(--ink); background: #fff; color: var(--muted); }
+      .u-way { position: absolute; left: 140px; top: 260px; display: flex; align-items: center; gap: 24px; }
+      .u-way h3 { font-size: 44px; font-weight: 800; letter-spacing: -0.02em; }
+      .u-bul {
+        position: absolute;
+        left: 140px;
+        width: 830px;
+        min-height: 88px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 29px;
+        font-weight: 700;
+        line-height: 1.25;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 22px;
+        padding: 14px 24px;
+        box-shadow: 0 6px 0 rgba(31, 33, 64, 0.12);
+      }
+      .u-bul i { width: 34px; height: 34px; border-radius: 50%; background: var(--teal); flex: none; position: relative; }
+      .u-bul i::after { content: ""; position: absolute; left: 10px; top: 5px; width: 9px; height: 16px; border: solid #fff; border-width: 0 4px 4px 0; transform: rotate(45deg); }
+      .u-vis { position: absolute; left: 990px; top: 260px; width: 790px; height: 590px; }
+      .u-typed { font-family: var(--mono); font-size: 27px; line-height: 1.45; min-height: 80px; color: var(--ink); font-weight: 600; }
+      .u-step { position: absolute; width: 230px; height: 84px; display: flex; align-items: center; justify-content: center; font-size: 27px; font-weight: 800; background: #fff; border: 4px solid var(--teal); border-radius: 20px; }
+      .u-skel { height: 16px; border-radius: 8px; background: #dfe3f2; margin: 16px 22px; }
+
+      /* 12 · modes */
+      .u-mode { top: 330px; width: 540px; height: 500px; padding: 26px 30px; }
+      .u-mode h3 { font-size: 46px; margin-top: 18px; }
+      .u-mode p { margin-top: 12px; font-size: 29px; }
+      .u-mode .tp { display: flex; align-items: center; justify-content: space-between; }
+      .u-mode .mo { font-family: var(--mono); font-weight: 800; font-size: 24px; color: var(--muted); }
+      .u-mode .u-tile { margin-top: 18px; }
+      .u-cd { position: absolute; width: 200px; height: 200px; border-radius: 50%; background: var(--sun); border: 6px solid var(--ink); box-shadow: 0 10px 0 rgba(31, 33, 64, 0.16); }
+      .u-cd .cdn { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 120px; font-weight: 900; }
+      .u-cd .cdl { position: absolute; left: 0; right: 0; bottom: -56px; text-align: center; font-size: 30px; font-weight: 800; }
+
+      /* 14 · recap */
+      .u-rc { position: absolute; left: 140px; width: 1120px; height: 150px; display: flex; align-items: center; gap: 28px; padding: 0 30px; font-size: 36px; font-weight: 800; line-height: 1.25; }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute">
+      <defs>
+        <marker id="ahInk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1f2140" /></marker>
+        <marker id="ahTeal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0b7a85" /></marker>
+        <marker id="ahRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d92d48" /></marker>
+      </defs>
+    </svg>
+
+    <div id="root" data-composition-id="main" data-start="0" data-duration="542.257" data-width="1920" data-height="1080">
+      <audio id="vo" src="assets/voiceover.mp3" data-start="0" data-duration="542.257" data-volume="1"></audio>
+      <audio id="bgm" src="assets/music.mp3" data-start="0" data-duration="542.257" data-volume="1" data-fade-in="2" data-fade-out="4"></audio>
+
+      <div id="badge">Delegate Demystified</div>
+      <div id="dots">
+        <div class="u-dot" id="dt1">1 Compose</div>
+        <div class="u-dot" id="dt2">2 Teach</div>
+        <div class="u-dot" id="dt3">3 Attach</div>
+        <div class="u-dot" id="dt4">4 Control</div>
+      </div>
+
+      <!-- 1 · Title -->
+      <section id="s1" class="clip" data-start="0.6" data-duration="22.945" data-track-index="0">
+        <div class="kick">Delegate Demystified</div>
+        <h1><span>UiPath</span> Delegate</h1>
+        <p>Your first AI intern</p>
+      </section>
+
+      <!-- 2 · The question -->
+      <section id="s2" class="clip" data-start="23.545" data-duration="26.006" data-track-index="0">
+        <div class="eyebrow">The question</div>
+        <h2>How much of your week is busywork?</h2>
+        <div class="u-chip" id="ch1" style="left: 140px">Email digests</div>
+        <div class="u-chip" id="ch2" style="left: 570px">CRM updates</div>
+        <div class="u-chip" id="ch3" style="left: 1000px">Smart reporting</div>
+        <div class="u-chip" id="ch4" style="left: 1430px">Asset creation</div>
+        <div class="u-card u-box" id="gapL" style="left: 200px"><h3>Busywork</h3><p>repetitive, admin, draining</p></div>
+        <div class="u-card u-box" id="gapR" style="left: 1200px"><h3>Real company work</h3><p>secure and workflow-aware</p></div>
+        <svg class="ov" viewBox="0 0 1920 1080">
+          <path id="brDash" d="M 740 615 L 1180 615" stroke="#d92d48" stroke-dasharray="14 16" marker-end="url(#ahRed)" />
+          <path id="brSolid" d="M 740 615 L 1180 615" stroke="#0b7a85" marker-end="url(#ahTeal)" />
+        </svg>
+        <div class="u-pill" id="aiPill" style="left: 862px; top: 545px; font-size: 34px">AI</div>
+        <div class="u-pill" id="qMark" style="left: 935px; top: 660px; font-size: 40px; color: var(--coral)">?</div>
+        <div class="u-pill" id="dlgPill" style="left: 780px; top: 545px; background: var(--navy); color: #fff; border-color: var(--ink)">
+          <img src="assets/deck/bolt.png" alt="" style="width: 38px; height: 38px" />Delegate
+        </div>
+      </section>
+
+      <!-- 3 · What it is -->
+      <section id="s3" class="clip" data-start="49.551" data-duration="33.372" data-track-index="0">
+        <div class="eyebrow">What it is</div>
+        <h2>A sidekick that gets work done</h2>
+        <div class="u-pill" id="cmpA" style="left: 250px; top: 470px; font-size: 42px; color: var(--muted); text-decoration: line-through">Suggests</div>
+        <div id="cmpArr" style="position: absolute; left: 610px; top: 452px; font-size: 76px; font-weight: 900; color: var(--teal); line-height: 1">→</div>
+        <div class="u-pill" id="cmpB" style="left: 720px; top: 470px; font-size: 42px; background: var(--teal); color: #fff; border-color: var(--ink)">Completes the task, end to end</div>
+        <div class="u-card u-col" id="b1" style="left: 140px"><div class="u-tile"><img src="assets/deck/bolt.png" alt="" /></div><h3>Offload the busywork</h3><p class="dd">Hand off repetitive and admin work that drains time and focus.</p></div>
+        <div class="u-card u-col" id="b2" style="left: 560px"><div class="u-tile"><img src="assets/deck/check.png" alt="" /></div><h3>Done, not suggested</h3><p class="dd">Goes beyond suggestions to get tasks completed end to end.</p></div>
+        <div class="u-card u-col" id="b3" style="left: 980px"><div class="u-tile"><img src="assets/deck/team-gear.png" alt="" /></div><h3>A trainable sidekick</h3><p class="dd">Out-of-the-box and trainable skills that grow with how you work.</p></div>
+        <div class="u-card u-col" id="b4" style="left: 1400px"><div class="u-tile"><img src="assets/deck/shield.png" alt="" /></div><h3>Enterprise-ready</h3><p class="dd">Reliable, secure and workflow-aware by design.</p></div>
+      </section>
+
+      <!-- 4 · Ways to hand it work -->
+      <section id="s4" class="clip" data-start="82.923" data-duration="27.812" data-track-index="0">
+        <div class="eyebrow">How to hand it work</div>
+        <h2>Four ways to delegate</h2>
+        <div class="u-card u-way4" id="w1" style="left: 140px"><div class="u-tile"><img src="assets/deck/keyboard.png" alt="" /></div><h3>Type a prompt</h3></div>
+        <div class="u-card u-way4" id="w2" style="left: 560px"><div class="u-tile"><img src="assets/deck/mic.png" alt="" /></div><h3>Speak a command</h3></div>
+        <div class="u-card u-way4" id="w3" style="left: 980px"><div class="u-tile"><img src="assets/deck/video.png" alt="" /></div><h3>Record your screen</h3></div>
+        <div class="u-card u-way4" id="w4" style="left: 1400px"><div class="u-tile"><img src="assets/deck/layers.png" alt="" /></div><h3>Start from a template</h3></div>
+        <div class="u-card u-banner" id="bn4a" style="top: 650px; height: 84px">General-purpose agent with computer use, across browsers and apps</div>
+        <div class="u-card u-banner" id="bn4b" style="top: 745px; height: 84px; background: var(--navy); color: #fff">Programmatic execution, enterprise-grade reliability</div>
+      </section>
+
+      <!-- 5 · Use cases -->
+      <section id="s5" class="clip" data-start="110.735" data-duration="66.401" data-track-index="0">
+        <div class="eyebrow">Where it pays off</div>
+        <h2>Top enterprise use cases</h2>
+        <div class="u-card u-uc" id="uc1" style="left: 140px">
+          <div class="row"><div class="u-tile sm"><img src="assets/deck/doc-sign.png" alt="" /></div><div class="num">01</div></div>
+          <h3>PDD &amp; SDD generation</h3>
+          <p class="dd">Define processes, contact SMEs, record their tasks and sign off on documents — then hand them to Autopilot and coding agents to build the solution.</p>
+          <div class="tg"><span class="u-tag">Delegate &amp; coding agents</span></div>
+        </div>
+        <div class="u-card u-uc" id="uc2" style="left: 710px">
+          <div class="row"><div class="u-tile sm"><img src="assets/deck/flask.png" alt="" /></div><div class="num">02</div></div>
+          <h3>Application testing</h3>
+          <p class="dd">Run test cases, set up environments, run exploratory testing, and build and refine object repositories.</p>
+          <div class="tg"><span class="u-tag blue">Delegate &amp; Test Suite</span></div>
+        </div>
+        <div class="u-card u-uc" id="uc3" style="left: 1280px">
+          <div class="row"><div class="u-tile sm"><img src="assets/deck/team-gear.png" alt="" /></div><div class="num">03</div></div>
+          <h3>Personal productivity</h3>
+          <p class="dd">Intake and triage incoming work, validate and follow up on missing evidence, and resolve escalations and duplicates.</p>
+          <div class="tg"><span class="u-tag green">Delegate &amp; clerical work</span></div>
+        </div>
+        <div class="u-card dashed u-fut" id="fu1" style="left: 140px"><div class="hd5"><span class="u-tag amber">Future</span><h3>Internal enablement</h3></div><p class="dd">Plugged into your knowledge, docs, goals and competitive intel, runs enablement and training on demand.</p></div>
+        <div class="u-card dashed u-fut" id="fu2" style="left: 985px"><div class="hd5"><span class="u-tag amber">Future</span><h3>Discovery</h3></div><p class="dd">The more you use it, the better it gets: a cross-team knowledge repository that surfaces tribal know-how.</p></div>
+      </section>
+
+      <!-- 6 · Why Delegate -->
+      <section id="s6" class="clip" data-start="177.137" data-duration="77.409" data-track-index="0">
+        <div class="eyebrow">Why Delegate</div>
+        <h2>Four reasons UiPath gives</h2>
+        <div class="u-card u-rs" id="r1" style="left: 140px; top: 250px"><div class="u-tile"><img src="assets/deck/bolt.png" alt="" /></div><div class="tx"><h3>Best-in-class UI automation</h3><p class="dd">Built on the same UiPath UIA foundation as RPA — materially more reliable on enterprise apps than screen-only vision. More than a CUA: an agent with skills, steering and multi-app orchestration on top.</p></div></div>
+        <div class="u-card u-rs" id="r2" style="left: 970px; top: 250px"><div class="u-tile"><img src="assets/deck/plug.png" alt="" /></div><div class="tx"><h3>Built as an extension</h3><p class="dd">Ships on top of your existing UiPath deployment. No new IT approval and no new upgrade process — the UiPath Assistant upgrades into Delegate.</p></div></div>
+        <div class="u-card u-rs" id="r3" style="left: 140px; top: 545px"><div class="u-tile"><img src="assets/deck/shield.png" alt="" /></div><div class="tx"><h3>Structural governance</h3><p class="dd">Every operation runs through the same RBAC, audit trail, credential vault and AI Trust Layer. Not bolted on — built in.</p></div></div>
+        <div class="u-card u-rs" id="r4" style="left: 970px; top: 545px"><div class="u-tile"><img src="assets/deck/compass.png" alt="" /></div><div class="tx"><h3>More automation, more capacity</h3><p class="dd">Discover and document processes, do more testing through exploratory setups, and free people for higher-value automation work.</p></div></div>
+      </section>
+
+      <!-- 7 · A day with Delegate -->
+      <section id="s7" class="clip" data-start="254.546" data-duration="73.744" data-track-index="0">
+        <div class="eyebrow">A day with Delegate</div>
+        <h2>Product Support Engineer</h2>
+        <div class="u-pill" id="pse7" style="left: 1240px; top: 150px; font-size: 26px; padding: 8px 22px">Backlog → Resolution</div>
+        <div class="u-card u-ps" id="p1" style="left: 140px; top: 240px"><div class="num">01</div><div><h3>Morning planning</h3><p>Pull my case backlog from Salesforce and prioritize the day.</p></div></div>
+        <div class="u-card u-ps" id="p2" style="left: 970px; top: 240px"><div class="num">02</div><div><h3>Context awareness</h3><p>Summarize the case I'm viewing with related KB articles and similar past cases.</p></div></div>
+        <div class="u-card u-ps" id="p3" style="left: 140px; top: 390px"><div class="num">03</div><div><h3>License lookup</h3><p>Look up a customer's licensing data without switching tools.</p></div></div>
+        <div class="u-card u-ps" id="p4" style="left: 970px; top: 390px"><div class="num">04</div><div><h3>Log analysis</h3><p>Pull recent App Insights logs for a tenant without navigating Azure.</p></div></div>
+        <div class="u-card u-ps" id="p5" style="left: 140px; top: 540px"><div class="num">05</div><div><h3>Troubleshooting research</h3><p>Search Product Docs, KB, Slack, Confluence and past cases at once.</p></div></div>
+        <div class="u-card u-ps" id="p6" style="left: 970px; top: 540px"><div class="num">06</div><div><h3>First-response drafting</h3><p>Generate a reply from case context to iterate on and send to Salesforce.</p></div></div>
+        <div class="u-card u-ps" id="p7" style="left: 140px; top: 690px"><div class="num">07</div><div><h3>RunDeck jobs</h3><p>Run a predefined job with parameters without leaving the workflow.</p></div></div>
+        <div class="u-card u-ps" id="p8" style="left: 970px; top: 690px"><div class="num">08</div><div><h3>Stay in flow</h3><p>One conversational surface across every tool the PSE touches.</p></div></div>
+      </section>
+
+      <!-- 8 · Way 1: compose -->
+      <section id="s8" class="clip" data-start="328.29" data-duration="27.96" data-track-index="0">
+        <div class="eyebrow">Way 1 of 4</div>
+        <h2>Compose &amp; execute tasks</h2>
+        <div class="u-way" id="wy8" style="top: 270px"><div class="u-tile"><img src="assets/deck/terminal.png" alt="" /></div></div>
+        <div class="u-bul" id="bl8a" style="top: 420px"><i></i>Write natural-language instructions — no code</div>
+        <div class="u-bul" id="bl8b" style="top: 530px"><i></i>Breaks complex workflows into steps</div>
+        <div class="u-bul" id="bl8c" style="top: 640px"><i></i>Handles UI automation, files and API calls</div>
+        <div class="u-bul" id="bl8d" style="top: 750px"><i></i>Learns from your feedback over time</div>
+        <div class="u-card u-vis" id="v8" style="height: 200px; top: 270px; padding: 18px 26px"><span class="u-tag ink">Prompt</span><div class="u-typed" id="ty8" style="margin-top: 10px"></div></div>
+        <div class="u-step" id="st8a" style="left: 990px; top: 520px">UI automation</div>
+        <div class="u-step" id="st8b" style="left: 1245px; top: 520px">Files</div>
+        <div class="u-step" id="st8c" style="left: 1500px; top: 520px">API calls</div>
+        <div class="u-pill" id="dn8" style="left: 1110px; top: 650px; background: var(--mint); color: #fff">Task complete</div>
+        <div class="u-pill" id="fb8" style="left: 1090px; top: 760px; font-size: 26px">Your feedback → better next time</div>
+      </section>
+
+      <!-- 9 · Way 2: routines -->
+      <section id="s9" class="clip" data-start="356.25" data-duration="21.42" data-track-index="0">
+        <div class="eyebrow">Way 2 of 4</div>
+        <h2>Teach skills with Routines</h2>
+        <div class="u-way" id="wy9" style="top: 270px"><div class="u-tile"><img src="assets/deck/book.png" alt="" /></div></div>
+        <div class="u-bul" id="bl9a" style="top: 420px"><i></i>Capture your expertise as reusable playbooks</div>
+        <div class="u-bul" id="bl9b" style="top: 530px"><i></i>Document a workflow once, invoke it forever</div>
+        <div class="u-bul" id="bl9c" style="top: 640px"><i></i>Share Skills across the team for consistency</div>
+        <div class="u-bul" id="bl9d" style="top: 750px"><i></i>Your custom skills, on tap</div>
+        <div class="u-card" id="rt9a" style="left: 1000px; top: 280px; width: 360px; height: 170px; padding: 20px 24px"><span class="u-tag ink">Document once</span><p style="margin-top: 14px; font-size: 26px; color: var(--ink); font-weight: 700">Your expertise</p></div>
+        <div class="u-card" id="rt9b" style="left: 1420px; top: 280px; width: 360px; height: 170px; padding: 20px 24px; border-color: var(--teal)"><span class="u-tag">Routine</span><p style="margin-top: 14px; font-size: 26px; color: var(--ink); font-weight: 700">Reusable playbook</p></div>
+        <svg class="ov" viewBox="0 0 1920 1080"><path id="ar9" d="M 1364 365 L 1414 365" stroke="#1f2140" marker-end="url(#ahInk)" /></svg>
+        <div class="u-card" id="rt9c" style="left: 1000px; top: 520px; width: 780px; height: 250px; padding: 20px 26px"><span class="u-tag green">Shared across the team</span>
+          <div style="display: flex; gap: 28px; margin-top: 24px; align-items: center">
+            <div class="u-tile sm"><img src="assets/deck/team-gear.png" alt="" /></div><div class="u-tile sm"><img src="assets/deck/team-gear.png" alt="" /></div><div class="u-tile sm"><img src="assets/deck/team-gear.png" alt="" /></div>
+            <div style="font-size: 30px; font-weight: 800; line-height: 1.2">Same skill,<br />same result</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 · Way 3: SOPs & automations -->
+      <section id="s10" class="clip" data-start="377.67" data-duration="19.917" data-track-index="0">
+        <div class="eyebrow">Way 3 of 4</div>
+        <h2>Attach SOPs &amp; invoke automations</h2>
+        <div class="u-way" id="wy10" style="top: 270px"><div class="u-tile"><img src="assets/deck/paperclip.png" alt="" /></div></div>
+        <div class="u-bul" id="bl10a" style="top: 420px"><i></i>Reference your SOPs directly</div>
+        <div class="u-bul" id="bl10b" style="top: 530px"><i></i>Link design documents for context</div>
+        <div class="u-bul" id="bl10c" style="top: 640px"><i></i>Invoke deployed UiPath automations</div>
+        <div class="u-bul" id="bl10d" style="top: 750px"><i></i>View complete task trails and history</div>
+        <div class="u-card" id="hub10" style="left: 1240px; top: 360px; width: 250px; height: 130px; border-color: var(--teal); display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 32px; font-weight: 800"><img src="assets/deck/bolt.png" alt="" style="width: 44px; height: 44px; background: var(--navy); border-radius: 12px; padding: 6px" />Delegate</div>
+        <div class="u-pill" id="sp10a" style="left: 1010px; top: 270px; font-size: 28px">SOPs</div>
+        <div class="u-pill" id="sp10b" style="left: 1470px; top: 270px; font-size: 28px">Design documents</div>
+        <div class="u-pill" id="sp10c" style="left: 1170px; top: 540px; font-size: 28px">Deployed automations</div>
+        <svg class="ov" viewBox="0 0 1920 1080">
+          <path id="ln10a" d="M 1100 330 L 1250 378" stroke="#1f2140" marker-end="url(#ahInk)" />
+          <path id="ln10b" d="M 1590 330 L 1480 378" stroke="#1f2140" marker-end="url(#ahInk)" />
+          <path id="ln10c" d="M 1365 535 L 1365 497" stroke="#0b7a85" marker-end="url(#ahTeal)" />
+        </svg>
+        <div class="u-card" id="tr10" style="left: 1000px; top: 640px; width: 780px; height: 170px"><div style="padding: 14px 24px 0"><span class="u-tag ink">Task trail &amp; history</span></div><div class="u-skel" style="width: 88%"></div><div class="u-skel" style="width: 64%"></div><div class="u-skel" style="width: 76%"></div></div>
+      </section>
+
+      <!-- 11 · Way 4: control -->
+      <section id="s11" class="clip" data-start="397.586" data-duration="20.281" data-track-index="0">
+        <div class="eyebrow">Way 4 of 4</div>
+        <h2>Control what Delegate accesses</h2>
+        <div class="u-way" id="wy11" style="top: 270px"><div class="u-tile"><img src="assets/deck/sliders.png" alt="" /></div></div>
+        <div class="u-bul" id="bl11a" style="top: 420px"><i></i>Allow / Deny lists for apps and URLs</div>
+        <div class="u-bul" id="bl11b" style="top: 530px"><i></i>Granular permissions by task type</div>
+        <div class="u-bul" id="bl11c" style="top: 640px"><i></i>Audit trail of every action taken</div>
+        <div class="u-bul" id="bl11d" style="top: 750px"><i></i>Your data stays in your control</div>
+        <div class="u-card" id="al11" style="left: 1000px; top: 270px; width: 370px; height: 230px; padding: 18px 24px; border-color: var(--mint)"><span class="u-tag green">Allow</span><p style="margin-top: 16px; font-size: 28px; color: var(--ink); font-weight: 700; line-height: 1.5">Approved apps<br />Approved URLs</p></div>
+        <div class="u-card" id="dn11" style="left: 1410px; top: 270px; width: 370px; height: 230px; padding: 18px 24px; border-color: var(--coral)"><span class="u-tag red">Deny</span><p style="margin-top: 16px; font-size: 28px; color: var(--ink); font-weight: 700; line-height: 1.5">Blocked apps<br />Blocked URLs</p></div>
+        <div class="u-card" id="pm11" style="left: 1000px; top: 525px; width: 780px; height: 90px; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 800">Permissions set per task type</div>
+        <div class="u-card" id="au11" style="left: 1000px; top: 645px; width: 780px; height: 185px"><div style="padding: 14px 24px 0"><span class="u-tag ink">Audit trail</span></div><div class="u-skel" style="width: 86%"></div><div class="u-skel" style="width: 70%"></div></div>
+      </section>
+
+      <!-- 12 · Modes -->
+      <section id="s12" class="clip" data-start="417.867" data-duration="51.253" data-track-index="0">
+        <div class="eyebrow">You stay in control</div>
+        <h2>Three modes</h2>
+        <div class="u-card u-mode" id="m1" style="left: 140px"><div class="tp"><span class="u-tag green">Safest</span><span class="mo">MODE 01</span></div><div class="u-tile"><img src="assets/deck/handshake.png" alt="" /></div><h3>Always ask</h3><p class="dd">Delegate confirms every action before it runs. Full oversight on every step.</p></div>
+        <div class="u-card u-mode" id="m2" style="left: 690px"><div class="tp"><span class="u-tag blue">Balanced</span><span class="mo">MODE 02</span></div><div class="u-tile"><img src="assets/deck/gauge.png" alt="" /></div><h3>Smart</h3><p class="dd">Delegate decides based on the risk level of each action — asking only when it matters.</p></div>
+        <div class="u-card u-mode" id="m3" style="left: 1240px"><div class="tp"><span class="u-tag amber">Trusted only</span><span class="mo">MODE 03</span></div><div class="u-tile"><img src="assets/deck/rocket.png" alt="" /></div><h3>Unrestricted</h3><p class="dd">Full autonomy. Use with caution, only in trusted environments.</p></div>
+        <div class="u-cd" id="cd12" style="left: 1370px; top: 62px"><span class="cdn">3</span><span class="cdn">2</span><span class="cdn">1</span><div class="cdl">Which one?</div></div>
+      </section>
+
+      <!-- 13 · Governed by design -->
+      <section id="s13" class="clip" data-start="469.12" data-duration="45.404" data-track-index="0">
+        <div class="eyebrow">Trust layer</div>
+        <h2>Governed by design</h2>
+        <div class="u-card u-col" id="g1" style="left: 140px; top: 250px; height: 400px"><div class="u-tile"><img src="assets/deck/layers.png" alt="" /></div><h3>Orchestrator</h3><p class="dd">Central scheduling, queues and run management for every agent operation.</p></div>
+        <div class="u-card u-col" id="g2" style="left: 560px; top: 250px; height: 400px"><div class="u-tile"><img src="assets/deck/lock.png" alt="" /></div><h3>Credential vault</h3><p class="dd">Secrets and credentials stay encrypted and brokered — never exposed to the agent.</p></div>
+        <div class="u-card u-col" id="g3" style="left: 980px; top: 250px; height: 400px"><div class="u-tile"><img src="assets/deck/shield.png" alt="" /></div><h3>AI Trust Layer</h3><p class="dd">Policy, redaction and model governance applied to every interaction.</p></div>
+        <div class="u-card u-col" id="g4" style="left: 1400px; top: 250px; height: 400px"><div class="u-tile"><img src="assets/deck/sliders.png" alt="" /></div><h3>RBAC</h3><p class="dd">Role-based access across all operations, mapped to your existing org.</p></div>
+        <div class="u-card u-banner" id="bn13" style="top: 690px; background: var(--navy); color: #fff; font-size: 30px">RBAC · audit trail · credential vault · AI Trust Layer — applied to every action, automatically.</div>
+      </section>
+
+      <!-- 14 · Recap -->
+      <section id="s14" class="clip" data-start="514.523" data-duration="25.734" data-track-index="0">
+        <div class="eyebrow">Recap</div>
+        <h2>UiPath Delegate in three lines</h2>
+        <div class="u-card u-rc" id="rc1" style="top: 250px"><div class="u-tile"><img src="assets/deck/keyboard.png" alt="" /></div><div>Hand it work: prompt, voice, screen recording or template</div></div>
+        <div class="u-card u-rc" id="rc2" style="top: 420px"><div class="u-tile"><img src="assets/deck/book.png" alt="" /></div><div>Teach it once with Routines, share the skills</div></div>
+        <div class="u-card u-rc" id="rc3" style="top: 590px"><div class="u-tile"><img src="assets/deck/shield.png" alt="" /></div><div>Stay in control: three modes, governance built in</div></div>
+        <div class="u-card u-banner" id="fin14" style="left: 140px; top: 765px; width: 1120px; background: var(--sun); font-size: 42px">Delegate the busywork. Keep the judgment.</div>
+      </section>
+
+      <div id="captions"></div>
+
+      <div class="char" id="sam" data-kind="sam"></div>
+      <div class="char" id="byte" data-kind="byte"></div>
+      <div class="char" id="guard" data-kind="guard"></div>
+    </div>
+
+    <script>
+      const T = {"scenes":{"s1":{"start":0.6,"dur":22.945},"s2":{"start":23.545,"dur":26.006},"s3":{"start":49.551,"dur":33.372},"s4":{"start":82.923,"dur":27.812},"s5":{"start":110.735,"dur":66.401},"s6":{"start":177.137,"dur":77.409},"s7":{"start":254.546,"dur":73.744},"s8":{"start":328.29,"dur":27.96},"s9":{"start":356.25,"dur":21.42},"s10":{"start":377.67,"dur":19.917},"s11":{"start":397.586,"dur":20.281},"s12":{"start":417.867,"dur":51.253},"s13":{"start":469.12,"dur":45.404},"s14":{"start":514.523,"dur":25.734}},"lines":{"s1a":{"scene":"s1","start":1.7,"dur":2.572,"words":[{"w":"Welcome","t":0},{"w":"to","t":0.643},{"w":"Delegate","t":0.908},{"w":"Demystified.","t":1.626}]},"s1b":{"scene":"s1","start":4.772,"dur":5.921,"words":[{"w":"Today's","t":0},{"w":"topic","t":0.626},{"w":"is","t":1.169},{"w":"UiPath","t":1.461},{"w":"Delegate,","t":2.087},{"w":"described","t":3.33},{"w":"as","t":4.065},{"w":"your","t":4.311},{"w":"first","t":4.696},{"w":"AI","t":5.151},{"w":"intern.","t":5.396}]},"s1c":{"scene":"s1","start":11.193,"dur":5.678,"words":[{"w":"It","t":0},{"w":"is","t":0.201},{"w":"a","t":0.402},{"w":"digital","t":0.546},{"w":"sidekick","t":1.034},{"w":"that","t":1.579},{"w":"learns","t":1.895},{"w":"from","t":2.326},{"w":"you,","t":2.642},{"w":"and","t":3.37},{"w":"does","t":3.633},{"w":"real","t":3.954},{"w":"work","t":4.276},{"w":"across","t":4.597},{"w":"your","t":5.035},{"w":"apps.","t":5.357}]},"s1d":{"scene":"s1","start":17.372,"dur":5.473,"words":[{"w":"By","t":0},{"w":"the","t":0.224},{"w":"end,","t":0.512},{"w":"you","t":0.96},{"w":"will","t":1.142},{"w":"know","t":1.363},{"w":"what","t":1.585},{"w":"it","t":1.807},{"w":"does,","t":1.948},{"w":"how","t":2.47},{"w":"you","t":2.695},{"w":"teach","t":2.92},{"w":"it,","t":3.245},{"w":"and","t":3.77},{"w":"how","t":4.017},{"w":"you","t":4.264},{"w":"stay","t":4.512},{"w":"in","t":4.814},{"w":"control.","t":5.006}]},"s2a":{"scene":"s2","start":24.645,"dur":1.782,"words":[{"w":"Let's","t":0},{"w":"start","t":0.332},{"w":"with","t":0.725},{"w":"a","t":1.057},{"w":"question.","t":1.208}]},"s2b":{"scene":"s2","start":26.927,"dur":3.083,"words":[{"w":"How","t":0},{"w":"much","t":0.272},{"w":"of","t":0.605},{"w":"your","t":0.816},{"w":"week","t":1.149},{"w":"disappears","t":1.481},{"w":"into","t":2.177},{"w":"busywork?","t":2.509}]},"s2c":{"scene":"s2","start":30.511,"dur":6.263,"words":[{"w":"Email","t":0},{"w":"digests.","t":0.641},{"w":"CRM","t":1.78},{"w":"updates.","t":2.303},{"w":"Smart","t":3.68},{"w":"reporting.","t":4.097},{"w":"Asset","t":5.06},{"w":"creation.","t":5.549}]},"s2d":{"scene":"s2","start":37.274,"dur":6.151,"words":[{"w":"AI","t":0},{"w":"can","t":0.243},{"w":"remove","t":0.556},{"w":"that","t":1.077},{"w":"busywork,","t":1.46},{"w":"but","t":2.61},{"w":"only","t":2.871},{"w":"if","t":3.19},{"w":"it","t":3.394},{"w":"knows","t":3.597},{"w":"how","t":3.974},{"w":"to","t":4.235},{"w":"work","t":4.438},{"w":"inside","t":4.758},{"w":"a","t":5.193},{"w":"real","t":5.338},{"w":"company.","t":5.657}]},"s2e":{"scene":"s2","start":43.924,"dur":4.927,"words":[{"w":"That","t":0},{"w":"is","t":0.337},{"w":"the","t":0.551},{"w":"problem","t":0.827},{"w":"Delegate","t":1.348},{"w":"is","t":1.93},{"w":"designed","t":2.144},{"w":"to","t":2.726},{"w":"tackle.","t":2.941},{"w":"Let's","t":3.96},{"w":"see","t":4.327},{"w":"how.","t":4.627}]},"s3a":{"scene":"s3","start":50.651,"dur":1.706,"words":[{"w":"So,","t":0},{"w":"what","t":0.271},{"w":"is","t":0.698},{"w":"Delegate?","t":0.969}]},"s3b":{"scene":"s3","start":52.857,"dur":5.86,"words":[{"w":"It","t":0},{"w":"goes","t":0.256},{"w":"beyond","t":0.658},{"w":"suggestions.","t":1.206},{"w":"It","t":2.69},{"w":"gets","t":2.915},{"w":"tasks","t":3.268},{"w":"completed,","t":3.686},{"w":"from","t":4.56},{"w":"start","t":4.871},{"w":"to","t":5.238},{"w":"finish.","t":5.436}]},"s3c":{"scene":"s3","start":59.216,"dur":6.938,"words":[{"w":"First,","t":0},{"w":"it","t":0.72},{"w":"offloads","t":0.933},{"w":"the","t":1.51},{"w":"busywork:","t":1.783},{"w":"repetitive","t":2.97},{"w":"admin","t":3.75},{"w":"work","t":4.191},{"w":"that","t":4.564},{"w":"drains","t":4.937},{"w":"your","t":5.446},{"w":"time","t":5.819},{"w":"and","t":6.192},{"w":"focus.","t":6.497}]},"s3d":{"scene":"s3","start":66.655,"dur":3.295,"words":[{"w":"Second,","t":0},{"w":"work","t":0.531},{"w":"gets","t":0.921},{"w":"done,","t":1.31},{"w":"not","t":2.02},{"w":"just","t":2.3},{"w":"suggested.","t":2.642}]},"s3e":{"scene":"s3","start":70.45,"dur":5.167,"words":[{"w":"Third,","t":0},{"w":"it","t":0.67},{"w":"is","t":0.871},{"w":"a","t":1.071},{"w":"trainable","t":1.214},{"w":"sidekick,","t":1.816},{"w":"with","t":2.82},{"w":"skills","t":3.113},{"w":"that","t":3.513},{"w":"grow","t":3.807},{"w":"with","t":4.1},{"w":"how","t":4.394},{"w":"you","t":4.634},{"w":"work.","t":4.874}]},"s3f":{"scene":"s3","start":76.117,"dur":6.106,"words":[{"w":"Fourth,","t":0},{"w":"it","t":0.475},{"w":"is","t":0.697},{"w":"enterprise","t":0.919},{"w":"ready:","t":1.648},{"w":"reliable,","t":2.62},{"w":"secure,","t":3.62},{"w":"and","t":4.51},{"w":"aware","t":4.745},{"w":"of","t":5.086},{"w":"your","t":5.269},{"w":"workflows.","t":5.557}]},"s4a":{"scene":"s4","start":84.023,"dur":3.461,"words":[{"w":"How","t":0},{"w":"do","t":0.222},{"w":"you","t":0.395},{"w":"hand","t":0.616},{"w":"work","t":0.888},{"w":"to","t":1.159},{"w":"Delegate?","t":1.332},{"w":"There","t":2.19},{"w":"are","t":2.566},{"w":"four","t":2.826},{"w":"ways.","t":3.143}]},"s4b":{"scene":"s4","start":87.984,"dur":1.582,"words":[{"w":"You","t":0},{"w":"can","t":0.291},{"w":"type","t":0.581},{"w":"a","t":0.936},{"w":"prompt.","t":1.098}]},"s4c":{"scene":"s4","start":90.066,"dur":1.56,"words":[{"w":"You","t":0},{"w":"can","t":0.265},{"w":"speak","t":0.53},{"w":"a","t":0.913},{"w":"command.","t":1.06}]},"s4d":{"scene":"s4","start":92.126,"dur":1.698,"words":[{"w":"You","t":0},{"w":"can","t":0.259},{"w":"record","t":0.518},{"w":"your","t":0.95},{"w":"screen.","t":1.267}]},"s4e":{"scene":"s4","start":94.325,"dur":2.06,"words":[{"w":"Or","t":0},{"w":"you","t":0.198},{"w":"can","t":0.452},{"w":"start","t":0.706},{"w":"from","t":1.072},{"w":"a","t":1.383},{"w":"template.","t":1.524}]},"s4f":{"scene":"s4","start":96.885,"dur":7.75,"words":[{"w":"Behind","t":0},{"w":"the","t":0.481},{"w":"scenes,","t":0.769},{"w":"it","t":1.68},{"w":"is","t":1.891},{"w":"a","t":2.101},{"w":"general","t":2.252},{"w":"purpose","t":2.763},{"w":"agent","t":3.275},{"w":"with","t":3.666},{"w":"computer","t":3.997},{"w":"use,","t":4.569},{"w":"working","t":5.3},{"w":"across","t":5.887},{"w":"browsers","t":6.404},{"w":"and","t":7.06},{"w":"apps.","t":7.371}]},"s4g":{"scene":"s4","start":105.135,"dur":4.9,"words":[{"w":"It","t":0},{"w":"runs","t":0.252},{"w":"programmatically,","t":0.649},{"w":"with","t":2.36},{"w":"enterprise","t":2.748},{"w":"grade","t":3.56},{"w":"reliability.","t":4.018}]},"s5a":{"scene":"s5","start":111.835,"dur":4.213,"words":[{"w":"Where","t":0},{"w":"does","t":0.284},{"w":"it","t":0.524},{"w":"pay","t":0.677},{"w":"off?","t":0.873},{"w":"Here","t":1.49},{"w":"are","t":1.834},{"w":"three","t":2.116},{"w":"top","t":2.523},{"w":"enterprise","t":2.805},{"w":"use","t":3.525},{"w":"cases.","t":3.806}]},"s5b":{"scene":"s5","start":116.549,"dur":3.265,"words":[{"w":"One:","t":0},{"w":"PDD","t":0.58},{"w":"and","t":1.063},{"w":"SDD","t":1.546},{"w":"generation.","t":2.03}]},"s5c":{"scene":"s5","start":120.313,"dur":7.721,"words":[{"w":"Define","t":0},{"w":"processes,","t":0.633},{"w":"contact","t":1.91},{"w":"SMEs,","t":2.533},{"w":"record","t":4.46},{"w":"their","t":4.936},{"w":"tasks,","t":5.348},{"w":"and","t":5.99},{"w":"sign","t":6.263},{"w":"off","t":6.597},{"w":"on","t":6.871},{"w":"documents.","t":7.083}]},"s5d":{"scene":"s5","start":128.535,"dur":5.2,"words":[{"w":"Then","t":0},{"w":"hand","t":0.365},{"w":"them","t":0.73},{"w":"to","t":1.096},{"w":"Autopilot","t":1.328},{"w":"and","t":2.025},{"w":"coding","t":2.324},{"w":"agents,","t":2.822},{"w":"to","t":3.77},{"w":"build","t":3.979},{"w":"the","t":4.366},{"w":"solution.","t":4.634}]},"s5e":{"scene":"s5","start":134.235,"dur":2.056,"words":[{"w":"Two:","t":0},{"w":"application","t":0.58},{"w":"testing.","t":1.458}]},"s5f":{"scene":"s5","start":136.791,"dur":8.299,"words":[{"w":"Run","t":0},{"w":"test","t":0.393},{"w":"cases,","t":0.873},{"w":"set","t":1.84},{"w":"up","t":2.131},{"w":"environments,","t":2.357},{"w":"run","t":3.54},{"w":"exploratory","t":3.882},{"w":"testing,","t":4.833},{"w":"and","t":5.84},{"w":"refine","t":6.175},{"w":"object","t":6.734},{"w":"repositories.","t":7.293}]},"s5g":{"scene":"s5","start":145.589,"dur":2.343,"words":[{"w":"Three:","t":0},{"w":"personal","t":0.8},{"w":"productivity.","t":1.437}]},"s5h":{"scene":"s5","start":148.432,"dur":5.205,"words":[{"w":"Triage","t":0},{"w":"incoming","t":0.563},{"w":"work,","t":1.277},{"w":"and","t":2.14},{"w":"validate","t":2.41},{"w":"and","t":2.981},{"w":"follow","t":3.252},{"w":"up","t":3.703},{"w":"on","t":3.913},{"w":"missing","t":4.123},{"w":"evidence.","t":4.634}]},"s5i":{"scene":"s5","start":154.138,"dur":3.093,"words":[{"w":"Then","t":0},{"w":"resolve","t":0.4},{"w":"escalations","t":1.019},{"w":"and","t":1.928},{"w":"duplicates.","t":2.256}]},"s5j":{"scene":"s5","start":157.73,"dur":4.857,"words":[{"w":"Two","t":0},{"w":"more","t":0.256},{"w":"are","t":0.57},{"w":"listed","t":0.826},{"w":"as","t":1.253},{"w":"future:","t":1.453},{"w":"internal","t":2.44},{"w":"enablement,","t":3.033},{"w":"and","t":3.88},{"w":"discovery.","t":4.173}]},"s5k":{"scene":"s5","start":163.087,"dur":6.001,"words":[{"w":"Enablement","t":0},{"w":"would","t":0.645},{"w":"run","t":1.009},{"w":"training","t":1.261},{"w":"on","t":1.793},{"w":"demand,","t":1.99},{"w":"plugged","t":2.92},{"w":"into","t":3.325},{"w":"your","t":3.587},{"w":"knowledge,","t":3.85},{"w":"docs,","t":4.64},{"w":"and","t":5.094},{"w":"goals.","t":5.465}]},"s5l":{"scene":"s5","start":169.589,"dur":6.848,"words":[{"w":"Discovery","t":0},{"w":"would","t":0.696},{"w":"surface","t":1.127},{"w":"tribal","t":1.691},{"w":"know-how","t":2.188},{"w":"across","t":2.752},{"w":"teams.","t":3.249},{"w":"The","t":4.3},{"w":"more","t":4.516},{"w":"you","t":4.78},{"w":"use","t":4.996},{"w":"it,","t":5.212},{"w":"the","t":5.67},{"w":"better","t":5.922},{"w":"it","t":6.343},{"w":"gets.","t":6.539}]},"s6a":{"scene":"s6","start":178.237,"dur":4.769,"words":[{"w":"Why","t":0},{"w":"would","t":0.286},{"w":"a","t":0.699},{"w":"company","t":0.858},{"w":"choose","t":1.399},{"w":"Delegate","t":1.876},{"w":"to","t":2.48},{"w":"increase","t":2.702},{"w":"employee","t":3.306},{"w":"productivity?","t":3.91}]},"s6b":{"scene":"s6","start":183.505,"dur":2.859,"words":[{"w":"Here","t":0},{"w":"are","t":0.37},{"w":"the","t":0.673},{"w":"four","t":0.975},{"w":"reasons","t":1.345},{"w":"UiPath","t":1.917},{"w":"gives.","t":2.421}]},"s6c":{"scene":"s6","start":186.864,"dur":2.756,"words":[{"w":"One:","t":0},{"w":"best","t":0.62},{"w":"in","t":1.005},{"w":"class","t":1.25},{"w":"UI","t":1.705},{"w":"automation.","t":1.951}]},"s6d":{"scene":"s6","start":190.12,"dur":5.214,"words":[{"w":"It","t":0},{"w":"is","t":0.312},{"w":"built","t":0.624},{"w":"on","t":1.203},{"w":"the","t":1.515},{"w":"same","t":1.916},{"w":"UiPath","t":2.406},{"w":"UIA","t":3.075},{"w":"foundation","t":3.476},{"w":"as","t":4.501},{"w":"RPA.","t":4.813}]},"s6e":{"scene":"s6","start":195.834,"dur":7.702,"words":[{"w":"UiPath","t":0},{"w":"says","t":0.535},{"w":"that","t":0.927},{"w":"makes","t":1.319},{"w":"it","t":1.783},{"w":"more","t":2.032},{"w":"reliable","t":2.425},{"w":"on","t":3.102},{"w":"enterprise","t":3.352},{"w":"apps","t":4.172},{"w":"than","t":4.564},{"w":"tools","t":4.956},{"w":"that","t":5.42},{"w":"only","t":5.812},{"w":"look","t":6.204},{"w":"at","t":6.597},{"w":"the","t":6.846},{"w":"screen.","t":7.167}]},"s6f":{"scene":"s6","start":204.036,"dur":4.966,"words":[{"w":"And","t":0},{"w":"it","t":0.274},{"w":"adds","t":0.488},{"w":"skills,","t":0.823},{"w":"steering,","t":1.62},{"w":"and","t":2.42},{"w":"multi","t":2.722},{"w":"app","t":3.157},{"w":"orchestration","t":3.459},{"w":"on","t":4.43},{"w":"top.","t":4.665}]},"s6g":{"scene":"s6","start":209.502,"dur":6.315,"words":[{"w":"Two:","t":0},{"w":"it","t":0.72},{"w":"is","t":0.935},{"w":"built","t":1.149},{"w":"as","t":1.547},{"w":"an","t":1.762},{"w":"extension,","t":1.976},{"w":"on","t":3.1},{"w":"top","t":3.347},{"w":"of","t":3.665},{"w":"your","t":3.912},{"w":"existing","t":4.301},{"w":"UiPath","t":4.972},{"w":"deployment.","t":5.502}]},"s6h":{"scene":"s6","start":216.317,"dur":5.879,"words":[{"w":"UiPath","t":0},{"w":"says","t":0.572},{"w":"that","t":0.992},{"w":"means","t":1.412},{"w":"no","t":1.908},{"w":"new","t":2.175},{"w":"IT","t":2.518},{"w":"approval,","t":2.785},{"w":"and","t":3.96},{"w":"no","t":4.253},{"w":"new","t":4.48},{"w":"upgrade","t":4.773},{"w":"process.","t":5.326}]},"s6i":{"scene":"s6","start":222.695,"dur":4.309,"words":[{"w":"The","t":0},{"w":"UiPath","t":0.356},{"w":"Assistant","t":0.949},{"w":"simply","t":1.779},{"w":"upgrades","t":2.372},{"w":"into","t":3.123},{"w":"Delegate.","t":3.558}]},"s6j":{"scene":"s6","start":227.505,"dur":2.139,"words":[{"w":"Three:","t":0},{"w":"structural","t":0.69},{"w":"governance.","t":1.414}]},"s6k":{"scene":"s6","start":230.144,"dur":8.146,"words":[{"w":"Every","t":0},{"w":"operation","t":0.405},{"w":"runs","t":1.059},{"w":"through","t":1.401},{"w":"the","t":1.931},{"w":"same","t":2.211},{"w":"access","t":2.554},{"w":"control,","t":3.021},{"w":"audit","t":4.02},{"w":"trail,","t":4.45},{"w":"credential","t":5.27},{"w":"vault,","t":5.954},{"w":"and","t":6.72},{"w":"AI","t":7.026},{"w":"Trust","t":7.263},{"w":"Layer.","t":7.704}]},"s6l":{"scene":"s6","start":238.789,"dur":3.134,"words":[{"w":"Governance","t":0},{"w":"is","t":0.722},{"w":"built","t":0.942},{"w":"in,","t":1.35},{"w":"not","t":1.87},{"w":"bolted","t":2.237},{"w":"on.","t":2.849}]},"s6m":{"scene":"s6","start":242.423,"dur":3.117,"words":[{"w":"Four:","t":0},{"w":"more","t":0.68},{"w":"automation,","t":1},{"w":"and","t":1.91},{"w":"more","t":2.188},{"w":"capacity.","t":2.529}]},"s6n":{"scene":"s6","start":246.04,"dur":7.806,"words":[{"w":"Discover","t":0},{"w":"and","t":0.715},{"w":"document","t":1.054},{"w":"processes,","t":1.769},{"w":"do","t":3.03},{"w":"more","t":3.24},{"w":"testing,","t":3.57},{"w":"and","t":4.53},{"w":"free","t":4.808},{"w":"people","t":5.148},{"w":"for","t":5.612},{"w":"higher","t":5.89},{"w":"value","t":6.353},{"w":"automation","t":6.755},{"w":"work.","t":7.466}]},"s7a":{"scene":"s7","start":255.646,"dur":5.599,"words":[{"w":"Let's","t":0},{"w":"follow","t":0.306},{"w":"a","t":0.724},{"w":"day","t":0.864},{"w":"with","t":1.114},{"w":"Delegate,","t":1.421},{"w":"for","t":2.33},{"w":"a","t":2.549},{"w":"Product","t":2.671},{"w":"Support","t":3.084},{"w":"Engineer,","t":3.498},{"w":"or","t":4.27},{"w":"PSE.","t":4.852}]},"s7b":{"scene":"s7","start":261.745,"dur":4.251,"words":[{"w":"Eight","t":0},{"w":"prompts","t":0.435},{"w":"take","t":1.004},{"w":"the","t":1.372},{"w":"engineer","t":1.674},{"w":"from","t":2.31},{"w":"backlog","t":2.678},{"w":"to","t":3.247},{"w":"resolution.","t":3.481}]},"s7c":{"scene":"s7","start":266.496,"dur":6.229,"words":[{"w":"Morning","t":0},{"w":"planning.","t":0.482},{"w":"Pull","t":1.62},{"w":"my","t":1.982},{"w":"case","t":2.212},{"w":"backlog","t":2.573},{"w":"from","t":3.132},{"w":"Salesforce,","t":3.494},{"w":"and","t":4.51},{"w":"prioritize","t":4.819},{"w":"the","t":5.61},{"w":"day.","t":5.92}]},"s7d":{"scene":"s7","start":273.225,"dur":8.009,"words":[{"w":"Context","t":0},{"w":"awareness.","t":0.684},{"w":"Summarize","t":2.19},{"w":"the","t":2.888},{"w":"case","t":3.187},{"w":"I'm","t":3.552},{"w":"viewing,","t":3.785},{"w":"with","t":4.71},{"w":"related","t":5.084},{"w":"articles","t":5.662},{"w":"and","t":6.309},{"w":"similar","t":6.615},{"w":"past","t":7.193},{"w":"cases.","t":7.567}]},"s7e":{"scene":"s7","start":281.734,"dur":6.023,"words":[{"w":"License","t":0},{"w":"lookup.","t":0.685},{"w":"Look","t":1.83},{"w":"up","t":2.166},{"w":"a","t":2.379},{"w":"customer's","t":2.532},{"w":"licensing","t":3.173},{"w":"data,","t":3.814},{"w":"without","t":4.41},{"w":"switching","t":4.948},{"w":"tools.","t":5.612}]},"s7f":{"scene":"s7","start":288.257,"dur":7.03,"words":[{"w":"Log","t":0},{"w":"analysis.","t":0.44},{"w":"Pull","t":1.9},{"w":"recent","t":2.25},{"w":"App","t":2.727},{"w":"Insights","t":3.013},{"w":"logs","t":3.618},{"w":"for","t":3.968},{"w":"a","t":4.254},{"w":"tenant,","t":4.413},{"w":"without","t":5.22},{"w":"navigating","t":5.801},{"w":"Azure.","t":6.586}]},"s7g":{"scene":"s7","start":295.788,"dur":8.346,"words":[{"w":"Troubleshooting","t":0},{"w":"research.","t":0.977},{"w":"Search","t":2.14},{"w":"product","t":2.611},{"w":"docs,","t":3.145},{"w":"the","t":3.64},{"w":"knowledge","t":3.87},{"w":"base,","t":4.408},{"w":"Slack,","t":4.85},{"w":"Confluence,","t":5.61},{"w":"and","t":6.46},{"w":"past","t":6.793},{"w":"cases","t":7.2},{"w":"at","t":7.681},{"w":"once.","t":7.939}]},"s7h":{"scene":"s7","start":304.634,"dur":8.105,"words":[{"w":"First","t":0},{"w":"response","t":0.474},{"w":"drafting.","t":1.167},{"w":"Generate","t":2.42},{"w":"a","t":3.048},{"w":"reply","t":3.213},{"w":"from","t":3.643},{"w":"the","t":4.007},{"w":"case","t":4.304},{"w":"context,","t":4.668},{"w":"to","t":5.62},{"w":"edit","t":5.876},{"w":"and","t":6.278},{"w":"send","t":6.607},{"w":"to","t":7.009},{"w":"Salesforce.","t":7.265}]},"s7i":{"scene":"s7","start":313.24,"dur":6.574,"words":[{"w":"RunDeck","t":0},{"w":"jobs.","t":0.935},{"w":"Run","t":2.08},{"w":"a","t":2.375},{"w":"predefined","t":2.538},{"w":"job","t":3.292},{"w":"with","t":3.586},{"w":"parameters,","t":3.947},{"w":"without","t":4.95},{"w":"leaving","t":5.395},{"w":"the","t":5.841},{"w":"workflow.","t":6.076}]},"s7j":{"scene":"s7","start":320.314,"dur":1.359,"words":[{"w":"And","t":0},{"w":"stay","t":0.322},{"w":"in","t":0.715},{"w":"flow.","t":0.966}]},"s7k":{"scene":"s7","start":322.173,"dur":5.418,"words":[{"w":"One","t":0},{"w":"conversational","t":0.317},{"w":"surface,","t":1.411},{"w":"across","t":2.44},{"w":"every","t":3.044},{"w":"tool","t":3.567},{"w":"the","t":4.009},{"w":"PSE","t":4.371},{"w":"touches.","t":4.733}]},"s8a":{"scene":"s8","start":329.39,"dur":4.028,"words":[{"w":"Now","t":0},{"w":"let's","t":0.251},{"w":"look","t":0.558},{"w":"at","t":0.865},{"w":"how","t":1.061},{"w":"it","t":1.312},{"w":"works,","t":1.507},{"w":"from","t":2.2},{"w":"prompt","t":2.535},{"w":"to","t":2.992},{"w":"productivity.","t":3.205}]},"s8b":{"scene":"s8","start":333.918,"dur":2.587,"words":[{"w":"There","t":0},{"w":"are","t":0.35},{"w":"four","t":0.593},{"w":"things","t":0.889},{"w":"Delegate","t":1.294},{"w":"does","t":1.806},{"w":"for","t":2.102},{"w":"you.","t":2.345}]},"s8c":{"scene":"s8","start":337.006,"dur":3.221,"words":[{"w":"First,","t":0},{"w":"it","t":0.74},{"w":"composes","t":0.999},{"w":"and","t":1.703},{"w":"executes","t":2.036},{"w":"tasks.","t":2.74}]},"s8d":{"scene":"s8","start":340.727,"dur":3.832,"words":[{"w":"You","t":0},{"w":"write","t":0.258},{"w":"instructions","t":0.63},{"w":"in","t":1.403},{"w":"plain","t":1.604},{"w":"language.","t":1.976},{"w":"No","t":2.94},{"w":"code.","t":3.287}]},"s8e":{"scene":"s8","start":345.059,"dur":2.707,"words":[{"w":"It","t":0},{"w":"breaks","t":0.218},{"w":"a","t":0.684},{"w":"complex","t":0.84},{"w":"workflow","t":1.369},{"w":"into","t":1.96},{"w":"steps.","t":2.302}]},"s8f":{"scene":"s8","start":348.265,"dur":4.267,"words":[{"w":"It","t":0},{"w":"handles","t":0.249},{"w":"UI","t":0.853},{"w":"automation,","t":1.102},{"w":"files,","t":2.23},{"w":"and","t":3.09},{"w":"API","t":3.432},{"w":"calls.","t":3.773}]},"s8g":{"scene":"s8","start":353.032,"dur":2.518,"words":[{"w":"And","t":0},{"w":"it","t":0.241},{"w":"learns","t":0.429},{"w":"from","t":0.83},{"w":"your","t":1.125},{"w":"feedback","t":1.42},{"w":"over","t":1.929},{"w":"time.","t":2.223}]},"s9a":{"scene":"s9","start":357.35,"dur":3.093,"words":[{"w":"Second,","t":0},{"w":"you","t":0.82},{"w":"teach","t":1.096},{"w":"it","t":1.496},{"w":"skills,","t":1.711},{"w":"with","t":2.172},{"w":"Routines.","t":2.51}]},"s9b":{"scene":"s9","start":360.943,"dur":4.803,"words":[{"w":"A","t":0},{"w":"routine","t":0.195},{"w":"captures","t":0.859},{"w":"your","t":1.601},{"w":"expertise","t":2.031},{"w":"as","t":2.851},{"w":"a","t":3.124},{"w":"reusable","t":3.319},{"w":"playbook.","t":4.061}]},"s9c":{"scene":"s9","start":366.246,"dur":3.632,"words":[{"w":"Document","t":0},{"w":"a","t":0.679},{"w":"workflow","t":0.858},{"w":"once,","t":1.537},{"w":"and","t":2.23},{"w":"invoke","t":2.493},{"w":"it","t":2.931},{"w":"forever.","t":3.135}]},"s9d":{"scene":"s9","start":370.378,"dur":3.416,"words":[{"w":"Share","t":0},{"w":"skills","t":0.386},{"w":"across","t":0.831},{"w":"the","t":1.276},{"w":"team,","t":1.543},{"w":"for","t":2.18},{"w":"consistency.","t":2.507}]},"s9e":{"scene":"s9","start":374.293,"dur":2.676,"words":[{"w":"Your","t":0},{"w":"custom","t":0.363},{"w":"skills","t":0.859},{"w":"are","t":1.355},{"w":"always","t":1.652},{"w":"on","t":2.148},{"w":"tap.","t":2.379}]},"s10a":{"scene":"s10","start":378.77,"dur":4.634,"words":[{"w":"Third,","t":0},{"w":"you","t":0.509},{"w":"can","t":0.861},{"w":"attach","t":1.213},{"w":"your","t":1.799},{"w":"SOPs,","t":2.23},{"w":"and","t":3.05},{"w":"invoke","t":3.341},{"w":"automations.","t":3.826}]},"s10b":{"scene":"s10","start":383.903,"dur":2.595,"words":[{"w":"Reference","t":0},{"w":"your","t":0.879},{"w":"SOPs","t":1.339},{"w":"directly.","t":1.8}]},"s10c":{"scene":"s10","start":386.998,"dur":3.136,"words":[{"w":"Link","t":0},{"w":"your","t":0.343},{"w":"design","t":0.687},{"w":"documents,","t":1.155},{"w":"for","t":2.05},{"w":"context.","t":2.426}]},"s10d":{"scene":"s10","start":390.635,"dur":3.008,"words":[{"w":"Invoke","t":0},{"w":"deployed","t":0.61},{"w":"UiPath","t":1.382},{"w":"automations.","t":1.992}]},"s10e":{"scene":"s10","start":394.143,"dur":2.744,"words":[{"w":"And","t":0},{"w":"view","t":0.252},{"w":"the","t":0.56},{"w":"complete","t":0.812},{"w":"task","t":1.344},{"w":"trail","t":1.652},{"w":"and","t":2.016},{"w":"history.","t":2.268}]},"s11a":{"scene":"s11","start":398.686,"dur":3.127,"words":[{"w":"Fourth,","t":0},{"w":"you","t":0.66},{"w":"control","t":0.938},{"w":"what","t":1.462},{"w":"Delegate","t":1.801},{"w":"can","t":2.387},{"w":"access.","t":2.665}]},"s11b":{"scene":"s11","start":402.313,"dur":3.883,"words":[{"w":"Use","t":0},{"w":"allow","t":0.368},{"w":"and","t":0.899},{"w":"deny","t":1.267},{"w":"lists","t":1.717},{"w":"for","t":2.248},{"w":"apps","t":2.616},{"w":"and","t":3.065},{"w":"URLs.","t":3.433}]},"s11c":{"scene":"s11","start":406.696,"dur":2.813,"words":[{"w":"Set","t":0},{"w":"granular","t":0.309},{"w":"permissions","t":0.961},{"w":"by","t":1.818},{"w":"task","t":2.058},{"w":"type.","t":2.436}]},"s11d":{"scene":"s11","start":410.009,"dur":4.412,"words":[{"w":"Every","t":0},{"w":"action","t":0.455},{"w":"Delegate","t":0.98},{"w":"takes","t":1.646},{"w":"is","t":2.101},{"w":"recorded","t":2.346},{"w":"in","t":3.011},{"w":"an","t":3.256},{"w":"audit","t":3.501},{"w":"trail.","t":3.956}]},"s11e":{"scene":"s11","start":414.921,"dur":2.246,"words":[{"w":"And","t":0},{"w":"your","t":0.256},{"w":"data","t":0.569},{"w":"stays","t":0.881},{"w":"in","t":1.251},{"w":"your","t":1.45},{"w":"control.","t":1.762}]},"s12a":{"scene":"s12","start":418.967,"dur":5.864,"words":[{"w":"You","t":0},{"w":"also","t":0.289},{"w":"decide","t":0.642},{"w":"how","t":1.124},{"w":"much","t":1.412},{"w":"freedom","t":1.766},{"w":"Delegate","t":2.311},{"w":"has,","t":2.921},{"w":"per","t":3.61},{"w":"environment","t":3.932},{"w":"and","t":4.827},{"w":"per","t":5.149},{"w":"task.","t":5.471}]},"s12b":{"scene":"s12","start":425.331,"dur":1.426,"words":[{"w":"There","t":0},{"w":"are","t":0.386},{"w":"three","t":0.653},{"w":"modes.","t":1.04}]},"s12c":{"scene":"s12","start":427.257,"dur":3.482,"words":[{"w":"Mode","t":0},{"w":"one","t":0.339},{"w":"is","t":0.616},{"w":"Always","t":0.831},{"w":"ask.","t":1.293},{"w":"This","t":1.94},{"w":"is","t":2.344},{"w":"the","t":2.601},{"w":"safest.","t":2.931}]},"s12d":{"scene":"s12","start":431.238,"dur":6.733,"words":[{"w":"Delegate","t":0},{"w":"confirms","t":0.66},{"w":"every","t":1.32},{"w":"action","t":1.772},{"w":"before","t":2.293},{"w":"it","t":2.815},{"w":"runs,","t":3.058},{"w":"so","t":3.89},{"w":"you","t":4.111},{"w":"have","t":4.395},{"w":"full","t":4.743},{"w":"oversight","t":5.091},{"w":"on","t":5.754},{"w":"every","t":5.975},{"w":"step.","t":6.386}]},"s12e":{"scene":"s12","start":438.472,"dur":3.387,"words":[{"w":"Mode","t":0},{"w":"two","t":0.385},{"w":"is","t":0.7},{"w":"Smart.","t":0.945},{"w":"This","t":1.74},{"w":"is","t":2.058},{"w":"the","t":2.26},{"w":"balanced","t":2.52},{"w":"mode.","t":3.069}]},"s12f":{"scene":"s12","start":442.359,"dur":6.502,"words":[{"w":"Delegate","t":0},{"w":"decides","t":0.61},{"w":"based","t":1.157},{"w":"on","t":1.574},{"w":"the","t":1.799},{"w":"risk","t":2.089},{"w":"level","t":2.442},{"w":"of","t":2.86},{"w":"each","t":3.085},{"w":"action,","t":3.438},{"w":"and","t":4.43},{"w":"asks","t":4.713},{"w":"only","t":5.058},{"w":"when","t":5.403},{"w":"it","t":5.749},{"w":"matters.","t":5.968}]},"s12g":{"scene":"s12","start":449.361,"dur":4.225,"words":[{"w":"Mode","t":0},{"w":"three","t":0.366},{"w":"is","t":0.799},{"w":"Unrestricted.","t":1.032},{"w":"This","t":2.42},{"w":"gives","t":2.788},{"w":"full","t":3.222},{"w":"autonomy.","t":3.59}]},"s12h":{"scene":"s12","start":454.086,"dur":3.876,"words":[{"w":"Use","t":0},{"w":"it","t":0.268},{"w":"with","t":0.476},{"w":"caution.","t":0.804},{"w":"Only","t":1.76},{"w":"in","t":2.135},{"w":"trusted","t":2.374},{"w":"environments.","t":2.955}]},"s12i":{"scene":"s12","start":458.462,"dur":4.245,"words":[{"w":"Quick","t":0},{"w":"check.","t":0.36},{"w":"Which","t":1.01},{"w":"mode","t":1.414},{"w":"confirms","t":1.757},{"w":"every","t":2.348},{"w":"action","t":2.752},{"w":"before","t":3.219},{"w":"it","t":3.685},{"w":"runs?","t":3.903}]},"s12j":{"scene":"s12","start":467.207,"dur":1.212,"words":[{"w":"Always","t":0},{"w":"ask.","t":0.758}]},"s13a":{"scene":"s13","start":470.22,"dur":3.877,"words":[{"w":"Underneath","t":0},{"w":"it","t":0.761},{"w":"all,","t":0.992},{"w":"Delegate","t":1.72},{"w":"is","t":2.332},{"w":"governed","t":2.557},{"w":"by","t":3.169},{"w":"design.","t":3.394}]},"s13b":{"scene":"s13","start":474.597,"dur":5.256,"words":[{"w":"Every","t":0},{"w":"operation","t":0.481},{"w":"inherits","t":1.259},{"w":"the","t":1.962},{"w":"controls","t":2.295},{"w":"you","t":2.998},{"w":"already","t":3.332},{"w":"run","t":3.961},{"w":"UiPath","t":4.294},{"w":"with.","t":4.849}]},"s13c":{"scene":"s13","start":480.353,"dur":7.608,"words":[{"w":"Orchestrator","t":0},{"w":"handles","t":0.871},{"w":"central","t":1.42},{"w":"scheduling,","t":1.968},{"w":"queues,","t":3.18},{"w":"and","t":4.24},{"w":"run","t":4.553},{"w":"management","t":4.865},{"w":"for","t":5.664},{"w":"every","t":5.976},{"w":"agent","t":6.428},{"w":"operation.","t":6.879}]},"s13d":{"scene":"s13","start":488.462,"dur":6.476,"words":[{"w":"The","t":0},{"w":"credential","t":0.282},{"w":"vault","t":1.001},{"w":"keeps","t":1.408},{"w":"secrets","t":1.815},{"w":"encrypted","t":2.347},{"w":"and","t":3.004},{"w":"brokered,","t":3.285},{"w":"and","t":4.4},{"w":"never","t":4.675},{"w":"exposed","t":5.072},{"w":"to","t":5.591},{"w":"the","t":5.805},{"w":"agent.","t":6.079}]},"s13e":{"scene":"s13","start":495.438,"dur":7.004,"words":[{"w":"The","t":0},{"w":"AI","t":0.337},{"w":"Trust","t":0.599},{"w":"Layer","t":1.086},{"w":"applies","t":1.572},{"w":"policy,","t":2.209},{"w":"redaction,","t":3.29},{"w":"and","t":4.38},{"w":"model","t":4.642},{"w":"governance","t":5.021},{"w":"to","t":5.692},{"w":"every","t":5.896},{"w":"interaction.","t":6.275}]},"s13f":{"scene":"s13","start":502.942,"dur":6.432,"words":[{"w":"And","t":0},{"w":"role","t":0.318},{"w":"based","t":0.707},{"w":"access","t":1.167},{"w":"covers","t":1.698},{"w":"all","t":2.228},{"w":"operations,","t":2.547},{"w":"mapped","t":3.86},{"w":"to","t":4.348},{"w":"your","t":4.576},{"w":"existing","t":4.934},{"w":"organization.","t":5.553}]},"s13g":{"scene":"s13","start":509.874,"dur":3.949,"words":[{"w":"The","t":0},{"w":"same","t":0.273},{"w":"controls","t":0.607},{"w":"apply","t":1.183},{"w":"to","t":1.578},{"w":"every","t":1.79},{"w":"action,","t":2.185},{"w":"automatically.","t":2.96}]},"s14a":{"scene":"s14","start":515.623,"dur":1.159,"words":[{"w":"Let's","t":0},{"w":"recap.","t":0.531}]},"s14b":{"scene":"s14","start":517.283,"dur":6.193,"words":[{"w":"You","t":0},{"w":"hand","t":0.275},{"w":"Delegate","t":0.611},{"w":"work","t":1.192},{"w":"by","t":1.528},{"w":"prompt,","t":1.742},{"w":"by","t":2.5},{"w":"voice,","t":2.756},{"w":"by","t":3.35},{"w":"screen","t":3.553},{"w":"recording,","t":3.99},{"w":"or","t":4.97},{"w":"from","t":5.174},{"w":"a","t":5.494},{"w":"template.","t":5.64}]},"s14c":{"scene":"s14","start":523.976,"dur":5.11,"words":[{"w":"Teach","t":0},{"w":"Delegate","t":0.404},{"w":"once","t":0.995},{"w":"with","t":1.337},{"w":"Routines,","t":1.679},{"w":"and","t":2.72},{"w":"share","t":2.967},{"w":"those","t":3.324},{"w":"skills","t":3.681},{"w":"across","t":4.093},{"w":"your","t":4.506},{"w":"team.","t":4.808}]},"s14d":{"scene":"s14","start":529.586,"dur":4.499,"words":[{"w":"And","t":0},{"w":"you","t":0.248},{"w":"stay","t":0.496},{"w":"in","t":0.799},{"w":"control,","t":0.992},{"w":"with","t":1.74},{"w":"three","t":2.014},{"w":"modes,","t":2.337},{"w":"and","t":2.96},{"w":"governance","t":3.226},{"w":"built","t":3.907},{"w":"in.","t":4.292}]},"s14e":{"scene":"s14","start":534.585,"dur":3.042,"words":[{"w":"Delegate","t":0},{"w":"the","t":0.59},{"w":"busywork.","t":0.87},{"w":"Keep","t":1.8},{"w":"the","t":2.15},{"w":"judgment.","t":2.437}]},"s14f":{"scene":"s14","start":538.127,"dur":1.43,"words":[{"w":"Thanks","t":0},{"w":"for","t":0.499},{"w":"watching.","t":0.798}]}},"total":542.257};
+      const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+      // ---------------- characters ----------------
+      const INK = "#1f2140";
+      function blob(body, belly, extra) {
+        return `<svg viewBox="0 0 240 290">
+          <ellipse cx="120" cy="280" rx="80" ry="10" fill="rgba(31,33,64,.12)"/>
+          <g class="fx"><g class="inner">
+            <g class="arm-l"><path d="M44 170 q-36 6 -40 44" stroke="${body}" stroke-width="20" stroke-linecap="round" fill="none"/></g>
+            <g class="arm-r"><path d="M196 170 q36 6 40 44" stroke="${body}" stroke-width="20" stroke-linecap="round" fill="none"/></g>
+            <ellipse cx="88" cy="262" rx="26" ry="14" fill="${body}"/><ellipse cx="152" cy="262" rx="26" ry="14" fill="${body}"/>
+            <path d="M112 44 q6 -34 34 -26 q-18 6 -16 28z" fill="${body}"/>
+            <rect x="30" y="40" width="180" height="222" rx="90" fill="${body}"/>
+            <ellipse cx="120" cy="196" rx="58" ry="46" fill="${belly}"/>
+            ${extra}
+            <ellipse cx="74" cy="156" rx="14" ry="9" fill="#ff9bb3" opacity=".8"/><ellipse cx="166" cy="156" rx="14" ry="9" fill="#ff9bb3" opacity=".8"/>
+            <g class="eyes">
+              <ellipse cx="92" cy="122" rx="21" ry="23" fill="#fff"/><ellipse cx="148" cy="122" rx="21" ry="23" fill="#fff"/>
+              <circle cx="95" cy="126" r="10" fill="${INK}"/><circle cx="151" cy="126" r="10" fill="${INK}"/>
+              <circle cx="99" cy="121" r="3.5" fill="#fff"/><circle cx="155" cy="121" r="3.5" fill="#fff"/>
+            </g>
+            <path class="m-happy" d="M100 158 q20 24 40 0" stroke="${INK}" stroke-width="6" stroke-linecap="round" fill="none"/>
+            <path class="m-sad" d="M102 170 q18 -16 36 0" stroke="${INK}" stroke-width="6" stroke-linecap="round" fill="none" opacity="0"/>
+            <ellipse class="m-talk" cx="120" cy="164" rx="14" ry="11" fill="#7a1f3a" opacity="0"/>
+          </g></g>
+        </svg>`;
+      }
+      const SHIELD = `<path d="M120 168 l28 9 v24 q0 20 -28 30 q-28 -10 -28 -30 v-24z" fill="#fff" stroke="${INK}" stroke-width="4"/><path d="M107 200 l10 10 l18 -20" stroke="#06a37a" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+      const BOT = `<svg viewBox="0 0 260 320">
+        <ellipse cx="130" cy="312" rx="90" ry="10" fill="rgba(31,33,64,.12)"/>
+        <g class="fx"><g class="inner">
+          <g class="ant"><line x1="130" y1="40" x2="130" y2="10" stroke="${INK}" stroke-width="6"/><circle class="bulb" cx="130" cy="10" r="12" fill="#c2410c" stroke="${INK}" stroke-width="4"/></g>
+          <g class="arm-l"><rect x="22" y="200" width="36" height="80" rx="18" fill="#05b98a"/></g>
+          <g class="arm-r"><rect x="202" y="200" width="36" height="80" rx="18" fill="#05b98a"/></g>
+          <rect x="66" y="188" width="128" height="110" rx="28" fill="#038a66" stroke="${INK}" stroke-width="5"/>
+          <text x="130" y="258" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-weight="800" font-size="34" fill="#fff">AI</text>
+          <rect class="head" x="30" y="40" width="200" height="150" rx="40" fill="#06d6a0" stroke="${INK}" stroke-width="5"/>
+          <rect x="54" y="62" width="152" height="106" rx="26" fill="${INK}"/>
+          <g class="eyes-n"><rect x="88" y="94" width="22" height="32" rx="11" fill="#7cf3ff"/><rect x="150" y="94" width="22" height="32" rx="11" fill="#7cf3ff"/></g>
+          <g class="eyes-h" opacity="0"><path d="M86 118 q13 -22 26 0 M148 118 q13 -22 26 0" stroke="#7cf3ff" stroke-width="7" stroke-linecap="round" fill="none"/></g>
+          <g class="eyes-a" opacity="0"><path d="M84 96 l28 14 M176 96 l-28 14" stroke="#ff5d73" stroke-width="7" stroke-linecap="round"/><circle cx="100" cy="122" r="9" fill="#ff5d73"/><circle cx="160" cy="122" r="9" fill="#ff5d73"/></g>
+          <g class="eyes-q" opacity="0"><rect x="88" y="104" width="22" height="18" rx="9" fill="#7cf3ff"/><rect x="150" y="96" width="22" height="30" rx="11" fill="#7cf3ff"/></g>
+          <path class="m-n" d="M112 146 h36" stroke="#7cf3ff" stroke-width="6" stroke-linecap="round"/>
+          <rect class="m-talk" x="112" y="138" width="36" height="14" rx="7" fill="#7cf3ff" opacity="0"/>
+        </g></g>
+      </svg>`;
+      const KINDS = {
+        sam: { svg: () => blob("#7b61ff", "#a594ff", ""), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+        guard: { svg: () => blob("#ffc93c", "#ffe28a", SHIELD), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+        byte: { svg: () => BOT, ar: "220 205", al: "40 205", o: "130 312", mo: "130 145" },
+      };
+      document.querySelectorAll(".char").forEach((el) => {
+        const k = KINDS[el.dataset.kind];
+        el.innerHTML = k.svg();
+        el.dataset.ar = k.ar; el.dataset.al = k.al; el.dataset.o = k.o; el.dataset.mo = k.mo;
+      });
+
+      // ---------------- captions (word-by-word, timed from the voice) ----------------
+      const capEl = document.getElementById("captions");
+      Object.keys(T.lines).forEach((id) => {
+        const ln = T.lines[id];
+        const div = document.createElement("div");
+        div.className = "cline";
+        div.id = "cap-" + id;
+        div.innerHTML = "<span>" + ln.words.map((w, i) => '<span class="cw" id="cw-' + id + "-" + i + '">' + esc(w.w) + "</span>").join(" ") + "</span>";
+        capEl.appendChild(div);
+      });
+
+      // ---------------- timeline helpers ----------------
+      const tl = gsap.timeline({ paused: true });
+      const E = "power2.out";
+      const POP = "back.out(1.5)";
+      const S = (id) => T.scenes[id].start;
+      const SE = (id) => T.scenes[id].start + T.scenes[id].dur;
+      const L = (id, off = 0) => T.lines[id].start + off;
+      const LE = (id, off = 0) => T.lines[id].start + T.lines[id].dur + off;
+      const W = (id, i) => T.lines[id].start + T.lines[id].words[i].t;
+      const D = (sel) => document.querySelector(sel).dataset;
+      const $$ = (sel) => gsap.utils.toArray(sel);
+
+      function enter(scene) {
+        tl.fromTo("#" + scene + " .eyebrow, #" + scene + " h2", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.18, ease: E }, S(scene) + 0.25);
+      }
+      function leave(scene) { tl.to("#" + scene, { opacity: 0, duration: 0.5, ease: "power2.in" }, SE(scene) - 0.55); }
+      function show(sel, t, o = {}) {
+        tl.fromTo(sel, { opacity: 0, scale: o.s ?? 0.8, y: o.y ?? 24, x: o.x ?? 0 },
+          { opacity: 1, scale: 1, y: 0, x: 0, duration: o.d ?? 0.8, ease: o.ease ?? POP, transformOrigin: o.origin ?? "50% 50%" }, t);
+      }
+      function fade(sel, t, d = 0.6) { tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power1.out" }, t); }
+      function hide(sel, t, d = 0.4) { tl.to(sel, { opacity: 0, duration: d }, t); }
+      function pulse(sel, t, scale = 1.06) { tl.fromTo(sel, { scale: 1 }, { scale, duration: 0.25, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "50% 50%", immediateRender: false }, t); }
+      function shake(sel, t) { tl.to(sel, { x: "+=12", duration: 0.08, yoyo: true, repeat: 7, ease: "none" }, t); }
+      // enumerated cards: all visible but dim, hidden detail; "lit" as each item is narrated
+      // (detail=false / detailDelay=null for cards that have no .dd detail text)
+      function dim(sel, t, o = 0.38, detail = true) {
+        tl.fromTo(sel, { opacity: 0, y: 24 }, { opacity: o, y: 0, duration: 0.7, ease: E }, t);
+        if (detail) tl.set(sel + " .dd", { opacity: 0 }, 0);
+      }
+      function lit(sel, t, detailDelay = 0.5) {
+        tl.to(sel, { opacity: 1, duration: 0.4, ease: "power1.out" }, t);
+        tl.to(sel, { borderColor: "#0b7a85", duration: 0.3 }, t);
+        if (detailDelay !== null) tl.fromTo(sel + " .dd", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, ease: E }, t + detailDelay);
+        pulse(sel, t, 1.03);
+      }
+      function unlit(sel, t, o = 0.55) { tl.to(sel, { opacity: o, borderColor: "#1f2140", duration: 0.4 }, t); }
+      function typeText(sel, text, t0, dur) {
+        const n = text.length;
+        for (let i = 1; i <= n; i++) tl.set(sel, { textContent: text.slice(0, i) }, t0 + (dur * i) / n);
+      }
+      function countdown(id, t0, step) {
+        show("#" + id, t0, { s: 0.5, d: 0.5 });
+        const nums = $$("#" + id + " .cdn");
+        nums.forEach((n, i) => {
+          tl.fromTo(n, { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)", transformOrigin: "50% 50%" }, t0 + 0.2 + i * step);
+          tl.to(n, { opacity: 0, duration: 0.2 }, t0 + 0.2 + (i + 1) * step - 0.2);
+        });
+        hide("#" + id, t0 + 0.2 + nums.length * step, 0.3);
+      }
+
+      // characters ------------------------------------------------------
+      function pop(sel, t) { show(sel, t, { s: 0.5, y: 60, d: 1.0, origin: "50% 100%" }); }
+      function bob(sel, t0, t1, amp = 6, period = 1.8) {
+        const reps = Math.max(1, Math.floor((t1 - t0) / (period / 2)) - 1);
+        tl.to(sel + " .inner", { y: -amp, duration: period / 2, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0);
+      }
+      function breathe(sel, t0, t1) {
+        const reps = Math.max(1, Math.floor((t1 - t0) / 1.6) - 1);
+        tl.to(sel + " .fx", { scaleY: 1.03, svgOrigin: D(sel).o, duration: 1.6, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0);
+      }
+      function wobble(sel, t, times = 3, deg = 6) { tl.to(sel + " .fx", { rotation: deg, svgOrigin: D(sel).o, duration: 0.45, yoyo: true, repeat: times * 2 - 1, ease: "sine.inOut" }, t); }
+      function wave(sel, t, times = 3) { tl.to(sel + " .arm-r", { rotation: -55, svgOrigin: D(sel).ar, duration: 0.45, yoyo: true, repeat: times * 2 - 1, ease: "sine.inOut" }, t); }
+      function armUp(sel, side, t, deg, hold) {
+        const o = D(sel)[side === "r" ? "ar" : "al"];
+        tl.to(sel + " .arm-" + side, { rotation: side === "r" ? -deg : deg, svgOrigin: o, duration: 0.6, ease: "sine.inOut" }, t);
+        tl.to(sel + " .arm-" + side, { rotation: 0, svgOrigin: o, duration: 0.6, ease: "sine.inOut" }, t + hold);
+      }
+      function jump(sel, t, h = 50, n = 2) { tl.to(sel + " .fx", { y: -h, duration: 0.45, yoyo: true, repeat: n * 2 - 1, ease: "sine.inOut" }, t); }
+      function cheer(sel, t) { armUp(sel, "r", t, 140, 2.0); armUp(sel, "l", t, 140, 2.0); jump(sel, t + 0.2, 45, 2); }
+      function nod(sel, t) { tl.to(sel + " .fx", { y: 10, duration: 0.3, yoyo: true, repeat: 3, ease: "sine.inOut" }, t); }
+      function blink(sel, t) {
+        const g = document.querySelector(sel).querySelector(".eyes") ? ".eyes" : ".eyes-n";
+        tl.to(sel + " " + g, { scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.12, yoyo: true, repeat: 1 }, t);
+      }
+      function wiggle(sel, t, n = 2) { tl.to(sel + " .ant", { rotation: 16, svgOrigin: "130 40", duration: 0.3, yoyo: true, repeat: n * 2 - 1, ease: "sine.inOut" }, t); }
+      function mood(sel, m, t) {
+        tl.set(sel + " .m-happy", { opacity: m === "happy" ? 1 : 0 }, t);
+        tl.set(sel + " .m-sad", { opacity: m === "sad" ? 1 : 0 }, t);
+      }
+      function talk(sel, t0, t1) {
+        tl.set(sel + " .m-n", { opacity: 0 }, t0);
+        tl.set(sel + " .m-talk", { opacity: 1 }, t0);
+        tl.fromTo(sel + " .m-talk", { scaleY: 0.3 }, { scaleY: 1.5, svgOrigin: D(sel).mo, duration: 0.24, yoyo: true, repeat: Math.max(1, Math.floor((t1 - t0) / 0.24) - 1), ease: "sine.inOut", immediateRender: false }, t0);
+        tl.set(sel + " .m-talk", { opacity: 0 }, t1);
+        tl.set(sel + " .m-n", { opacity: 1 }, t1);
+      }
+      function face(sel, f, t) {
+        ["n", "h", "a", "q"].forEach((x) => tl.set(sel + " .eyes-" + x, { opacity: x === f ? 1 : 0 }, t));
+        tl.set(sel + " .bulb", { fill: { n: "#c2410c", h: "#0a8a5f", a: "#d92d48", q: "#0a7fbf" }[f] }, t);
+      }
+
+      // ===================== captions timeline =====================
+      Object.keys(T.lines).forEach((id) => {
+        const ln = T.lines[id];
+        const t0 = ln.start, t1 = ln.start + ln.dur;
+        tl.fromTo("#cap-" + id, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.2, ease: "power1.out" }, t0 - 0.05);
+        tl.to("#cap-" + id, { opacity: 0, duration: 0.2 }, t1 + 0.3);
+        ln.words.forEach((w, i) => {
+          const a = t0 + w.t;
+          const b = i + 1 < ln.words.length ? t0 + ln.words[i + 1].t : t1;
+          const sel = "#cw-" + id + "-" + i;
+          tl.to(sel, { color: "#1f2140", backgroundColor: "rgba(255,201,60,0.75)", duration: 0.08 }, a);
+          tl.to(sel, { backgroundColor: "rgba(255,201,60,0)", duration: 0.15 }, Math.max(a + 0.09, b - 0.05));
+        });
+        // Byte narrates: his mouth moves with the voice
+        talk("#byte", t0 + 0.02, t1 - 0.02);
+      });
+      // gentle idle life for the corner characters, whole video
+      bob("#sam", 0.5, T.total - 1, 5, 2.0);
+      bob("#byte", 0.8, T.total - 1, 5, 2.2);
+      breathe("#sam", 0.5, T.total - 1);
+      for (let t = 4; t < T.total - 2; t += 4.7) { blink("#sam", t); blink("#byte", t + 1.1); }
+
+      tl.set("#guard", { opacity: 0 }, 0);
+      fade("#badge", S("s2"), 0.8);
+      tl.set("#dots", { opacity: 0 }, 0);
+
+      // ===================== 1 · Title =====================
+      const BIG = { sam: { x: 595, y: -170, s: 2.0 }, byte: { x: -597, y: -170, s: 2.0 } };
+      tl.set("#s1 .kick, #s1 h1, #s1 p", { opacity: 0 }, 0);
+      tl.fromTo("#s1 .kick", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: E }, 0.3);
+      tl.fromTo("#s1 h1", { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: POP }, 0.6);
+      tl.fromTo("#s1 p", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: E }, L("s1b", 1.2));
+      tl.fromTo("#sam", { opacity: 0, x: -300, y: BIG.sam.y, scale: BIG.sam.s }, { opacity: 1, x: BIG.sam.x, y: BIG.sam.y, scale: BIG.sam.s, duration: 2.0, ease: "power1.out", transformOrigin: "50% 100%" }, 0.4);
+      tl.fromTo("#byte", { opacity: 0, x: 300, y: BIG.byte.y, scale: BIG.byte.s }, { opacity: 1, x: BIG.byte.x, y: BIG.byte.y, scale: BIG.byte.s, duration: 2.0, ease: "power1.out", transformOrigin: "50% 100%" }, 0.6);
+      wave("#sam", L("s1a"), 3); wave("#byte", L("s1a", 0.6), 3);
+      face("#byte", "h", L("s1a")); wiggle("#byte", L("s1b"), 2);
+      cheer("#sam", L("s1d", 1.5));
+      const walkBack = LE("s1d", 0.8);
+      tl.to("#sam", { x: 0, y: 0, scale: 1, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, walkBack);
+      tl.to("#byte", { x: 0, y: 0, scale: 1, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, walkBack);
+      tl.to("#s1", { opacity: 0, duration: 0.6 }, walkBack);
+
+      // ===================== 2 · The question =====================
+      enter("s2");
+      face("#byte", "q", L("s2a"));
+      mood("#sam", "sad", L("s2b")); wobble("#sam", L("s2b", 0.6), 2, 5);
+      show("#ch1", W("s2c", 0), { y: 30 }); show("#ch2", W("s2c", 2), { y: 30 });
+      show("#ch3", W("s2c", 4), { y: 30 }); show("#ch4", W("s2c", 6), { y: 30 });
+      tl.set("#brSolid, #dlgPill", { opacity: 0 }, 0);
+      show("#gapL", L("s2d", 0.2), { y: 30 }); show("#gapR", L("s2d", 1.4), { y: 30 });
+      show("#aiPill", L("s2d", 0.9), { s: 0.6, d: 0.6 });
+      fade("#brDash", L("s2d", 1.6), 0.6);
+      show("#qMark", L("s2d", 2.4), { s: 0.6, d: 0.6 });
+      hide("#aiPill, #qMark, #brDash", L("s2e", 0.2), 0.4);
+      show("#dlgPill", L("s2e", 0.6), { s: 0.6, d: 0.7 });
+      fade("#brSolid", L("s2e", 1.0), 0.6);
+      face("#byte", "h", L("s2e", 0.6)); mood("#sam", "happy", L("s2e", 0.6));
+      leave("s2");
+
+      // ===================== 3 · What it is =====================
+      enter("s3");
+      face("#byte", "n", S("s3"));
+      show("#cmpA", L("s3b", 0.4), { x: -40 }); show("#cmpArr", L("s3b", 1.1), { s: 0.6, d: 0.5 }); show("#cmpB", L("s3b", 1.6), { x: 40 });
+      hide("#cmpA, #cmpArr, #cmpB", L("s3c", -0.2), 0.4);
+      ["#b1", "#b2", "#b3", "#b4"].forEach((s) => dim(s, L("s3c", 0.0)));
+      lit("#b1", L("s3c", 0.6));
+      unlit("#b1", L("s3d", 0.0)); lit("#b2", L("s3d", 0.1));
+      unlit("#b2", L("s3e", 0.0)); lit("#b3", L("s3e", 0.1));
+      unlit("#b3", L("s3f", 0.0)); lit("#b4", L("s3f", 0.1));
+      face("#byte", "h", L("s3f", 0.4));
+      tl.to("#b1, #b2, #b3", { opacity: 1, duration: 0.6 }, LE("s3f", 0.0));
+      leave("s3");
+
+      // ===================== 4 · Ways to hand it work =====================
+      enter("s4");
+      ["#w1", "#w2", "#w3", "#w4"].forEach((s) => dim(s, L("s4a", 1.2), 0.38, false));
+      lit("#w1", L("s4b", 0.1), null); unlit("#w1", L("s4c", 0.0), 0.6);
+      lit("#w2", L("s4c", 0.1), null); unlit("#w2", L("s4d", 0.0), 0.6);
+      lit("#w3", L("s4d", 0.1), null); unlit("#w3", L("s4e", 0.0), 0.6);
+      lit("#w4", L("s4e", 0.1), null);
+      tl.to("#w1, #w2, #w3, #w4", { opacity: 1, borderColor: "#1f2140", duration: 0.5 }, L("s4f", 0.0));
+      show("#bn4a", L("s4f", 0.5), { y: 30 });
+      show("#bn4b", L("s4g", 0.3), { y: 30 });
+      face("#byte", "h", L("s4e", 0.3));
+      leave("s4");
+
+      // ===================== 5 · Use cases =====================
+      enter("s5");
+      tl.set("#s5 .tg", { opacity: 0 }, 0);
+      show("#uc1", L("s5b", 0.2), { y: 30 }); fade("#uc1 .dd", L("s5c", 0.2), 0.6); fade("#uc1 .tg", L("s5d", 0.3), 0.6);
+      show("#uc2", L("s5e", 0.2), { y: 30 }); fade("#uc2 .dd", L("s5f", 0.2), 0.6); fade("#uc2 .tg", L("s5f", 1.6), 0.6);
+      show("#uc3", L("s5g", 0.2), { y: 30 }); fade("#uc3 .dd", L("s5h", 0.2), 0.6); fade("#uc3 .tg", L("s5i", 0.3), 0.6);
+      tl.set("#fu1 .dd, #fu2 .dd", { opacity: 0 }, 0);
+      show("#fu1", L("s5j", 0.6), { y: 30 }); show("#fu2", L("s5j", 1.8), { y: 30 });
+      fade("#fu1 .dd", L("s5k", 0.3), 0.6); fade("#fu2 .dd", L("s5l", 0.3), 0.6);
+      face("#byte", "q", L("s5j"));
+      mood("#sam", "happy", S("s5"));
+      leave("s5");
+
+      // ===================== 6 · Why Delegate =====================
+      enter("s6");
+      face("#byte", "n", S("s6"));
+      ["#r1", "#r2", "#r3", "#r4"].forEach((s) => dim(s, L("s6b", 0.6)));
+      lit("#r1", L("s6c", 0.1), 0.4); unlit("#r1", L("s6g", 0.0));
+      lit("#r2", L("s6g", 0.1), 0.4); unlit("#r2", L("s6j", 0.0));
+      lit("#r3", L("s6j", 0.1), 0.4); unlit("#r3", L("s6m", 0.0));
+      lit("#r4", L("s6m", 0.1), 0.4);
+      face("#byte", "h", L("s6l", 0.2));
+      tl.to("#r1, #r2, #r3", { opacity: 1, duration: 0.6 }, LE("s6n", 0.0));
+      leave("s6");
+
+      // ===================== 7 · A day with Delegate =====================
+      enter("s7");
+      show("#pse7", L("s7b", 0.3), { x: 30 });
+      [["p1", "s7c"], ["p2", "s7d"], ["p3", "s7e"], ["p4", "s7f"], ["p5", "s7g"], ["p6", "s7h"], ["p7", "s7i"], ["p8", "s7j"]].forEach(([p, l]) => show("#" + p, L(l, 0.2), { y: 30 }));
+      face("#byte", "h", L("s7j", 0.2));
+      leave("s7");
+
+      // ===================== 8-11 · Four ways =====================
+      function dot(n, t) {
+        [1, 2, 3, 4].forEach((k) => tl.to("#dt" + k, { backgroundColor: k === n ? "#0b7a85" : "#ffffff", color: k === n ? "#ffffff" : "#4f5478", duration: 0.3 }, t));
+      }
+      fade("#dots", S("s8") + 0.4, 0.6);
+      // 8
+      enter("s8"); dot(1, S("s8") + 0.4);
+      show("#wy8", L("s8c", 0.2), { x: -30 });
+      tl.set("#v8", { opacity: 0 }, 0);
+      show("#bl8a", L("s8d", 0.15), { x: -30 }); show("#v8", L("s8d", 0.4), { y: 30 });
+      typeText("#ty8", "Pull my case backlog from Salesforce and prioritize the day.", L("s8d", 1.0), 2.2);
+      show("#bl8b", L("s8e", 0.15), { x: -30 });
+      show("#st8a", L("s8e", 0.5), { s: 0.6, d: 0.5 }); show("#st8b", L("s8e", 1.2), { s: 0.6, d: 0.5 }); show("#st8c", L("s8e", 1.9), { s: 0.6, d: 0.5 });
+      show("#bl8c", L("s8f", 0.15), { x: -30 });
+      tl.to("#st8a, #st8b, #st8c", { backgroundColor: "#d3f5f8", duration: 0.4, stagger: 0.35 }, L("s8f", 0.6));
+      show("#dn8", L("s8f", 2.2), { s: 0.6, d: 0.6 });
+      show("#bl8d", L("s8g", 0.15), { x: -30 }); show("#fb8", L("s8g", 0.6), { y: 30 });
+      leave("s8");
+      // 9
+      enter("s9"); dot(2, S("s9") + 0.4);
+      show("#wy9", L("s9a", 0.2), { x: -30 });
+      show("#bl9a", L("s9b", 0.15), { x: -30 });
+      show("#rt9a", L("s9b", 0.6), { y: 30 });
+      show("#bl9b", L("s9c", 0.15), { x: -30 });
+      fade("#ar9", L("s9c", 0.6), 0.5); show("#rt9b", L("s9c", 0.9), { y: 30 });
+      show("#bl9c", L("s9d", 0.15), { x: -30 }); show("#rt9c", L("s9d", 0.6), { y: 30 });
+      show("#bl9d", L("s9e", 0.15), { x: -30 });
+      pulse("#rt9c", L("s9e", 0.8), 1.03);
+      leave("s9");
+      // 10
+      enter("s10"); dot(3, S("s10") + 0.4);
+      show("#wy10", L("s10a", 0.2), { x: -30 });
+      tl.set("#ln10a, #ln10b, #ln10c", { opacity: 0 }, 0);
+      show("#hub10", L("s10a", 0.8), { s: 0.7, d: 0.6 });
+      show("#bl10a", L("s10b", 0.15), { x: -30 }); show("#sp10a", L("s10b", 0.5), { s: 0.6, d: 0.5 }); fade("#ln10a", L("s10b", 1.0), 0.5);
+      show("#bl10b", L("s10c", 0.15), { x: -30 }); show("#sp10b", L("s10c", 0.5), { s: 0.6, d: 0.5 }); fade("#ln10b", L("s10c", 1.0), 0.5);
+      show("#bl10c", L("s10d", 0.15), { x: -30 }); show("#sp10c", L("s10d", 0.5), { s: 0.6, d: 0.5 }); fade("#ln10c", L("s10d", 1.0), 0.5);
+      show("#bl10d", L("s10e", 0.15), { x: -30 }); show("#tr10", L("s10e", 0.5), { y: 30 });
+      leave("s10");
+      // 11
+      enter("s11"); dot(4, S("s11") + 0.4);
+      pop("#guard", S("s11") + 0.6);
+      show("#wy11", L("s11a", 0.2), { x: -30 });
+      show("#bl11a", L("s11b", 0.15), { x: -30 }); show("#al11", L("s11b", 0.5), { y: 30 }); show("#dn11", L("s11b", 1.2), { y: 30 });
+      show("#bl11b", L("s11c", 0.15), { x: -30 }); show("#pm11", L("s11c", 0.5), { y: 30 });
+      show("#bl11c", L("s11d", 0.15), { x: -30 }); show("#au11", L("s11d", 0.5), { y: 30 });
+      show("#bl11d", L("s11e", 0.15), { x: -30 });
+      cheer("#guard", L("s11e", 0.6));
+      hide("#dots", SE("s11") - 0.9, 0.5);
+      leave("s11");
+
+      // ===================== 12 · Modes =====================
+      enter("s12");
+      ["#m1", "#m2", "#m3"].forEach((s) => dim(s, L("s12b", 0.2)));
+      lit("#m1", L("s12c", 0.1), 0.5); unlit("#m1", L("s12e", 0.0));
+      lit("#m2", L("s12e", 0.1), 0.5); unlit("#m2", L("s12g", 0.0));
+      lit("#m3", L("s12g", 0.1), 0.5);
+      tl.to("#m1, #m2, #m3", { opacity: 1, borderColor: "#1f2140", duration: 0.5 }, LE("s12h", 0.2));
+      face("#byte", "q", L("s12i"));
+      countdown("cd12", LE("s12i", 0.15), 1.25);
+      tl.to("#m1", { borderColor: "#0a8a5f", boxShadow: "0 8px 0 rgba(10,138,95,.45)", duration: 0.4 }, L("s12j", 0.0));
+      pulse("#m1", L("s12j", 0.0), 1.04);
+      face("#byte", "h", L("s12j")); cheer("#sam", L("s12j", 0.2));
+      leave("s12");
+
+      // ===================== 13 · Governed by design =====================
+      enter("s13");
+      pop("#guard", S("s13") + 0.6);
+      tl.set("#bn13", { opacity: 0 }, 0);
+      ["#g1", "#g2", "#g3", "#g4"].forEach((s) => dim(s, L("s13b", 0.3)));
+      lit("#g1", L("s13c", 0.1), 0.4); unlit("#g1", L("s13d", 0.0));
+      lit("#g2", L("s13d", 0.1), 0.4); unlit("#g2", L("s13e", 0.0));
+      lit("#g3", L("s13e", 0.1), 0.4); unlit("#g3", L("s13f", 0.0));
+      lit("#g4", L("s13f", 0.1), 0.4);
+      tl.to("#g1, #g2, #g3", { opacity: 1, borderColor: "#1f2140", duration: 0.5 }, L("s13g", 0.0));
+      tl.to("#g4", { borderColor: "#1f2140", duration: 0.5 }, L("s13g", 0.0));
+      show("#bn13", L("s13g", 0.4), { y: 30 });
+      cheer("#guard", L("s13g", 0.8));
+      hide("#guard", SE("s13") - 0.9, 0.5);
+      leave("s13");
+
+      // ===================== 14 · Recap =====================
+      enter("s14");
+      tl.set("#fin14", { opacity: 0 }, 0);
+      const RC = { sam: { x: 1295, y: -140, s: 1.7 }, byte: { x: -77, y: -140, s: 1.7 } };
+      tl.to("#sam", { x: RC.sam.x, y: RC.sam.y, scale: RC.sam.s, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, S("s14") + 0.4);
+      tl.to("#byte", { x: RC.byte.x, y: RC.byte.y, scale: RC.byte.s, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, S("s14") + 0.4);
+      face("#byte", "h", L("s14a"));
+      show("#rc1", L("s14b", 0.4), { x: -60, s: 0.9 }); wave("#sam", L("s14b", 1.0), 2);
+      show("#rc2", L("s14c", 0.4), { x: -60, s: 0.9 });
+      show("#rc3", L("s14d", 0.4), { x: -60, s: 0.9 });
+      show("#fin14", L("s14e", 0.2), { s: 0.7, d: 0.7 });
+      cheer("#sam", L("s14e", 0.6)); cheer("#byte", L("s14e", 1.0));
+      wave("#byte", L("s14f", 0.2), 3);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
