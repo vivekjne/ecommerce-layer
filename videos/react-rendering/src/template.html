@@ -138,7 +138,7 @@
       #s1 h1 .a { color: var(--pink); } #s1 h1 .b { color: var(--cyan); }
       #s1 p { font-size: 44px; color: var(--muted); margin-top: 6px; font-weight: 700; }
       .rcp { position: absolute; left: 140px; width: 1180px; height: 118px; display: flex; align-items: center; gap: 26px; padding: 0 32px; font-size: 34px; font-weight: 800; line-height: 1.25; }
-      .rcp .ic { font-size: 44px; font-family: var(--mono); width: 130px; font-weight: 900; }
+      .rcp .ic { font-size: 42px; font-family: var(--mono); width: 230px; font-weight: 900; }
       .rcp small { display: block; font-size: 24px; font-weight: 600; color: var(--muted); margin-top: 2px; }
       .big-x { position: absolute; font-size: 96px; font-weight: 900; color: var(--coral); line-height: 1; }
     </style>
@@ -169,9 +169,9 @@
         <span class="tag co" id="s1-ta" style="left: 400px; top: 772px">Blank... then a spinner</span>
         <span class="tag li" id="s1-tb" style="left: 1200px; top: 772px">Instant</span>
         <span class="tag pk" id="s1-q" style="left: 790px; top: 566px; font-size: 40px; padding: 10px 30px; z-index: 12">Where is it built?</span>
-        <span class="tag cy" id="s1-c1" style="left: 560px; top: 772px; font-size: 30px; opacity: 0">CSR</span>
-        <span class="tag vi" id="s1-c2" style="left: 780px; top: 772px; font-size: 30px; opacity: 0">SSR</span>
-        <span class="tag pk" id="s1-c3" style="left: 1000px; top: 772px; font-size: 30px; opacity: 0">RSC</span>
+        <span class="tag cy" id="s1-c1" style="left: 690px; top: 772px; font-size: 30px; opacity: 0">CSR</span>
+        <span class="tag vi" id="s1-c2" style="left: 900px; top: 772px; font-size: 30px; opacity: 0">SSR</span>
+        <span class="tag pk" id="s1-c3" style="left: 1110px; top: 772px; font-size: 30px; opacity: 0">RSC</span>
       </section>
 
       <!-- 2 · The players -->
@@ -279,10 +279,10 @@
         <div class="pkt cy" id="s7-p2" style="left: 1150px; top: 366px; font-size: 20px">query</div>
         <div class="pkt li" id="s7-p3" style="left: 1150px; top: 366px; font-size: 20px">data</div>
         <div class="pkt pk" id="s7-p4" style="left: 770px; top: 348px; font-size: 26px; padding: 12px 26px">&lt;HTML&gt;</div>
-        <div class="node sv" id="s7-t1" style="left: 900px; top: 560px; font-size: 24px">&lt;Page /&gt;</div>
-        <div class="node sv" id="s7-t2" style="left: 1120px; top: 560px; font-size: 24px">&lt;Header /&gt;</div>
-        <div class="node sv" id="s7-t3" style="left: 1360px; top: 560px; font-size: 24px">&lt;Product /&gt;</div>
-        <div class="lbl sm" id="s7-tl" style="left: 900px; top: 620px">React components run here</div>
+        <div class="node sv" id="s7-t1" style="left: 900px; top: 590px; font-size: 24px">&lt;Page /&gt;</div>
+        <div class="node sv" id="s7-t2" style="left: 1120px; top: 590px; font-size: 24px">&lt;Header /&gt;</div>
+        <div class="node sv" id="s7-t3" style="left: 1360px; top: 590px; font-size: 24px">&lt;Product /&gt;</div>
+        <div class="lbl sm" id="s7-tl" style="left: 900px; top: 648px">React components run here</div>
         <div class="lane" id="s7-lane" style="top: 690px; height: 118px">
           <div class="seg" id="s7-g1" style="left: 20px; width: 470px; background: var(--violet)">Server renders</div>
           <div class="seg" id="s7-g2" style="left: 490px; width: 110px; background: var(--cyan)">HTML</div>
@@ -308,14 +308,14 @@
         <div class="eyebrow">Hydration</div>
         <h2>Making the HTML come alive</h2>
         <div class="win" id="s9-win" data-w="760" data-h="500" data-url="my-shop.com" data-page="9" style="left: 140px; top: 240px"></div>
-        <div class="tag co" id="s9-dead" style="left: 420px; top: 570px; font-size: 26px">No handlers: dead</div>
-        <div class="tag li" id="s9-alive" style="left: 420px; top: 570px; font-size: 26px">onClick attached: alive</div>
+        <div class="tag co" id="s9-dead" style="left: 500px; top: 586px; font-size: 26px">No handlers: dead</div>
+        <div class="tag li" id="s9-alive" style="left: 500px; top: 586px; font-size: 26px">onClick attached: alive</div>
         <div id="s9-cur" style="position: absolute; left: 830px; top: 650px; width: 46px; z-index: 30"><svg viewBox="0 0 30 40" style="display:block;width:100%"><path d="M3 2 L3 30 L10 24 L15 37 L20 35 L15 22 L25 22z" fill="#fff" stroke="#1f2140" stroke-width="2.5" stroke-linejoin="round"/></svg></div>
         <div id="s9-rip" style="position: absolute; left: 662px; top: 486px; width: 60px; height: 60px; border-radius: 50%; border: 6px solid #f472b6; z-index: 29"></div>
         <div class="mo" id="s9-o1" style="left: 145px; top: 291px; width: 760px; height: 46px"></div>
         <div class="mo" id="s9-o2" style="left: 169px; top: 359px; width: 304px; height: 354px"></div>
         <div class="mo" id="s9-o3" style="left: 498px; top: 371px; width: 250px; height: 70px"></div>
-        <div class="mo" id="s9-o4" style="left: 498px; top: 481px; width: 420px; height: 78px; border-color: #86efac"></div>
+        <div class="mo" id="s9-o4" style="left: 496px; top: 479px; width: 340px; height: 82px; border-color: #86efac"></div>
         <div id="s9-scan" style="position: absolute; left: 145px; top: 291px; width: 760px; height: 8px; background: #22d3ee; box-shadow: 0 0 24px 6px rgba(34,211,238,.8); z-index: 18"></div>
         <div class="tag li" id="s9-re" style="left: 200px; top: 765px; font-size: 26px">Reuses the same DOM nodes</div>
         <div class="tag co" id="s9-nr" style="left: 590px; top: 765px; font-size: 26px">Not rebuilt from scratch</div>
@@ -334,7 +334,7 @@
         <h2>Let's race them</h2>
         <div class="lane" id="s10-l1" style="top: 300px; height: 190px">
           <div class="lbl" style="left: 22px; top: 70px; font-size: 42px; color: var(--cyan)">CSR</div>
-          <div class="seg" id="s10-a1" style="left: 180px; width: 70px; background: var(--cyan); top: 70px">HTML</div>
+          <div class="seg" id="s10-a1" style="left: 180px; width: 70px; background: var(--cyan); top: 70px; font-size: 18px">HTML</div>
           <div class="seg" id="s10-a2" style="left: 250px; width: 616px; background: var(--amber); top: 70px">JavaScript bundle</div>
           <div class="seg" id="s10-a3" style="left: 866px; width: 250px; background: var(--lime); top: 70px">Fetch data</div>
           <div class="seg" id="s10-a4" style="left: 1116px; width: 110px; background: var(--pink); top: 70px">Render</div>
@@ -343,7 +343,7 @@
         <div class="lane" id="s10-l2" style="top: 550px; height: 190px">
           <div class="lbl" style="left: 22px; top: 70px; font-size: 42px; color: var(--violet)">SSR</div>
           <div class="seg" id="s10-b1" style="left: 180px; width: 420px; background: var(--violet); top: 70px">Server renders</div>
-          <div class="seg" id="s10-b2" style="left: 600px; width: 84px; background: var(--cyan); top: 70px">HTML</div>
+          <div class="seg" id="s10-b2" style="left: 600px; width: 84px; background: var(--cyan); top: 70px; font-size: 20px">HTML</div>
           <div class="flag" id="s10-f2" style="left: 684px; top: 30px; height: 140px; border-color: var(--lime)"><span style="background: var(--lime)">Content</span></div>
           <div class="seg" id="s10-b3" style="left: 684px; width: 616px; background: var(--amber); top: 70px">JavaScript bundle</div>
           <div class="seg" id="s10-b4" style="left: 1300px; width: 170px; background: var(--pink); top: 70px">Hydrate</div>
@@ -415,7 +415,7 @@
         <div class="actor" id="s13-db" data-ico="db" style="left: 1610px; top: 270px; width: 110px"></div>
         <div class="chip" id="s13-x1" style="left: 1130px; top: 428px; font-size: 22px; color: var(--coral)">useEffect</div>
         <div class="chip" id="s13-x2" style="left: 1300px; top: 428px; font-size: 22px; color: var(--coral)">loading state</div>
-        <div class="chip" id="s13-x3" style="left: 1500px; top: 428px; font-size: 22px; color: var(--coral)">API route</div>
+        <div class="chip" id="s13-x3" style="left: 1540px; top: 428px; font-size: 22px; color: var(--coral)">API route</div>
         <div class="node cl2" id="s13-n2" style="left: 1130px; top: 640px; font-size: 28px">&lt;LikeButton /&gt;</div>
         <div class="tag cy" id="s13-js" style="left: 1130px; top: 715px; font-size: 24px">JavaScript shipped + hydrated</div>
         <div class="pkt pk" id="s13-p1" style="left: 1440px; top: 484px; font-size: 22px">payload + LikeButton.js</div>
@@ -515,6 +515,7 @@
         <div class="card rcp c-violet" id="rc2" style="top: 390px"><span class="ic" style="color: var(--violet)">SSR</span><div>Sends HTML first, then hydrates<small>fast paint, interactive after hydration</small></div></div>
         <div class="card rcp c-amber" id="rc3" style="top: 530px"><span class="ic" style="color: var(--amber)">Suspense</span><div>Streams the page in pieces<small>slow parts never block the rest</small></div></div>
         <div class="card rcp c-pink" id="rc4" style="top: 670px"><span class="ic" style="color: var(--pink)">RSC</span><div>Keeps code on the server<small>the browser downloads less JavaScript</small></div></div>
+        <div class="actor" id="s18-atom" data-ico="atom" style="left: 1440px; top: 330px; width: 300px"></div>
         <div class="tag pk" id="s18-thx" style="right: 140px; top: 220px; font-size: 32px; padding: 8px 28px">Thanks for watching</div>
       </section>
 
@@ -667,9 +668,9 @@ export async function like(id) {
           price = "";
           extra = '<div class="pbtn" id="' + p + '-btn" style="left:' + x2 + 'px;top:' + (page === "9" ? 190 : 140) + 'px;font-size:' + (page === "9" ? 34 : 22) + 'px;padding:' + (page === "9" ? "16px 34px" : "10px 22px") + '">Clicked 0 times</div>';
         } else if (page === "14") {
-          title = '<div class="ptx" style="left:' + x2 + 'px;top:70px;font-size:28px">Sneakers</div>';
-          price = '<div class="ptx" style="left:' + x2 + 'px;top:112px;font-size:22px;color:#b3123f">59 USD</div>';
-          extra = '<div class="pbtn" id="' + p + '-like" style="left:' + x2 + 'px;top:150px;font-size:22px;background:#0a7fbf;box-shadow:0 5px 0 #075a87">Like</div>';
+          title = '<div class="ptx" style="left:' + x2 + 'px;top:56px;font-size:28px">Sneakers</div>';
+          price = '<div class="ptx" style="left:' + x2 + 'px;top:94px;font-size:22px;color:#b3123f">59 USD</div>';
+          extra = '<div class="pbtn" id="' + p + '-like" style="left:' + x2 + 'px;top:128px;font-size:22px;background:#0a7fbf;box-shadow:0 5px 0 #075a87">Like</div>';
         } else {
           title = '<div class="ptx" style="left:' + x2 + 'px;top:76px;font-size:34px">Sneakers</div>';
           price = '<div class="ptx" style="left:' + x2 + 'px;top:126px;font-size:26px;color:#b3123f">59 USD</div>';
@@ -923,7 +924,7 @@ export async function like(id) {
         tl.fromTo(sel, { rotation: 0 }, { rotation: 360 * Math.max(1, Math.round((t1 - t0) * 0.9)), duration: t1 - t0, ease: "none", immediateRender: false }, t0);
         tl.to(sel, { opacity: 0, duration: 0.25 }, t1);
       }
-      function grow(sel, t0, dur) { tl.fromTo(sel, { scaleX: 0 }, { scaleX: 1, duration: dur, ease: "none" }, t0); }
+      function grow(sel, t0, dur) { tl.fromTo(sel, { clipPath: "inset(0% 100% 0% 0% round 12px)" }, { clipPath: "inset(0% 0% 0% 0% round 12px)", duration: dur, ease: "none" }, t0); }
       function blinkLeds(scene, t0, t1) { tl.to("#" + scene + " .led", { opacity: 0.2, duration: 0.45, yoyo: true, repeat: Math.max(1, Math.floor((t1 - t0) / 0.45) - 1), ease: "sine.inOut" }, t0); }
       function bobA(sel, t0, t1, amp = 6, period = 2) { tl.to(sel + " svg", { y: -amp, duration: period / 2, yoyo: true, repeat: Math.max(1, Math.floor((t1 - t0) / (period / 2)) - 1), ease: "sine.inOut" }, t0); }
       function click(t, target) {
@@ -1281,6 +1282,8 @@ export async function like(id) {
       enter("s18");
       show("#rc1", L("s18b", 0.1), { x: -60, s: 0.9 }); show("#rc2", L("s18c", 0.1), { x: -60, s: 0.9 });
       show("#rc3", L("s18d", 0.1), { x: -60, s: 0.9 }); show("#rc4", L("s18e", 0.1), { x: -60, s: 0.9 });
+      show("#s18-atom", L("s18a", 0.2), { s: 0.4, d: 1.0 });
+      tl.fromTo("#s18-atom svg", { rotation: 0 }, { rotation: 360, duration: 20, ease: "none", transformOrigin: "50% 50%", immediateRender: false }, L("s18a", 0.2));
       show("#s18-thx", L("s18f", 0.1), { s: 0.6, d: 0.7 });
       cheer("#sam", L("s18f", 0.1)); cheer("#byte", L("s18f", 0.5)); face("#byte", "h", L("s18f"));
 

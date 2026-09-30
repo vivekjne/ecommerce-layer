@@ -138,9 +138,9 @@ export async function like(id) {
           price = "";
           extra = '<div class="pbtn" id="' + p + '-btn" style="left:' + x2 + 'px;top:' + (page === "9" ? 190 : 140) + 'px;font-size:' + (page === "9" ? 34 : 22) + 'px;padding:' + (page === "9" ? "16px 34px" : "10px 22px") + '">Clicked 0 times</div>';
         } else if (page === "14") {
-          title = '<div class="ptx" style="left:' + x2 + 'px;top:70px;font-size:28px">Sneakers</div>';
-          price = '<div class="ptx" style="left:' + x2 + 'px;top:112px;font-size:22px;color:#b3123f">59 USD</div>';
-          extra = '<div class="pbtn" id="' + p + '-like" style="left:' + x2 + 'px;top:150px;font-size:22px;background:#0a7fbf;box-shadow:0 5px 0 #075a87">Like</div>';
+          title = '<div class="ptx" style="left:' + x2 + 'px;top:56px;font-size:28px">Sneakers</div>';
+          price = '<div class="ptx" style="left:' + x2 + 'px;top:94px;font-size:22px;color:#b3123f">59 USD</div>';
+          extra = '<div class="pbtn" id="' + p + '-like" style="left:' + x2 + 'px;top:128px;font-size:22px;background:#0a7fbf;box-shadow:0 5px 0 #075a87">Like</div>';
         } else {
           title = '<div class="ptx" style="left:' + x2 + 'px;top:76px;font-size:34px">Sneakers</div>';
           price = '<div class="ptx" style="left:' + x2 + 'px;top:126px;font-size:26px;color:#b3123f">59 USD</div>';

@@ -14,7 +14,7 @@
         tl.fromTo(sel, { rotation: 0 }, { rotation: 360 * Math.max(1, Math.round((t1 - t0) * 0.9)), duration: t1 - t0, ease: "none", immediateRender: false }, t0);
         tl.to(sel, { opacity: 0, duration: 0.25 }, t1);
       }
-      function grow(sel, t0, dur) { tl.fromTo(sel, { scaleX: 0 }, { scaleX: 1, duration: dur, ease: "none" }, t0); }
+      function grow(sel, t0, dur) { tl.fromTo(sel, { clipPath: "inset(0% 100% 0% 0% round 12px)" }, { clipPath: "inset(0% 0% 0% 0% round 12px)", duration: dur, ease: "none" }, t0); }
       function blinkLeds(scene, t0, t1) { tl.to("#" + scene + " .led", { opacity: 0.2, duration: 0.45, yoyo: true, repeat: Math.max(1, Math.floor((t1 - t0) / 0.45) - 1), ease: "sine.inOut" }, t0); }
       function bobA(sel, t0, t1, amp = 6, period = 2) { tl.to(sel + " svg", { y: -amp, duration: period / 2, yoyo: true, repeat: Math.max(1, Math.floor((t1 - t0) / (period / 2)) - 1), ease: "sine.inOut" }, t0); }
       function click(t, target) {
@@ -136,7 +136,7 @@
 
       // ===================== 5 · CSR code =====================
       enter("s5");
-      codeIn("s5-a", L("s5a", 0.2)); hl("s5-a", [1], W("s5a", 7), 1.0); hl("s5-a", [2], W("s5a", 10), 1.0);
+      codeIn("s5-a", L("s5a", 0.2)); hl("s5-a", [1], W("s5a", 7), 1.0); hl("s5-a", [2], W("s5a", 11), 1.0);
       codeIn("s5-b", L("s5b", 0.1)); hl("s5-b", [1], W("s5b", 1), 1.2);
       codeIn("s5-c", L("s5c", 0.0)); hl("s5-c", [4, 5, 6, 7, 8], L("s5c", 1.5), 2.2); hl("s5-c", [10, 11], W("s5c", 6), 1.2);
       show("#s5-t3", W("s5d", 2), { s: 0.7, d: 0.6 }); show("#s5-t1", W("s5d", 3), { s: 0.7, d: 0.6 }); show("#s5-t2", W("s5d", 7), { s: 0.7, d: 0.6 });
@@ -339,9 +339,9 @@
       ["#s15-n3", "#s15-n4", "#s15-n5"].forEach((s, i) => pulse(s, W("s15d", 9) + i * 0.2, 1.15));
       hide("#s15-r1, #s15-r2, #s15-low", L("s15e", 0.0), 0.5);
       codeIn("s15-us", W("s15e", 3)); hl("s15-us", [1], W("s15e", 3), 1.4); hl("s15-us", [3], W("s15e", 12), 1.6);
-      show("#s15-pub", W("s15f", 3), { s: 0.6, d: 0.5 }); shake("#s15-pub", W("s15f", 4));
-      pop("#guard", W("s15f", 3)); bob("#guard", W("s15f", 4), SE("s15") - 0.8, 5, 2);
-      show("#s15-val", W("s15f", 7), { s: 0.6, d: 0.5 }); nod("#guard", W("s15f", 9));
+      show("#s15-pub", W("s15f", 1), { s: 0.6, d: 0.5 }); shake("#s15-pub", W("s15f", 2));
+      pop("#guard", W("s15f", 1)); bob("#guard", W("s15f", 2), SE("s15") - 0.8, 5, 2);
+      show("#s15-val", W("s15f", 6), { s: 0.6, d: 0.5 }); nod("#guard", W("s15f", 8));
       tl.to("#guard", { opacity: 0, duration: 0.4 }, SE("s15") - 0.7);
       leave("s15");
 
@@ -372,6 +372,8 @@
       enter("s18");
       show("#rc1", L("s18b", 0.1), { x: -60, s: 0.9 }); show("#rc2", L("s18c", 0.1), { x: -60, s: 0.9 });
       show("#rc3", L("s18d", 0.1), { x: -60, s: 0.9 }); show("#rc4", L("s18e", 0.1), { x: -60, s: 0.9 });
+      show("#s18-atom", L("s18a", 0.2), { s: 0.4, d: 1.0 });
+      tl.fromTo("#s18-atom svg", { rotation: 0 }, { rotation: 360, duration: 20, ease: "none", transformOrigin: "50% 50%", immediateRender: false }, L("s18a", 0.2));
       show("#s18-thx", L("s18f", 0.1), { s: 0.6, d: 0.7 });
       cheer("#sam", L("s18f", 0.1)); cheer("#byte", L("s18f", 0.5)); face("#byte", "h", L("s18f"));
 

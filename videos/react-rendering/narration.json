@@ -102,7 +102,7 @@
    "lines": [
     {
      "id": "s5a",
-     "text": "In code, the shell is tiny: a root div, and one script."
+     "text": "First, the [HTML|H T M L] shell is tiny: a root div, and one script."
     },
     {
      "id": "s5b",
@@ -380,11 +380,11 @@
     },
     {
      "id": "s15e",
-     "text": "There is also [use server|use server], for server functions that the client can call, like form actions."
+     "text": "There is also [use server|youz server], for server functions that the client can call, like form actions."
     },
     {
      "id": "s15f",
-     "text": "Treat them as public endpoints, and always validate and authorize inside them."
+     "text": "Anyone can call them, so always validate and authorize inside them."
     }
    ]
   },
@@ -401,7 +401,7 @@
     },
     {
      "id": "s16c",
-     "text": "Server components decide where code runs, and how much JavaScript ships."
+     "text": "Server components decide where your code runs, and how much JavaScript ships."
     },
     {
      "id": "s16d",
