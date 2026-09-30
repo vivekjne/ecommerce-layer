@@ -21,7 +21,7 @@ node scripts/build.mjs              # master audio; inline src/ parts into index
 node scripts/validate_cues.mjs      # every animation cue sits inside its narration line
 npx hyperframes@0.8.94 check
 npx hyperframes@0.8.94 render -f 30 -q standard -w 4 -o rendered.mp4
-node scripts/finalize.mjs rendered.mp4 uipath-delegate-explainer.mp4 32   # compress + restore loudness
+node scripts/finalize.mjs rendered.mp4 uipath-delegate-explainer.mp4 33   # compress + restore loudness
 ```
 
 ## Structure (13 scenes, following the script's ON SCREEN cues)
@@ -82,7 +82,7 @@ Whisper heard "flowchart" as "float chart" until it was respelled `flow chart`.
 
 | Check | Result |
 | --- | --- |
-| Format | 1920x1080, 30 fps, H.264 + AAC, 9:51.2, 32.3 MB (CRF 32) |
+| Format | 1920x1080, 30 fps, H.264 + AAC, 9:51.2, 29.5 MiB (CRF 33) |
 | `hyperframes check` | 0 errors (21 advisory lint warnings: nested structure, repeated icon images, file size); 136/136 text contrast checks pass WCAG AA |
 | Visual review | snapshots of every scene, several per scene, viewed and fixed; nine frames of the final MP4 inspected |
 | Loudness | -14.5 LUFS integrated, true peak -2.6 dBFS |
