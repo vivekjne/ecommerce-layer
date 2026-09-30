@@ -28,16 +28,16 @@ node scripts/finalize.mjs rendered.mp4 uipath-delegate-explainer.mp4 33   # comp
 
 | Time | Scene | Script section |
 | --- | --- | --- |
-| 0:01 | s1 Cold open: busy Monday montage, a Delegate session, title card | 1 Cold open |
+| 0:00 | s1 Cold open: busy Monday montage, a Delegate session, title card | 1 Cold open |
 | 0:42 | s2 What it is: computer use, four ways to start, four ideas, the enterprise door | 2 What Delegate is |
 | 1:42 | s3 The four-step loop beside a session mockup, then under the hood and attached SOPs | 3 How Delegate works |
 | 2:57 | s4 One session, three prompts: report to CRM, morning triage, draft and approve | 4 Demo |
 | 3:48 | s5 Support example: backlog, summary, licensing data, first response, one chat | 4 Demo (cutaway) |
 | 4:16 | s6 No-API system, cost scale, record once, routine or knowledge skill, share | 5 Teach it |
-| 5:08 | s7 Raw data to deliverable split screen, hours vs minutes, three enterprise use cases | 6 Data to deliverable |
+| 5:07 | s7 Raw data to deliverable split screen, hours vs minutes, three enterprise use cases | 6 Data to deliverable |
 | 5:54 | s8 A form arrives pre-filled inside the chat; "Works through MCP Apps" | 7 MCP Apps |
-| 6:40 | s9 Save as routine, run, schedule, share | 8 Routines |
-| 7:26 | s10 Cautious / Adaptive / Full access lanes, the Smart approvals toggle | 9 Approval modes |
+| 6:39 | s9 Save as routine, run, schedule, share | 8 Routines |
+| 7:25 | s10 Cautious / Adaptive / Full access lanes, the Smart approvals toggle | 9 Approval modes |
 | 8:13 | s11 Allow and deny lists, permissions, audit trail, your data | 9 Governance |
 | 8:28 | s12 Orchestrator, credential vault, AI Trust Layer, role-based access: built in | 9 Governance |
 | 8:56 | s13 Recap, extension of what you have, end slide with links | 10 Wrap-up |
@@ -100,3 +100,10 @@ Authoring notes: animating `transform` on a wrapper `div` makes that `div` the c
 its absolutely positioned children and shifts them, so wrappers that get faded are opacity-only and
 wrappers that move are pinned to the page origin. Captions leave no later than the next caption
 arrives, so lines split mid-sentence (short `gap`) do not overlap.
+
+## YouTube publish pack (`youtube/`)
+
+`publish-pack.md` (titles, description with chapters, tags, pinned comment, checklist), three thumbnails
+(`thumbnail-A/B/C.png`, built by `node youtube/build-thumbnails.mjs`), and
+`uipath-delegate-explainer.en.srt` + `chapters.txt` (built by `node youtube/make-captions.mjs` from the
+same timing as the voice).

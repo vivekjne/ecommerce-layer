@@ -1,0 +1,12 @@
+0:00 The Monday busywork problem
+0:42 What UiPath Delegate is
+1:42 How it works: ask, plan, act, stop
+2:57 Tasks that cross applications
+3:48 A support engineer's day
+4:16 Teach it by showing it
+5:07 From raw data to a finished deliverable
+5:54 Real screens inside the chat (MCP Apps)
+6:39 Save and reuse work with Routines
+7:25 Approval modes
+8:13 Allow and deny lists, audit trail, governance
+8:56 Recap and next steps
