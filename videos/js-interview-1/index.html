@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      :root {
+        --bg: #fff6e5;
+        --ink: #1f2140;
+        --muted: #5b5f86;
+        --coral: #d92d48;
+        --sun: #ffc93c;
+        --mint: #0a8a5f;
+        --sky: #0a7fbf;
+        --grape: #6a4df0;
+        --orange: #c2410c;
+        --mono: "JetBrains Mono", "DejaVu Sans Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: Inter, "Helvetica Neue", Arial, ui-sans-serif, system-ui, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 8% 12%, #ffe1ea 0, transparent 36%),
+          radial-gradient(circle at 92% 88%, #d9f7ff 0, transparent 40%),
+          radial-gradient(circle at 90% 8%, #fff0b8 0, transparent 30%),
+          var(--bg);
+      }
+      .clip { position: absolute; inset: 0; padding: 80px 140px; }
+      .ov { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
+      .ov line, .ov path { fill: none; stroke-width: 5; stroke-linecap: round; }
+      .eyebrow {
+        display: inline-block;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #fff;
+        background: var(--grape);
+        padding: 8px 18px;
+        border-radius: 999px;
+      }
+      h2 { font-size: 60px; font-weight: 800; letter-spacing: -0.03em; margin-top: 14px; }
+      #badge {
+        position: absolute;
+        right: 60px;
+        top: 50px;
+        font-size: 22px;
+        font-weight: 800;
+        background: var(--ink);
+        color: #fff;
+        padding: 8px 18px;
+        border-radius: 999px;
+        z-index: 5;
+      }
+
+      /* characters (persistent, bottom corners) */
+      .char { position: absolute; z-index: 40; }
+      .char svg { display: block; width: 100%; height: auto; overflow: visible; }
+      #sam { left: 40px; top: 838px; width: 170px; }
+      #byte { left: 1712px; top: 838px; width: 170px; }
+      #mal { left: 1510px; top: 838px; width: 170px; }
+      #guard { left: 1510px; top: 838px; width: 170px; }
+
+      /* captions */
+      #captions { position: absolute; inset: 0; z-index: 50; pointer-events: none; }
+      .cline {
+        position: absolute;
+        left: 250px;
+        top: 918px;
+        width: 1240px;
+        height: 128px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 38px;
+        font-weight: 800;
+        line-height: 1.25;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 28px;
+        padding: 8px 26px;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.14);
+      }
+      .cw { color: #7d84ab; padding: 0 0.06em; border-radius: 8px; background-color: rgba(255, 201, 60, 0); }
+
+      /* generic cards */
+      .card {
+        position: absolute;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 22px;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+      }
+      .card .hd { color: #fff; font-size: 24px; font-weight: 800; padding: 8px 20px; border-radius: 16px 16px 0 0; }
+      .env { border-color: var(--sky); }
+      .env .hd { background: var(--sky); }
+      .fnc { border-color: var(--grape); }
+      .fnc .hd { background: var(--grape); }
+      .er { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 28px; padding: 10px 22px; }
+      .er .vn { color: var(--muted); }
+      .vv { display: inline-block; font-weight: 800; }
+      .bp { font-size: 76px; line-height: 1; display: inline-block; }
+      .chip {
+        position: absolute;
+        font-family: var(--mono);
+        font-size: 26px;
+        font-weight: 700;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 999px;
+        padding: 6px 20px;
+        white-space: nowrap;
+      }
+      .tag { position: absolute; font-size: 26px; font-weight: 800; background: var(--sun); border: 4px solid var(--ink); border-radius: 999px; padding: 6px 20px; white-space: nowrap; }
+      .room { position: absolute; border-radius: 28px; }
+      .room .rl { position: absolute; left: 22px; top: 12px; font-family: var(--mono); font-weight: 800; font-size: 26px; }
+
+      /* code + console */
+      .code {
+        position: absolute;
+        background: #fff;
+        border: 4px solid var(--ink);
+        border-radius: 22px;
+        padding: 22px 30px;
+        font-family: var(--mono);
+        font-weight: 600;
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+        white-space: pre;
+      }
+      .code .cl { display: block; padding: 0 12px; margin: 0 -12px; border-radius: 8px; background-color: rgba(255, 201, 60, 0); }
+      .kw { color: #8a2be2; }
+      .st { color: #0a8a5f; }
+      .nu { color: #c2410c; }
+      .cm { color: #6b7280; font-style: italic; }
+      .fn { color: #0a6fb0; }
+      .cons {
+        position: absolute;
+        background: #1f2140;
+        color: #e9ecff;
+        border: 4px solid var(--ink);
+        border-radius: 22px;
+        padding: 14px 28px 16px;
+        font-family: var(--mono);
+        box-shadow: 0 8px 0 rgba(31, 33, 64, 0.16);
+      }
+      .cons .ct { font-size: 20px; letter-spacing: 0.14em; text-transform: uppercase; color: #aab0dc; margin-bottom: 6px; }
+      .cons .out { display: block; font-size: 32px; line-height: 1.5; color: #7cf3b0; }
+      .cons .out.err { color: #ff9aa8; }
+      .cons .out.dim { color: #aab0dc; }
+
+      /* countdown */
+      .cd { position: absolute; width: 230px; height: 230px; border-radius: 50%; background: var(--sun); border: 6px solid var(--ink); box-shadow: 0 10px 0 rgba(31, 33, 64, 0.16); }
+      .cd .cdn { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 130px; font-weight: 900; }
+      .cd .cdl { position: absolute; left: 0; right: 0; bottom: -58px; text-align: center; font-size: 34px; font-weight: 800; }
+
+      /* title / recap */
+      #s1 { text-align: center; padding-top: 110px; }
+      #s1 .kick { display: block; margin-bottom: 14px; font-size: 30px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grape); }
+      #s1 h1 { font-size: 170px; font-weight: 900; letter-spacing: -0.05em; line-height: 1.1; margin-top: 4px; }
+      #s1 p { font-size: 40px; color: var(--muted); margin-top: 10px; }
+      .rc { position: absolute; left: 140px; width: 1120px; height: 150px; display: flex; align-items: center; gap: 28px; padding: 0 34px; font-size: 36px; font-weight: 800; line-height: 1.25; }
+      .rc .ic { font-size: 68px; }
+      .rc small { display: block; font-size: 26px; font-weight: 600; color: var(--muted); margin-top: 4px; }
+      .fine { position: absolute; font-size: 22px; color: var(--muted); }
+      /* never merge === into a single glyph: this episode is about == vs === */
+      #root, #root * { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+      .step2 { position: absolute; font-size: 30px; font-weight: 700; background: #f4f5ff; border: 3px solid var(--ink); border-radius: 999px; padding: 6px 22px; white-space: nowrap; }
+      .pillv { position: absolute; font-family: var(--mono); font-weight: 800; font-size: 30px; padding: 4px 22px; border-radius: 999px; border: 4px solid; white-space: nowrap; }
+      .pillv.t { background: #d5f5e6; color: #0a8a5f; border-color: #0a8a5f; }
+      .pillv.f { background: #ffd0d6; color: #d92d48; border-color: #d92d48; }
+      .trow { position: absolute; left: 140px; width: 1000px; height: 70px; }
+      .trow .ex { position: absolute; left: 24px; top: 12px; font-family: var(--mono); font-weight: 700; font-size: 30px; }
+      .trow .pillv { top: 9px; }
+      .th { position: absolute; top: 296px; font-family: var(--mono); font-weight: 800; font-size: 34px; }
+      .tp { display: inline-block; font-size: 30px; font-weight: 800; background: #fff; border: 4px solid var(--ink); border-radius: 999px; padding: 8px 26px; box-shadow: 0 6px 0 rgba(31,33,64,.14); }
+      #s1 h1 { font-size: 140px; }
+      .gcell { position: absolute; padding: 14px 24px; font-size: 30px; font-weight: 700; line-height: 1.3; }
+      .lbl { position: absolute; font-size: 32px; font-weight: 800; }
+      .zone { position: absolute; }
+      .kc .body { position: absolute; left: 30px; right: 30px; }
+      .rcp { position: absolute; left: 140px; width: 1120px; height: 118px; display: flex; align-items: center; gap: 26px; padding: 0 32px; font-size: 34px; font-weight: 800; line-height: 1.25; }
+      .rcp .ic { font-size: 60px; font-family: var(--mono); }
+      .rcp small { display: block; font-size: 24px; font-weight: 600; color: var(--muted); margin-top: 2px; }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute">
+      <defs>
+        <marker id="ahInk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1f2140" /></marker>
+        <marker id="ahRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d92d48" /></marker>
+        <marker id="ahGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0a8a5f" /></marker>
+        <marker id="ahGrape" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#6a4df0" /></marker>
+      </defs>
+    </svg>
+
+    <div id="root" data-composition-id="main" data-start="0" data-duration="357.735" data-width="1920" data-height="1080">
+      <audio id="vo" src="assets/voiceover.mp3" data-start="0" data-duration="357.735" data-volume="1"></audio>
+      <audio id="bgm" src="assets/music.mp3" data-start="0" data-duration="357.735" data-volume="1" data-fade-in="2" data-fade-out="4"></audio>
+
+      <div id="badge">JavaScript Demystified · Interview Q&amp;A</div>
+
+      <!-- 1 · Intro -->
+      <section id="s1" class="clip" data-start="0.6" data-duration="25.506" data-track-index="0">
+        <div class="kick">JavaScript Demystified</div>
+        <h1>Interview Questions</h1>
+        <p>4 questions you will be asked, answered clearly</p>
+        <div id="tps" style="position: absolute; left: 0; right: 0; top: 440px; display: flex; justify-content: center; gap: 22px">
+          <span class="tp" id="tp1">== vs ===</span><span class="tp" id="tp2">var vs let</span><span class="tp" id="tp3">call · apply · bind</span><span class="tp" id="tp4">Promise.all vs race</span>
+        </div>
+        <div class="tag" id="cred1" style="left: 0; right: 0; margin: 0 auto; width: fit-content; top: 30px; font-size: 22px; font-family: var(--mono)">Questions: github.com/sudheerj/javascript-interview-questions</div>
+      </section>
+
+      <!-- 2 · Q1 concept -->
+      <section id="s2" class="clip" data-start="26.106" data-duration="25.328" data-track-index="0">
+        <div class="eyebrow" style="background: #d92d48">Question 1 of 4</div>
+        <h2>What is the difference between == and ===?</h2>
+        <div class="card" id="cA2" style="left: 140px; top: 300px; width: 780px; height: 440px; border-color: #0a8a5f">
+          <div class="hd" style="background: #0a8a5f">=== strict equality</div>
+          <div id="eA2" style="position: absolute; left: 36px; top: 84px; font-family: var(--mono); font-weight: 800; font-size: 56px">1 === "1"</div>
+          <div class="step2" id="stA1" style="left: 36px; top: 190px">① same type?  <b style="color: #d92d48">no</b></div>
+          <div class="step2" id="stA2" style="left: 36px; top: 254px">② same value?  <b style="color: var(--muted)">not needed</b></div>
+          <div class="pillv f" id="rA2" style="left: 36px; top: 336px; font-size: 44px">false</div>
+        </div>
+        <div class="card" id="cB2" style="left: 1000px; top: 300px; width: 780px; height: 440px; border-color: #d92d48">
+          <div class="hd" style="background: #d92d48">== loose equality</div>
+          <div id="eB2" style="position: absolute; left: 36px; top: 84px; font-family: var(--mono); font-weight: 800; font-size: 56px">1 == "1"</div>
+          <div id="convB" style="position: absolute; left: 36px; top: 178px; display: flex; align-items: center; gap: 16px; font-family: var(--mono); font-weight: 800; font-size: 34px">
+            <span style="background: #f4f5ff; border: 3px solid var(--ink); border-radius: 14px; padding: 2px 16px">"1"</span><span>⚙️ →</span><span id="cvto" style="background: #ffe9a8; border: 3px solid var(--ink); border-radius: 14px; padding: 2px 16px">1</span><span style="font-family: Inter, sans-serif; font-size: 24px; color: var(--muted)">string → number</span>
+          </div>
+          <div class="step2" id="stB2" style="left: 36px; top: 262px">② compare  1 and 1</div>
+          <div class="pillv t" id="rB2" style="left: 36px; top: 344px; font-size: 44px">true</div>
+        </div>
+        <div class="tag" id="tagB2" style="left: 1090px; top: 770px; font-size: 30px; background: #ffe9a8">type coercion 🎭</div>
+      </section>
+
+      <!-- 3 · Q1 proof table -->
+      <section id="s3" class="clip" data-start="51.434" data-duration="49.021" data-track-index="0">
+        <div class="eyebrow" style="background: #d92d48">Question 1 of 4</div>
+        <h2>== vs === in practice</h2>
+        <div class="th" id="th3a" style="left: 620px; color: #d92d48">==</div>
+        <div class="th" id="th3b" style="left: 870px; color: #0a8a5f">===</div>
+        <div class="card trow" id="r3_1" style="top: 340px"><div class="ex">0 <span style="color:var(--muted)">vs</span> false</div><span class="pillv t" id="c3_1_1" style="left: 480px">true</span><span class="pillv f" id="c3_1_2" style="left: 730px">false</span></div>
+        <div class="card trow" id="r3_2" style="top: 424px"><div class="ex">"1" <span style="color:var(--muted)">vs</span> 1</div><span class="pillv t" id="c3_2_1" style="left: 480px">true</span><span class="pillv f" id="c3_2_2" style="left: 730px">false</span></div>
+        <div class="card trow" id="r3_3" style="top: 508px"><div class="ex">null <span style="color:var(--muted)">vs</span> undefined</div><span class="pillv t" id="c3_3_1" style="left: 480px">true</span><span class="pillv f" id="c3_3_2" style="left: 730px">false</span></div>
+        <div class="card trow" id="r3_4" style="top: 592px"><div class="ex">NaN <span style="color:var(--muted)">vs</span> NaN</div><span class="pillv f" id="c3_4_1" style="left: 480px">false</span><span class="pillv f" id="c3_4_2" style="left: 730px">false</span></div>
+        <div class="card trow" id="r3_5" style="top: 676px"><div class="ex">[] <span style="color:var(--muted)">vs</span> []</div><span class="pillv f" id="c3_5_1" style="left: 480px">false</span><span class="pillv f" id="c3_5_2" style="left: 730px">false</span></div>
+        <div class="card" id="rule3" style="left: 1200px; top: 300px; width: 580px; height: 210px; background: #d5f5e6; border-color: #0a8a5f; padding: 22px 28px">
+          <div style="font-size: 26px; font-weight: 800; color: #0a8a5f; letter-spacing: 0.08em; text-transform: uppercase">Say this</div>
+          <div style="font-size: 40px; font-weight: 900; margin-top: 8px; line-height: 1.15">Use <span class="mono">===</span> by default</div>
+        </div>
+        <div class="card" id="null3" style="left: 1200px; top: 540px; width: 580px; height: 200px; padding: 20px 28px">
+          <div style="font-size: 24px; font-weight: 800; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase">Common exception</div>
+          <div class="mono" style="font-size: 40px; font-weight: 800; margin-top: 8px">x == null</div>
+          <div style="font-size: 24px; margin-top: 6px; color: var(--muted)">true for null and undefined only</div>
+        </div>
+      </section>
+
+      <!-- 4 · Q2 concept -->
+      <section id="s4" class="clip" data-start="100.455" data-duration="23.46" data-track-index="0">
+        <div class="eyebrow" style="background: #0a7fbf">Question 2 of 4</div>
+        <h2>What is the difference between var and let?</h2>
+        <div class="lbl mono" id="hv4" style="left: 490px; top: 292px; color: #c2410c">var</div>
+        <div class="lbl mono" id="hl4" style="left: 1140px; top: 292px; color: #0a7fbf">let</div>
+        <div class="lbl" id="l41" style="left: 150px; top: 390px; color: var(--muted)">Scope</div>
+        <div class="card" id="c41v" style="left: 470px; top: 350px; width: 620px; height: 120px"><div class="gcell">🏠 <b>function</b> scoped</div></div>
+        <div class="card" id="c41l" style="left: 1120px; top: 350px; width: 660px; height: 120px"><div class="gcell">🧱 <b>block</b> scoped</div></div>
+        <div class="lbl" id="l42" style="left: 150px; top: 540px; color: var(--muted)">Hoisting</div>
+        <div class="card" id="c42v" style="left: 470px; top: 490px; width: 620px; height: 140px"><div class="gcell">Hoisted, and starts as <b class="mono" style="color: #c2410c">undefined</b></div></div>
+        <div class="card" id="c42l" style="left: 1120px; top: 490px; width: 660px; height: 140px"><div class="gcell">Hoisted, but <b>uninitialized</b> until its declaration line</div></div>
+        <div class="zone card" id="tdz4" style="left: 140px; top: 660px; width: 1640px; height: 170px; padding: 0; overflow: hidden">
+          <div style="position: absolute; left: 0; top: 0; width: 900px; height: 100%; background: repeating-linear-gradient(135deg, #ffd0d6 0 18px, #ffe6ea 18px 36px)"></div>
+          <div style="position: absolute; left: 24px; top: 14px; font-size: 26px; font-weight: 800; color: #d92d48">☠️ temporal dead zone: b exists, but touching it throws</div>
+          <div class="mono" style="position: absolute; left: 24px; top: 78px; font-size: 26px; font-weight: 700">{ &nbsp; // block starts</div>
+          <div style="position: absolute; left: 900px; top: 0; width: 6px; height: 100%; background: var(--ink)"></div>
+          <div class="mono" style="position: absolute; left: 926px; top: 20px; font-size: 32px; font-weight: 800">let b = 2;</div>
+          <div style="position: absolute; left: 926px; top: 92px; font-size: 26px; font-weight: 800; color: #0a8a5f">✓ from here on, b is usable</div>
+        </div>
+      </section>
+
+      <!-- 5 · Q2 demo -->
+      <section id="s5" class="clip" data-start="123.914" data-duration="51.383" data-track-index="0">
+        <div class="eyebrow" style="background: #0a7fbf">Question 2 of 4</div>
+        <h2>var vs let in code</h2>
+        <div class="code" id="code5a" style="left: 140px; top: 280px; width: 830px; font-size: 32px; line-height: 50px"></div>
+        <div class="code" id="code5b" style="left: 140px; top: 280px; width: 830px; font-size: 32px; line-height: 50px"></div>
+        <div class="code" id="code5c" style="left: 140px; top: 280px; width: 830px; font-size: 32px; line-height: 50px"></div>
+        <div class="code" id="code5d" style="left: 140px; top: 280px; width: 830px; font-size: 32px; line-height: 50px"></div>
+        <div class="cons" id="cons5" style="left: 1030px; top: 280px; width: 750px; height: 270px">
+          <div class="ct">console</div>
+          <span class="out" id="o5a" style="position: absolute; left: 28px; top: 58px; font-size: 30px">undefined</span>
+          <span class="out err" id="o5b" style="position: absolute; left: 28px; top: 106px; right: 28px; font-size: 26px; line-height: 1.3">ReferenceError: Cannot access 'b' before initialization</span>
+          <span class="out" id="o5c" style="position: absolute; left: 28px; top: 58px; font-size: 30px">1</span>
+          <span class="out err" id="o5d" style="position: absolute; left: 28px; top: 106px; right: 28px; font-size: 26px; line-height: 1.3">ReferenceError: y is not defined</span>
+          <span class="out err" id="o5e" style="position: absolute; left: 28px; top: 58px; right: 28px; font-size: 26px; line-height: 1.3">SyntaxError: Identifier 'e' has already been declared</span>
+          <span class="out err" id="o5f" style="position: absolute; left: 28px; top: 58px; right: 28px; font-size: 26px; line-height: 1.3">TypeError: Assignment to constant variable.</span>
+        </div>
+        <div class="cd" id="cd5" style="left: 1290px; top: 610px"><span class="cdn">3</span><span class="cdn">2</span><span class="cdn">1</span><div class="cdl">Think!</div></div>
+        <div class="tag" id="tdz5" style="left: 1030px; top: 600px; background: #ffd0d6; color: #d92d48; font-size: 28px">☠️ temporal dead zone</div>
+        <div class="tag" id="leak5" style="left: 1030px; top: 600px; background: #ffe9a8; font-size: 28px">var x leaks out of the block</div>
+        <div class="tag" id="stay5" style="left: 1030px; top: 600px; background: #d5f5e6; color: #0a8a5f; font-size: 28px">let y stays inside the block</div>
+        <div class="card" id="rec5" style="left: 1030px; top: 600px; width: 750px; height: 200px; padding: 22px 30px; background: #d5f5e6; border-color: #0a8a5f">
+          <div style="font-size: 26px; font-weight: 800; color: #0a8a5f; letter-spacing: 0.08em; text-transform: uppercase">Modern code</div>
+          <div class="mono" style="font-size: 44px; font-weight: 800; margin-top: 10px">const → let</div>
+          <div style="font-size: 30px; font-weight: 700; margin-top: 8px; color: #d92d48">avoid var</div>
+        </div>
+      </section>
+
+      <!-- 6 · Q3 concept -->
+      <section id="s6" class="clip" data-start="175.297" data-duration="30.441" data-track-index="0">
+        <div class="eyebrow" style="background: #6a4df0">Question 3 of 4</div>
+        <h2>What is the difference between call, apply, and bind?</h2>
+        <div class="card" id="ban6" style="left: 140px; top: 290px; width: 1640px; height: 84px; display: flex; align-items: center; padding: 0 34px; font-size: 34px; font-weight: 800; background: #efeaff">All three control what <span class="mono" style="color: #6a4df0; margin: 0 12px">this</span> points to inside a function</div>
+        <div class="card fnc" id="kc6" style="left: 140px; top: 404px; width: 520px; height: 330px">
+          <div class="hd">call</div>
+          <div class="step2" style="left: 30px; top: 76px; background: #d5f5e6">▶ runs now</div>
+          <div class="mono" style="position: absolute; left: 30px; top: 148px; font-size: 26px; font-weight: 700">fn.call(obj, a, b)</div>
+          <div class="step2" id="ag6c" style="left: 30px; top: 220px; background: #ffe9a8">args: comma separated</div>
+        </div>
+        <div class="card fnc" id="ka6" style="left: 700px; top: 404px; width: 520px; height: 330px">
+          <div class="hd">apply</div>
+          <div class="step2" style="left: 30px; top: 76px; background: #d5f5e6">▶ runs now</div>
+          <div class="mono" style="position: absolute; left: 30px; top: 148px; font-size: 26px; font-weight: 700">fn.apply(obj, [a, b])</div>
+          <div class="step2" id="ag6a" style="left: 30px; top: 220px; background: #ffe9a8">args: an array</div>
+        </div>
+        <div class="card fnc" id="kb6" style="left: 1260px; top: 404px; width: 520px; height: 330px">
+          <div class="hd">bind</div>
+          <div class="step2" style="left: 30px; top: 76px; background: #ffe9a8">🎁 returns a new function</div>
+          <div class="mono" style="position: absolute; left: 30px; top: 148px; font-size: 26px; font-weight: 700">const g = fn.bind(obj)</div>
+          <div class="step2" style="left: 30px; top: 220px; background: #f4f5ff">runs later: g(a, b)</div>
+        </div>
+        <div class="tag" id="mn6" style="left: 140px; top: 764px; font-size: 34px; padding: 8px 28px"><b id="mnc" style="color: #d92d48">C</b>all = <b style="color: #d92d48">C</b>omma  ·  <b id="mna" style="color: #0a7fbf">A</b>pply = <b style="color: #0a7fbf">A</b>rray</div>
+      </section>
+
+      <!-- 7 · Q3 demo -->
+      <section id="s7" class="clip" data-start="205.738" data-duration="36.568" data-track-index="0">
+        <div class="eyebrow" style="background: #6a4df0">Question 3 of 4</div>
+        <h2>call, apply, and bind in code</h2>
+        <div class="code" id="code7" style="left: 140px; top: 280px; width: 840px; font-size: 26px; line-height: 40px"></div>
+        <div class="card fnc" id="fn7" style="left: 1010px; top: 290px; width: 770px; height: 190px">
+          <div class="hd">function greet(greeting, punct)</div>
+          <div class="chip" id="this7" style="left: 26px; top: 84px; position: absolute; font-size: 28px; border-color: #6a4df0">this = ?</div>
+          <div class="chip" id="res7" style="left: 300px; top: 84px; position: absolute; font-size: 28px; border-color: #0a8a5f; background: #d5f5e6">→ "Hi, Ava!"</div>
+        </div>
+        <div class="card" id="ava7" style="left: 1010px; top: 550px; width: 360px; height: 110px"><div class="hd" style="background: var(--ink); font-size: 22px; padding: 4px 18px">Ava</div><div class="mono" style="padding: 10px 20px; font-size: 26px; font-weight: 700">{ name: <span class="st">"Ava"</span> }</div></div>
+        <div class="card" id="ben7" style="left: 1420px; top: 550px; width: 360px; height: 110px"><div class="hd" style="background: var(--ink); font-size: 22px; padding: 4px 18px">Ben</div><div class="mono" style="padding: 10px 20px; font-size: 26px; font-weight: 700">{ name: <span class="st">"Ben"</span> }</div></div>
+        <svg class="ov">
+          <line id="arA7" x1="1190" y1="546" x2="1190" y2="486" stroke="#6a4df0" marker-end="url(#ahGrape)" />
+          <line id="arB7" x1="1600" y1="546" x2="1300" y2="486" stroke="#6a4df0" marker-end="url(#ahGrape)" />
+        </svg>
+        <div class="card fnc" id="bound7" style="left: 1010px; top: 700px; width: 770px; height: 130px"><div class="hd">greetAva  (a new function)</div><div style="padding: 12px 26px; font-size: 28px; font-weight: 800">🔒 this is locked to <span class="mono" style="color: #6a4df0">Ava</span></div><div class="chip" id="res7b" style="left: 470px; top: 62px; position: absolute; font-size: 26px; border-color: #0a8a5f; background: #d5f5e6">→ "Hey, Ava."</div></div>
+      </section>
+
+      <!-- 8 · Q4 concept -->
+      <section id="s8" class="clip" data-start="242.306" data-duration="25.779" data-track-index="0">
+        <div class="eyebrow" style="background: #0a8a5f">Question 4 of 4</div>
+        <h2>What is the difference between Promise.all and Promise.race?</h2>
+        <div class="card" id="cAll8" style="left: 140px; top: 320px; width: 790px; height: 430px; border-color: #0a7fbf">
+          <div class="hd" style="background: #0a7fbf; font-size: 30px">Promise.all</div>
+          <div style="position: absolute; left: 34px; top: 84px; font-size: 40px; font-weight: 900">🏁 waits for <u>every</u> promise</div>
+          <div class="step2" id="allB1" style="left: 34px; top: 190px">→ an array, in <b>input</b> order</div>
+          <div class="step2" id="allB2" style="left: 34px; top: 262px; background: #ffd0d6">✗ any rejection rejects it at once</div>
+          <div class="mono" id="allB3" style="position: absolute; left: 34px; top: 350px; font-size: 30px; font-weight: 700; color: var(--muted)">[ result1, result2, result3 ]</div>
+        </div>
+        <div class="card" id="cRace8" style="left: 990px; top: 320px; width: 790px; height: 430px; border-color: #c2410c">
+          <div class="hd" style="background: #c2410c; font-size: 30px">Promise.race</div>
+          <div style="position: absolute; left: 34px; top: 84px; font-size: 40px; font-weight: 900">🥇 the <u>first</u> to settle wins</div>
+          <div class="step2" id="raceB1" style="left: 34px; top: 190px">→ just that one result</div>
+          </div>
+      </section>
+
+      <!-- 9 · Q4 demo -->
+      <section id="s9" class="clip" data-start="268.084" data-duration="50.369" data-track-index="0">
+        <div class="eyebrow" style="background: #0a8a5f">Question 4 of 4</div>
+        <h2>all vs race in code</h2>
+        <div class="code" id="code9" style="left: 140px; top: 280px; width: 930px; font-size: 23px; line-height: 38px"></div>
+        <div class="card" id="trk9" style="left: 1110px; top: 280px; width: 670px; height: 380px">
+          <div class="hd" style="background: var(--ink); font-size: 22px; display: flex; justify-content: space-between"><span>timeline</span><span class="mono" id="clk9">0 ms</span></div>
+          <div class="mono" style="position: absolute; left: 24px; top: 66px; font-size: 24px; font-weight: 700">slow  500 ms</div>
+          <div style="position: absolute; left: 24px; top: 100px; width: 620px; height: 34px; border: 3px solid var(--ink); border-radius: 17px; background: #f4f5ff; overflow: hidden"><div id="bs9" style="width: 100%; height: 100%; background: #6a4df0; transform-origin: left center"></div></div>
+          <div class="mono" style="position: absolute; left: 24px; top: 158px; font-size: 24px; font-weight: 700">fast  100 ms</div>
+          <div style="position: absolute; left: 24px; top: 192px; width: 620px; height: 34px; border: 3px solid var(--ink); border-radius: 17px; background: #f4f5ff; overflow: hidden"><div id="bf9" style="width: 20%; height: 100%; background: #0a8a5f; transform-origin: left center"></div></div>
+          <div class="chip" id="rall9" style="left: 24px; top: 258px; font-size: 24px; border-color: #0a7fbf; background: #dff1ff">Promise.all → ["slow", "fast"]</div>
+          <div class="chip" id="rrace9" style="left: 24px; top: 316px; font-size: 24px; border-color: #c2410c; background: #ffe9d6">Promise.race → "fast"</div>
+        </div>
+        <div class="card" id="q9" style="left: 1110px; top: 690px; width: 590px; height: 110px; display: flex; align-items: center; padding: 0 26px; font-size: 30px; font-weight: 800; line-height: 1.25; background: #fff7d6">Does Promise.all cancel the other promises?</div>
+        <div class="card" id="no9" style="left: 1110px; top: 690px; width: 590px; height: 110px; display: flex; align-items: center; padding: 0 26px; font-size: 30px; font-weight: 800; line-height: 1.25; background: #ffd0d6; border-color: #d92d48">❌ No. The others keep running.</div>
+        <div class="code" id="code9b" style="left: 1110px; top: 690px; width: 590px; font-size: 21px; line-height: 34px; padding: 14px 22px"></div>
+        <div class="tag" id="first9" style="left: 1110px; top: 700px; font-size: 26px; background: #ffe9a8; padding: 8px 22px">first to settle wins: success <u>or</u> failure</div>
+        <div class="tag" id="still9" style="left: 1450px; top: 330px; font-size: 22px; padding: 4px 14px; background: #d5f5e6; color: #0a8a5f">✓ still finished</div>
+      </section>
+
+      <!-- 10 · Recap -->
+      <section id="s10" class="clip" data-start="318.453" data-duration="37.281" data-track-index="0">
+        <div class="eyebrow">Recap</div>
+        <h2>Four answers to remember</h2>
+        <div class="card rcp" id="rc1" style="top: 290px"><span class="ic" style="color: #d92d48">===</span><div><span class="mono">===</span> compares value and type<small><span class="mono">==</span> converts types first</small></div></div>
+        <div class="card rcp" id="rc2" style="top: 428px"><span class="ic" style="color: #0a7fbf">let</span><div>var: function scope · let: block scope<small>let has a temporal dead zone</small></div></div>
+        <div class="card rcp" id="rc3" style="top: 566px"><span class="ic" style="color: #6a4df0">this</span><div>call and apply run now<small>bind returns a new function</small></div></div>
+        <div class="card rcp" id="rc4" style="top: 704px"><span class="ic" style="color: #0a8a5f">⏱</span><div>all waits for everyone · race takes the first<small>neither cancels anything</small></div></div>
+        <div class="fine" id="src10" style="left: 140px; top: 846px; font-size: 22px">Questions: github.com/sudheerj/javascript-interview-questions</div>
+        <div class="tag" id="next10" style="right: 140px; top: 200px; font-size: 30px; background: var(--sun)">More interview questions soon</div>
+      </section>
+
+      <div id="captions"></div>
+
+      <div class="char" id="sam" data-kind="sam"></div>
+      <div class="char" id="byte" data-kind="byte"></div>
+      <div class="char" id="mal" data-kind="mal"></div>
+      <div class="char" id="guard" data-kind="guard"></div>
+    </div>
+
+    <script>
+      const T = {"scenes":{"s1":{"start":0.6,"dur":25.506},"s2":{"start":26.106,"dur":25.328},"s3":{"start":51.434,"dur":49.021},"s4":{"start":100.455,"dur":23.46},"s5":{"start":123.914,"dur":51.383},"s6":{"start":175.297,"dur":30.441},"s7":{"start":205.738,"dur":36.568},"s8":{"start":242.306,"dur":25.779},"s9":{"start":268.084,"dur":50.369},"s10":{"start":318.453,"dur":37.281}},"lines":{"s1a":{"scene":"s1","start":1.7,"dur":4.192,"words":[{"w":"Welcome","t":0},{"w":"to","t":0.614},{"w":"JavaScript","t":0.867},{"w":"Demystified:","t":1.697},{"w":"interview","t":3.06},{"w":"edition.","t":3.685}]},"s1b":{"scene":"s1","start":6.392,"dur":5.048,"words":[{"w":"Today,","t":0},{"w":"we","t":0.74},{"w":"answer","t":0.955},{"w":"four","t":1.417},{"w":"of","t":1.755},{"w":"the","t":1.971},{"w":"most","t":2.248},{"w":"common","t":2.586},{"w":"JavaScript","t":3.048},{"w":"interview","t":3.755},{"w":"questions.","t":4.402}]},"s1c":{"scene":"s1","start":11.939,"dur":5.827,"words":[{"w":"For","t":0},{"w":"each","t":0.267},{"w":"one,","t":0.593},{"w":"you","t":1.09},{"w":"get","t":1.335},{"w":"a","t":1.58},{"w":"short","t":1.717},{"w":"answer","t":2.071},{"w":"you","t":2.479},{"w":"can","t":2.725},{"w":"say","t":2.97},{"w":"out","t":3.215},{"w":"loud,","t":3.46},{"w":"and","t":4.27},{"w":"a","t":4.512},{"w":"demo","t":4.646},{"w":"that","t":4.941},{"w":"proves","t":5.236},{"w":"it.","t":5.639}]},"s1d":{"scene":"s1","start":18.266,"dur":7.14,"words":[{"w":"The","t":0},{"w":"questions","t":0.306},{"w":"come","t":1.02},{"w":"from","t":1.394},{"w":"a","t":1.768},{"w":"popular","t":1.938},{"w":"open","t":2.516},{"w":"source","t":2.89},{"w":"repository","t":3.4},{"w":"on","t":4.182},{"w":"GitHub,","t":4.42},{"w":"linked","t":5.48},{"w":"in","t":5.925},{"w":"the","t":6.132},{"w":"description.","t":6.399}]},"s2a":{"scene":"s2","start":27.206,"dur":5.346,"words":[{"w":"Question","t":0},{"w":"one.","t":0.692},{"w":"What","t":1.62},{"w":"is","t":1.928},{"w":"the","t":2.124},{"w":"difference","t":2.376},{"w":"between","t":3.021},{"w":"==","t":3.497},{"w":"and","t":4.253},{"w":"===","t":4.505},{"w":"?","t":5.262}]},"s2b":{"scene":"s2","start":33.052,"dur":1.71,"words":[{"w":"Here","t":0},{"w":"is","t":0.342},{"w":"the","t":0.56},{"w":"short","t":0.839},{"w":"answer.","t":1.243}]},"s2c":{"scene":"s2","start":35.261,"dur":4.728,"words":[{"w":"===","t":0},{"w":"compares","t":0.816},{"w":"the","t":1.389},{"w":"value","t":1.661},{"w":"and","t":2.054},{"w":"the","t":2.326},{"w":"type,","t":2.598},{"w":"with","t":3.38},{"w":"no","t":3.742},{"w":"conversion.","t":3.972}]},"s2d":{"scene":"s2","start":40.489,"dur":4.086,"words":[{"w":"==","t":0},{"w":"converts","t":0.8},{"w":"the","t":1.363},{"w":"types","t":1.63},{"w":"first,","t":2.015},{"w":"and","t":2.83},{"w":"then","t":3.12},{"w":"compares.","t":3.474}]},"s2e":{"scene":"s2","start":45.075,"dur":5.658,"words":[{"w":"That","t":0},{"w":"conversion","t":0.352},{"w":"is","t":1.087},{"w":"called","t":1.311},{"w":"type","t":1.791},{"w":"coercion,","t":2.142},{"w":"and","t":3.38},{"w":"it","t":3.613},{"w":"is","t":3.794},{"w":"where","t":3.975},{"w":"the","t":4.312},{"w":"surprises","t":4.545},{"w":"come","t":5.089},{"w":"from.","t":5.374}]},"s3a":{"scene":"s3","start":52.534,"dur":1.24,"words":[{"w":"Let's","t":0},{"w":"test","t":0.47},{"w":"it.","t":0.941}]},"s3b":{"scene":"s3","start":54.274,"dur":5.362,"words":[{"w":"Zero","t":0},{"w":"==","t":0.378},{"w":"false","t":1.305},{"w":"is","t":1.752},{"w":"true,","t":1.992},{"w":"because","t":2.9},{"w":"false","t":3.451},{"w":"is","t":3.872},{"w":"converted","t":4.099},{"w":"to","t":4.779},{"w":"zero.","t":5.006}]},"s3c":{"scene":"s3","start":60.136,"dur":5.413,"words":[{"w":"But","t":0},{"w":"zero","t":0.323},{"w":"===","t":0.718},{"w":"false","t":1.686},{"w":"is","t":2.153},{"w":"false,","t":2.404},{"w":"because","t":3.35},{"w":"a","t":3.818},{"w":"number","t":3.955},{"w":"is","t":4.368},{"w":"not","t":4.56},{"w":"a","t":4.808},{"w":"boolean.","t":4.945}]},"s3d":{"scene":"s3","start":66.049,"dur":5.318,"words":[{"w":"The","t":0},{"w":"string","t":0.246},{"w":"one","t":0.655},{"w":"==","t":0.901},{"w":"the","t":1.638},{"w":"number","t":1.884},{"w":"one","t":2.293},{"w":"is","t":2.539},{"w":"true.","t":2.73},{"w":"===","t":3.59},{"w":"says","t":4.505},{"w":"false.","t":4.878}]},"s3e":{"scene":"s3","start":71.867,"dur":4.957,"words":[{"w":"Null","t":0},{"w":"==","t":0.389},{"w":"undefined","t":1.342},{"w":"is","t":2.084},{"w":"true.","t":2.331},{"w":"===","t":3.22},{"w":"says","t":4.14},{"w":"false.","t":4.514}]},"s3f":{"scene":"s3","start":77.324,"dur":4.44,"words":[{"w":"NaN","t":0},{"w":"is","t":0.707},{"w":"never","t":0.922},{"w":"equal","t":1.321},{"w":"to","t":1.721},{"w":"anything,","t":1.936},{"w":"not","t":3},{"w":"even","t":3.37},{"w":"itself.","t":3.823}]},"s3g":{"scene":"s3","start":82.265,"dur":5.652,"words":[{"w":"And","t":0},{"w":"two","t":0.278},{"w":"empty","t":0.556},{"w":"arrays","t":0.957},{"w":"are","t":1.42},{"w":"not","t":1.698},{"w":"equal","t":1.976},{"w":"either,","t":2.377},{"w":"because","t":3.35},{"w":"they","t":3.816},{"w":"are","t":4.117},{"w":"two","t":4.364},{"w":"different","t":4.611},{"w":"objects.","t":5.186}]},"s3h":{"scene":"s3","start":88.416,"dur":4.475,"words":[{"w":"So","t":0},{"w":"in","t":0.312},{"w":"an","t":0.623},{"w":"interview,","t":0.935},{"w":"say","t":2.35},{"w":"this:","t":2.589},{"w":"use","t":2.881},{"w":"===","t":3.12},{"w":"by","t":3.838},{"w":"default.","t":4.024}]},"s3i":{"scene":"s3","start":93.392,"dur":6.363,"words":[{"w":"A","t":0},{"w":"common","t":0.153},{"w":"exception","t":0.614},{"w":"is","t":1.259},{"w":"== null","t":1.473},{"w":",","t":2.548},{"w":"which","t":3.16},{"w":"checks","t":3.572},{"w":"for","t":4.048},{"w":"null","t":4.333},{"w":"and","t":4.682},{"w":"undefined","t":4.968},{"w":"in","t":5.634},{"w":"one","t":5.856},{"w":"go.","t":6.141}]},"s4a":{"scene":"s4","start":101.555,"dur":4.053,"words":[{"w":"Question","t":0},{"w":"two.","t":0.645},{"w":"What","t":1.52},{"w":"is","t":1.816},{"w":"the","t":2.005},{"w":"difference","t":2.248},{"w":"between","t":2.867},{"w":"var","t":3.326},{"w":"and","t":3.568},{"w":"let?","t":3.811}]},"s4b":{"scene":"s4","start":106.108,"dur":4.613,"words":[{"w":"Short","t":0},{"w":"answer:","t":0.436},{"w":"var","t":1.42},{"w":"is","t":1.699},{"w":"function","t":1.916},{"w":"scoped,","t":2.505},{"w":"and","t":2.97},{"w":"let","t":3.249},{"w":"is","t":3.528},{"w":"block","t":3.745},{"w":"scoped.","t":4.148}]},"s4c":{"scene":"s4","start":111.221,"dur":8.913,"words":[{"w":"Both","t":0},{"w":"are","t":0.398},{"w":"hoisted.","t":0.724},{"w":"But","t":2.03},{"w":"var","t":2.324},{"w":"starts","t":2.619},{"w":"out","t":3.11},{"w":"as","t":3.404},{"w":"undefined,","t":3.633},{"w":"while","t":4.77},{"w":"let","t":5.211},{"w":"stays","t":5.517},{"w":"uninitialized","t":5.958},{"w":"until","t":6.943},{"w":"its","t":7.385},{"w":"declaration","t":7.69},{"w":"line.","t":8.539}]},"s4d":{"scene":"s4","start":120.633,"dur":2.581,"words":[{"w":"That","t":0},{"w":"gap","t":0.309},{"w":"is","t":0.561},{"w":"called","t":0.757},{"w":"the","t":1.178},{"w":"temporal","t":1.431},{"w":"dead","t":1.964},{"w":"zone.","t":2.272}]},"s5a":{"scene":"s5","start":125.014,"dur":2.656,"words":[{"w":"Look","t":0},{"w":"at","t":0.322},{"w":"this","t":0.526},{"w":"code.","t":0.848},{"w":"What","t":1.48},{"w":"will","t":1.761},{"w":"this","t":2.042},{"w":"print?","t":2.323}]},"s5b":{"scene":"s5","start":132.37,"dur":6.381,"words":[{"w":"The","t":0},{"w":"first","t":0.296},{"w":"line","t":0.724},{"w":"prints","t":1.086},{"w":"undefined.","t":1.579},{"w":"The","t":2.86},{"w":"variable","t":3.16},{"w":"a","t":3.793},{"w":"exists,","t":3.96},{"w":"and","t":4.69},{"w":"it","t":4.994},{"w":"holds","t":5.231},{"w":"undefined.","t":5.671}]},"s5c":{"scene":"s5","start":139.251,"dur":2.567,"words":[{"w":"The","t":0},{"w":"second","t":0.26},{"w":"line","t":0.692},{"w":"throws","t":1.009},{"w":"a","t":1.442},{"w":"reference","t":1.586},{"w":"error.","t":2.192}]},"s5d":{"scene":"s5","start":142.318,"dur":4.643,"words":[{"w":"The","t":0},{"w":"variable","t":0.305},{"w":"b","t":0.948},{"w":"exists","t":1.117},{"w":"too,","t":1.625},{"w":"but","t":2.48},{"w":"it","t":2.723},{"w":"is","t":2.913},{"w":"in","t":3.102},{"w":"the","t":3.291},{"w":"temporal","t":3.534},{"w":"dead","t":4.048},{"w":"zone.","t":4.346}]},"s5e":{"scene":"s5","start":147.461,"dur":5.47,"words":[{"w":"Now","t":0},{"w":"scope.","t":0.405},{"w":"Inside","t":1.55},{"w":"this","t":2.054},{"w":"block,","t":2.423},{"w":"var","t":3.03},{"w":"x","t":3.291},{"w":"leaks","t":3.437},{"w":"out","t":3.814},{"w":"to","t":4.076},{"w":"the","t":4.279},{"w":"whole","t":4.54},{"w":"function.","t":4.918}]},"s5f":{"scene":"s5","start":153.431,"dur":4.892,"words":[{"w":"But","t":0},{"w":"let","t":0.282},{"w":"y","t":0.565},{"w":"stays","t":0.722},{"w":"inside","t":1.129},{"w":"the","t":1.6},{"w":"block.","t":1.882},{"w":"Outside,","t":2.85},{"w":"it","t":3.459},{"w":"does","t":3.71},{"w":"not","t":4.104},{"w":"exist.","t":4.426}]},"s5g":{"scene":"s5","start":158.823,"dur":1.408,"words":[{"w":"Two","t":0},{"w":"more","t":0.282},{"w":"differences.","t":0.626}]},"s5h":{"scene":"s5","start":160.731,"dur":5.229,"words":[{"w":"var","t":0},{"w":"lets","t":0.259},{"w":"you","t":0.576},{"w":"declare","t":0.835},{"w":"the","t":1.324},{"w":"same","t":1.583},{"w":"name","t":1.899},{"w":"twice.","t":2.216},{"w":"let","t":3.12},{"w":"throws","t":3.453},{"w":"a","t":4.008},{"w":"syntax","t":4.193},{"w":"error.","t":4.748}]},"s5i":{"scene":"s5","start":166.46,"dur":3.387,"words":[{"w":"And","t":0},{"w":"const","t":0.229},{"w":"works","t":0.56},{"w":"like","t":0.891},{"w":"let,","t":1.171},{"w":"but","t":1.73},{"w":"you","t":1.983},{"w":"cannot","t":2.236},{"w":"reassign","t":2.657},{"w":"it.","t":3.191}]},"s5j":{"scene":"s5","start":170.347,"dur":4.251,"words":[{"w":"In","t":0},{"w":"modern","t":0.428},{"w":"code,","t":1.347},{"w":"prefer","t":2.41},{"w":"const,","t":2.689},{"w":"then","t":3.12},{"w":"let,","t":3.364},{"w":"and","t":3.563},{"w":"avoid","t":3.763},{"w":"var.","t":4.051}]},"s6a":{"scene":"s6","start":176.397,"dur":4.942,"words":[{"w":"Question","t":0},{"w":"three.","t":0.558},{"w":"What","t":1.52},{"w":"is","t":1.859},{"w":"the","t":2.075},{"w":"difference","t":2.352},{"w":"between","t":3.061},{"w":"call,","t":3.585},{"w":"apply,","t":3.924},{"w":"and","t":4.325},{"w":"bind?","t":4.603}]},"s6b":{"scene":"s6","start":181.839,"dur":5.382,"words":[{"w":"Short","t":0},{"w":"answer:","t":0.446},{"w":"all","t":1.51},{"w":"three","t":1.763},{"w":"let","t":2.127},{"w":"you","t":2.38},{"w":"choose","t":2.632},{"w":"what","t":3.053},{"w":"this","t":3.362},{"w":"points","t":3.67},{"w":"to","t":4.091},{"w":"inside","t":4.288},{"w":"a","t":4.709},{"w":"function.","t":4.849}]},"s6c":{"scene":"s6","start":187.721,"dur":6.527,"words":[{"w":"Call","t":0},{"w":"and","t":0.34},{"w":"apply","t":0.619},{"w":"run","t":1.021},{"w":"the","t":1.3},{"w":"function","t":1.578},{"w":"immediately.","t":2.166},{"w":"Bind","t":3.65},{"w":"returns","t":4.002},{"w":"a","t":4.545},{"w":"new","t":4.705},{"w":"function","t":4.993},{"w":"to","t":5.6},{"w":"run","t":5.824},{"w":"later.","t":6.111}]},"s6d":{"scene":"s6","start":194.748,"dur":3.509,"words":[{"w":"Call","t":0},{"w":"and","t":0.339},{"w":"apply","t":0.616},{"w":"differ","t":1.016},{"w":"in","t":1.477},{"w":"how","t":1.693},{"w":"you","t":1.97},{"w":"pass","t":2.247},{"w":"the","t":2.586},{"w":"arguments.","t":2.863}]},"s6e":{"scene":"s6","start":198.757,"dur":6.281,"words":[{"w":"A","t":0},{"w":"handy","t":0.147},{"w":"memory","t":0.528},{"w":"trick:","t":0.968},{"w":"call","t":1.8},{"w":"takes","t":2.142},{"w":"a","t":2.546},{"w":"comma","t":2.701},{"w":"separated","t":3.105},{"w":"list.","t":3.758},{"w":"Apply","t":4.68},{"w":"takes","t":5.133},{"w":"an","t":5.585},{"w":"array.","t":5.829}]},"s7a":{"scene":"s7","start":206.838,"dur":3.34,"words":[{"w":"Here","t":0},{"w":"is","t":0.311},{"w":"a","t":0.51},{"w":"function","t":0.651},{"w":"that","t":1.189},{"w":"greets","t":1.5},{"w":"whoever","t":1.925},{"w":"this","t":2.406},{"w":"points","t":2.717},{"w":"to.","t":3.142}]},"s7b":{"scene":"s7","start":210.678,"dur":6.51,"words":[{"w":"With","t":0},{"w":"call,","t":0.585},{"w":"we","t":1.82},{"w":"say:","t":2.183},{"w":"run","t":2.79},{"w":"greet,","t":2.948},{"w":"with","t":3.176},{"w":"this","t":3.369},{"w":"set","t":3.562},{"w":"to","t":3.719},{"w":"Ava,","t":3.842},{"w":"and","t":4.26},{"w":"pass","t":4.53},{"w":"the","t":4.86},{"w":"arguments","t":5.13},{"w":"one","t":5.76},{"w":"by","t":6.03},{"w":"one.","t":6.24}]},"s7c":{"scene":"s7","start":217.688,"dur":5.001,"words":[{"w":"With","t":0},{"w":"apply,","t":0.394},{"w":"it","t":0.99},{"w":"is","t":1.208},{"w":"the","t":1.426},{"w":"same","t":1.706},{"w":"idea,","t":2.048},{"w":"but","t":2.88},{"w":"the","t":3.142},{"w":"arguments","t":3.403},{"w":"go","t":4.013},{"w":"in","t":4.217},{"w":"an","t":4.42},{"w":"array.","t":4.623}]},"s7d":{"scene":"s7","start":223.189,"dur":1.547,"words":[{"w":"Both","t":0},{"w":"run","t":0.387},{"w":"right","t":0.703},{"w":"away.","t":1.161}]},"s7e":{"scene":"s7","start":225.237,"dur":6.762,"words":[{"w":"With","t":0},{"w":"bind,","t":0.99},{"w":"nothing","t":2.68},{"w":"runs","t":2.957},{"w":"yet.","t":3.136},{"w":"We","t":3.283},{"w":"get","t":3.397},{"w":"back","t":3.543},{"w":"a","t":3.722},{"w":"new","t":3.804},{"w":"function,","t":3.951},{"w":"with","t":4.54},{"w":"this","t":4.879},{"w":"permanently","t":5.219},{"w":"set","t":5.99},{"w":"to","t":6.268},{"w":"Ava.","t":6.484}]},"s7f":{"scene":"s7","start":232.499,"dur":2.348,"words":[{"w":"Call","t":0},{"w":"it","t":0.28},{"w":"later,","t":0.459},{"w":"and","t":0.92},{"w":"this","t":1.182},{"w":"is","t":1.503},{"w":"still","t":1.707},{"w":"Ava.","t":2.086}]},"s7g":{"scene":"s7","start":235.347,"dur":6.259,"words":[{"w":"Bind","t":0},{"w":"is","t":0.308},{"w":"what","t":0.505},{"w":"you","t":0.813},{"w":"reach","t":1.065},{"w":"for","t":1.429},{"w":"when","t":1.682},{"w":"you","t":1.99},{"w":"pass","t":2.242},{"w":"a","t":2.551},{"w":"method","t":2.691},{"w":"as","t":3.111},{"w":"a","t":3.307},{"w":"callback,","t":3.447},{"w":"and","t":4.13},{"w":"you","t":4.408},{"w":"don't","t":4.685},{"w":"want","t":5.025},{"w":"to","t":5.364},{"w":"lose","t":5.58},{"w":"this.","t":5.92}]},"s8a":{"scene":"s8","start":243.406,"dur":6.015,"words":[{"w":"Question","t":0},{"w":"four.","t":0.589},{"w":"What","t":1.6},{"w":"is","t":1.949},{"w":"the","t":2.172},{"w":"difference","t":2.458},{"w":"between","t":3.188},{"w":"Promise.all","t":3.728},{"w":"and","t":4.649},{"w":"Promise.race","t":4.935},{"w":"?","t":5.92}]},"s8b":{"scene":"s8","start":249.921,"dur":6.31,"words":[{"w":"Short","t":0},{"w":"answer:","t":0.469},{"w":"all","t":1.39},{"w":"waits","t":1.656},{"w":"for","t":2.039},{"w":"every","t":2.305},{"w":"promise.","t":2.688},{"w":"Race","t":3.76},{"w":"finishes","t":4.058},{"w":"with","t":4.574},{"w":"the","t":4.872},{"w":"first","t":5.117},{"w":"one","t":5.469},{"w":"to","t":5.713},{"w":"settle.","t":5.903}]},"s8c":{"scene":"s8","start":256.731,"dur":6.419,"words":[{"w":"Promise.all","t":0},{"w":"gives","t":0.91},{"w":"you","t":1.317},{"w":"an","t":1.6},{"w":"array","t":1.819},{"w":"of","t":2.227},{"w":"results,","t":2.447},{"w":"in","t":3.1},{"w":"the","t":3.335},{"w":"same","t":3.636},{"w":"order","t":4.005},{"w":"you","t":4.441},{"w":"passed","t":4.743},{"w":"the","t":5.246},{"w":"promises","t":5.548},{"w":"in.","t":6.185}]},"s8d":{"scene":"s8","start":263.651,"dur":3.734,"words":[{"w":"But","t":0},{"w":"if","t":0.238},{"w":"any","t":0.423},{"w":"promise","t":0.661},{"w":"rejects,","t":1.111},{"w":"all","t":1.99},{"w":"rejects","t":2.298},{"w":"immediately.","t":2.879}]},"s9a":{"scene":"s9","start":269.184,"dur":6.088,"words":[{"w":"Here","t":0},{"w":"are","t":0.339},{"w":"two","t":0.617},{"w":"promises.","t":0.894},{"w":"Slow","t":1.89},{"w":"takes","t":2.224},{"w":"half","t":2.619},{"w":"a","t":2.953},{"w":"second.","t":3.105},{"w":"Fast","t":4},{"w":"takes","t":4.333},{"w":"a","t":4.726},{"w":"tenth","t":4.877},{"w":"of","t":5.271},{"w":"a","t":5.483},{"w":"second.","t":5.634}]},"s9b":{"scene":"s9","start":275.772,"dur":5.769,"words":[{"w":"Promise.all","t":0},{"w":"waits","t":1.006},{"w":"for","t":1.456},{"w":"both.","t":1.769},{"w":"After","t":2.75},{"w":"half","t":3.172},{"w":"a","t":3.529},{"w":"second,","t":3.691},{"w":"we","t":4.178},{"w":"get","t":4.406},{"w":"slow,","t":4.698},{"w":"then","t":5.055},{"w":"fast.","t":5.412}]},"s9c":{"scene":"s9","start":282.041,"dur":3.461,"words":[{"w":"That","t":0},{"w":"is","t":0.326},{"w":"the","t":0.533},{"w":"input","t":0.8},{"w":"order,","t":1.185},{"w":"not","t":1.94},{"w":"the","t":2.203},{"w":"finishing","t":2.466},{"w":"order.","t":3.081}]},"s9d":{"scene":"s9","start":286.002,"dur":6.082,"words":[{"w":"Promise.race","t":0},{"w":"stops","t":1.045},{"w":"waiting","t":1.483},{"w":"as","t":2.056},{"w":"soon","t":2.292},{"w":"as","t":2.663},{"w":"fast","t":2.899},{"w":"finishes,","t":3.27},{"w":"after","t":4.43},{"w":"a","t":4.8},{"w":"tenth","t":4.943},{"w":"of","t":5.313},{"w":"a","t":5.512},{"w":"second.","t":5.655}]},"s9e":{"scene":"s9","start":292.584,"dur":5.206,"words":[{"w":"Race","t":0},{"w":"settles","t":0.298},{"w":"with","t":0.759},{"w":"the","t":1.057},{"w":"first","t":1.301},{"w":"result,","t":1.653},{"w":"whether","t":2.61},{"w":"that","t":3.123},{"w":"is","t":3.455},{"w":"a","t":3.667},{"w":"success","t":3.818},{"w":"or","t":4.331},{"w":"a","t":4.542},{"w":"failure.","t":4.693}]},"s9f":{"scene":"s9","start":298.29,"dur":5.682,"words":[{"w":"Now","t":0},{"w":"a","t":0.333},{"w":"popular","t":0.518},{"w":"follow-up.","t":1.147},{"w":"Does","t":2.53},{"w":"Promise.all","t":2.891},{"w":"cancel","t":3.843},{"w":"the","t":4.336},{"w":"other","t":4.632},{"w":"promises?","t":5.058}]},"s9g":{"scene":"s9","start":304.472,"dur":5.483,"words":[{"w":"No.","t":0},{"w":"Promises","t":0.71},{"w":"cannot","t":1.249},{"w":"be","t":1.675},{"w":"cancelled.","t":1.874},{"w":"The","t":2.97},{"w":"other","t":3.192},{"w":"work","t":3.512},{"w":"keeps","t":3.783},{"w":"running","t":4.103},{"w":"in","t":4.522},{"w":"the","t":4.695},{"w":"background.","t":4.916}]},"s9h":{"scene":"s9","start":310.455,"dur":7.298,"words":[{"w":"To","t":0},{"w":"really","t":0.198},{"w":"stop","t":0.622},{"w":"it,","t":0.932},{"w":"use","t":1.66},{"w":"an","t":2.004},{"w":"API","t":2.271},{"w":"that","t":2.615},{"w":"supports","t":3.035},{"w":"cancelling,","t":3.761},{"w":"like","t":5.08},{"w":"fetch","t":5.393},{"w":"with","t":5.763},{"w":"an","t":6.075},{"w":"AbortController","t":6.274},{"w":".","t":7.213}]},"s10a":{"scene":"s10","start":319.553,"dur":2.128,"words":[{"w":"Let's","t":0},{"w":"recap","t":0.384},{"w":"the","t":0.837},{"w":"four","t":1.151},{"w":"answers.","t":1.535}]},"s10b":{"scene":"s10","start":322.182,"dur":5.878,"words":[{"w":"One:","t":0},{"w":"===","t":0.282},{"w":"compares","t":1.129},{"w":"value","t":1.725},{"w":"and","t":2.133},{"w":"type.","t":2.415},{"w":"==","t":3.44},{"w":"converts","t":4.354},{"w":"types","t":4.998},{"w":"first.","t":5.438}]},"s10c":{"scene":"s10","start":328.56,"dur":6.315,"words":[{"w":"Two:","t":0},{"w":"var","t":0.311},{"w":"is","t":0.622},{"w":"function","t":0.864},{"w":"scoped,","t":1.521},{"w":"let","t":2.17},{"w":"is","t":2.55},{"w":"block","t":2.846},{"w":"scoped,","t":3.396},{"w":"and","t":4.31},{"w":"let","t":4.557},{"w":"has","t":4.804},{"w":"a","t":5.052},{"w":"temporal","t":5.189},{"w":"dead","t":5.711},{"w":"zone.","t":6.013}]},"s10d":{"scene":"s10","start":335.375,"dur":4.514,"words":[{"w":"Three:","t":0},{"w":"call","t":0.42},{"w":"and","t":0.776},{"w":"apply","t":1.067},{"w":"run","t":1.488},{"w":"now.","t":1.779},{"w":"Bind","t":2.6},{"w":"returns","t":2.945},{"w":"a","t":3.479},{"w":"new","t":3.636},{"w":"function.","t":3.918}]},"s10e":{"scene":"s10","start":340.389,"dur":6.573,"words":[{"w":"Four:","t":0},{"w":"all","t":0.35},{"w":"waits","t":0.636},{"w":"for","t":1.05},{"w":"everyone.","t":1.336},{"w":"Race","t":2.41},{"w":"takes","t":2.729},{"w":"the","t":3.105},{"w":"first","t":3.366},{"w":"to","t":3.743},{"w":"finish.","t":3.945},{"w":"Neither","t":4.83},{"w":"cancels","t":5.389},{"w":"anything.","t":5.948}]},"s10f":{"scene":"s10","start":347.462,"dur":3.782,"words":[{"w":"The","t":0},{"w":"full","t":0.279},{"w":"list","t":0.62},{"w":"of","t":0.961},{"w":"questions","t":1.178},{"w":"is","t":1.829},{"w":"linked","t":2.046},{"w":"in","t":2.511},{"w":"the","t":2.728},{"w":"description.","t":3.007}]},"s10g":{"scene":"s10","start":351.744,"dur":3.291,"words":[{"w":"Thanks","t":0},{"w":"for","t":0.447},{"w":"watching,","t":0.714},{"w":"and","t":1.59},{"w":"good","t":1.809},{"w":"luck","t":2.076},{"w":"in","t":2.343},{"w":"your","t":2.513},{"w":"interview!","t":2.781}]}},"total":357.735};
+      const CODE = {
+        code5a: `console.log(a);
+var a = 1;
+console.log(b);
+let b = 2;`,
+        code5b: `if (true) {
+  var x = 1;
+  let y = 2;
+}
+console.log(x);  // 1
+console.log(y);  // ReferenceError`,
+        code5c: `var d = 1;
+var d = 2;     // OK
+
+let e = 1;
+let e = 2;     // SyntaxError`,
+        code5d: `const c = 1;
+c = 2;         // TypeError`,
+        code7: `const ava = { name: "Ava" };
+const ben = { name: "Ben" };
+
+function greet(greeting, punct) {
+  return greeting + ", " + this.name + punct;
+}
+
+greet.call(ava, "Hi", "!");
+greet.apply(ben, ["Hello", "?"]);
+const greetAva = greet.bind(ava);
+greetAva("Hey", ".");`,
+        code9: `const slow = new Promise(r => setTimeout(r, 500, "slow"));
+const fast = new Promise(r => setTimeout(r, 100, "fast"));
+
+Promise.all([slow, fast]).then(console.log);
+// ["slow", "fast"]   after 500 ms
+
+Promise.race([slow, fast]).then(console.log);
+// "fast"             after 100 ms`,
+        code9b: `const controller = new AbortController();
+fetch(url, { signal: controller.signal });
+controller.abort();   // stops the fetch`,
+      };
+
+      // ---------------- code highlighting ----------------
+      const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      const KW = "function|const|let|var|return|for|new|if|else";
+      const RE = new RegExp("(\\/\\/.*$)|(\"[^\"]*\"|'[^']*')|\\b(" + KW + ")\\b|\\b(\\d+)\\b|\\b([A-Za-z_$][\\w$]*)(?=\\()", "g");
+      function highlight(line) {
+        return esc(line).replace(RE, (m, cm, st, kw, nu, fn) =>
+          cm ? '<span class="cm">' + cm + "</span>" : st ? '<span class="st">' + st + "</span>" : kw ? '<span class="kw">' + kw + "</span>" : nu ? '<span class="nu">' + nu + "</span>" : '<span class="fn">' + fn + "</span>"
+        );
+      }
+      Object.keys(CODE).forEach((id) => {
+        document.getElementById(id).innerHTML = CODE[id]
+          .split("\n")
+          .map((l) => '<span class="cl">' + (l ? highlight(l) : "&nbsp;") + "</span>")
+          .join("");
+      });
+
+      // ---------------- characters ----------------
+      const INK = "#1f2140";
+      function blob(body, belly, extra) {
+        return `<svg viewBox="0 0 240 290">
+          <ellipse cx="120" cy="280" rx="80" ry="10" fill="rgba(31,33,64,.12)"/>
+          <g class="fx"><g class="inner">
+            <g class="arm-l"><path d="M44 170 q-36 6 -40 44" stroke="${body}" stroke-width="20" stroke-linecap="round" fill="none"/></g>
+            <g class="arm-r"><path d="M196 170 q36 6 40 44" stroke="${body}" stroke-width="20" stroke-linecap="round" fill="none"/></g>
+            <ellipse cx="88" cy="262" rx="26" ry="14" fill="${body}"/><ellipse cx="152" cy="262" rx="26" ry="14" fill="${body}"/>
+            <path d="M112 44 q6 -34 34 -26 q-18 6 -16 28z" fill="${body}"/>
+            <rect x="30" y="40" width="180" height="222" rx="90" fill="${body}"/>
+            <ellipse cx="120" cy="196" rx="58" ry="46" fill="${belly}"/>
+            ${extra}
+            <ellipse cx="74" cy="156" rx="14" ry="9" fill="#ff9bb3" opacity=".8"/><ellipse cx="166" cy="156" rx="14" ry="9" fill="#ff9bb3" opacity=".8"/>
+            <g class="eyes">
+              <ellipse cx="92" cy="122" rx="21" ry="23" fill="#fff"/><ellipse cx="148" cy="122" rx="21" ry="23" fill="#fff"/>
+              <circle cx="95" cy="126" r="10" fill="${INK}"/><circle cx="151" cy="126" r="10" fill="${INK}"/>
+              <circle cx="99" cy="121" r="3.5" fill="#fff"/><circle cx="155" cy="121" r="3.5" fill="#fff"/>
+            </g>
+            <path class="m-happy" d="M100 158 q20 24 40 0" stroke="${INK}" stroke-width="6" stroke-linecap="round" fill="none"/>
+            <path class="m-sad" d="M102 170 q18 -16 36 0" stroke="${INK}" stroke-width="6" stroke-linecap="round" fill="none" opacity="0"/>
+            <ellipse class="m-talk" cx="120" cy="164" rx="14" ry="11" fill="#7a1f3a" opacity="0"/>
+          </g></g>
+        </svg>`;
+      }
+      const SHIELD = `<path d="M120 168 l28 9 v24 q0 20 -28 30 q-28 -10 -28 -30 v-24z" fill="#fff" stroke="${INK}" stroke-width="4"/><path d="M107 200 l10 10 l18 -20" stroke="#06a37a" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+      const MASK = `<path d="M52 104 q68 -22 136 0 v30 q-68 -16 -136 0z" fill="${INK}"/><ellipse cx="92" cy="120" rx="14" ry="9" fill="#fff"/><ellipse cx="148" cy="120" rx="14" ry="9" fill="#fff"/><circle cx="96" cy="121" r="5" fill="${INK}"/><circle cx="152" cy="121" r="5" fill="${INK}"/>`;
+      const BOT = `<svg viewBox="0 0 260 320">
+        <ellipse cx="130" cy="312" rx="90" ry="10" fill="rgba(31,33,64,.12)"/>
+        <g class="fx"><g class="inner">
+          <g class="ant"><line x1="130" y1="40" x2="130" y2="10" stroke="${INK}" stroke-width="6"/><circle class="bulb" cx="130" cy="10" r="12" fill="#c2410c" stroke="${INK}" stroke-width="4"/></g>
+          <g class="arm-l"><rect x="22" y="200" width="36" height="80" rx="18" fill="#05b98a"/></g>
+          <g class="arm-r"><rect x="202" y="200" width="36" height="80" rx="18" fill="#05b98a"/></g>
+          <rect x="66" y="188" width="128" height="110" rx="28" fill="#038a66" stroke="${INK}" stroke-width="5"/>
+          <text x="130" y="258" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-weight="800" font-size="34" fill="#fff">JS</text>
+          <rect class="head" x="30" y="40" width="200" height="150" rx="40" fill="#06d6a0" stroke="${INK}" stroke-width="5"/>
+          <rect x="54" y="62" width="152" height="106" rx="26" fill="${INK}"/>
+          <g class="eyes-n"><rect x="88" y="94" width="22" height="32" rx="11" fill="#7cf3ff"/><rect x="150" y="94" width="22" height="32" rx="11" fill="#7cf3ff"/></g>
+          <g class="eyes-h" opacity="0"><path d="M86 118 q13 -22 26 0 M148 118 q13 -22 26 0" stroke="#7cf3ff" stroke-width="7" stroke-linecap="round" fill="none"/></g>
+          <g class="eyes-a" opacity="0"><path d="M84 96 l28 14 M176 96 l-28 14" stroke="#ff5d73" stroke-width="7" stroke-linecap="round"/><circle cx="100" cy="122" r="9" fill="#ff5d73"/><circle cx="160" cy="122" r="9" fill="#ff5d73"/></g>
+          <g class="eyes-q" opacity="0"><rect x="88" y="104" width="22" height="18" rx="9" fill="#7cf3ff"/><rect x="150" y="96" width="22" height="30" rx="11" fill="#7cf3ff"/></g>
+          <path class="m-n" d="M112 146 h36" stroke="#7cf3ff" stroke-width="6" stroke-linecap="round"/>
+          <rect class="m-talk" x="112" y="138" width="36" height="14" rx="7" fill="#7cf3ff" opacity="0"/>
+        </g></g>
+      </svg>`;
+      const KINDS = {
+        sam: { svg: () => blob("#7b61ff", "#a594ff", ""), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+        mal: { svg: () => blob("#ff8a3d", "#ffb27d", MASK), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+        guard: { svg: () => blob("#ffc93c", "#ffe28a", SHIELD), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+        byte: { svg: () => BOT, ar: "220 205", al: "40 205", o: "130 312", mo: "130 145" },
+      };
+      document.querySelectorAll(".char").forEach((el) => {
+        const k = KINDS[el.dataset.kind];
+        el.innerHTML = k.svg();
+        el.dataset.ar = k.ar; el.dataset.al = k.al; el.dataset.o = k.o; el.dataset.mo = k.mo;
+      });
+
+      // ---------------- captions (word-by-word, timed from the voice) ----------------
+      const capEl = document.getElementById("captions");
+      Object.keys(T.lines).forEach((id) => {
+        const ln = T.lines[id];
+        const div = document.createElement("div");
+        div.className = "cline";
+        div.id = "cap-" + id;
+        div.innerHTML = "<span>" + ln.words.map((w, i) => '<span class="cw" id="cw-' + id + "-" + i + '">' + esc(w.w) + "</span>").join(" ") + "</span>";
+        capEl.appendChild(div);
+      });
+
+      // ---------------- timeline helpers ----------------
+      const tl = gsap.timeline({ paused: true });
+      const E = "power2.out";
+      const POP = "back.out(1.5)";
+      const S = (id) => T.scenes[id].start;
+      const SE = (id) => T.scenes[id].start + T.scenes[id].dur;
+      const L = (id, off = 0) => T.lines[id].start + off;
+      const LE = (id, off = 0) => T.lines[id].start + T.lines[id].dur + off;
+      const W = (id, i) => T.lines[id].start + T.lines[id].words[i].t;
+      const D = (sel) => document.querySelector(sel).dataset;
+      const $$ = (sel) => gsap.utils.toArray(sel);
+
+      function enter(scene) {
+        tl.fromTo("#" + scene + " .eyebrow, #" + scene + " h2", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.18, ease: E }, S(scene) + 0.25);
+      }
+      function leave(scene) { tl.to("#" + scene, { opacity: 0, duration: 0.5, ease: "power2.in" }, SE(scene) - 0.55); }
+      function show(sel, t, o = {}) {
+        tl.fromTo(sel, { opacity: 0, scale: o.s ?? 0.8, y: o.y ?? 24, x: o.x ?? 0 },
+          { opacity: 1, scale: 1, y: 0, x: 0, duration: o.d ?? 0.8, ease: o.ease ?? POP, transformOrigin: o.origin ?? "50% 50%" }, t);
+      }
+      function fade(sel, t, d = 0.6) { tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power1.out" }, t); }
+      function hide(sel, t, d = 0.4) { tl.to(sel, { opacity: 0, duration: d }, t); }
+      function pulse(sel, t, scale = 1.35) { tl.fromTo(sel, { scale: 1 }, { scale, duration: 0.25, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "50% 50%", immediateRender: false }, t); }
+      function setText(sel, text, t) { tl.set(sel, { textContent: text }, t); pulse(sel, t); }
+      function glow(sel, t, color, dur = 1.6) {
+        tl.to(sel, { borderColor: color, duration: 0.3 }, t);
+        return dur;
+      }
+      function hl(id, ns, t0, dur, color = "rgba(255,201,60,.6)") {
+        const els = ns.map((n) => $$("#" + id + " .cl")[n - 1]);
+        tl.to(els, { backgroundColor: color, duration: 0.25 }, t0);
+        tl.to(els, { backgroundColor: "rgba(255,201,60,0)", duration: 0.4 }, t0 + dur);
+      }
+      function reveal(id, ns, t0, stagger = 0.16) {
+        const els = ns.map((n) => $$("#" + id + " .cl")[n - 1]);
+        tl.fromTo(els, { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.5, stagger, ease: E }, t0);
+      }
+      function codeIn(id, t, hidden = []) {
+        fade("#" + id, t, 0.7);
+        if (hidden.length) tl.set(hidden.map((n) => $$("#" + id + " .cl")[n - 1]), { opacity: 0 }, 0);
+      }
+      function out(sel, t) { tl.fromTo(sel, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.5, ease: E }, t); }
+      function countdown(id, t0, step) {
+        show("#" + id, t0, { s: 0.5, d: 0.5 });
+        const nums = $$("#" + id + " .cdn");
+        nums.forEach((n, i) => {
+          tl.fromTo(n, { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)", transformOrigin: "50% 50%" }, t0 + 0.2 + i * step);
+          tl.to(n, { opacity: 0, duration: 0.2 }, t0 + 0.2 + (i + 1) * step - 0.2);
+        });
+        hide("#" + id, t0 + 0.2 + nums.length * step, 0.3);
+      }
+
+      // characters ------------------------------------------------------
+      function pop(sel, t) { show(sel, t, { s: 0.5, y: 60, d: 1.0, origin: "50% 100%" }); }
+      function bob(sel, t0, t1, amp = 6, period = 1.8) {
+        const reps = Math.max(1, Math.floor((t1 - t0) / (period / 2)) - 1);
+        tl.to(sel + " .inner", { y: -amp, duration: period / 2, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0);
+      }
+      function breathe(sel, t0, t1) {
+        const reps = Math.max(1, Math.floor((t1 - t0) / 1.6) - 1);
+        tl.to(sel + " .fx", { scaleY: 1.03, svgOrigin: D(sel).o, duration: 1.6, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0);
+      }
+      function tilt(sel, t, deg = 6, dur = 0.7) { tl.to(sel + " .fx", { rotation: deg, svgOrigin: D(sel).o, duration: dur, yoyo: true, repeat: 1, ease: "sine.inOut" }, t); }
+      function wobble(sel, t, times = 3, deg = 6) { tl.to(sel + " .fx", { rotation: deg, svgOrigin: D(sel).o, duration: 0.45, yoyo: true, repeat: times * 2 - 1, ease: "sine.inOut" }, t); }
+      function wave(sel, t, times = 3) { tl.to(sel + " .arm-r", { rotation: -55, svgOrigin: D(sel).ar, duration: 0.45, yoyo: true, repeat: times * 2 - 1, ease: "sine.inOut" }, t); }
+      function armUp(sel, side, t, deg, hold) {
+        const o = D(sel)[side === "r" ? "ar" : "al"];
+        tl.to(sel + " .arm-" + side, { rotation: side === "r" ? -deg : deg, svgOrigin: o, duration: 0.6, ease: "sine.inOut" }, t);
+        tl.to(sel + " .arm-" + side, { rotation: 0, svgOrigin: o, duration: 0.6, ease: "sine.inOut" }, t + hold);
+      }
+      function jump(sel, t, h = 50, n = 2) { tl.to(sel + " .fx", { y: -h, duration: 0.45, yoyo: true, repeat: n * 2 - 1, ease: "sine.inOut" }, t); }
+      function cheer(sel, t) { armUp(sel, "r", t, 140, 2.0); armUp(sel, "l", t, 140, 2.0); jump(sel, t + 0.2, 45, 2); }
+      function nod(sel, t) { tl.to(sel + " .fx", { y: 10, duration: 0.3, yoyo: true, repeat: 3, ease: "sine.inOut" }, t); }
+      function blink(sel, t) {
+        const g = document.querySelector(sel).querySelector(".eyes") ? ".eyes" : ".eyes-n";
+        tl.to(sel + " " + g, { scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.12, yoyo: true, repeat: 1 }, t);
+      }
+      function wiggle(sel, t, n = 2) { tl.to(sel + " .ant", { rotation: 16, svgOrigin: "130 40", duration: 0.3, yoyo: true, repeat: n * 2 - 1, ease: "sine.inOut" }, t); }
+      function mood(sel, m, t) {
+        tl.set(sel + " .m-happy", { opacity: m === "happy" ? 1 : 0 }, t);
+        tl.set(sel + " .m-sad", { opacity: m === "sad" ? 1 : 0 }, t);
+      }
+      function talk(sel, t0, t1) {
+        tl.set(sel + " .m-n", { opacity: 0 }, t0);
+        tl.set(sel + " .m-talk", { opacity: 1 }, t0);
+        tl.fromTo(sel + " .m-talk", { scaleY: 0.3 }, { scaleY: 1.5, svgOrigin: D(sel).mo, duration: 0.24, yoyo: true, repeat: Math.max(1, Math.floor((t1 - t0) / 0.24) - 1), ease: "sine.inOut", immediateRender: false }, t0);
+        tl.set(sel + " .m-talk", { opacity: 0 }, t1);
+        tl.set(sel + " .m-n", { opacity: 1 }, t1);
+      }
+      function face(sel, f, t) {
+        ["n", "h", "a", "q"].forEach((x) => tl.set(sel + " .eyes-" + x, { opacity: x === f ? 1 : 0 }, t));
+        tl.set(sel + " .bulb", { fill: { n: "#c2410c", h: "#0a8a5f", a: "#d92d48", q: "#0a7fbf" }[f] }, t);
+      }
+      function shake(sel, t) { tl.to(sel, { x: "+=12", duration: 0.08, yoyo: true, repeat: 7, ease: "none" }, t); }
+      function walkIn(sel, t, fromX, dur = 1.8) {
+        tl.fromTo(sel, { opacity: 0, x: fromX }, { opacity: 1, x: 0, duration: dur, ease: "power1.out" }, t);
+        tl.to(sel + " .inner", { y: -18, duration: dur / 8, yoyo: true, repeat: 7, ease: "sine.inOut" }, t);
+      }
+
+      // ===================== captions timeline =====================
+      Object.keys(T.lines).forEach((id) => {
+        const ln = T.lines[id];
+        const t0 = ln.start, t1 = ln.start + ln.dur;
+        tl.fromTo("#cap-" + id, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.2, ease: "power1.out" }, t0 - 0.05);
+        tl.to("#cap-" + id, { opacity: 0, duration: 0.2 }, t1 + 0.3);
+        ln.words.forEach((w, i) => {
+          const a = t0 + w.t;
+          const b = i + 1 < ln.words.length ? t0 + ln.words[i + 1].t : t1;
+          const sel = "#cw-" + id + "-" + i;
+          tl.to(sel, { color: "#1f2140", backgroundColor: "rgba(255,201,60,0.75)", duration: 0.08 }, a);
+          tl.to(sel, { backgroundColor: "rgba(255,201,60,0)", duration: 0.15 }, Math.max(a + 0.09, b - 0.05));
+        });
+        // Byte narrates: his mouth moves with the voice
+        talk("#byte", t0 + 0.02, t1 - 0.02);
+      });
+      // gentle idle life for the corner characters, whole video
+      bob("#sam", 0.5, T.total - 1, 5, 2.0);
+      bob("#byte", 0.8, T.total - 1, 5, 2.2);
+      breathe("#sam", 0.5, T.total - 1);
+      for (let t = 4; t < T.total - 2; t += 4.7) { blink("#sam", t); blink("#byte", t + 1.1); }
+
+      // hidden-by-default extras
+      tl.set("#mal, #guard", { opacity: 0 }, 0);
+      fade("#badge", S("s2"), 0.8);
+
+      // ===================== 1 · Intro =====================
+      const BIG = { sam: { x: 595, y: -170, s: 1.7 }, byte: { x: -597, y: -170, s: 1.7 } };
+      tl.set("#s1 .kick, #s1 h1, #s1 p", { opacity: 0 }, 0);
+      tl.fromTo("#s1 .kick", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: E }, 0.3);
+      tl.fromTo("#s1 h1", { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: POP }, 0.6);
+      tl.fromTo("#s1 p", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: E }, L("s1a", 1.0));
+      ["#tp1", "#tp2", "#tp3", "#tp4"].forEach((s, i) => show(s, W("s1b", 3) + i * 0.9, { s: 0.5, d: 0.6 }));
+      show("#cred1", L("s1d", 0.6), { s: 0.7, d: 0.7 });
+      tl.fromTo("#sam", { opacity: 0, x: -300, y: BIG.sam.y, scale: BIG.sam.s }, { opacity: 1, x: BIG.sam.x, y: BIG.sam.y, scale: BIG.sam.s, duration: 2.0, ease: "power1.out", transformOrigin: "50% 100%" }, 0.4);
+      tl.fromTo("#byte", { opacity: 0, x: 300, y: BIG.byte.y, scale: BIG.byte.s }, { opacity: 1, x: BIG.byte.x, y: BIG.byte.y, scale: BIG.byte.s, duration: 2.0, ease: "power1.out", transformOrigin: "50% 100%" }, 0.6);
+      wave("#sam", L("s1a"), 3); wave("#byte", L("s1a", 0.6), 3);
+      face("#byte", "h", L("s1a")); wiggle("#byte", L("s1b"), 2);
+      mood("#sam", "sad", L("s1c", 2.0)); wobble("#sam", L("s1c", 2.0), 2, 5);
+      mood("#sam", "happy", L("s1d", 0.4)); cheer("#sam", L("s1d", 1.4));
+      const walkBack = LE("s1d", 0.8);
+      tl.to("#sam", { x: 0, y: 0, scale: 1, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, walkBack);
+      tl.to("#byte", { x: 0, y: 0, scale: 1, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, walkBack);
+      tl.to("#s1", { opacity: 0, duration: 0.6 }, walkBack);
+
+      // ===================== 2 · Q1: the short answer =====================
+      enter("s2");
+      face("#byte", "q", S("s2") + 0.4);
+      show("#cA2", L("s2c", 0.1), { y: 40 }); fade("#eA2", L("s2c", 0.7), 0.5);
+      show("#stA1", L("s2c", 1.4), { x: -30, s: 0.9, d: 0.6 });
+      show("#stA2", L("s2c", 2.6), { x: -30, s: 0.9, d: 0.6 });
+      show("#rA2", L("s2c", 3.6), { s: 0.5, d: 0.5 });
+      show("#cB2", L("s2d", 0.1), { y: 40 }); fade("#eB2", L("s2d", 0.6), 0.5);
+      fade("#convB", L("s2d", 1.2), 0.5);
+      tl.fromTo("#cvto", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.6, ease: POP, transformOrigin: "50% 50%" }, L("s2d", 1.9));
+      show("#stB2", L("s2d", 2.8), { x: -30, s: 0.9, d: 0.6 });
+      show("#rB2", L("s2d", 3.4), { s: 0.5, d: 0.5 });
+      show("#tagB2", L("s2e", 0.6), { s: 0.5, d: 0.6 });
+      wiggle("#byte", L("s2e", 0.6), 2); mood("#sam", "sad", L("s2e", 1.5)); wobble("#sam", L("s2e", 1.5), 2, 5);
+      face("#byte", "h", L("s2c"));
+      leave("s2");
+
+      // ===================== 3 · Q1: in practice =====================
+      enter("s3");
+      mood("#sam", "happy", S("s3"));
+      fade("#th3a, #th3b", L("s3a", 0.0), 0.6);
+      const row = (i, t) => show("#r3_" + i, t, { x: -40, s: 0.95, d: 0.6 });
+      const cell = (i, c, t) => show("#c3_" + i + "_" + c, t, { s: 0.4, d: 0.5 });
+      row(1, L("s3b")); cell(1, 1, W("s3b", 4));
+      cell(1, 2, W("s3c", 5));
+      row(2, L("s3d")); cell(2, 1, W("s3d", 8)); cell(2, 2, W("s3d", 11));
+      row(3, L("s3e")); cell(3, 1, W("s3e", 4)); cell(3, 2, W("s3e", 7));
+      row(4, L("s3f")); cell(4, 1, W("s3f", 8)); cell(4, 2, W("s3f", 8));
+      row(5, L("s3g")); cell(5, 1, W("s3g", 6)); cell(5, 2, W("s3g", 6));
+      face("#byte", "a", W("s3f", 1)); face("#byte", "n", L("s3g"));
+      show("#rule3", L("s3h", 0.4), { s: 0.85, d: 0.8 }); face("#byte", "h", L("s3h")); cheer("#sam", L("s3h", 1.0));
+      show("#null3", L("s3i", 0.4), { s: 0.85, d: 0.8 });
+      leave("s3");
+
+      // ===================== 4 · Q2: the short answer =====================
+      enter("s4");
+      face("#byte", "q", S("s4") + 0.4);
+      fade("#hv4, #hl4", L("s4a", 0.8), 0.6);
+      fade("#l41", L("s4b"), 0.5); show("#c41v", W("s4b", 4), { x: -40, s: 0.95, d: 0.7 }); show("#c41l", W("s4b", 9), { x: 40, s: 0.95, d: 0.7 });
+      fade("#l42", L("s4c"), 0.5); show("#c42v", W("s4c", 4), { x: -40, s: 0.95, d: 0.7 }); show("#c42l", W("s4c", 10), { x: 40, s: 0.95, d: 0.7 });
+      show("#tdz4", L("s4d", 0.1), { y: 40, s: 0.95, d: 0.8 });
+      face("#byte", "a", L("s4d", 0.3)); mood("#sam", "sad", L("s4d", 0.5));
+      leave("s4");
+
+      // ===================== 5 · Q2: in code =====================
+      enter("s5");
+      face("#byte", "q", S("s5") + 0.4); mood("#sam", "happy", S("s5"));
+      fade("#code5a", L("s5a"), 0.7);
+      fade("#cons5", L("s5a", 0.4), 0.5);
+      countdown("cd5", LE("s5a", 0.15), 1.25);
+      wobble("#sam", L("s5a", 0.6), 2, 4);
+      hl("code5a", [1], L("s5b", 0.3), 2.2); out("#o5a", W("s5b", 4)); face("#byte", "n", L("s5b"));
+      hl("code5a", [3], L("s5c", 0.2), 2.2, "rgba(217,45,72,.35)"); out("#o5b", W("s5c", 5));
+      face("#byte", "a", W("s5c", 5)); mood("#sam", "sad", W("s5c", 5));
+      hl("code5a", [4], L("s5d", 0.3), 3.2, "rgba(217,45,72,.35)");
+      show("#tdz5", W("s5d", 9), { s: 0.6, d: 0.6 });
+      // -- scope demo
+      hide("#code5a, #o5a, #o5b, #tdz5", L("s5e", 0.0), 0.4);
+      fade("#code5b", L("s5e", 0.4), 0.6); face("#byte", "n", L("s5e")); mood("#sam", "happy", L("s5e"));
+      hl("code5b", [2], W("s5e", 5), 2.0, "rgba(255,201,60,.6)"); show("#leak5", W("s5e", 7), { s: 0.6, d: 0.6 });
+      hl("code5b", [5], W("s5e", 9), 1.6, "rgba(10,138,95,.35)"); out("#o5c", W("s5e", 9));
+      hide("#leak5", L("s5f", 0.0), 0.4);
+      hl("code5b", [3], W("s5f", 1), 2.0, "rgba(10,127,191,.3)"); show("#stay5", W("s5f", 3), { s: 0.6, d: 0.6 });
+      hl("code5b", [6], W("s5f", 7), 2.0, "rgba(217,45,72,.35)"); out("#o5d", W("s5f", 9));
+      face("#byte", "a", W("s5f", 9));
+      // -- redeclare
+      hide("#code5b, #o5c, #o5d, #stay5", L("s5g", 0.2), 0.4);
+      fade("#code5c", L("s5h", 0.0), 0.6); face("#byte", "n", L("s5h"));
+      hl("code5c", [1, 2], W("s5h", 0), 3.0, "rgba(10,138,95,.3)");
+      hl("code5c", [4, 5], W("s5h", 8), 2.4, "rgba(217,45,72,.35)"); out("#o5e", W("s5h", 11)); face("#byte", "a", W("s5h", 11));
+      // -- const
+      hide("#code5c, #o5e", L("s5i", 0.0), 0.4);
+      fade("#code5d", L("s5i", 0.3), 0.6); face("#byte", "n", L("s5i"));
+      hl("code5d", [2], W("s5i", 7), 1.6, "rgba(217,45,72,.35)"); out("#o5f", W("s5i", 8)); face("#byte", "a", W("s5i", 8));
+      hide("#code5d, #o5f", L("s5j", 0.0), 0.4);
+      show("#rec5", L("s5j", 0.4), { s: 0.85, d: 0.8 }); face("#byte", "h", L("s5j", 0.4)); mood("#sam", "happy", L("s5j", 0.4)); cheer("#sam", L("s5j", 1.0));
+      leave("s5");
+
+      // ===================== 6 · Q3: the short answer =====================
+      enter("s6");
+      face("#byte", "q", S("s6") + 0.4);
+      show("#ban6", L("s6b", 0.3), { y: 30, s: 0.95, d: 0.8 });
+      show("#kc6", W("s6c", 0), { y: 40, s: 0.9, d: 0.8 });
+      show("#ka6", W("s6c", 2), { y: 40, s: 0.9, d: 0.8 });
+      show("#kb6", W("s6c", 7), { y: 40, s: 0.9, d: 0.8 });
+      pulse("#ag6c", L("s6d", 0.4), 1.12); pulse("#ag6a", L("s6d", 1.6), 1.12);
+      show("#mn6", L("s6e", 0.4), { s: 0.8, d: 0.7 });
+      pulse("#mnc", W("s6e", 7), 1.6); pulse("#mna", W("s6e", 13), 1.6);
+      face("#byte", "h", L("s6e")); nod("#sam", L("s6e", 1.0));
+      leave("s6");
+
+      // ===================== 7 · Q3: in code =====================
+      enter("s7");
+      face("#byte", "n", S("s7") + 0.4);
+      fade("#code7", L("s7a"), 0.7);
+      hl("code7", [4, 5, 6], L("s7a", 0.4), 2.4);
+      show("#fn7", L("s7a", 0.4), { y: 30, d: 0.8 });
+      show("#ava7", L("s7b", 0.0), { y: 30, s: 0.9 });
+      hl("code7", [8], L("s7b", 0.4), 5.5);
+      fade("#arA7", W("s7b", 9), 0.5); setText("#this7", "this = Ava", W("s7b", 10));
+      setText("#res7", '→ "Hi, Ava!"', W("s7b", 14));
+      show("#ben7", L("s7c", 0.0), { y: 30, s: 0.9 });
+      hide("#arA7", L("s7c", 0.1), 0.3);
+      hl("code7", [9], L("s7c", 0.4), 4.0);
+      fade("#arB7", W("s7c", 2), 0.5); setText("#this7", "this = Ben", W("s7c", 3));
+      setText("#res7", '→ "Hello, Ben?"', W("s7c", 12));
+      pulse("#res7", L("s7d", 0.2), 1.15); face("#byte", "h", L("s7d"));
+      hide("#arB7, #ava7, #ben7, #res7", L("s7e", 0.0), 0.4); setText("#this7", "this = ?", L("s7e", 0.0));
+      hl("code7", [10], L("s7e", 0.3), 5.0);
+      show("#bound7", W("s7e", 7), { y: 30, s: 0.9 });
+      hl("code7", [11], L("s7f", 0.2), 2.0); show("#res7b", W("s7f", 7), { s: 0.6, d: 0.6 });
+      cheer("#sam", L("s7g", 0.6)); face("#byte", "h", L("s7g"));
+      leave("s7");
+
+      // ===================== 8 · Q4: the short answer =====================
+      enter("s8");
+      face("#byte", "q", S("s8") + 0.4);
+      show("#cAll8", W("s8b", 2), { y: 40, s: 0.9, d: 0.8 });
+      show("#cRace8", W("s8b", 7), { y: 40, s: 0.9, d: 0.8 });
+      show("#raceB1", W("s8b", 11), { x: -30, s: 0.9, d: 0.6 });
+      show("#allB1", W("s8c", 4), { x: -30, s: 0.9, d: 0.6 }); fade("#allB3", W("s8c", 9), 0.6);
+      show("#allB2", W("s8d", 4), { x: -30, s: 0.9, d: 0.6 }); face("#byte", "a", W("s8d", 4));
+      leave("s8");
+
+      // ===================== 9 · Q4: in code =====================
+      enter("s9");
+      face("#byte", "n", S("s9") + 0.4);
+      fade("#code9", L("s9a"), 0.7);
+      hl("code9", [1, 2], L("s9a", 0.6), 4.5);
+      show("#trk9", L("s9a", 1.6), { y: 30, s: 0.95, d: 0.8 });
+      tl.set("#rall9, #rrace9, #q9, #no9, #code9b, #first9, #still9", { opacity: 0 }, 0);
+      const tick = (t0, n) => { for (let k = 0; k <= n; k++) tl.set("#clk9", { textContent: k * 100 + " ms" }, t0 + k); };
+      // run 1: Promise.all
+      hl("code9", [4, 5], L("s9b", 0.2), 5.6);
+      tl.fromTo("#bs9", { scaleX: 0 }, { scaleX: 1, duration: 5, ease: "none" }, L("s9b", 0.8));
+      tl.fromTo("#bf9", { scaleX: 0 }, { scaleX: 1, duration: 1, ease: "none" }, L("s9b", 0.8));
+      tick(L("s9b", 0.8), 5);
+      show("#rall9", L("s9b", 5.8), { s: 0.6, d: 0.6 });
+      pulse("#rall9", L("s9c", 0.6), 1.1); hl("code9", [5], L("s9c", 0.3), 2.4, "rgba(10,138,95,.3)");
+      // run 2: Promise.race
+      hide("#rall9", L("s9d", 0.0), 0.3);
+      tl.set("#bs9, #bf9", { scaleX: 0 }, L("s9d", 0.0)); tl.set("#clk9", { textContent: "0 ms" }, L("s9d", 0.0));
+      hl("code9", [7, 8], L("s9d", 0.2), 5.8);
+      tl.fromTo("#bs9", { scaleX: 0 }, { scaleX: 1, duration: 5, ease: "none", immediateRender: false }, L("s9d", 0.8));
+      tl.fromTo("#bf9", { scaleX: 0 }, { scaleX: 1, duration: 1, ease: "none", immediateRender: false }, L("s9d", 0.8));
+      tick(L("s9d", 0.8), 5);
+      show("#rrace9", L("s9d", 1.8), { s: 0.6, d: 0.6 }); face("#byte", "h", L("s9d", 1.8));
+      show("#first9", L("s9e", 0.8), { s: 0.8, d: 0.7 });
+      hide("#first9", L("s9f", 0.0), 0.3);
+      show("#q9", L("s9f", 0.3), { y: 20, s: 0.9, d: 0.7 }); face("#byte", "q", L("s9f", 0.3));
+      hide("#q9", L("s9g", 0.2), 0.3);
+      show("#no9", L("s9g", 0.5), { y: 20, s: 0.9, d: 0.7 }); face("#byte", "n", L("s9g", 0.5));
+      show("#still9", L("s9g", 1.2), { s: 0.6, d: 0.6 });
+      hide("#no9", L("s9h", 0.0), 0.3);
+      fade("#code9b", L("s9h", 0.4), 0.6);
+      hl("code9b", [3], W("s9h", 12), 2.0, "rgba(10,138,95,.3)");
+      face("#byte", "h", L("s9h", 3.0)); cheer("#sam", L("s9h", 4.0));
+      leave("s9");
+
+      // ===================== 10 · Recap =====================
+      enter("s10");
+      tl.set("#next10, #src10", { opacity: 0 }, 0);
+      const RC = { sam: { x: 1295, y: -140, s: 1.7 }, byte: { x: -77, y: -140, s: 1.7 } };
+      tl.to("#sam", { x: RC.sam.x, y: RC.sam.y, scale: RC.sam.s, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, S("s10") + 0.4);
+      tl.to("#byte", { x: RC.byte.x, y: RC.byte.y, scale: RC.byte.s, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, S("s10") + 0.4);
+      face("#byte", "h", L("s10a"));
+      show("#rc1", L("s10b", 0.3), { x: -60, s: 0.9 }); wave("#sam", L("s10b", 1.0), 2);
+      show("#rc2", L("s10c", 0.3), { x: -60, s: 0.9 });
+      show("#rc3", L("s10d", 0.2), { x: -60, s: 0.9 });
+      show("#rc4", L("s10e", 0.3), { x: -60, s: 0.9 });
+      fade("#src10", L("s10f", 0.2), 0.8);
+      show("#next10", L("s10g", 0.2), { s: 0.6, d: 0.7 });
+      cheer("#sam", L("s10g", 0.2)); cheer("#byte", L("s10g", 0.6));
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+
+    </script>
+  </body>
+</html>
