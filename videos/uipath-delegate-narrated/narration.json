@@ -10,7 +10,7 @@
         },
         {
           "id": "s1b",
-          "text": "Today's topic is [UiPath|U I Path] Delegate, described as your first [AI|A I] intern."
+          "text": "Today's topic is UiPath Delegate, described as your first AI intern."
         },
         {
           "id": "s1c",
@@ -27,23 +27,24 @@
       "lines": [
         {
           "id": "s2a",
-          "text": "Let's start with a question."
+          "text": "Meet Sam. Sam has a problem."
         },
         {
           "id": "s2b",
-          "text": "How much of your week disappears into busywork?"
+          "text": "A pile of busywork: email digests, [CRM|C R M] updates, smart reporting, and asset creation."
         },
         {
           "id": "s2c",
-          "text": "Email digests. [CRM|C R M] updates. Smart reporting. Asset creation."
+          "text": "AI can remove that busywork, but only if it knows how to work inside a real company."
         },
         {
           "id": "s2d",
-          "text": "[AI|A I] can remove that busywork, but only if it knows how to work inside a real company."
+          "text": "That is the problem Delegate is designed to tackle."
         },
         {
           "id": "s2e",
-          "text": "That is the problem Delegate is designed to tackle. Let's see how."
+          "text": "So, Sam hires an intern.",
+          "after": 2.4
         }
       ]
     },
@@ -118,7 +119,7 @@
         },
         {
           "id": "s5b",
-          "text": "One: [PDD|P D D] and [SDD|S D D] generation."
+          "text": "One: PDD and SDD generation."
         },
         {
           "id": "s5c",
@@ -175,11 +176,11 @@
         },
         {
           "id": "s6c",
-          "text": "One: best in class [UI|U I] automation."
+          "text": "One: best in class UI automation."
         },
         {
           "id": "s6d",
-          "text": "It is built on the same [UiPath|U I Path] [UIA|U I A] foundation as [RPA|R P A]."
+          "text": "It is built on the same UiPath UIA foundation as RPA."
         },
         {
           "id": "s6e",
@@ -191,15 +192,15 @@
         },
         {
           "id": "s6g",
-          "text": "Two: it is built as an extension, on top of your existing [UiPath|U I Path] deployment."
+          "text": "Two: it is built as an extension, on top of your existing UiPath deployment."
         },
         {
           "id": "s6h",
-          "text": "UiPath says that means no new [IT|I T] approval, and no new upgrade process."
+          "text": "UiPath says that means no new IT approval, and no new upgrade process."
         },
         {
           "id": "s6i",
-          "text": "The [UiPath|U I Path] Assistant simply upgrades into Delegate."
+          "text": "The UiPath Assistant simply upgrades into Delegate."
         },
         {
           "id": "s6j",
@@ -207,7 +208,7 @@
         },
         {
           "id": "s6k",
-          "text": "Every operation runs through the same access control, audit trail, credential vault, and [AI|A I] Trust Layer."
+          "text": "Every operation runs through the same access control, audit trail, credential vault, and AI Trust Layer."
         },
         {
           "id": "s6l",
@@ -240,34 +241,62 @@
         },
         {
           "id": "s7d",
-          "text": "Context awareness. Summarize the case I'm viewing, with related articles and similar past cases."
+          "text": "Delegate pulls the cases, and puts the day in order."
         },
         {
           "id": "s7e",
-          "text": "License lookup. Look up a customer's licensing data, without switching tools."
+          "text": "Context awareness. Summarize the case I'm viewing, with related articles and similar past cases."
         },
         {
           "id": "s7f",
-          "text": "Log analysis. Pull recent App Insights logs for a tenant, without navigating Azure."
+          "text": "One summary, with everything related attached."
         },
         {
           "id": "s7g",
-          "text": "Troubleshooting research. Search product docs, the knowledge base, Slack, Confluence, and past cases at once."
+          "text": "License lookup. Look up a customer's licensing data, without switching tools."
         },
         {
           "id": "s7h",
-          "text": "First response drafting. Generate a reply from the case context, to edit and send to Salesforce."
+          "text": "The answer arrives in the chat. No tab hopping."
         },
         {
           "id": "s7i",
-          "text": "[RunDeck|Run Deck] jobs. Run a predefined job with parameters, without leaving the workflow."
+          "text": "Log analysis. Pull recent App Insights logs for a tenant, without navigating Azure."
         },
         {
           "id": "s7j",
-          "text": "And stay in flow."
+          "text": "The logs come to you. No digging through Azure."
         },
         {
           "id": "s7k",
+          "text": "Troubleshooting research. Search product docs, the knowledge base, Slack, Confluence, and past cases at once."
+        },
+        {
+          "id": "s7l",
+          "text": "One question. Five places searched at the same time."
+        },
+        {
+          "id": "s7m",
+          "text": "First response drafting. Generate a reply from the case context, to edit and send to Salesforce."
+        },
+        {
+          "id": "s7n",
+          "text": "A draft reply, ready to polish and send."
+        },
+        {
+          "id": "s7o",
+          "text": "[RunDeck|Run Deck] jobs. Run a predefined job with parameters, without leaving the workflow."
+        },
+        {
+          "id": "s7p",
+          "text": "Set the parameters, and the job runs, right inside the workflow."
+        },
+        {
+          "id": "s7q",
+          "text": "And stay in flow."
+        },
+        {
+          "id": "s7r",
           "text": "One conversational surface, across every tool the [PSE|P S E] touches."
         }
       ]
@@ -297,7 +326,7 @@
         },
         {
           "id": "s8f",
-          "text": "It handles [UI|U I] automation, files, and [API|A P I] calls."
+          "text": "It handles UI automation, files, and API calls."
         },
         {
           "id": "s8g",
@@ -347,7 +376,7 @@
         },
         {
           "id": "s10d",
-          "text": "Invoke deployed [UiPath|U I Path] automations."
+          "text": "Invoke deployed UiPath automations."
         },
         {
           "id": "s10e",
@@ -435,7 +464,7 @@
         },
         {
           "id": "s13b",
-          "text": "Every operation inherits the controls you already run [UiPath|U I Path] with."
+          "text": "Every operation inherits the controls you already run UiPath with."
         },
         {
           "id": "s13c",
@@ -447,7 +476,7 @@
         },
         {
           "id": "s13e",
-          "text": "The [AI|A I] Trust Layer applies policy, redaction, and model governance to every interaction."
+          "text": "The AI Trust Layer applies policy, redaction, and model governance to every interaction."
         },
         {
           "id": "s13f",

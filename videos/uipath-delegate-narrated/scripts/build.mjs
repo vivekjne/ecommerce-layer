@@ -31,6 +31,8 @@ master(root + "assets/voiceover.wav", root + "assets/voiceover.mp3",
 master(root + "assets/music.wav", root + "assets/music.mp3", "", -28, -3, ["-ar", "44100", "-b:a", "112k"]);
 
 let html = readFileSync(root + "src/template.html", "utf8");
+// src/ is split into parts: <!--#include scenes/s2.html--> and /*#include js/helpers.js*/ are inlined here
+html = html.replace(/<!--#include ([\w./-]+)-->|\/\*#include ([\w./-]+)\*\//g, (_, a, b) => readFileSync(root + "src/" + (a || b), "utf8"));
 html = html.replaceAll("{{total}}", String(timing.total));
 html = html.replace(/\{\{(s\d+x?)\.(start|dur)\}\}/g, (_, id, k) => {
   if (!timing.scenes[id]) throw new Error("unknown scene " + id);

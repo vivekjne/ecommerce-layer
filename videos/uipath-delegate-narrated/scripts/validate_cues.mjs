@@ -1,4 +1,4 @@
-// Checks that every animation cue in src/template.html lands inside the narration line it is tied to.
+// Checks that every animation cue in the built index.html lands inside the narration line it is tied to.
 //
 //   node scripts/validate_cues.mjs
 //
@@ -10,7 +10,7 @@ import { readFileSync } from "node:fs";
 
 const root = new URL("..", import.meta.url).pathname;
 const timing = JSON.parse(readFileSync(root + "timing.json", "utf8"));
-const src = readFileSync(root + "src/template.html", "utf8");
+const src = readFileSync(root + "index.html", "utf8"); // the built file, so cues in src/ parts are all seen
 
 let problems = 0;
 const report = (msg) => { problems++; console.log("  x " + msg); };

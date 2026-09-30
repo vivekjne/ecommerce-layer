@@ -1,0 +1,62 @@
+<section id="s12" class="clip" data-start="{{s12.start}}" data-duration="{{s12.dur}}" data-track-index="0">
+  <style>
+    #L12a, #L12b, #L12c { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #s12 .lb { position: absolute; left: 140px; width: 340px; height: 140px; }
+    #s12 .lb .tile { left: 18px; top: 28px; }
+    #s12 .lb b { position: absolute; left: 124px; top: 22px; font-size: 34px; letter-spacing: -0.02em; }
+    #s12 .lb .tag { left: 124px; top: 78px; font-size: 18px; }
+    #s12 .bl { position: absolute; left: 500px; width: 1280px; height: 140px; background: #fff; }
+    #s12 .bl::after { content: ""; position: absolute; left: 110px; right: 110px; top: 68px; border-top: 6px dashed #c9d0ea; }
+    #s12 .act { position: absolute; left: 620px; width: 56px; height: 56px; border-radius: 16px; border: 4px solid var(--ink); box-shadow: 0 5px 0 rgba(31,33,64,.18); }
+    #s12 .act.g { background: #06d6a0; }
+    #s12 .act.r { background: #ff5d73; }
+    #s12 .gt { position: absolute; left: 1040px; width: 26px; height: 128px; border-radius: 10px; border: 4px solid var(--ink); }
+    #s12 .ap { left: 905px; font-size: 21px; padding: 3px 14px 3px 8px; }
+    .cd12 { position: absolute; width: 190px; height: 190px; border-radius: 50%; background: var(--sun); border: 6px solid var(--ink); box-shadow: 0 10px 0 rgba(31, 33, 64, 0.16); }
+    .cd12 .cdn { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 116px; font-weight: 900; }
+    .cd12 .cdl { position: absolute; left: -60px; right: -60px; bottom: -62px; text-align: center; font-size: 30px; font-weight: 800; white-space: nowrap; }
+  </style>
+  <div class="eyebrow">You stay in control</div>
+  <h2>Three modes</h2>
+
+  <div id="h12">
+    <div class="tile lg" style="left: 590px; top: 330px"><img src="assets/deck/sliders.png" alt="" /></div>
+    <div class="big" style="position: absolute; left: 760px; top: 350px; font-size: 60px; width: 800px">How much freedom?</div>
+    <div class="tok" id="hv12" style="left: 760px; top: 450px"><i data-ic="stack" data-s="40"></i>Per environment</div>
+    <div class="tok sun" id="ht12" style="left: 1110px; top: 450px"><i data-ic="doc" data-s="40"></i>Per task</div>
+  </div>
+
+  <!-- lane 1 · Always ask -->
+  <div id="L12a">
+    <div class="card lb" id="lb12a" style="top: 280px"><div class="tile sm"><img src="assets/deck/handshake.png" alt="" /></div><b>Always ask</b><span class="tag green">Safest</span></div>
+    <div class="card bl" style="top: 280px"></div>
+    <div class="tile sm" style="left: 520px; top: 308px"><img src="assets/deck/bolt.png" alt="" /></div>
+    <div class="ntile sm" style="left: 1676px; top: 308px; background: #d9f7ea"><i data-ic="tick" data-s="46"></i></div>
+    <div class="gt" id="gt12a" style="top: 286px; background: var(--teal)"></div>
+    <div class="tok sm" id="ap12a" style="top: 284px; left: 905px; font-size: 21px; padding: 3px 14px 3px 8px"><i data-ic="hand" data-s="26"></i>Approve?</div>
+    <div class="tok sm mint" id="ok12a" style="top: 284px; left: 905px; font-size: 21px; padding: 3px 14px 3px 8px"><i data-ic="tick" data-s="26"></i>Approved</div>
+    <div class="act g" id="k12a1" style="top: 322px"></div><div class="act r" id="k12a2" style="top: 322px"></div><div class="act g" id="k12a3" style="top: 322px"></div>
+  </div>
+  <!-- lane 2 · Smart -->
+  <div id="L12b">
+    <div class="card lb" id="lb12b" style="top: 470px"><div class="tile sm"><img src="assets/deck/gauge.png" alt="" /></div><b>Smart</b><span class="tag blue">Balanced</span></div>
+    <div class="card bl" style="top: 470px"></div>
+    <div class="tile sm" style="left: 520px; top: 498px"><img src="assets/deck/bolt.png" alt="" /></div>
+    <div class="ntile sm" style="left: 1676px; top: 498px; background: #d9f7ea"><i data-ic="tick" data-s="46"></i></div>
+    <div class="gt" id="gt12b" style="top: 476px; background: var(--sun)"></div>
+    <div class="tok sm red" id="ap12b" style="top: 474px; left: 905px; font-size: 21px; padding: 3px 14px 3px 8px"><i data-ic="warn" data-s="26"></i>Risky: ask</div>
+    <div class="tok sm mint" id="ok12b" style="top: 474px; left: 905px; font-size: 21px; padding: 3px 14px 3px 8px"><i data-ic="tick" data-s="26"></i>Approved</div>
+    <div class="act g" id="k12b1" style="top: 512px"></div><div class="act g" id="k12b2" style="top: 512px"></div><div class="act r" id="k12b3" style="top: 512px"></div>
+  </div>
+  <!-- lane 3 · Unrestricted -->
+  <div id="L12c">
+    <div class="card lb" id="lb12c" style="top: 660px"><div class="tile sm"><img src="assets/deck/rocket.png" alt="" /></div><b>Unrestricted</b><span class="tag amber">Trusted only</span></div>
+    <div class="card bl" style="top: 660px"></div>
+    <div class="tile sm" style="left: 520px; top: 688px"><img src="assets/deck/bolt.png" alt="" /></div>
+    <div class="ntile sm" style="left: 1676px; top: 688px; background: #d9f7ea"><i data-ic="tick" data-s="46"></i></div>
+    <div class="tok sm red" id="wn12" style="top: 664px; left: 960px; font-size: 21px; padding: 3px 14px 3px 8px"><i data-ic="warn" data-s="26"></i>Only in trusted environments</div>
+    <div class="act g" id="k12c1" style="top: 702px"></div><div class="act r" id="k12c2" style="top: 702px"></div><div class="act g" id="k12c3" style="top: 702px"></div>
+  </div>
+  <div class="cd12" id="cd12" style="left: 1330px; top: 40px"><span class="cdn">3</span><span class="cdn">2</span><span class="cdn">1</span><div class="cdl">Which mode?</div></div>
+  <div class="tok mint" id="an12" style="left: 830px; top: 220px; font-size: 32px"><i data-ic="tick" data-s="44"></i>Always ask</div>
+</section>

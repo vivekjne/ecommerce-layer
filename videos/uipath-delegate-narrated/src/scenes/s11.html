@@ -1,0 +1,44 @@
+<section id="s11" class="clip" data-start="{{s11.start}}" data-duration="{{s11.dur}}" data-track-index="0">
+  <style>
+    #s11 .rw { display: flex; align-items: center; gap: 16px; margin-top: 14px; }
+    #s11 .rw b { font-size: 30px; flex: 1; }
+    #s11 .kn { position: absolute; top: -9px; left: 0; width: 34px; height: 34px; border-radius: 50%; background: var(--teal); border: 4px solid var(--ink); }
+    #s11 .trkb { position: relative; width: 300px; height: 16px; border-radius: 8px; background: #dfe3f2; border: 3px solid var(--ink); flex: none; }
+    #s11 .le { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+  </style>
+  <div class="eyebrow">How it works</div>
+  <h2>Control what it accesses</h2>
+  <div class="tok trk" style="left: 1010px"><b class="mono">1</b>Compose</div><div class="tok trk" style="left: 1190px"><b class="mono">2</b>Teach</div><div class="tok trk" style="left: 1330px"><b class="mono">3</b>Attach</div><div class="tok trk on" style="left: 1480px"><b class="mono">4</b>Control</div>
+
+  <!-- allow / deny lists -->
+  <div class="card" id="al11" style="left: 560px; top: 270px; width: 560px; height: 250px; border-color: var(--mint); padding: 18px 26px">
+    <span class="tag green" style="position: static">Allow list</span>
+    <div class="rw"><div class="ntile sm" style="position: static; width: 64px; height: 64px"><i data-ic="stack" data-s="38"></i></div><b>Apps</b><i class="ka11" data-ic="tick" data-s="46"></i></div>
+    <div class="rw"><div class="ntile sm" style="position: static; width: 64px; height: 64px"><i data-ic="globe" data-s="38"></i></div><b>URLs</b><i class="ka11" data-ic="tick" data-s="46"></i></div>
+  </div>
+  <div class="card" id="dn11" style="left: 1160px; top: 270px; width: 610px; height: 250px; border-color: var(--coral); padding: 18px 26px">
+    <span class="tag red" style="position: static">Deny list</span>
+    <div class="rw"><div class="ntile sm" style="position: static; width: 64px; height: 64px"><i data-ic="stack" data-s="38"></i></div><b>Apps</b><i class="kd11" data-ic="x" data-s="46"></i></div>
+    <div class="rw"><div class="ntile sm" style="position: static; width: 64px; height: 64px"><i data-ic="globe" data-s="38"></i></div><b>URLs</b><i class="kd11" data-ic="x" data-s="46"></i></div>
+  </div>
+  <!-- granular permissions by task type -->
+  <div class="card" id="pm11" style="left: 560px; top: 550px; width: 560px; height: 280px; padding: 18px 26px">
+    <span class="tag" style="position: static">Permissions by task type</span>
+    <div class="rw"><b style="font-size: 26px">Task type A</b><div class="trkb"><div class="kn" id="kn11a" style="left: 0"></div></div></div>
+    <div class="rw"><b style="font-size: 26px">Task type B</b><div class="trkb"><div class="kn" id="kn11b" style="left: 0"></div></div></div>
+    <div class="rw"><b style="font-size: 26px">Task type C</b><div class="trkb"><div class="kn" id="kn11c" style="left: 0"></div></div></div>
+  </div>
+  <!-- audit trail -->
+  <div class="card" id="au11" style="left: 1160px; top: 550px; width: 610px; height: 280px; padding: 18px 26px">
+    <span class="tag ink" style="position: static">Audit trail</span>
+    <div class="le l11"><i data-ic="tick" data-s="34"></i><div class="skel" style="width: 380px"></div></div>
+    <div class="le l11"><i data-ic="tick" data-s="34"></i><div class="skel" style="width: 320px"></div></div>
+    <div class="le l11"><i data-ic="tick" data-s="34"></i><div class="skel" style="width: 420px"></div></div>
+    <div class="le l11"><i data-ic="tick" data-s="34"></i><div class="skel" style="width: 350px"></div></div>
+  </div>
+  <i class="abs" id="pc11" data-ic="pencil" data-s="50" style="left: 1500px; top: 640px"></i>
+  <!-- your data stays in your control -->
+  <div class="ntile lg" id="dt11" style="left: 250px; top: 300px"><i data-ic="db" data-s="90"></i></div>
+  <div class="tile sm" id="lk11" style="left: 350px; top: 270px"><img src="assets/deck/lock.png" alt="" /></div>
+  <div class="lab" id="dl11" style="left: 170px; top: 460px; width: 340px">Your data</div>
+</section>
