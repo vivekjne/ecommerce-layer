@@ -4,15 +4,16 @@
     { "id": "s1", "lines": [
       { "id": "s1a", "text": "Welcome to JavaScript Demystified: interview edition." },
       { "id": "s1b", "text": "Today, we answer four of the most common JavaScript interview questions." },
-      { "id": "s1c", "text": "For each one, you get a short answer you can say out loud, and a demo that proves it." },
-      { "id": "s1d", "text": "The questions come from a popular open source repository on GitHub, linked in the description." }
+      { "id": "s1c", "text": "For each one, you get a short answer you can say out loud, a demo that proves it, and the follow-ups interviewers love." },
+      { "id": "s1d", "text": "Let's get started." }
     ]},
     { "id": "s2", "lines": [
       { "id": "s2a", "text": "Question one. What is the difference between [==|double equals] and [===|triple equals]?" },
       { "id": "s2b", "text": "Here is the short answer." },
       { "id": "s2c", "text": "[===|Triple equals] compares the value and the type, with no conversion." },
       { "id": "s2d", "text": "[==|Double equals] converts the types first, and then compares." },
-      { "id": "s2e", "text": "That conversion is called type coercion, and it is where the surprises come from." }
+      { "id": "s2e", "text": "That conversion is called type coercion, and it is where the surprises come from." },
+      { "id": "s2f", "text": "And when both sides already have the same type, [==|double equals] behaves exactly like [===|triple equals]." }
     ]},
     { "id": "s3", "lines": [
       { "id": "s3a", "text": "Let's test it." },
@@ -21,6 +22,7 @@
       { "id": "s3d", "text": "The string one [==|double equals] the number one is true. [===|Triple equals] says false." },
       { "id": "s3e", "text": "Null [==|double equals] undefined is true. [===|Triple equals] says false." },
       { "id": "s3f", "text": "[NaN|Not a number] is never equal to anything, not even itself." },
+      { "id": "s3j", "text": "To check for it, use [Number.isNaN|Number dot is N A N]." },
       { "id": "s3g", "text": "And two empty arrays are not equal either, because they are two different objects." },
       { "id": "s3h", "text": "So in an interview, say this: use [===|triple equals] by default." },
       { "id": "s3i", "text": "A common exception is [== null|double equals null], which checks for null and undefined in one go." }
@@ -41,6 +43,8 @@
       { "id": "s5g", "text": "Two more differences." },
       { "id": "s5h", "text": "var lets you declare the same name twice. let throws a syntax error." },
       { "id": "s5i", "text": "And const works like let, but you cannot reassign it." },
+      { "id": "s5k", "text": "If it holds an object, the object itself can still change. const protects the variable, not the value." },
+      { "id": "s5l", "text": "One last difference, in the browser: a top level var also becomes a property on window. let does not." },
       { "id": "s5j", "text": "In modern code, prefer const, then let, and avoid var." }
     ]},
     { "id": "s6", "lines": [
@@ -59,6 +63,14 @@
       { "id": "s7f", "text": "Call it later, and this is still Ava." },
       { "id": "s7g", "text": "Bind is what you reach for when you pass a method as a callback, and you don't want to lose this." }
     ]},
+    { "id": "s7x", "lines": [
+      { "id": "s7h", "text": "Now, three bonus facts that interviewers love." },
+      { "id": "s7i", "text": "One. Bind can preset arguments. This is called partial application." },
+      { "id": "s7j", "text": "Bind Ava and hi, and later, you only pass the punctuation." },
+      { "id": "s7k", "text": "Two. A bound function cannot be rebound. Calling it with Ben still says Ava." },
+      { "id": "s7l", "text": "Three. Arrow functions ignore call, apply, and bind for this. They take this from where they were written." },
+      { "id": "s7m", "text": "And one modern tip: apply is mostly replaced by the spread operator." }
+    ]},
     { "id": "s8", "lines": [
       { "id": "s8a", "text": "Question four. What is the difference between [Promise.all|promise dot all] and [Promise.race|promise dot race]?" },
       { "id": "s8b", "text": "Short answer: all waits for every promise. Race finishes with the first one to settle." },
@@ -75,13 +87,19 @@
       { "id": "s9g", "text": "No. Promises cannot be cancelled. The other work keeps running in the background." },
       { "id": "s9h", "text": "To really stop it, use an API that supports cancelling, like fetch with an [AbortController|abort controller]." }
     ]},
+    { "id": "s9x", "lines": [
+      { "id": "s9i", "text": "Two more combinators come up in interviews." },
+      { "id": "s9j", "text": "[Promise.allSettled|Promise dot all settled] waits for everything, and never rejects. You get a status for each promise." },
+      { "id": "s9k", "text": "[Promise.any|Promise dot any] returns the first promise that succeeds, and ignores the failures." },
+      { "id": "s9l", "text": "If every promise fails, any rejects with an aggregate error." },
+      { "id": "s9m", "text": "And one trap: [Promise.race|promise dot race] with an empty array never settles." }
+    ]},
     { "id": "s10", "lines": [
       { "id": "s10a", "text": "Let's recap the four answers." },
       { "id": "s10b", "text": "One: [===|triple equals] compares value and type. [==|Double equals] converts types first." },
       { "id": "s10c", "text": "Two: var is function scoped, let is block scoped, and let has a temporal dead zone." },
       { "id": "s10d", "text": "Three: call and apply run now. Bind returns a new function." },
       { "id": "s10e", "text": "Four: all waits for everyone. Race takes the first to finish. Neither cancels anything." },
-      { "id": "s10f", "text": "The full list of questions is linked in the description." },
       { "id": "s10g", "text": "Thanks for watching, and good luck in your interview!" }
     ]}
   ]

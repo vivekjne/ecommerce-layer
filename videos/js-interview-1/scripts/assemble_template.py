@@ -62,7 +62,6 @@ SECTIONS = r"""
         <div id="tps" style="position: absolute; left: 0; right: 0; top: 440px; display: flex; justify-content: center; gap: 22px">
           <span class="tp" id="tp1">== vs ===</span><span class="tp" id="tp2">var vs let</span><span class="tp" id="tp3">call · apply · bind</span><span class="tp" id="tp4">Promise.all vs race</span>
         </div>
-        <div class="tag" id="cred1" style="left: 0; right: 0; margin: 0 auto; width: fit-content; top: 30px; font-size: 22px; font-family: var(--mono)">Questions: github.com/sudheerj/javascript-interview-questions</div>
       </section>
 
       <!-- 2 · Q1 concept -->
@@ -86,6 +85,7 @@ SECTIONS = r"""
           <div class="pillv t" id="rB2" style="left: 36px; top: 344px; font-size: 44px">true</div>
         </div>
         <div class="tag" id="tagB2" style="left: 1090px; top: 770px; font-size: 30px; background: #ffe9a8">type coercion 🎭</div>
+        <div class="tag" id="same2" style="left: 140px; top: 770px; font-size: 28px; background: #d5f5e6; color: #0a8a5f">same type on both sides? <span class="mono">==</span> acts exactly like <span class="mono">===</span></div>
       </section>
 
       <!-- 3 · Q1 proof table -->
@@ -95,14 +95,18 @@ SECTIONS = r"""
         <div class="th" id="th3a" style="left: 620px; color: #d92d48">==</div>
         <div class="th" id="th3b" style="left: 870px; color: #0a8a5f">===</div>
         __TABLE3__
-        <div class="card" id="rule3" style="left: 1200px; top: 300px; width: 580px; height: 210px; background: #d5f5e6; border-color: #0a8a5f; padding: 22px 28px">
+        <div class="card" id="rule3" style="left: 1200px; top: 290px; width: 580px; height: 180px; background: #d5f5e6; border-color: #0a8a5f; padding: 20px 28px">
           <div style="font-size: 26px; font-weight: 800; color: #0a8a5f; letter-spacing: 0.08em; text-transform: uppercase">Say this</div>
           <div style="font-size: 40px; font-weight: 900; margin-top: 8px; line-height: 1.15">Use <span class="mono">===</span> by default</div>
         </div>
-        <div class="card" id="null3" style="left: 1200px; top: 540px; width: 580px; height: 200px; padding: 20px 28px">
+        <div class="card" id="null3" style="left: 1200px; top: 490px; width: 580px; height: 170px; padding: 18px 28px">
           <div style="font-size: 24px; font-weight: 800; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase">Common exception</div>
-          <div class="mono" style="font-size: 40px; font-weight: 800; margin-top: 8px">x == null</div>
-          <div style="font-size: 24px; margin-top: 6px; color: var(--muted)">true for null and undefined only</div>
+          <div class="mono" style="font-size: 38px; font-weight: 800; margin-top: 6px">x == null</div>
+          <div style="font-size: 24px; margin-top: 4px; color: var(--muted)">true for null and undefined only</div>
+        </div>
+        <div class="card" id="nan3" style="left: 1200px; top: 680px; width: 580px; height: 150px; padding: 18px 28px">
+          <div style="font-size: 24px; font-weight: 800; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase">To check for NaN</div>
+          <div class="mono" style="font-size: 38px; font-weight: 800; margin-top: 8px">Number.isNaN(x)</div>
         </div>
       </section>
 
@@ -136,6 +140,7 @@ SECTIONS = r"""
         <div class="code" id="code5b" style="left: 140px; top: 280px; width: 830px; font-size: 32px; line-height: 50px"></div>
         <div class="code" id="code5c" style="left: 140px; top: 280px; width: 830px; font-size: 32px; line-height: 50px"></div>
         <div class="code" id="code5d" style="left: 140px; top: 280px; width: 830px; font-size: 32px; line-height: 50px"></div>
+        <div class="code" id="code5e" style="left: 140px; top: 280px; width: 830px; font-size: 32px; line-height: 50px"></div>
         <div class="cons" id="cons5" style="left: 1030px; top: 280px; width: 750px; height: 270px">
           <div class="ct">console</div>
           <span class="out" id="o5a" style="position: absolute; left: 28px; top: 58px; font-size: 30px">undefined</span>
@@ -143,10 +148,13 @@ SECTIONS = r"""
           <span class="out" id="o5c" style="position: absolute; left: 28px; top: 58px; font-size: 30px">1</span>
           <span class="out err" id="o5d" style="position: absolute; left: 28px; top: 106px; right: 28px; font-size: 26px; line-height: 1.3">ReferenceError: y is not defined</span>
           <span class="out err" id="o5e" style="position: absolute; left: 28px; top: 58px; right: 28px; font-size: 26px; line-height: 1.3">SyntaxError: Identifier 'e' has already been declared</span>
+          <span class="out" id="o5g" style="position: absolute; left: 28px; top: 58px; font-size: 30px">1</span>
+          <span class="out" id="o5h" style="position: absolute; left: 28px; top: 106px; font-size: 30px">undefined</span>
           <span class="out err" id="o5f" style="position: absolute; left: 28px; top: 58px; right: 28px; font-size: 26px; line-height: 1.3">TypeError: Assignment to constant variable.</span>
         </div>
-        <div class="cd" id="cd5" style="left: 1290px; top: 610px"><span class="cdn">3</span><span class="cdn">2</span><span class="cdn">1</span><div class="cdl">Think!</div></div>
+                <div class="cd" id="cd5" style="left: 1290px; top: 610px"><span class="cdn">3</span><span class="cdn">2</span><span class="cdn">1</span><div class="cdl">Think!</div></div>
         <div class="tag" id="tdz5" style="left: 1030px; top: 600px; background: #ffd0d6; color: #d92d48; font-size: 28px">☠️ temporal dead zone</div>
+        <div class="tag" id="win5" style="left: 1030px; top: 600px; background: #ffe9a8; font-size: 28px">🌐 in a browser script</div>
         <div class="tag" id="leak5" style="left: 1030px; top: 600px; background: #ffe9a8; font-size: 28px">var x leaks out of the block</div>
         <div class="tag" id="stay5" style="left: 1030px; top: 600px; background: #d5f5e6; color: #0a8a5f; font-size: 28px">let y stays inside the block</div>
         <div class="card" id="rec5" style="left: 1030px; top: 600px; width: 750px; height: 200px; padding: 22px 30px; background: #d5f5e6; border-color: #0a8a5f">
@@ -201,6 +209,34 @@ SECTIONS = r"""
         <div class="card fnc" id="bound7" style="left: 1010px; top: 700px; width: 770px; height: 130px"><div class="hd">greetAva  (a new function)</div><div style="padding: 12px 26px; font-size: 28px; font-weight: 800">🔒 this is locked to <span class="mono" style="color: #6a4df0">Ava</span></div><div class="chip" id="res7b" style="left: 470px; top: 62px; position: absolute; font-size: 26px; border-color: #0a8a5f; background: #d5f5e6">→ "Hey, Ava."</div></div>
       </section>
 
+      <!-- 7x · Q3 bonus facts -->
+      <section id="s7x" class="clip" data-start="{{s7x.start}}" data-duration="{{s7x.dur}}" data-track-index="0">
+        <div class="eyebrow" style="background: #6a4df0">Question 3 of 4 · bonus</div>
+        <h2>Three bonus facts interviewers love</h2>
+        <div class="card fnc" id="bn1" style="left: 140px; top: 300px; width: 520px; height: 340px">
+          <div class="hd">1 · Partial application</div>
+          <div class="mono" style="position: absolute; left: 28px; top: 78px; font-size: 24px; font-weight: 700; line-height: 1.5">const hiAva =<br />&nbsp; greet.bind(ava, "Hi");</div>
+          <div class="mono" style="position: absolute; left: 28px; top: 186px; font-size: 26px; font-weight: 700">hiAva("!")</div>
+          <div class="chip" id="bn1r" style="left: 28px; top: 240px; position: absolute; font-size: 26px; border-color: #0a8a5f; background: #d5f5e6">→ "Hi, Ava!"</div>
+        </div>
+        <div class="card fnc" id="bn2" style="left: 700px; top: 300px; width: 520px; height: 340px">
+          <div class="hd">2 · Bound is permanent</div>
+          <div class="mono" style="position: absolute; left: 28px; top: 78px; font-size: 24px; font-weight: 700; line-height: 1.5">greetAva.call(ben,<br />&nbsp; "Hey", ".")</div>
+          <div class="chip" id="bn2r" style="left: 28px; top: 200px; position: absolute; font-size: 26px; border-color: #0a8a5f; background: #d5f5e6">→ "Hey, Ava."</div>
+          <div style="position: absolute; left: 28px; top: 268px; font-size: 24px; font-weight: 700; color: var(--muted)">🔒 still Ava, not Ben</div>
+        </div>
+        <div class="card fnc" id="bn3" style="left: 1260px; top: 300px; width: 520px; height: 340px">
+          <div class="hd">3 · Arrow functions</div>
+          <div class="mono" style="position: absolute; left: 28px; top: 78px; font-size: 24px; font-weight: 700; line-height: 1.5">const f = () =&gt; this;<br />f.call(ava) === ava</div>
+          <div class="chip" id="bn3r" style="left: 28px; top: 200px; position: absolute; font-size: 26px; border-color: #d92d48; background: #ffd0d6">→ false</div>
+          <div style="position: absolute; left: 28px; top: 268px; font-size: 24px; font-weight: 700; color: var(--muted)">this comes from where it was written</div>
+        </div>
+        <div class="card" id="bn4" style="left: 140px; top: 676px; width: 1640px; height: 112px; display: flex; align-items: center; gap: 28px; padding: 0 34px; background: #fff7d6">
+          <span style="font-size: 26px; font-weight: 800; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase">Modern tip</span>
+          <span class="mono" style="font-size: 30px; font-weight: 700">Math.max.apply(null, nums)</span><span style="font-size: 36px; font-weight: 900">→</span><span class="mono" style="font-size: 30px; font-weight: 800; color: #0a8a5f">Math.max(...nums)</span>
+        </div>
+      </section>
+
       <!-- 8 · Q4 concept -->
       <section id="s8" class="clip" data-start="{{s8.start}}" data-duration="{{s8.dur}}" data-track-index="0">
         <div class="eyebrow" style="background: #0a8a5f">Question 4 of 4</div>
@@ -240,6 +276,29 @@ SECTIONS = r"""
         <div class="tag" id="still9" style="left: 1450px; top: 330px; font-size: 22px; padding: 4px 14px; background: #d5f5e6; color: #0a8a5f">✓ still finished</div>
       </section>
 
+      <!-- 9x · Q4 the other combinators -->
+      <section id="s9x" class="clip" data-start="{{s9x.start}}" data-duration="{{s9x.dur}}" data-track-index="0">
+        <div class="eyebrow" style="background: #0a8a5f">Question 4 of 4 · bonus</div>
+        <h2>The four promise combinators</h2>
+        <div class="card" id="pa9" style="left: 140px; top: 300px; width: 790px; height: 240px; border-color: #0a7fbf">
+          <div class="hd mono" style="background: #0a7fbf; font-size: 28px">Promise.all</div>
+          <div style="padding: 16px 28px; font-size: 28px; line-height: 1.5"><b>Waits for</b> every promise to fulfill<br /><b>Rejects</b> on the first rejection</div>
+        </div>
+        <div class="card" id="ps9" style="left: 990px; top: 300px; width: 790px; height: 240px; border-color: #6a4df0">
+          <div class="hd mono" style="background: #6a4df0; font-size: 28px">Promise.allSettled</div>
+          <div style="padding: 16px 28px; font-size: 28px; line-height: 1.5"><b>Waits for</b> every promise to settle<br /><b>Never rejects</b>: a status for each</div>
+        </div>
+        <div class="card" id="pr9" style="left: 140px; top: 570px; width: 790px; height: 240px; border-color: #c2410c">
+          <div class="hd mono" style="background: #c2410c; font-size: 28px">Promise.race</div>
+          <div style="padding: 16px 28px; font-size: 28px; line-height: 1.5"><b>Waits for</b> the first to settle<br /><b>Result</b>: success or failure</div>
+          <div class="chip" id="trap9" style="left: 28px; top: 158px; position: absolute; font-size: 22px; border-color: #d92d48; background: #ffd0d6; padding: 3px 14px">⚠ race([]) never settles</div>
+        </div>
+        <div class="card" id="pn9" style="left: 990px; top: 570px; width: 790px; height: 240px; border-color: #0a8a5f">
+          <div class="hd mono" style="background: #0a8a5f; font-size: 28px">Promise.any</div>
+          <div style="padding: 16px 28px; font-size: 28px; line-height: 1.5"><b>Waits for</b> the first to fulfill<br /><b>Rejects</b> only if all reject: <b class="mono" id="agg9" style="display: inline-block; color: #d92d48; font-size: 24px">AggregateError</b></div>
+        </div>
+      </section>
+
       <!-- 10 · Recap -->
       <section id="s10" class="clip" data-start="{{s10.start}}" data-duration="{{s10.dur}}" data-track-index="0">
         <div class="eyebrow">Recap</div>
@@ -248,7 +307,6 @@ SECTIONS = r"""
         <div class="card rcp" id="rc2" style="top: 428px"><span class="ic" style="color: #0a7fbf">let</span><div>var: function scope · let: block scope<small>let has a temporal dead zone</small></div></div>
         <div class="card rcp" id="rc3" style="top: 566px"><span class="ic" style="color: #6a4df0">this</span><div>call and apply run now<small>bind returns a new function</small></div></div>
         <div class="card rcp" id="rc4" style="top: 704px"><span class="ic" style="color: #0a8a5f">⏱</span><div>all waits for everyone · race takes the first<small>neither cancels anything</small></div></div>
-        <div class="fine" id="src10" style="left: 140px; top: 846px; font-size: 22px">Questions: github.com/sudheerj/javascript-interview-questions</div>
         <div class="tag" id="next10" style="right: 140px; top: 200px; font-size: 30px; background: var(--sun)">More interview questions soon</div>
       </section>
 """
@@ -289,7 +347,15 @@ var d = 2;     // OK
 let e = 1;
 let e = 2;     // SyntaxError`,
         code5d: `const c = 1;
-c = 2;         // TypeError`,
+c = 2;         // TypeError
+
+const user = { n: 1 };
+user.n = 2;    // OK: object changed`,
+        code5e: `var a = 1;
+let b = 2;
+
+window.a;   // 1
+window.b;   // undefined`,
         code7: `const ava = { name: "Ava" };
 const ben = { name: "Ben" };
 

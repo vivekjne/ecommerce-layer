@@ -32,7 +32,7 @@ master(root + "assets/music.wav", root + "assets/music.mp3", "", -28, -3, ["-ar"
 
 let html = readFileSync(root + "src/template.html", "utf8");
 html = html.replaceAll("{{total}}", String(timing.total));
-html = html.replace(/\{\{(s\d+)\.(start|dur)\}\}/g, (_, id, k) => {
+html = html.replace(/\{\{(s\d+x?)\.(start|dur)\}\}/g, (_, id, k) => {
   if (!timing.scenes[id]) throw new Error("unknown scene " + id);
   return String(timing.scenes[id][k]);
 });

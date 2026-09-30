@@ -57,6 +57,13 @@ def parse(text: str):
     say_parts, tokens, pos = [], [], 0
     for m in TOKEN.finditer(text):
         show, spoken = (m.group(1), m.group(2)) if m.group(1) else (m.group(3), m.group(3))
+        if tokens and re.fullmatch(r"[.,;:!?]+", show):
+            # punctuation that follows a [shown|spoken] term belongs to that word
+            tokens[-1]["show"] += show
+            tokens[-1]["spoken"] += spoken
+            say_parts[-1] += spoken
+            pos += len(spoken)
+            continue
         if say_parts:
             pos += 1
         tokens.append({"show": show, "spoken": spoken, "char_start": pos + 1})

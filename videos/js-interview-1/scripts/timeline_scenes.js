@@ -5,13 +5,12 @@
       tl.fromTo("#s1 h1", { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: POP }, 0.6);
       tl.fromTo("#s1 p", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: E }, L("s1a", 1.0));
       ["#tp1", "#tp2", "#tp3", "#tp4"].forEach((s, i) => show(s, W("s1b", 3) + i * 0.9, { s: 0.5, d: 0.6 }));
-      show("#cred1", L("s1d", 0.6), { s: 0.7, d: 0.7 });
       tl.fromTo("#sam", { opacity: 0, x: -300, y: BIG.sam.y, scale: BIG.sam.s }, { opacity: 1, x: BIG.sam.x, y: BIG.sam.y, scale: BIG.sam.s, duration: 2.0, ease: "power1.out", transformOrigin: "50% 100%" }, 0.4);
       tl.fromTo("#byte", { opacity: 0, x: 300, y: BIG.byte.y, scale: BIG.byte.s }, { opacity: 1, x: BIG.byte.x, y: BIG.byte.y, scale: BIG.byte.s, duration: 2.0, ease: "power1.out", transformOrigin: "50% 100%" }, 0.6);
       wave("#sam", L("s1a"), 3); wave("#byte", L("s1a", 0.6), 3);
       face("#byte", "h", L("s1a")); wiggle("#byte", L("s1b"), 2);
       mood("#sam", "sad", L("s1c", 2.0)); wobble("#sam", L("s1c", 2.0), 2, 5);
-      mood("#sam", "happy", L("s1d", 0.4)); cheer("#sam", L("s1d", 1.4));
+      mood("#sam", "happy", L("s1d", 0.1)); cheer("#sam", L("s1d", 0.2));
       const walkBack = LE("s1d", 0.8);
       tl.to("#sam", { x: 0, y: 0, scale: 1, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, walkBack);
       tl.to("#byte", { x: 0, y: 0, scale: 1, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, walkBack);
@@ -30,6 +29,7 @@
       show("#stB2", L("s2d", 2.8), { x: -30, s: 0.9, d: 0.6 });
       show("#rB2", L("s2d", 3.4), { s: 0.5, d: 0.5 });
       show("#tagB2", L("s2e", 0.6), { s: 0.5, d: 0.6 });
+      show("#same2", L("s2f", 3.4), { s: 0.7, d: 0.7 });
       wiggle("#byte", L("s2e", 0.6), 2); mood("#sam", "sad", L("s2e", 1.5)); wobble("#sam", L("s2e", 1.5), 2, 5);
       face("#byte", "h", L("s2c"));
       leave("s2");
@@ -46,7 +46,7 @@
       row(3, L("s3e")); cell(3, 1, W("s3e", 4)); cell(3, 2, W("s3e", 7));
       row(4, L("s3f")); cell(4, 1, W("s3f", 8)); cell(4, 2, W("s3f", 8));
       row(5, L("s3g")); cell(5, 1, W("s3g", 6)); cell(5, 2, W("s3g", 6));
-      face("#byte", "a", W("s3f", 1)); face("#byte", "n", L("s3g"));
+      face("#byte", "a", W("s3f", 1)); show("#nan3", L("s3j", 1.0), { s: 0.85, d: 0.7 }); face("#byte", "n", L("s3g"));
       show("#rule3", L("s3h", 0.4), { s: 0.85, d: 0.8 }); face("#byte", "h", L("s3h")); cheer("#sam", L("s3h", 1.0));
       show("#null3", L("s3i", 0.4), { s: 0.85, d: 0.8 });
       leave("s3");
@@ -91,7 +91,14 @@
       hide("#code5c, #o5e", L("s5i", 0.0), 0.4);
       fade("#code5d", L("s5i", 0.3), 0.6); face("#byte", "n", L("s5i"));
       hl("code5d", [2], W("s5i", 7), 1.6, "rgba(217,45,72,.35)"); out("#o5f", W("s5i", 8)); face("#byte", "a", W("s5i", 8));
-      hide("#code5d, #o5f", L("s5j", 0.0), 0.4);
+      hl("code5d", [4, 5], W("s5k", 5), 3.0, "rgba(10,138,95,.3)"); face("#byte", "h", W("s5k", 5));
+      // -- window
+      hide("#code5d, #o5f", L("s5l", 0.0), 0.4);
+      fade("#code5e", L("s5l", 0.3), 0.6); face("#byte", "n", L("s5l"));
+      show("#win5", W("s5l", 4), { s: 0.6, d: 0.6 });
+      hl("code5e", [4], W("s5l", 10), 1.8, "rgba(10,138,95,.3)"); out("#o5g", W("s5l", 13));
+      hl("code5e", [5], W("s5l", 16), 1.8, "rgba(10,127,191,.3)"); out("#o5h", W("s5l", 18));
+      hide("#code5e, #o5g, #o5h, #win5", L("s5j", 0.0), 0.4);
       show("#rec5", L("s5j", 0.4), { s: 0.85, d: 0.8 }); face("#byte", "h", L("s5j", 0.4)); mood("#sam", "happy", L("s5j", 0.4)); cheer("#sam", L("s5j", 1.0));
       leave("s5");
 
@@ -130,6 +137,15 @@
       hl("code7", [11], L("s7f", 0.2), 2.0); show("#res7b", W("s7f", 7), { s: 0.6, d: 0.6 });
       cheer("#sam", L("s7g", 0.6)); face("#byte", "h", L("s7g"));
       leave("s7");
+
+      // ===================== 7x · Q3 bonus facts =====================
+      enter("s7x");
+      face("#byte", "h", S("s7x") + 0.4);
+      show("#bn1", L("s7i", 0.2), { y: 40, s: 0.9, d: 0.8 }); show("#bn1r", W("s7j", 9), { s: 0.5, d: 0.5 });
+      show("#bn2", L("s7k", 0.2), { y: 40, s: 0.9, d: 0.8 }); show("#bn2r", W("s7k", 12), { s: 0.5, d: 0.5 });
+      show("#bn3", L("s7l", 0.2), { y: 40, s: 0.9, d: 0.8 }); show("#bn3r", W("s7l", 10), { s: 0.5, d: 0.5 });
+      show("#bn4", L("s7m", 0.3), { y: 30, s: 0.95, d: 0.8 }); cheer("#sam", L("s7m", 1.5));
+      leave("s7x");
 
       // ===================== 8 · Q4: the short answer =====================
       enter("s8");
@@ -176,9 +192,20 @@
       face("#byte", "h", L("s9h", 3.0)); cheer("#sam", L("s9h", 4.0));
       leave("s9");
 
+      // ===================== 9x · the other combinators =====================
+      enter("s9x");
+      face("#byte", "q", S("s9x") + 0.4);
+      show("#pa9", L("s9i", 0.2), { y: 40, s: 0.9, d: 0.8 }); show("#pr9", L("s9i", 0.6), { y: 40, s: 0.9, d: 0.8 });
+      show("#ps9", L("s9j", 0.2), { y: 40, s: 0.9, d: 0.8 });
+      show("#pn9", L("s9k", 0.2), { y: 40, s: 0.9, d: 0.8 });
+      pulse("#agg9", W("s9l", 8), 1.3);
+      show("#trap9", L("s9m", 1.2), { s: 0.6, d: 0.6 }); face("#byte", "a", L("s9m", 1.2));
+      face("#byte", "h", LE("s9m", -0.4)); cheer("#sam", L("s9m", 2.8));
+      leave("s9x");
+
       // ===================== 10 · Recap =====================
       enter("s10");
-      tl.set("#next10, #src10", { opacity: 0 }, 0);
+      tl.set("#next10", { opacity: 0 }, 0);
       const RC = { sam: { x: 1295, y: -140, s: 1.7 }, byte: { x: -77, y: -140, s: 1.7 } };
       tl.to("#sam", { x: RC.sam.x, y: RC.sam.y, scale: RC.sam.s, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, S("s10") + 0.4);
       tl.to("#byte", { x: RC.byte.x, y: RC.byte.y, scale: RC.byte.s, duration: 1.6, ease: "power2.inOut", transformOrigin: "50% 100%" }, S("s10") + 0.4);
@@ -187,7 +214,6 @@
       show("#rc2", L("s10c", 0.3), { x: -60, s: 0.9 });
       show("#rc3", L("s10d", 0.2), { x: -60, s: 0.9 });
       show("#rc4", L("s10e", 0.3), { x: -60, s: 0.9 });
-      fade("#src10", L("s10f", 0.2), 0.8);
       show("#next10", L("s10g", 0.2), { s: 0.6, d: 0.7 });
       cheer("#sam", L("s10g", 0.2)); cheer("#byte", L("s10g", 0.6));
 
