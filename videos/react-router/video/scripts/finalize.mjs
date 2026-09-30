@@ -10,8 +10,8 @@ import { spawnSync, execFileSync } from "node:child_process";
 const [input, output, crf = "28", target = "-14.5"] = process.argv.slice(2);
 if (!input || !output) throw new Error("usage: finalize.mjs in.mp4 out.mp4 [crf] [targetLUFS]");
 
-const probe = spawnSync("ffmpeg", ["-hide_banner", "-nostats", "-i", input, "-vn", "-af", "ebur128=peak=true", "-f", "null", "-"], { encoding: "utf8" });
-const summary = probe.stderr.slice(probe.stderr.lastIndexOf("Summary"));
+const probe = spawnSync("ffmpeg", ["-hide_banner", "-nostats", "-i", input, "-vn", "-af", "ebur128=peak=true", "-f", "null", "-"], { encoding: "utf8", maxBuffer: 1 << 28 });
+const summary = probe.stderr.slice(Math.max(0, probe.stderr.lastIndexOf("Integrated loudness")));
 const measured = parseFloat(/I:\s+(-?[\d.]+) LUFS/.exec(summary)[1]);
 const gain = parseFloat(target) - measured;
 console.log(`measured ${measured} LUFS -> applying ${gain.toFixed(2)} dB to reach ${target} LUFS`);
@@ -23,6 +23,6 @@ execFileSync("ffmpeg", [
   "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", output,
 ], { stdio: "inherit" });
 
-const check = spawnSync("ffmpeg", ["-hide_banner", "-nostats", "-i", output, "-vn", "-af", "ebur128=peak=true", "-f", "null", "-"], { encoding: "utf8" });
+const check = spawnSync("ffmpeg", ["-hide_banner", "-nostats", "-i", output, "-vn", "-af", "ebur128=peak=true", "-f", "null", "-"], { encoding: "utf8", maxBuffer: 1 << 28 });
 const s2 = check.stderr.slice(check.stderr.lastIndexOf("Summary"));
 console.log(`final: ${/I:\s+(-?[\d.]+) LUFS/.exec(s2)[1]} LUFS, true peak ${/Peak:\s+(-?[\d.]+) dBFS/.exec(s2)[1]} dBFS`);
