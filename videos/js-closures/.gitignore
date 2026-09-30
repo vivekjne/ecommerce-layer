@@ -5,3 +5,4 @@ assets/vo/
 assets/*.wav
 *-full.mp4
 rendered.mp4
+thumbnail/thumbnail.html
