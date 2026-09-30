@@ -49,13 +49,13 @@
     ]},
     { "id": "s6", "lines": [
       { "id": "s6a", "text": "Question three. What is the difference between call, apply, and bind?" },
-      { "id": "s6b", "text": "Short answer: all three let you choose what {this} points to inside a function." },
+      { "id": "s6b", "text": "Short answer: all three let you choose what the {this} keyword points to inside a function." },
       { "id": "s6c", "text": "Call and apply run the function immediately. Bind returns a new function to run later." },
       { "id": "s6d", "text": "Call and apply differ in how you pass the arguments." },
       { "id": "s6e", "text": "A handy memory trick: call takes a comma separated list. Apply takes an array." }
     ]},
     { "id": "s7", "lines": [
-      { "id": "s7a", "text": "Here is a function that greets whoever {this} points to." },
+      { "id": "s7a", "text": "Here is a function that greets whoever the {this} keyword points to." },
       { "id": "s7b", "text": "With call, we say: run greet, with {this} set to Ava, and pass the arguments one by one." },
       { "id": "s7c", "text": "With apply, it is the same idea, but the arguments go in an array." },
       { "id": "s7d", "text": "Both run right away." },
@@ -68,7 +68,7 @@
       { "id": "s7i", "text": "One. Bind can preset arguments. This is called partial application." },
       { "id": "s7j", "text": "Bind Ava and hi, and later, you only pass the punctuation." },
       { "id": "s7k", "text": "Two. A bound function cannot be rebound. Calling it with Ben still says Ava." },
-      { "id": "s7l", "text": "Three. Arrow functions ignore call, apply, and bind for {this}. They take {this} from where they were written." },
+      { "id": "s7l", "text": "Three. Arrow functions ignore call, apply, and bind for the {this} keyword. They take {this} from where they were written." },
       { "id": "s7m", "text": "And one modern tip: apply is mostly replaced by the spread operator." }
     ]},
     { "id": "s8", "lines": [
@@ -91,7 +91,7 @@
       { "id": "s9i", "text": "Two more combinators come up in interviews." },
       { "id": "s9j", "text": "[Promise.allSettled|Promise dot all settled] waits for everything, and never rejects. You get a status for each promise." },
       { "id": "s9k", "text": "[Promise.any|Promise dot {any}] returns the first promise that succeeds, and ignores the failures." },
-      { "id": "s9l", "text": "If every promise fails, {any} rejects with an aggregate error." },
+      { "id": "s9l", "text": "If every promise fails, promise dot {any} rejects with an aggregate error." },
       { "id": "s9m", "text": "And one trap: [Promise.race|promise dot race] with an empty array never settles." }
     ]},
     { "id": "s10", "lines": [

@@ -130,19 +130,31 @@ def synth_kokoro(say: str, emph=None):
 
         _kokoro = Kokoro(str(KOKORO_DIR / "kokoro-v1.0.onnx"), str(KOKORO_DIR / "voices-v1.0.bin"))
     if emph and any(emph):
-        groups = _kokoro.tokenizer.phonemize(say, "en-us").split(" ")
-        if len(groups) == len(emph):
-            for i, e in enumerate(emph):
-                if not e:
-                    continue
-                groups[i] = _emphasise(groups[i])
-                if i > 0 and not re.search(r"[.,;:!?]$", groups[i - 1]):
-                    groups[i - 1] += ","
-                if i < len(groups) - 1 and not re.search(r"[.,;:!?]$", groups[i]):
-                    groups[i] += ","
-            samples, sr = _kokoro.create(" ".join(groups), voice=KOKORO_VOICE, speed=KOKORO_SPEED, lang="en-us", is_phonemes=True)
-            return samples, sr, None
-        print(f"warn: could not map emphasis onto phonemes for: {say!r}")
+        # phonemize the emphasised words and the text between them separately, so word
+        # merging inside the phonemizer ("with the" -> "wɪððə") cannot misalign anything
+        words = say.split()
+        parts, run = [], []
+        for w, e in zip(words, emph):
+            if e:
+                if run:
+                    parts.append((" ".join(run), False))
+                    run = []
+                parts.append((w, True))
+            else:
+                run.append(w)
+        if run:
+            parts.append((" ".join(run), False))
+        ph = []
+        for text, e in parts:
+            g = _kokoro.tokenizer.phonemize(text, "en-us").strip()
+            ph.append(_emphasise(g) if e else g)
+        out = ""
+        for i, (g, (_, e)) in enumerate(zip(ph, parts)):
+            if out and (e or parts[i - 1][1]) and not re.search(r"[.,;:!?]$", out):
+                out += ","
+            out += (" " if out else "") + g
+        samples, sr = _kokoro.create(out, voice=KOKORO_VOICE, speed=KOKORO_SPEED, lang="en-us", is_phonemes=True, clause_pause=0.18)
+        return samples, sr, None
     samples, sr = _kokoro.create(say, voice=KOKORO_VOICE, speed=KOKORO_SPEED, lang="en-us")
     return samples, sr, None
 
@@ -303,7 +315,7 @@ def main():
     for scene in narration["scenes"]:
         for line in scene["lines"]:
             say, tokens, emph = parse(line["text"])
-            key = hashlib.sha1(f"{ENGINE}|{KOKORO_VOICE}|{KOKORO_SPEED}|{say}|{emph}".encode()).hexdigest()[:10]
+            key = hashlib.sha1(f"{ENGINE}|{KOKORO_VOICE}|{KOKORO_SPEED}|{say}|{emph}|{'v3' if any(emph) else ''}".encode()).hexdigest()[:10]
             raw = VO_DIR / f"{line['id']}.{key}.npy"
             meta = VO_DIR / f"{line['id']}.{key}.json"
             if raw.exists() and meta.exists():

@@ -34,18 +34,18 @@ framework_js = "\n".join(L[i_hl:i_t1])              # highlight, chars, captions
 # code words (this, any, ...) are shown as highlighted code and pulse when spoken
 _a = "'<span class=\"cw\" id=\"cw-' + id + \"-\" + i + '\">'"
 assert _a in framework_js, "caption span markup changed"
-framework_js = framework_js.replace(_a, "'<span class=\"cw' + (w.code ? ' code' : '') + '\" id=\"cw-' + id + \"-\" + i + '\">'")
+framework_js = framework_js.replace(_a, "'<span class=\"cw' + (w.code ? ' cwk' : '') + '\" id=\"cw-' + id + \"-\" + i + '\">'")
 _b = '          tl.to(sel, { color: "#1f2140", backgroundColor: "rgba(255,201,60,0.75)", duration: 0.08 }, a);\n          tl.to(sel, { backgroundColor: "rgba(255,201,60,0)", duration: 0.15 }, Math.max(a + 0.09, b - 0.05));'
 assert _b in framework_js, "caption timeline changed"
 framework_js = framework_js.replace(_b, """          const rest = w.code ? "rgba(106,77,240,0.14)" : "rgba(255,201,60,0)";
           tl.to(sel, { color: w.code ? "#3b2bb5" : "#1f2140", backgroundColor: "rgba(255,201,60,0.75)", duration: 0.08 }, a);
           tl.to(sel, { backgroundColor: rest, duration: 0.15 }, Math.max(a + 0.09, b - 0.05));
-          if (w.code) tl.fromTo(sel, { scale: 1 }, { scale: 1.3, duration: 0.22, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "50% 60%", immediateRender: false }, a);""")
+          if (w.code) tl.fromTo(sel, { scale: 1 }, { scale: 1.12, duration: 0.22, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "50% 60%", immediateRender: false }, a);""")
 
 EXTRA_CSS = r"""
       /* never merge === into a single glyph: this episode is about == vs === */
       #root, #root * { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
-      .cw.code { display: inline-block; font-family: var(--mono); font-weight: 800; color: #6a4df0; background-color: rgba(106, 77, 240, 0.14); padding: 0 0.3em; margin: 0 0.06em; }
+      .cw.cwk { display: inline-block; font-family: var(--mono); font-weight: 800; color: #6a4df0; background-color: rgba(106, 77, 240, 0.14); padding: 0 0.26em; margin: 0 0.22em; }
       .step2 { position: absolute; font-size: 30px; font-weight: 700; background: #f4f5ff; border: 3px solid var(--ink); border-radius: 999px; padding: 6px 22px; white-space: nowrap; }
       .pillv { position: absolute; font-family: var(--mono); font-weight: 800; font-size: 30px; padding: 4px 22px; border-radius: 999px; border: 4px solid; white-space: nowrap; }
       .pillv.t { background: #d5f5e6; color: #0a8a5f; border-color: #0a8a5f; }

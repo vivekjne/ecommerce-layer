@@ -172,6 +172,7 @@
       .fine { position: absolute; font-size: 22px; color: var(--muted); }
       /* never merge === into a single glyph: this episode is about == vs === */
       #root, #root * { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+      .cw.cwk { display: inline-block; font-family: var(--mono); font-weight: 800; color: #6a4df0; background-color: rgba(106, 77, 240, 0.14); padding: 0 0.26em; margin: 0 0.22em; }
       .step2 { position: absolute; font-size: 30px; font-weight: 700; background: #f4f5ff; border: 3px solid var(--ink); border-radius: 999px; padding: 6px 22px; white-space: nowrap; }
       .pillv { position: absolute; font-family: var(--mono); font-weight: 800; font-size: 30px; padding: 4px 22px; border-radius: 999px; border: 4px solid; white-space: nowrap; }
       .pillv.t { background: #d5f5e6; color: #0a8a5f; border-color: #0a8a5f; }
@@ -607,7 +608,7 @@ controller.abort();   // stops the fetch`,
         const div = document.createElement("div");
         div.className = "cline";
         div.id = "cap-" + id;
-        div.innerHTML = "<span>" + ln.words.map((w, i) => '<span class="cw" id="cw-' + id + "-" + i + '">' + esc(w.w) + "</span>").join(" ") + "</span>";
+        div.innerHTML = "<span>" + ln.words.map((w, i) => '<span class="cw' + (w.code ? ' cwk' : '') + '" id="cw-' + id + "-" + i + '">' + esc(w.w) + "</span>").join(" ") + "</span>";
         capEl.appendChild(div);
       });
 
@@ -720,8 +721,10 @@ controller.abort();   // stops the fetch`,
           const a = t0 + w.t;
           const b = i + 1 < ln.words.length ? t0 + ln.words[i + 1].t : t1;
           const sel = "#cw-" + id + "-" + i;
-          tl.to(sel, { color: "#1f2140", backgroundColor: "rgba(255,201,60,0.75)", duration: 0.08 }, a);
-          tl.to(sel, { backgroundColor: "rgba(255,201,60,0)", duration: 0.15 }, Math.max(a + 0.09, b - 0.05));
+          const rest = w.code ? "rgba(106,77,240,0.14)" : "rgba(255,201,60,0)";
+          tl.to(sel, { color: w.code ? "#3b2bb5" : "#1f2140", backgroundColor: "rgba(255,201,60,0.75)", duration: 0.08 }, a);
+          tl.to(sel, { backgroundColor: rest, duration: 0.15 }, Math.max(a + 0.09, b - 0.05));
+          if (w.code) tl.fromTo(sel, { scale: 1 }, { scale: 1.12, duration: 0.22, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "50% 60%", immediateRender: false }, a);
         });
         // Byte narrates: his mouth moves with the voice
         talk("#byte", t0 + 0.02, t1 - 0.02);
