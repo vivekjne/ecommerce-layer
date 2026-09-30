@@ -1,520 +1,182 @@
 {
-  "_notes": "One sentence per line. [shown|spoken] = caption text vs. what the voice says. 'after' = extra silence (seconds) after the line. Source: the UiPath Delegate product overview deck supplied by the user; comparative claims are attributed to UiPath. The UiPath docs/product pages were not reachable from the build sandbox, so nothing here comes from them.",
+  "_notes": "One sentence per line. [shown|spoken] = caption text vs. what the voice says. 'after' = extra silence (seconds) after the line; 'gap' = silence before the next line (default 0.5, use a short gap when a sentence is split across two lines). v3 source: the 10-section script supplied by the user (voiceover kept word for word; only pronunciation markup and clause splits so captions fit two lines). Where the script and the earlier deck-based version differ, the script wins (for example the approval-mode names).",
   "scenes": [
     {
       "id": "s1",
       "lines": [
-        {
-          "id": "s1a",
-          "text": "Welcome to Delegate Demystified."
-        },
-        {
-          "id": "s1b",
-          "text": "Today's topic is UiPath Delegate, described as your first AI intern."
-        },
-        {
-          "id": "s1c",
-          "text": "It is a digital sidekick that learns from you, and does real work across your apps."
-        },
-        {
-          "id": "s1d",
-          "text": "By the end, you will know what it does, how you teach it, and how you stay in control."
-        }
+        { "id": "s1a", "text": "It's [8:55|eight fifty-five] on a Monday." },
+        { "id": "s1b", "text": "Your inbox is full, your calendar has three clashes,", "gap": 0.15 },
+        { "id": "s1c", "text": "and someone wants last quarter's number checked against the [CRM|C R M] before nine." },
+        { "id": "s1d", "text": "None of that is hard." },
+        { "id": "s1e", "text": "It's just busywork spread across five different apps." },
+        { "id": "s1f", "text": "What if you could hand it over in plain language, watch it get done, and stay in charge the whole time?" },
+        { "id": "s1g", "text": "That's UiPath Delegate: a digital sidekick that learns from you and does real work across your apps." },
+        { "id": "s1h", "text": "In the next ten minutes I'll show you what it does, how it works, and how you keep control." }
       ]
     },
     {
       "id": "s2",
       "lines": [
-        {
-          "id": "s2a",
-          "text": "Meet Sam. Sam has a problem."
-        },
-        {
-          "id": "s2b",
-          "text": "A pile of busywork: email digests, [CRM|C R M] updates, smart reporting, and asset creation."
-        },
-        {
-          "id": "s2c",
-          "text": "AI can remove that busywork, but only if it knows how to work inside a real company."
-        },
-        {
-          "id": "s2d",
-          "text": "That is the problem Delegate is designed to tackle."
-        },
-        {
-          "id": "s2e",
-          "text": "So, Sam hires an intern.",
-          "after": 2.4
-        }
+        { "id": "s2a", "text": "Delegate is a general-purpose agent with computer use." },
+        { "id": "s2b", "text": "You ask for something in plain language,", "gap": 0.15 },
+        { "id": "s2c", "text": "and it works across your browser and your applications to get it done." },
+        { "id": "s2d", "text": "You can start four ways: type a prompt, speak a command, record your screen, or start from a template." },
+        { "id": "s2e", "text": "Four ideas sit behind it." },
+        { "id": "s2f", "text": "First, offload the busywork: the repetitive admin that drains your time and focus." },
+        { "id": "s2g", "text": "Second, done, not suggested: it goes beyond advice and completes the task end to end." },
+        { "id": "s2h", "text": "Third, it's trainable, with skills that grow with how you work." },
+        { "id": "s2i", "text": "And fourth, it's enterprise-ready: programmatic execution, built to be reliable and secure." },
+        { "id": "s2j", "text": "AI can remove busywork, but only if it knows how to work inside the enterprise." },
+        { "id": "s2k", "text": "That's the gap Delegate is built for." }
       ]
     },
     {
       "id": "s3",
       "lines": [
-        {
-          "id": "s3a",
-          "text": "So, what is Delegate?"
-        },
-        {
-          "id": "s3b",
-          "text": "It goes beyond suggestions. It gets tasks completed, from start to finish."
-        },
-        {
-          "id": "s3c",
-          "text": "First, it offloads the busywork: repetitive admin work that drains your time and focus."
-        },
-        {
-          "id": "s3d",
-          "text": "Second, work gets done, not just suggested."
-        },
-        {
-          "id": "s3e",
-          "text": "Third, it is a trainable sidekick, with skills that grow with how you work."
-        },
-        {
-          "id": "s3f",
-          "text": "Fourth, it is enterprise ready: reliable, secure, and aware of your workflows."
-        }
+        { "id": "s3a", "text": "Let me show you the loop, because it's simple and it's the same every time." },
+        { "id": "s3b", "text": "One: you ask. In plain language, in a session." },
+        { "id": "s3c", "text": "No code, no [flowchart|flow chart]." },
+        { "id": "s3d", "text": "Two: Delegate plans." },
+        { "id": "s3e", "text": "It works out the steps and which tools it needs, breaking a complex workflow into pieces." },
+        { "id": "s3f", "text": "Three: it acts, and it shows you." },
+        { "id": "s3g", "text": "Every action is visible as it happens." },
+        { "id": "s3h", "text": "If it's heading the wrong way, you can interrupt, correct, or redirect at any point." },
+        { "id": "s3i", "text": "Delegate also learns from your feedback over time." },
+        { "id": "s3j", "text": "Four: it stops when it should." },
+        { "id": "s3k", "text": "Anything that changes data, sends a message, or reaches into a sensitive system waits for your confirmation,", "gap": 0.15 },
+        { "id": "s3l", "text": "depending on your execution mode and what your organization allows." },
+        { "id": "s3m", "text": "I'll come back to that, because it's the part that makes this safe to use at work." },
+        { "id": "s3n", "text": "Under the hood it handles UI automation, files, and API calls,", "gap": 0.15 },
+        { "id": "s3o", "text": "and you can attach your own [SOPs|S O Ps] and product design documents so it works from your context, not a guess." }
       ]
     },
     {
       "id": "s4",
       "lines": [
-        {
-          "id": "s4a",
-          "text": "How do you hand work to Delegate? There are four ways."
-        },
-        {
-          "id": "s4b",
-          "text": "You can type a prompt."
-        },
-        {
-          "id": "s4c",
-          "text": "You can speak a command."
-        },
-        {
-          "id": "s4d",
-          "text": "You can record your screen."
-        },
-        {
-          "id": "s4e",
-          "text": "Or you can start from a template."
-        },
-        {
-          "id": "s4f",
-          "text": "Behind the scenes, it is a general purpose agent with computer use, working across browsers and apps."
-        },
-        {
-          "id": "s4g",
-          "text": "It runs programmatically, with enterprise grade reliability."
-        }
+        { "id": "s4a", "text": "Now let's see it work." },
+        { "id": "s4b", "text": "The first thing Delegate is good at is tasks that cross systems." },
+        { "id": "s4c", "text": "Here I ask it to pull a figure from a report and check the related [CRM|C R M] record." },
+        { "id": "s4d", "text": "It doesn't stop after step one." },
+        { "id": "s4e", "text": "It handles the whole chain, so I get one complete answer without piecing the story together myself." },
+        { "id": "s4f", "text": "Next, the morning routine." },
+        { "id": "s4g", "text": "I ask it to triage my email and calendar first thing." },
+        { "id": "s4h", "text": "It reads both, and tells me what needs me and what can wait." },
+        { "id": "s4i", "text": "And once the rest is done, I ask it to draft a follow-up message." },
+        { "id": "s4j", "text": "It writes the draft using what it just found." },
+        { "id": "s4k", "text": "I review it, adjust the tone, and only then does anything get sent." }
       ]
     },
     {
       "id": "s5",
       "lines": [
-        {
-          "id": "s5a",
-          "text": "Where does it pay off? Here are three top enterprise use cases."
-        },
-        {
-          "id": "s5b",
-          "text": "One: PDD and SDD generation."
-        },
-        {
-          "id": "s5c",
-          "text": "Define processes, contact [SMEs|subject matter experts], record their tasks, and sign off on documents."
-        },
-        {
-          "id": "s5d",
-          "text": "Then hand them to Autopilot and coding agents, to build the solution."
-        },
-        {
-          "id": "s5e",
-          "text": "Two: application testing."
-        },
-        {
-          "id": "s5f",
-          "text": "Run test cases, set up environments, run exploratory testing, and refine object repositories."
-        },
-        {
-          "id": "s5g",
-          "text": "Three: personal productivity."
-        },
-        {
-          "id": "s5h",
-          "text": "Triage incoming work, and validate and follow up on missing evidence."
-        },
-        {
-          "id": "s5i",
-          "text": "Then resolve escalations and duplicates."
-        },
-        {
-          "id": "s5j",
-          "text": "Two more are listed as future: internal enablement, and discovery."
-        },
-        {
-          "id": "s5k",
-          "text": "Enablement would run training on demand, plugged into your knowledge, docs, and goals."
-        },
-        {
-          "id": "s5l",
-          "text": "Discovery would surface tribal know-how across teams. The more you use it, the better it gets."
-        }
+        { "id": "s5a", "text": "This pattern shows up across roles." },
+        { "id": "s5b", "text": "In our support example, a Product Support Engineer starts the day with one prompt:", "gap": 0.2 },
+        { "id": "s5c", "text": "pull my case backlog from Salesforce and prioritize the day." },
+        { "id": "s5d", "text": "Later they summarize the case in front of them, look up licensing data, and draft a first response,", "gap": 0.15 },
+        { "id": "s5e", "text": "all from one conversational surface, without switching tools." }
       ]
     },
     {
       "id": "s6",
       "lines": [
-        {
-          "id": "s6a",
-          "text": "Why would a company choose Delegate to increase employee productivity?"
-        },
-        {
-          "id": "s6b",
-          "text": "Here are the four reasons UiPath gives."
-        },
-        {
-          "id": "s6c",
-          "text": "One: best in class UI automation."
-        },
-        {
-          "id": "s6d",
-          "text": "It is built on the same UiPath UIA foundation as RPA."
-        },
-        {
-          "id": "s6e",
-          "text": "UiPath says that makes it more reliable on enterprise apps than tools that only look at the screen."
-        },
-        {
-          "id": "s6f",
-          "text": "And it adds skills, steering, and multi app orchestration on top."
-        },
-        {
-          "id": "s6g",
-          "text": "Two: it is built as an extension, on top of your existing UiPath deployment."
-        },
-        {
-          "id": "s6h",
-          "text": "UiPath says that means no new IT approval, and no new upgrade process."
-        },
-        {
-          "id": "s6i",
-          "text": "The UiPath Assistant simply upgrades into Delegate."
-        },
-        {
-          "id": "s6j",
-          "text": "Three: structural governance."
-        },
-        {
-          "id": "s6k",
-          "text": "Every operation runs through the same access control, audit trail, credential vault, and AI Trust Layer."
-        },
-        {
-          "id": "s6l",
-          "text": "Governance is built in, not bolted on."
-        },
-        {
-          "id": "s6m",
-          "text": "Four: more automation, and more capacity."
-        },
-        {
-          "id": "s6n",
-          "text": "Discover and document processes, do more testing, and free people for higher value automation work."
-        }
+        { "id": "s6a", "text": "Some work can't be automated the usual way." },
+        { "id": "s6b", "text": "The system has no usable API, and building a full automation would cost more than the task is worth." },
+        { "id": "s6c", "text": "For that, you teach Delegate by showing it." },
+        { "id": "s6d", "text": "Record yourself doing the task once." },
+        { "id": "s6e", "text": "Delegate turns that recording into a routine, or a knowledge skill, that it can repeat on your behalf." },
+        { "id": "s6f", "text": "That's the idea behind a trainable sidekick: you capture your expertise as a reusable playbook,", "gap": 0.15 },
+        { "id": "s6g", "text": "document a workflow once, and invoke it whenever you need it." },
+        { "id": "s6h", "text": "And skills aren't stuck with one person." },
+        { "id": "s6i", "text": "You can share them across the team, so everyone works the same way,", "gap": 0.15 },
+        { "id": "s6j", "text": "and nobody rebuilds what a colleague already taught it." }
       ]
     },
     {
       "id": "s7",
       "lines": [
-        {
-          "id": "s7a",
-          "text": "Let's follow a day with Delegate, for a Product Support Engineer, or [PSE|P S E]."
-        },
-        {
-          "id": "s7b",
-          "text": "Eight prompts take the engineer from backlog to resolution."
-        },
-        {
-          "id": "s7c",
-          "text": "Morning planning. Pull my case backlog from Salesforce, and prioritize the day."
-        },
-        {
-          "id": "s7d",
-          "text": "Delegate pulls the cases, and puts the day in order."
-        },
-        {
-          "id": "s7e",
-          "text": "Context awareness. Summarize the case I'm viewing, with related articles and similar past cases."
-        },
-        {
-          "id": "s7f",
-          "text": "One summary, with everything related attached."
-        },
-        {
-          "id": "s7g",
-          "text": "License lookup. Look up a customer's licensing data, without switching tools."
-        },
-        {
-          "id": "s7h",
-          "text": "The answer arrives in the chat. No tab hopping."
-        },
-        {
-          "id": "s7i",
-          "text": "Log analysis. Pull recent App Insights logs for a tenant, without navigating Azure."
-        },
-        {
-          "id": "s7j",
-          "text": "The logs come to you. No digging through Azure."
-        },
-        {
-          "id": "s7k",
-          "text": "Troubleshooting research. Search product docs, the knowledge base, Slack, Confluence, and past cases at once."
-        },
-        {
-          "id": "s7l",
-          "text": "One question. Five places searched at the same time."
-        },
-        {
-          "id": "s7m",
-          "text": "First response drafting. Generate a reply from the case context, to edit and send to Salesforce."
-        },
-        {
-          "id": "s7n",
-          "text": "A draft reply, ready to polish and send."
-        },
-        {
-          "id": "s7o",
-          "text": "[RunDeck|Run Deck] jobs. Run a predefined job with parameters, without leaving the workflow."
-        },
-        {
-          "id": "s7p",
-          "text": "Set the parameters, and the job runs, right inside the workflow."
-        },
-        {
-          "id": "s7q",
-          "text": "And stay in flow."
-        },
-        {
-          "id": "s7r",
-          "text": "One conversational surface, across every tool the [PSE|P S E] touches."
-        }
+        { "id": "s7a", "text": "Here's where the hours disappear: turning raw data into something you can send." },
+        { "id": "s7b", "text": "Point Delegate at a spreadsheet, a database export, or a folder of files,", "gap": 0.15 },
+        { "id": "s7c", "text": "and ask for a presentation, a proposal, or a report." },
+        { "id": "s7d", "text": "It pulls the relevant data, structures it, and applies your formatting." },
+        { "id": "s7e", "text": "What used to take hours takes minutes,", "gap": 0.15 },
+        { "id": "s7f", "text": "and you're editing a finished draft instead of staring at a blank slide." },
+        { "id": "s7g", "text": "The same idea powers some of the bigger enterprise use cases:", "gap": 0.2 },
+        { "id": "s7h", "text": "generating process and solution design documents, running application test cases,", "gap": 0.15 },
+        { "id": "s7i", "text": "and taking intake and triage off a clerical team's plate." }
       ]
     },
     {
       "id": "s8",
       "lines": [
-        {
-          "id": "s8a",
-          "text": "Now let's look at how it works, from prompt to productivity."
-        },
-        {
-          "id": "s8b",
-          "text": "There are four things Delegate does for you."
-        },
-        {
-          "id": "s8c",
-          "text": "First, it composes and executes tasks."
-        },
-        {
-          "id": "s8d",
-          "text": "You write instructions in plain language. No code."
-        },
-        {
-          "id": "s8e",
-          "text": "It breaks a complex workflow into steps."
-        },
-        {
-          "id": "s8f",
-          "text": "It handles UI automation, files, and API calls."
-        },
-        {
-          "id": "s8g",
-          "text": "And it learns from your feedback over time."
-        }
+        { "id": "s8a", "text": "Chat is great, but sometimes you need the real thing, a proper form or a table you can actually work in." },
+        { "id": "s8b", "text": "When Delegate connects to a system that provides its own interface,", "gap": 0.15 },
+        { "id": "s8c", "text": "it can show that system's real screens inside the conversation." },
+        { "id": "s8d", "text": "Lists, forms, tables, and dashboards render inline, not as a description of them." },
+        { "id": "s8e", "text": "Forms arrive already filled in with sensible values,", "gap": 0.15 },
+        { "id": "s8f", "text": "so you change only what matters instead of describing every field in chat." },
+        { "id": "s8g", "text": "You keep the precision of the real interface without leaving the conversation." },
+        { "id": "s8h", "text": "This works through [MCP|M C P] Apps." }
       ]
     },
     {
       "id": "s9",
       "lines": [
-        {
-          "id": "s9a",
-          "text": "Second, you teach it skills, with Routines."
-        },
-        {
-          "id": "s9b",
-          "text": "A routine captures your expertise as a reusable playbook."
-        },
-        {
-          "id": "s9c",
-          "text": "Document a workflow once, and invoke it forever."
-        },
-        {
-          "id": "s9d",
-          "text": "Share skills across the team, for consistency."
-        },
-        {
-          "id": "s9e",
-          "text": "Your custom skills are always on tap."
-        }
+        { "id": "s9a", "text": "Everything I've shown you so far has one more trick." },
+        { "id": "s9b", "text": "When a session goes well, you don't have to do it again." },
+        { "id": "s9c", "text": "Save any successful Delegate session as a reusable routine." },
+        { "id": "s9d", "text": "Build it once, say a weekly sales pipeline report, or a monthly expense categorization,", "gap": 0.15 },
+        { "id": "s9e", "text": "and from then on you can run it on demand with a single click, or schedule it to run automatically." },
+        { "id": "s9f", "text": "You invest the time once to teach Delegate a workflow, then you benefit every time after that." },
+        { "id": "s9g", "text": "And it isn't just for you." },
+        { "id": "s9h", "text": "You can share a routine with your team, so each person isn't rebuilding the same thing from scratch." }
       ]
     },
     {
       "id": "s10",
       "lines": [
-        {
-          "id": "s10a",
-          "text": "Third, you can attach your [SOPs|S O Ps], and invoke automations."
-        },
-        {
-          "id": "s10b",
-          "text": "Reference your [SOPs|S O Ps] directly."
-        },
-        {
-          "id": "s10c",
-          "text": "Link your design documents, for context."
-        },
-        {
-          "id": "s10d",
-          "text": "Invoke deployed UiPath automations."
-        },
-        {
-          "id": "s10e",
-          "text": "And view the complete task trail and history."
-        }
+        { "id": "s10a", "text": "Of course, the question everyone asks is: how much do I trust it?" },
+        { "id": "s10b", "text": "You decide, with three approval modes." },
+        { "id": "s10c", "text": "Cautious asks before every operation." },
+        { "id": "s10d", "text": "It's the safest, with the most approval prompts." },
+        { "id": "s10e", "text": "Adaptive auto-approves known safe operations, and it's the recommended setting." },
+        { "id": "s10f", "text": "Full access has no approval prompts at all, so keep it for trusted environments only." },
+        { "id": "s10g", "text": "Inside Adaptive there's a Smart approvals toggle." },
+        { "id": "s10h", "text": "Turn it on and Delegate also approves what the model judges safe." },
+        { "id": "s10i", "text": "You get the fewest prompts, but the model can misjudge, so that's a trade-off you choose on purpose." }
       ]
     },
     {
       "id": "s11",
       "lines": [
-        {
-          "id": "s11a",
-          "text": "Fourth, you control what Delegate can access."
-        },
-        {
-          "id": "s11b",
-          "text": "Use allow and deny lists for apps and [URLs|U R Ls]."
-        },
-        {
-          "id": "s11c",
-          "text": "Set granular permissions by task type."
-        },
-        {
-          "id": "s11d",
-          "text": "Every action Delegate takes is recorded in an audit trail."
-        },
-        {
-          "id": "s11e",
-          "text": "And your data stays in your control."
-        }
+        { "id": "s11a", "text": "You can also set allow and deny lists for apps and URLs, and granular permissions by task type." },
+        { "id": "s11b", "text": "Every action lands in an audit trail, and your data stays in your control." }
       ]
     },
     {
       "id": "s12",
       "lines": [
-        {
-          "id": "s12a",
-          "text": "You also decide how much freedom Delegate has, per environment and per task."
-        },
-        {
-          "id": "s12b",
-          "text": "There are three modes."
-        },
-        {
-          "id": "s12c",
-          "text": "Mode one is Always ask. This is the safest."
-        },
-        {
-          "id": "s12d",
-          "text": "Delegate confirms every action before it runs, so you have full oversight on every step."
-        },
-        {
-          "id": "s12e",
-          "text": "Mode two is Smart. This is the balanced mode."
-        },
-        {
-          "id": "s12f",
-          "text": "Delegate decides based on the risk level of each action, and asks only when it matters."
-        },
-        {
-          "id": "s12g",
-          "text": "Mode three is Unrestricted. This gives full autonomy."
-        },
-        {
-          "id": "s12h",
-          "text": "Use it with caution. Only in trusted environments."
-        },
-        {
-          "id": "s12i",
-          "text": "Quick check. Which mode confirms every action before it runs?",
-          "after": 4.0
-        },
-        {
-          "id": "s12j",
-          "text": "Always ask."
-        }
+        { "id": "s12a", "text": "Because Delegate ships on the UiPath platform, every operation inherits controls you already run:" },
+        { "id": "s12b", "text": "Orchestrator for scheduling and run management,", "gap": 0.2 },
+        { "id": "s12c", "text": "a credential vault so secrets are never exposed to the agent,", "gap": 0.2 },
+        { "id": "s12d", "text": "the AI Trust Layer for policy and redaction,", "gap": 0.2 },
+        { "id": "s12e", "text": "and role-based access mapped to your organization." },
+        { "id": "s12f", "text": "Not bolted on. Built in." }
       ]
     },
     {
       "id": "s13",
       "lines": [
-        {
-          "id": "s13a",
-          "text": "Underneath it all, Delegate is governed by design."
-        },
-        {
-          "id": "s13b",
-          "text": "Every operation inherits the controls you already run UiPath with."
-        },
-        {
-          "id": "s13c",
-          "text": "Orchestrator handles central scheduling, queues, and run management for every agent operation."
-        },
-        {
-          "id": "s13d",
-          "text": "The credential vault keeps secrets encrypted and brokered, and never exposed to the agent."
-        },
-        {
-          "id": "s13e",
-          "text": "The AI Trust Layer applies policy, redaction, and model governance to every interaction."
-        },
-        {
-          "id": "s13f",
-          "text": "And role based access covers all operations, mapped to your existing organization."
-        },
-        {
-          "id": "s13g",
-          "text": "The same controls apply to every action, automatically."
-        }
-      ]
-    },
-    {
-      "id": "s14",
-      "lines": [
-        {
-          "id": "s14a",
-          "text": "Let's recap."
-        },
-        {
-          "id": "s14b",
-          "text": "You hand Delegate work by prompt, by voice, by screen recording, or from a template."
-        },
-        {
-          "id": "s14c",
-          "text": "Teach Delegate once with Routines, and share those skills across your team."
-        },
-        {
-          "id": "s14d",
-          "text": "And you stay in control, with three modes, and governance built in."
-        },
-        {
-          "id": "s14e",
-          "text": "Delegate the busywork. Keep the judgment."
-        },
-        {
-          "id": "s14f",
-          "text": "Thanks for watching."
-        }
+        { "id": "s13a", "text": "Let's recap." },
+        { "id": "s13b", "text": "Delegate completes tasks that cross applications." },
+        { "id": "s13c", "text": "It learns repetitive work from a recording." },
+        { "id": "s13d", "text": "It turns raw data into a finished deliverable." },
+        { "id": "s13e", "text": "It works through a system's own screens." },
+        { "id": "s13f", "text": "And it saves what works as routines you can reuse and share, all under approval modes you control." },
+        { "id": "s13g", "text": "Delegate the busywork. Keep the judgment." },
+        { "id": "s13h", "text": "If you're already on UiPath, Delegate ships as an extension of what you have." },
+        { "id": "s13i", "text": "The UiPath Assistant upgrades into it, with no new IT approval and no new upgrade process." },
+        { "id": "s13j", "text": "The getting-started guide and the product page are linked below." },
+        { "id": "s13k", "text": "Open a session, ask for one small thing, and meet your first [AI-intern|AI intern]." }
       ]
     }
   ]

@@ -39,9 +39,9 @@ ENGINE = os.environ.get(
     "VOICE_ENGINE", "kokoro" if (KOKORO_DIR / "kokoro-v1.0.onnx").exists() else "espeak"
 )
 
-LINE_GAP = 0.5      # seconds of silence between sentences
-SCENE_LEAD = 1.1    # silence at the start of each scene (titles animate in)
-SCENE_TAIL = 0.7    # silence at the end of each scene
+LINE_GAP = float(os.environ.get("LINE_GAP", "0.5"))      # seconds of silence between sentences (a line can set its own "gap")
+SCENE_LEAD = float(os.environ.get("SCENE_LEAD", "1.1"))  # silence at the start of each scene (titles animate in)
+SCENE_TAIL = float(os.environ.get("SCENE_TAIL", "0.7"))  # silence at the end of each scene
 INTRO = 0.6
 OUTRO = 2.0
 
@@ -351,6 +351,7 @@ def main():
     for scene in narration["scenes"]:
         s0 = t
         cur = t + SCENE_LEAD
+        gap = LINE_GAP
         for line in scene["lines"]:
             c = clips[line["id"]]
             timing["lines"][line["id"]] = {
@@ -359,8 +360,9 @@ def main():
                 "dur": round(c["dur"], 3),
                 "words": [dict({"w": tok["show"], "t": round(st / 1000, 3)}, **({"code": True} if tok.get("code") else {})) for tok, st in zip(c["tokens"], c["starts"])],
             }
-            cur += c["dur"] + line.get("after", 0) + LINE_GAP
-        end = cur - LINE_GAP + SCENE_TAIL
+            gap = line.get("gap", LINE_GAP)
+            cur += c["dur"] + line.get("after", 0) + gap
+        end = cur - gap + SCENE_TAIL
         timing["scenes"][scene["id"]] = {"start": round(s0, 3), "dur": round(end - s0, 3)}
         t = end
     timing["total"] = round(t + OUTRO, 3)
