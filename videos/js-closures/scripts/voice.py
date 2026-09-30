@@ -16,7 +16,7 @@ Engines (VOICE_ENGINE=kokoro|espeak, default kokoro when its model files exist):
           captions are estimated from the audio (weights + detected pauses).
   espeak  robotic, but needs no model download; gives exact word timings.
 
-Tuning: KOKORO_VOICE (default af_heart), KOKORO_SPEED (default 0.75, lower = slower).
+Tuning: KOKORO_VOICE (default am_michael), KOKORO_SPEED (default 0.85, lower = slower).
 Whisper is speech-to-TEXT, so it cannot generate a voice; use scripts/verify_voice.py
 to transcribe the result and catch mispronounced words.
 """
@@ -33,15 +33,15 @@ VO_DIR = ROOT / "assets" / "vo"
 VO_DIR.mkdir(parents=True, exist_ok=True)
 
 KOKORO_DIR = Path(os.environ.get("KOKORO_DIR", Path.home() / ".cache" / "kokoro"))
-KOKORO_VOICE = os.environ.get("KOKORO_VOICE", "af_heart")
-KOKORO_SPEED = float(os.environ.get("KOKORO_SPEED", "0.75"))
+KOKORO_VOICE = os.environ.get("KOKORO_VOICE", "am_michael")
+KOKORO_SPEED = float(os.environ.get("KOKORO_SPEED", "0.85"))
 ENGINE = os.environ.get(
     "VOICE_ENGINE", "kokoro" if (KOKORO_DIR / "kokoro-v1.0.onnx").exists() else "espeak"
 )
 
-LINE_GAP = 0.6      # seconds of silence between sentences
-SCENE_LEAD = 1.3    # silence at the start of each scene (titles animate in)
-SCENE_TAIL = 0.9    # silence at the end of each scene
+LINE_GAP = 0.5      # seconds of silence between sentences
+SCENE_LEAD = 1.1    # silence at the start of each scene (titles animate in)
+SCENE_TAIL = 0.7    # silence at the end of each scene
 INTRO = 0.6
 OUTRO = 2.0
 
