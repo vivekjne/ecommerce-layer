@@ -49,6 +49,24 @@ Whisper (`sherpa-onnx-whisper-base.en`) recognises about 98.8% of the words; the
 differences are formatting ("UI" vs "U I") or stray `[buzzer]` tags Whisper adds after a line.
 `narration.json` uses `[shown|spoken]` for caption text vs pronunciation, and `after` for pauses.
 
+## Measured on the final file (`uipath-delegate-explainer.mp4`)
+
+| Check | Result |
+| --- | --- |
+| Format | 1920x1080, 30 fps, H.264 + AAC, 9:02.3, 27.8 MB (CRF 30) |
+| `hyperframes check` | 0 errors (19 advisory "nested structure" warnings, same as the reference videos); 98/98 text contrast checks pass WCAG AA |
+| Visual review | snapshots from every scene viewed, overlaps fixed and re-checked; two frames of the final MP4 inspected |
+| Loudness | -14.5 LUFS integrated, true peak -3.3 dBFS |
+| Whisper on the final MP4 audio (voice + music) | 99.3% of words understood; the only flagged line is a spelled-letters formatting difference |
+| Voice pitch | median F0 198 Hz |
+
+Not verifiable by the author: how the voice actually *sounds*. Nobody listened to it. Lines
+with acronyms and product names are the ones to check by ear (timestamps in the delivery notes).
+
+Encoder note: with FFmpeg's default AAC settings a single decoded sample reached +0.8 dBFS at
+3:24 although the input peaked at -5 dBFS (intensity stereo / noise substitution artefact).
+`scripts/finalize.mjs` now passes `-aac_is 0 -aac_pns 0`, which removes it at the same size.
+
 ## Look
 
 Same cream background, ink-outlined cards, and characters as the series (Sam, Byte the narrator,

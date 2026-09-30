@@ -20,7 +20,9 @@ execFileSync("ffmpeg", [
   "-v", "error", "-y", "-i", input,
   "-c:v", "libx264", "-crf", crf, "-preset", "medium", "-pix_fmt", "yuv420p",
   "-af", `volume=${gain.toFixed(2)}dB,alimiter=limit=0.89:attack=2:release=40:level=false`,
-  "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", output,
+  // intensity stereo + noise substitution (the native AAC encoder's defaults) produced a decoded sample
+  // above 0 dBFS at 3:24 even though the input peaked at -5 dBFS; disabling both removes it at the same size
+  "-c:a", "aac", "-b:a", "192k", "-aac_is", "0", "-aac_pns", "0", "-movflags", "+faststart", output,
 ], { stdio: "inherit" });
 
 const check = spawnSync("ffmpeg", ["-hide_banner", "-nostats", "-i", output, "-vn", "-af", "ebur128=peak=true", "-f", "null", "-"], { encoding: "utf8" });
