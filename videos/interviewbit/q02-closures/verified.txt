@@ -1,0 +1,4 @@
+ok  0: (script) -> ["1","2","1","undefined"]
+ok  1: (script) -> ["3","3","3"]
+ok  2: (script) -> ["0","1","2"]
+ok  3: (script) -> ["8","13"]

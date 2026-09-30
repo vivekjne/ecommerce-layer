@@ -1,0 +1,36 @@
+[
+ {
+  "script": "function makeCounter() {\n  let count = 0;\n  return function () {\n    count++;\n    return count;\n  };\n}\nconst counter = makeCounter();\nconsole.log(counter());\nconsole.log(counter());\nconst other = makeCounter();\nconsole.log(other());\nconsole.log(typeof count);",
+  "expect": [
+   "1",
+   "2",
+   "1",
+   "undefined"
+  ]
+ },
+ {
+  "script": "for (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 0);\n}",
+  "expect": [
+   "3",
+   "3",
+   "3"
+  ],
+  "wait": 50
+ },
+ {
+  "script": "for (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 0);\n}",
+  "expect": [
+   "0",
+   "1",
+   "2"
+  ],
+  "wait": 50
+ },
+ {
+  "script": "function makeAdder(n) {\n  return (x) => x + n;\n}\nconst add5 = makeAdder(5);\nconst add10 = makeAdder(10);\nconsole.log(add5(3));\nconsole.log(add10(3));",
+  "expect": [
+   "8",
+   "13"
+  ]
+ }
+]

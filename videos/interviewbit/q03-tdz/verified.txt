@@ -1,0 +1,7 @@
+ok  0: (script) -> ["undefined","5"]
+ok  1: (script) -> ["ReferenceError: Cannot access 'b' before initialization"]
+ok  2: (script) -> ["ReferenceError","undefined"]
+ok  3: (script) -> ["1"]
+ok  4: (script) -> ["Cannot access 'd' before initialization"]
+ok  5: (script) -> ["ReferenceError"]
+ok  6: (script) -> ["ReferenceError"]

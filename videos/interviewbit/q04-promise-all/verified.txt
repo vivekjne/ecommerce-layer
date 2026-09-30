@@ -1,0 +1,3 @@
+ok  0: (script) -> ["rejected","C","A"]
+ok  1: (script) -> ["rejected"]
+ok  2: (script) -> ["rejected fulfilled"]

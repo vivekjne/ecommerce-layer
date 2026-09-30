@@ -1,0 +1,50 @@
+[
+ {
+  "script": "function invite(greeting, punct) {\n  console.log(greeting, this.name + punct);\n}\nconst john = { name: \"John\" };\nconst jimmy = { name: \"Jimmy\" };\ninvite.call(john, \"Hello\", \"!\");",
+  "expect": [
+   "Hello John!"
+  ]
+ },
+ {
+  "script": "function invite(greeting, punct) {\n  console.log(greeting, this.name + punct);\n}\nconst john = { name: \"John\" };\nconst jimmy = { name: \"Jimmy\" };\ninvite.apply(jimmy, [\"Hello\", \"!\"]);",
+  "expect": [
+   "Hello Jimmy!"
+  ]
+ },
+ {
+  "script": "function invite(greeting, punct) {\n  console.log(greeting, this.name + punct);\n}\nconst john = { name: \"John\" };\nconst jimmy = { name: \"Jimmy\" };\nconst inviteJohn = invite.bind(john, \"Hi\");\ninviteJohn(\"?\");",
+  "expect": [
+   "Hi John?"
+  ]
+ },
+ {
+  "script": "function invite(greeting, punct) {\n  console.log(greeting, this.name + punct);\n}\nconst john = { name: \"John\" };\nconst jimmy = { name: \"Jimmy\" };\nconst inviteJohn = invite.bind(john);\ninviteJohn.call(jimmy, \"Hey\", \"!\");",
+  "expect": [
+   "Hey John!"
+  ]
+ },
+ {
+  "script": "function invite(greeting, punct) {\n  console.log(greeting, this.name + punct);\n}\nconst john = { name: \"John\" };\nconst jimmy = { name: \"Jimmy\" };\nconst r = invite.bind(john);\nconsole.log(r === invite, typeof r);",
+  "expect": [
+   "false function"
+  ]
+ },
+ {
+  "script": "const user = {\n  name: \"John\",\n  hi() {\n    console.log(this.name);\n  },\n};\nconst f = user.hi;\nf();",
+  "expect": [
+   "undefined"
+  ]
+ },
+ {
+  "script": "const user = {\n  name: \"John\",\n  hi() {\n    console.log(this.name);\n  },\n};\nconst f = user.hi.bind(user);\nf();",
+  "expect": [
+   "John"
+  ]
+ },
+ {
+  "script": "console.log(Math.max.apply(null, [1, 5, 3]));",
+  "expect": [
+   "5"
+  ]
+ }
+]

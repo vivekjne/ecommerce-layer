@@ -1,0 +1,124 @@
+{
+ "scenes": [
+  {
+   "id": "s1",
+   "title": "Hook",
+   "lines": [
+    {
+     "id": "s1a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Does [Promise.all|Promise dot all] cancel the other promises when one of them fails?"
+    },
+    {
+     "id": "s1b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "No. It only rejects right away. The other promises keep running."
+    },
+    {
+     "id": "s1c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Let us prove it."
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "Demo",
+   "lines": [
+    {
+     "id": "s2a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Three tasks. A takes three hundred milliseconds, one fails after one hundred, and C takes two hundred."
+    },
+    {
+     "id": "s2b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "At one hundred, [Promise.all|Promise dot all] rejects, and we print rejected."
+    },
+    {
+     "id": "s2c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "But look. C and A still finish afterward. Nothing was cancelled."
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "Why",
+   "lines": [
+    {
+     "id": "s3a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Why can it not cancel them?"
+    },
+    {
+     "id": "s3b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A promise has no cancel method. It only represents a result that will arrive."
+    },
+    {
+     "id": "s3c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Cancelling means stopping the work behind the promise, and that is up to the work itself."
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "Fix",
+   "lines": [
+    {
+     "id": "s4a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The standard tool is [AbortController|abort controller]. Give every task the same signal."
+    },
+    {
+     "id": "s4b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "When one fails, call abort, and each task can stop its own work."
+    },
+    {
+     "id": "s4c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Now only rejected is printed. A and C never finish."
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "Settled",
+   "lines": [
+    {
+     "id": "s5a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "And if I want to wait for everything?"
+    },
+    {
+     "id": "s5b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Use [Promise.allSettled|Promise dot all settled]. It never rejects, and it reports every result."
+    },
+    {
+     "id": "s5c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Remember: [Promise.all|Promise dot all] combines results. It does not cancel work."
+    }
+   ]
+  }
+ ]
+}

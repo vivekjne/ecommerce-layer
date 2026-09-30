@@ -1,0 +1,25 @@
+[
+ {
+  "script": "const wait = (ms, name, signal) =>\n  new Promise((ok) => {\n    const t = setTimeout(() => { console.log(name); ok(); }, ms);\n    signal?.addEventListener(\"abort\", () => clearTimeout(t));\n  });\nconst fail = (ms) =>\n  new Promise((_, no) => setTimeout(() => no(new Error(\"boom\")), ms));\nPromise.all([\n  wait(300, \"A\"),\n  fail(100),\n  wait(200, \"C\"),\n]).catch(() => console.log(\"rejected\"));",
+  "expect": [
+   "rejected",
+   "C",
+   "A"
+  ],
+  "wait": 500
+ },
+ {
+  "script": "const wait = (ms, name, signal) =>\n  new Promise((ok) => {\n    const t = setTimeout(() => { console.log(name); ok(); }, ms);\n    signal?.addEventListener(\"abort\", () => clearTimeout(t));\n  });\nconst fail = (ms) =>\n  new Promise((_, no) => setTimeout(() => no(new Error(\"boom\")), ms));\nconst ac = new AbortController();\nPromise.all([\n  wait(300, \"A\", ac.signal),\n  fail(100),\n  wait(200, \"C\", ac.signal),\n]).catch(() => {\n  console.log(\"rejected\");\n  ac.abort();\n});",
+  "expect": [
+   "rejected"
+  ],
+  "wait": 500
+ },
+ {
+  "script": "Promise.allSettled([\n  Promise.reject(new Error(\"x\")),\n  Promise.resolve(2),\n]).then((r) => {\n  console.log(r[0].status, r[1].status);\n});",
+  "expect": [
+   "rejected fulfilled"
+  ],
+  "wait": 50
+ }
+]

@@ -1,0 +1,7 @@
+{
+ "id": "iq01-loose-vs-strict",
+ "name": "InterviewBit 01",
+ "tag": "JS \u00b7 Q1",
+ "question": "== vs ===",
+ "questionHtml": "What is the difference between <code>==</code> and <code>===</code>?"
+}

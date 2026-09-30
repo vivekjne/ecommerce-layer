@@ -1,0 +1,46 @@
+[
+ {
+  "script": "console.log(a);\nvar a = 5;\nconsole.log(a);",
+  "expect": [
+   "undefined",
+   "5"
+  ]
+ },
+ {
+  "script": "try {\n  console.log(b);\n} catch (e) {\n  console.log(e.name + \": \" + e.message);\n}\nlet b = 5;",
+  "expect": [
+   "ReferenceError: Cannot access 'b' before initialization"
+  ]
+ },
+ {
+  "script": "try {\n  console.log(typeof c);\n} catch (e) {\n  console.log(e.name);\n}\nlet c = 1;\nconsole.log(typeof neverDeclared);",
+  "expect": [
+   "ReferenceError",
+   "undefined"
+  ]
+ },
+ {
+  "script": "const show = () => console.log(x);\nlet x = 1;\nshow();",
+  "expect": [
+   "1"
+  ]
+ },
+ {
+  "script": "try {\n  console.log(d);\n} catch (e) {\n  console.log(e.message);\n}\nconst d = 1;",
+  "expect": [
+   "Cannot access 'd' before initialization"
+  ]
+ },
+ {
+  "script": "try {\n  new Shape();\n} catch (e) {\n  console.log(e.name);\n}\nclass Shape {}",
+  "expect": [
+   "ReferenceError"
+  ]
+ },
+ {
+  "script": "let x = \"outer\";\n{\n  try {\n    console.log(x);\n  } catch (e) {\n    console.log(e.name);\n  }\n  let x = \"inner\";\n}",
+  "expect": [
+   "ReferenceError"
+  ]
+ }
+]

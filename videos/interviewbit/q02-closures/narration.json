@@ -1,0 +1,148 @@
+{
+ "scenes": [
+  {
+   "id": "s1",
+   "title": "Hook",
+   "lines": [
+    {
+     "id": "s1a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What is a closure in JavaScript?"
+    },
+    {
+     "id": "s1b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A closure is a function that remembers the variables from the place where it was created."
+    },
+    {
+     "id": "s1c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "It keeps them even after the outer function has finished. Let us build one."
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "Counter",
+   "lines": [
+    {
+     "id": "s2a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The function [makeCounter|make counter] creates a variable called count."
+    },
+    {
+     "id": "s2b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "It returns an inner function that changes count, and returns it."
+    },
+    {
+     "id": "s2c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "When [makeCounter|make counter] finishes, you would expect count to disappear."
+    },
+    {
+     "id": "s2d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "But the inner function still holds a reference to it. That is the closure."
+    },
+    {
+     "id": "s2e",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Call it once and you get one. Call it again and you get two."
+    },
+    {
+     "id": "s2f",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Each call to [makeCounter|make counter] creates a new closure, with its own count."
+    },
+    {
+     "id": "s2g",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "And the outside cannot reach count at all. It is private."
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "Loop trap",
+   "lines": [
+    {
+     "id": "s3a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What about the famous loop question?"
+    },
+    {
+     "id": "s3b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "With [var|var], all three callbacks share one variable. When the timers fire, i is already three."
+    },
+    {
+     "id": "s3c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "With [let|let], every iteration gets its own copy, so you get zero, one, two."
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "Factory",
+   "lines": [
+    {
+     "id": "s4a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Where would I use this in real code?"
+    },
+    {
+     "id": "s4b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Function factories. [makeAdder|make adder] remembers the number you gave it."
+    },
+    {
+     "id": "s4c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Add five to three is eight. Add ten to three is thirteen. Each function remembers its own number."
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "Wrap",
+   "lines": [
+    {
+     "id": "s5a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Closures give you private state, function factories, and callbacks that remember their context."
+    },
+    {
+     "id": "s5b",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "So a closure is a function, plus the scope it remembers."
+    },
+    {
+     "id": "s5c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Exactly. That is your interview answer."
+    }
+   ]
+  }
+ ]
+}

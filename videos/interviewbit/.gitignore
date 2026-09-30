@@ -1,0 +1,13 @@
+node_modules/
+*/assets/vo/
+*/assets/*.wav
+*/assets/*.mp3
+*/assets/gsap.min.js
+*/rendered.mp4
+*/final.mp4
+*/snapshots/
+*/index.html
+out/
+__pycache__/
+*/work-*/
+*/.rendered.*/

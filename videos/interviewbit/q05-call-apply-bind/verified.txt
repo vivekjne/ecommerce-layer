@@ -1,0 +1,8 @@
+ok  0: (script) -> ["Hello John!"]
+ok  1: (script) -> ["Hello Jimmy!"]
+ok  2: (script) -> ["Hi John?"]
+ok  3: (script) -> ["Hey John!"]
+ok  4: (script) -> ["false function"]
+ok  5: (script) -> ["undefined"]
+ok  6: (script) -> ["John"]
+ok  7: (script) -> ["5"]

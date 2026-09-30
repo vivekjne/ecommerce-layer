@@ -1,0 +1,74 @@
+[
+ {
+  "code": "0 == false",
+  "expect": "true"
+ },
+ {
+  "code": "0 === false",
+  "expect": "false"
+ },
+ {
+  "code": "\"1\" == 1",
+  "expect": "true"
+ },
+ {
+  "code": "\"1\" === 1",
+  "expect": "false"
+ },
+ {
+  "code": "null == undefined",
+  "expect": "true"
+ },
+ {
+  "code": "null === undefined",
+  "expect": "false"
+ },
+ {
+  "code": "NaN == NaN",
+  "expect": "false"
+ },
+ {
+  "code": "NaN === NaN",
+  "expect": "false"
+ },
+ {
+  "code": "Number.isNaN(NaN)",
+  "expect": "true"
+ },
+ {
+  "code": "Object.is(NaN, NaN)",
+  "expect": "true"
+ },
+ {
+  "code": "[] == []",
+  "expect": "false"
+ },
+ {
+  "code": "[] === []",
+  "expect": "false"
+ },
+ {
+  "code": "null == 0",
+  "expect": "false"
+ },
+ {
+  "code": "null >= 0",
+  "expect": "true"
+ },
+ {
+  "code": "null > 0",
+  "expect": "false"
+ },
+ {
+  "code": "undefined == null",
+  "expect": "true"
+ },
+ {
+  "code": "0 == null",
+  "expect": "false"
+ },
+ {
+  "code": "\"\" == null",
+  "expect": "false"
+ }
+]
