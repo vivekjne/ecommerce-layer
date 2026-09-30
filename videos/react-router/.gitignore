@@ -2,3 +2,4 @@ video/assets/*.mp3
 video/assets/*.wav
 video/rendered.mp4
 video/*.mp4
+out/
