@@ -92,7 +92,7 @@
         { "id": "s7b", "text": "So counters made separately do not share anything." },
         { "id": "s7c", "text": "We make counter A, and counter B." },
         { "id": "s7d", "text": "Call A twice, and it prints one, then two." },
-        { "id": "s7e", "text": "Now call B. What do you think it prints?", "after": 3.2 },
+        { "id": "s7e", "text": "Now call B. What will it print?", "after": 3.2 },
         { "id": "s7f", "text": "One. B has its own count." }
       ]
     },
@@ -162,7 +162,7 @@
         { "id": "s13b", "text": "One. A closure is a function, together with the variables around the place where it was created." },
         { "id": "s13c", "text": "Two. It keeps a live link to those variables, not a copy." },
         { "id": "s13d", "text": "Three. Use closures for private data, function factories, and callbacks." },
-        { "id": "s13e", "text": "And in loops, use let instead of var." },
+        { "id": "s13e", "text": "And inside loops, always choose let, not var." },
         { "id": "s13f", "text": "That's closures, demystified. Thanks for watching." },
         { "id": "s13g", "text": "Next time: the mysterious keyword, this." }
       ]

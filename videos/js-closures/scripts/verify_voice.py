@@ -34,13 +34,25 @@ recognizer = sherpa_onnx.OfflineRecognizer.from_whisper(
     task="transcribe",
     num_threads=4,
 )
-NUMS = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty".split()
+ONES = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen".split()
+TENS = "_ _ twenty thirty forty fifty sixty seventy eighty ninety".split()
+ALIASES = {"eye": "i", "ok": "okay"}
+
+
+def num_words(n: int):
+    if n < 20:
+        return [ONES[n]]
+    if n < 100:
+        return [TENS[n // 10]] + ([ONES[n % 10]] if n % 10 else [])
+    if n < 1000:
+        return [ONES[n // 100], "hundred"] + (num_words(n % 100) if n % 100 else [])
+    return [str(n)]
 
 
 def norm(text: str):
     t = text.lower().replace("-", " ")
-    t = re.sub(r"\d+", lambda m: NUMS[int(m.group())] if int(m.group()) < len(NUMS) else m.group(), t)
-    return re.sub(r"[^a-z ]", "", t).split()
+    t = re.sub(r"\d+", lambda m: " ".join(num_words(int(m.group()))), t)
+    return [ALIASES.get(w, w) for w in re.sub(r"[^a-z ]", "", t).split()]
 
 
 def spoken(text: str):
