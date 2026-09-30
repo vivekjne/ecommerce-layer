@@ -1,0 +1,467 @@
+{
+ "_notes": "One sentence per line. [shown|spoken] = caption vs voice.",
+ "scenes": [
+  {
+   "id": "s1",
+   "lines": [
+    {
+     "id": "s1a",
+     "text": "Open a website, and sometimes you stare at a blank white screen."
+    },
+    {
+     "id": "s1b",
+     "text": "Then a spinner. Then, finally, the content."
+    },
+    {
+     "id": "s1c",
+     "text": "Other sites simply appear, instantly."
+    },
+    {
+     "id": "s1d",
+     "text": "The difference is where the page gets built: in the browser, or on a server."
+    },
+    {
+     "id": "s1e",
+     "text": "Today: [CSR|client side rendering], [SSR|server side rendering], and [RSC|React Server Components]."
+    },
+    {
+     "id": "s1f",
+     "text": "With diagrams, animations, and real code we actually ran."
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "lines": [
+    {
+     "id": "s2a",
+     "text": "Every page involves three players: the browser, the server, and a database."
+    },
+    {
+     "id": "s2b",
+     "text": "Rendering means turning components and data into [HTML|H T M L] that the browser can paint."
+    },
+    {
+     "id": "s2c",
+     "text": "So who does the rendering? The browser, or the server?"
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "lines": [
+    {
+     "id": "s3a",
+     "text": "Think of buying a bookshelf."
+    },
+    {
+     "id": "s3b",
+     "text": "[CSR|Client side rendering] is flat-pack. A box of parts arrives, and you build it at home."
+    },
+    {
+     "id": "s3c",
+     "text": "[SSR|Server side rendering] is pre-built. It arrives ready, but there is a catch, which we will meet soon."
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "lines": [
+    {
+     "id": "s4a",
+     "text": "Let's start with [CSR|client side rendering], the classic React app."
+    },
+    {
+     "id": "s4b",
+     "text": "Step one: the browser asks for the page."
+    },
+    {
+     "id": "s4c",
+     "text": "The server replies with an almost empty [HTML|H T M L] file: one empty div, and a script tag."
+    },
+    {
+     "id": "s4d",
+     "text": "Step two: the browser downloads the JavaScript bundle, with React and all your components."
+    },
+    {
+     "id": "s4e",
+     "text": "Step three: React runs, and builds the page inside that empty div."
+    },
+    {
+     "id": "s4f",
+     "text": "Step four: the component asks an [API|A P I] for its data, and only then can it draw the real content."
+    },
+    {
+     "id": "s4g",
+     "text": "Until then, the user sees a blank screen, or a spinner."
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "lines": [
+    {
+     "id": "s5a",
+     "text": "In code, the shell is tiny: a root div, and one script."
+    },
+    {
+     "id": "s5b",
+     "text": "Then [createRoot|create root] takes over that div."
+    },
+    {
+     "id": "s5c",
+     "text": "The data is fetched inside [useEffect|use effect], after the first render."
+    },
+    {
+     "id": "s5d",
+     "text": "Two round trips: one for the code, one for the data."
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "lines": [
+    {
+     "id": "s6a",
+     "text": "What is good about [CSR|client side rendering]?"
+    },
+    {
+     "id": "s6b",
+     "text": "Hosting is cheap, because the server only sends static files."
+    },
+    {
+     "id": "s6c",
+     "text": "And after the first load, navigating feels fast."
+    },
+    {
+     "id": "s6d",
+     "text": "The downsides: first content is late, and the bundle grows with your app."
+    },
+    {
+     "id": "s6e",
+     "text": "Also, some crawlers and link previews do not run JavaScript, so they see only an empty div."
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "lines": [
+    {
+     "id": "s7a",
+     "text": "Now [SSR|server side rendering]. Here, the server does the building."
+    },
+    {
+     "id": "s7b",
+     "text": "It runs your React components, fetches the data close to home, and produces real [HTML|H T M L]."
+    },
+    {
+     "id": "s7c",
+     "text": "The browser paints that [HTML|H T M L] immediately: the headline, the text, everything."
+    }
+   ]
+  },
+  {
+   "id": "s8",
+   "lines": [
+    {
+     "id": "s8a",
+     "text": "Here is a real component: a heading, and a counter button."
+    },
+    {
+     "id": "s8b",
+     "text": "On the server, [renderToString|render to string] turns it into plain [HTML|H T M L]."
+    },
+    {
+     "id": "s8c",
+     "text": "The output has the heading, and a button that says clicked zero times."
+    },
+    {
+     "id": "s8d",
+     "text": "No JavaScript was needed to see it. Crawlers and slow phones get real content in the very first response."
+    }
+   ]
+  },
+  {
+   "id": "s9",
+   "lines": [
+    {
+     "id": "s9a",
+     "text": "Now the catch. That [HTML|H T M L] is only a picture of the page."
+    },
+    {
+     "id": "s9b",
+     "text": "The button is there, but clicking it does nothing. No event handlers are attached yet."
+    },
+    {
+     "id": "s9c",
+     "text": "So the browser also downloads the same JavaScript, and React runs [hydrateRoot|hydrate root]."
+    },
+    {
+     "id": "s9d",
+     "text": "Hydration walks the existing [HTML|H T M L], matches it to your components, and attaches the event listeners."
+    },
+    {
+     "id": "s9e",
+     "text": "It reuses the elements that are already there. It does not rebuild the page."
+    },
+    {
+     "id": "s9f",
+     "text": "Now the button is alive."
+    },
+    {
+     "id": "s9g",
+     "text": "One warning: server and browser must render the same output, or React reports a hydration mismatch."
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "lines": [
+    {
+     "id": "s10a",
+     "text": "Let's race them."
+    },
+    {
+     "id": "s10b",
+     "text": "With [CSR|C S R], content appears late, after the code and the data both arrive."
+    },
+    {
+     "id": "s10c",
+     "text": "With [SSR|S S R], content appears much earlier."
+    },
+    {
+     "id": "s10d",
+     "text": "But there is a gap before hydration finishes, where the page looks ready, and is not."
+    },
+    {
+     "id": "s10e",
+     "text": "And [SSR|S S R] needs a running server."
+    },
+    {
+     "id": "s10f",
+     "text": "Neither always wins. It is a trade-off."
+    }
+   ]
+  },
+  {
+   "id": "s11",
+   "lines": [
+    {
+     "id": "s11a",
+     "text": "What if one part of the page is slow, like customer reviews?"
+    },
+    {
+     "id": "s11b",
+     "text": "Streaming helps. Wrap the slow part in [Suspense|suspense]."
+    },
+    {
+     "id": "s11c",
+     "text": "React sends the shell right away, with a fallback in the gap."
+    },
+    {
+     "id": "s11d",
+     "text": "When the reviews are ready, the server streams them in, and a tiny script swaps them into place."
+    },
+    {
+     "id": "s11e",
+     "text": "We ran it: fallback first, reviews later, in the same response."
+    }
+   ]
+  },
+  {
+   "id": "s12",
+   "lines": [
+    {
+     "id": "s12a",
+     "text": "But [SSR|server side rendering] still has a problem."
+    },
+    {
+     "id": "s12b",
+     "text": "Every component ships its JavaScript to the browser, so it can hydrate."
+    },
+    {
+     "id": "s12c",
+     "text": "Even the ones that never change, like a footer."
+    },
+    {
+     "id": "s12d",
+     "text": "That code is downloaded and run, just to redo work the server already did."
+    },
+    {
+     "id": "s12e",
+     "text": "What if components that never need interactivity simply never left the server?"
+    },
+    {
+     "id": "s12f",
+     "text": "That is the idea behind React Server Components."
+    }
+   ]
+  },
+  {
+   "id": "s13",
+   "lines": [
+    {
+     "id": "s13a",
+     "text": "A server component runs only on the server. Its code is never sent to the browser."
+    },
+    {
+     "id": "s13b",
+     "text": "So it can be async, and read straight from a database."
+    },
+    {
+     "id": "s13c",
+     "text": "Here, the product page awaits its data, and renders the name and price."
+    },
+    {
+     "id": "s13d",
+     "text": "No [useEffect|use effect], no loading state, no extra [API|A P I] route."
+    },
+    {
+     "id": "s13e",
+     "text": "Interactive parts, like a like button, are client components. You mark them with [use client|use client] at the top of the file."
+    },
+    {
+     "id": "s13f",
+     "text": "Only those are shipped as JavaScript, and hydrated."
+    },
+    {
+     "id": "s13g",
+     "text": "In Next.js, components are server components by default."
+    }
+   ]
+  },
+  {
+   "id": "s14",
+   "lines": [
+    {
+     "id": "s14a",
+     "text": "So what does the server send? Not [HTML|H T M L], and not JavaScript."
+    },
+    {
+     "id": "s14b",
+     "text": "It sends the [RSC|R S C] payload: a compact description of the rendered tree. This is a real one we captured."
+    },
+    {
+     "id": "s14c",
+     "text": "The article, the heading, and the price are plain data."
+    },
+    {
+     "id": "s14d",
+     "text": "And where the like button goes, there is a placeholder, and a reference to its JavaScript file."
+    },
+    {
+     "id": "s14e",
+     "text": "React in the browser fills in the tree, and hydrates only that client piece."
+    },
+    {
+     "id": "s14f",
+     "text": "When you navigate, Next.js fetches only the payload, and React updates the page in place."
+    }
+   ]
+  },
+  {
+   "id": "s15",
+   "lines": [
+    {
+     "id": "s15a",
+     "text": "Two rules about the boundary."
+    },
+    {
+     "id": "s15b",
+     "text": "Everything imported by a [use client|use client] file becomes client code too."
+    },
+    {
+     "id": "s15c",
+     "text": "A server component can render a client component, but not the other way around."
+    },
+    {
+     "id": "s15d",
+     "text": "So keep the boundary low: make only the small interactive leaves client components."
+    },
+    {
+     "id": "s15e",
+     "text": "There is also [use server|use server], for server functions that the client can call, like form actions."
+    },
+    {
+     "id": "s15f",
+     "text": "Treat them as public endpoints, and always validate and authorize inside them."
+    }
+   ]
+  },
+  {
+   "id": "s16",
+   "lines": [
+    {
+     "id": "s16a",
+     "text": "Is a server component the same as [SSR|S S R]? No."
+    },
+    {
+     "id": "s16b",
+     "text": "[SSR|S S R] makes [HTML|H T M L] for a fast first paint."
+    },
+    {
+     "id": "s16c",
+     "text": "Server components decide where code runs, and how much JavaScript ships."
+    },
+    {
+     "id": "s16d",
+     "text": "Together, the server turns the payload into [HTML|H T M L]. The browser paints it, then hydrates only the client parts."
+    }
+   ]
+  },
+  {
+   "id": "s17",
+   "lines": [
+    {
+     "id": "s17a",
+     "text": "So which should you use?"
+    },
+    {
+     "id": "s17b",
+     "text": "A dashboard behind a login? [CSR|C S R] is fine."
+    },
+    {
+     "id": "s17c",
+     "text": "A shop or a blog? Render on the server, so people and crawlers see content quickly."
+    },
+    {
+     "id": "s17d",
+     "text": "Pages that never change? Static generation builds them once, ahead of time."
+    },
+    {
+     "id": "s17e",
+     "text": "In a modern app, mix them: server components by default, client components for interactivity."
+    }
+   ]
+  },
+  {
+   "id": "s18",
+   "lines": [
+    {
+     "id": "s18a",
+     "text": "Let's recap."
+    },
+    {
+     "id": "s18b",
+     "text": "[CSR|C S R] builds the page in the browser."
+    },
+    {
+     "id": "s18c",
+     "text": "[SSR|S S R] sends [HTML|H T M L] first, then hydrates it."
+    },
+    {
+     "id": "s18d",
+     "text": "Streaming sends the page in pieces."
+    },
+    {
+     "id": "s18e",
+     "text": "Server components keep code on the server, so the browser downloads less."
+    },
+    {
+     "id": "s18f",
+     "text": "Thanks for watching."
+    }
+   ]
+  }
+ ]
+}

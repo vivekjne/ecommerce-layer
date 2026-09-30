@@ -1,0 +1,214 @@
+  <body>
+    <svg width="0" height="0" style="position: absolute">
+      <defs>
+        <marker id="ahW" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b4bdf2" /></marker>
+        <marker id="ahV" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#a78bfa" /></marker>
+        <marker id="ahC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#22d3ee" /></marker>
+        <marker id="ahP" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#f472b6" /></marker>
+      </defs>
+    </svg>
+
+    <div id="root" data-composition-id="main" data-start="0" data-duration="{{total}}" data-width="1920" data-height="1080">
+      <audio id="vo" src="assets/voiceover.mp3" data-start="0" data-duration="{{total}}" data-volume="1"></audio>
+      <audio id="bgm" src="assets/music.mp3" data-start="0" data-duration="{{total}}" data-volume="1" data-fade-in="2" data-fade-out="4"></audio>
+
+      <div id="badge">JavaScript Demystified · React Rendering</div>
+
+      <!-- 1 · Hook -->
+      <section id="s1" class="clip" data-start="{{s1.start}}" data-duration="{{s1.dur}}" data-track-index="0">
+        <span class="kick">JavaScript Demystified</span>
+        <h1><span class="a">SSR</span> vs <span class="b">CSR</span></h1>
+        <p>and React Server Components</p>
+        <div class="win" id="s1-wa" data-w="560" data-h="340" data-url="slow-shop.com" data-page="1" style="left: 300px; top: 410px"></div>
+        <div class="win" id="s1-wb" data-w="560" data-h="340" data-url="fast-shop.com" data-page="1" style="left: 1060px; top: 410px"></div>
+        <span class="tag co" id="s1-ta" style="left: 400px; top: 772px">Blank... then a spinner</span>
+        <span class="tag li" id="s1-tb" style="left: 1200px; top: 772px">Instant</span>
+        <span class="tag pk" id="s1-q" style="left: 790px; top: 566px; font-size: 40px; padding: 10px 30px; z-index: 12">Where is it built?</span>
+        <span class="tag cy" id="s1-c1" style="left: 560px; top: 772px; font-size: 30px; opacity: 0">CSR</span>
+        <span class="tag vi" id="s1-c2" style="left: 780px; top: 772px; font-size: 30px; opacity: 0">SSR</span>
+        <span class="tag pk" id="s1-c3" style="left: 1000px; top: 772px; font-size: 30px; opacity: 0">RSC</span>
+      </section>
+
+      <!-- 2 · The players -->
+      <section id="s2" class="clip" data-start="{{s2.start}}" data-duration="{{s2.dur}}" data-track-index="0">
+        <div class="eyebrow">The players</div>
+        <h2>Every page needs three things</h2>
+        <div class="win" id="s2-win" data-w="480" data-h="360" data-url="my-shop.com" data-page="2" style="left: 140px; top: 270px"></div>
+        <div class="actor" id="s2-srv" data-ico="server" style="left: 830px; top: 300px; width: 210px"><span class="nm" style="color: var(--violet)">Server</span></div>
+        <div class="actor" id="s2-db" data-ico="db" style="left: 1500px; top: 330px; width: 170px"><span class="nm" style="color: var(--amber)">Database</span></div>
+        <div class="wire" id="s2-w1" style="left: 640px; top: 420px; width: 170px"></div>
+        <div class="wire" id="s2-w2" style="left: 1060px; top: 420px; width: 420px"></div>
+        <div class="lbl" id="s2-bn" style="left: 260px; top: 660px; color: var(--cyan)">Browser</div>
+        <div class="chip" id="s2-f1" style="left: 380px; top: 730px; font-size: 30px; color: var(--pink)">&lt;Component /&gt;</div>
+        <div class="lbl" id="s2-f2" style="left: 655px; top: 730px; font-size: 44px; line-height: 1.3">+</div>
+        <div class="chip" id="s2-f3" style="left: 720px; top: 730px; font-size: 30px; color: var(--amber)">data</div>
+        <div class="lbl" id="s2-f4" style="left: 850px; top: 733px; font-size: 40px; line-height: 1.3">→</div>
+        <div class="chip" id="s2-f5" style="left: 930px; top: 730px; font-size: 30px; color: var(--cyan)">&lt;HTML&gt;</div>
+        <div class="lbl" id="s2-q" style="left: 640px; top: 250px; font-size: 130px; color: var(--pink); font-weight: 900">?</div>
+      </section>
+
+      <!-- 3 · Analogy -->
+      <section id="s3" class="clip" data-start="{{s3.start}}" data-duration="{{s3.dur}}" data-track-index="0">
+        <div class="eyebrow">Analogy</div>
+        <h2>Flat-pack or pre-built?</h2>
+        <div class="card c-cyan" id="s3-l" style="left: 140px; top: 250px; width: 780px; height: 560px"><div class="hd">CSR · flat-pack</div></div>
+        <div class="card c-violet" id="s3-r" style="left: 1000px; top: 250px; width: 780px; height: 560px"><div class="hd">SSR · pre-built</div></div>
+        <div id="s3-boxL" style="position: absolute; left: 190px; top: 380px; width: 240px; height: 200px"></div>
+        <div id="s3-shelfL" style="position: absolute; left: 500px; top: 340px; width: 330px; height: 330px"></div>
+        <div class="tag cy" id="s3-tl" style="left: 380px; top: 730px; font-size: 30px">You build it at home</div>
+        <div id="s3-shelfR" style="position: absolute; left: 1360px; top: 340px; width: 330px; height: 330px"></div>
+        <div id="s3-truck" style="position: absolute; left: 1030px; top: 470px; width: 260px; height: 160px"></div>
+        <div class="tag vi" id="s3-tr" style="left: 1230px; top: 730px; font-size: 30px">Ready on arrival</div>
+        <div class="tag co" id="s3-catch" style="left: 1400px; top: 290px; font-size: 32px; transform-origin: 50% 50%">But... a catch!</div>
+      </section>
+
+      <!-- 4 · CSR flow -->
+      <section id="s4" class="clip" data-start="{{s4.start}}" data-duration="{{s4.dur}}" data-track-index="0">
+        <div class="eyebrow">Client side rendering</div>
+        <h2>Build it in the browser</h2>
+        <div class="win" id="s4-win" data-w="520" data-h="380" data-url="my-shop.com" data-page="4" style="left: 140px; top: 250px"></div>
+        <div class="actor" id="s4-srv" data-ico="server" style="left: 900px; top: 270px; width: 200px"><span class="nm" style="color: var(--violet)">Server</span></div>
+        <div class="actor" id="s4-db" data-ico="db" style="left: 1560px; top: 290px; width: 160px"><span class="nm" style="color: var(--amber)">API</span></div>
+        <div class="wire" id="s4-w1" style="left: 690px; top: 400px; width: 190px"></div>
+        <div class="wire" id="s4-w2" style="left: 1120px; top: 400px; width: 420px"></div>
+        <div class="pkt cy" id="s4-p1" style="left: 700px; top: 366px">GET /</div>
+        <div class="pkt li" id="s4-p2" style="left: 830px; top: 366px; font-size: 20px">index.html</div>
+        <div class="pkt cy" id="s4-p3" style="left: 700px; top: 366px; font-size: 20px">GET bundle.js</div>
+        <div class="pkt" id="s4-p4" style="left: 800px; top: 348px; font-size: 26px; padding: 12px 30px">bundle.js</div>
+        <div class="pkt cy" id="s4-p5" style="left: 1150px; top: 366px; font-size: 20px">GET /api</div>
+        <div class="pkt li" id="s4-p6" style="left: 1440px; top: 366px; font-size: 20px">JSON</div>
+        <div class="step" id="s4-n1" style="left: 730px; top: 300px">1</div>
+        <div class="step" id="s4-n2" style="left: 730px; top: 300px">2</div>
+        <div class="step" id="s4-n3" style="left: 300px; top: 210px">3</div>
+        <div class="step" id="s4-n4" style="left: 1290px; top: 300px">4</div>
+        <div class="code" id="s4-shell" style="left: 900px; top: 588px; width: 620px; padding: 12px 22px; font-size: 24px">&lt;div id="root"&gt;&lt;/div&gt;
+&lt;script src="/bundle.js"&gt;&lt;/script&gt;</div>
+        <div class="lane" id="s4-lane" style="top: 690px; height: 118px">
+          <div class="seg" id="s4-g1" style="left: 20px; width: 110px; background: var(--cyan)">HTML</div>
+          <div class="seg" id="s4-g2" style="left: 130px; width: 620px; background: var(--amber)">JavaScript bundle</div>
+          <div class="seg" id="s4-g3" style="left: 750px; width: 250px; background: var(--pink)">React runs</div>
+          <div class="seg" id="s4-g4" style="left: 1000px; width: 440px; background: var(--lime)">Fetch data</div>
+          <div class="tag li" id="s4-done" style="left: 1440px; top: 32px; font-size: 24px; padding: 6px 16px">Content!</div>
+          <div class="lbl sm" style="left: 22px; top: -34px" id="s4-lt">What the user waits through</div>
+        </div>
+        <div class="tag co" id="s4-blank" style="left: 400px; top: 206px; font-size: 24px">Blank... or a spinner</div>
+      </section>
+
+      <!-- 5 · CSR code -->
+      <section id="s5" class="clip" data-start="{{s5.start}}" data-duration="{{s5.dur}}" data-track-index="0">
+        <div class="eyebrow">In code</div>
+        <h2>The CSR shell and app</h2>
+        <div class="code" id="s5-a" style="left: 140px; top: 250px; width: 700px; height: 150px"><span class="ft">index.html</span></div>
+        <div class="code" id="s5-b" style="left: 140px; top: 460px; width: 700px; height: 150px"><span class="ft">main.jsx</span></div>
+        <div class="code" id="s5-c" style="left: 900px; top: 250px; width: 880px; height: 490px"><span class="ft">Products.jsx</span></div>
+        <div class="tag cy" id="s5-t1" style="left: 140px; top: 640px; font-size: 30px">Trip 1: fetch the code</div>
+        <div class="tag li" id="s5-t2" style="left: 140px; top: 705px; font-size: 30px">Trip 2: fetch the data</div>
+        <div class="tag pk" id="s5-t3" style="left: 140px; top: 770px; font-size: 30px; padding: 6px 24px">= two round trips before content</div>
+      </section>
+
+      <!-- 6 · Pros and cons -->
+      <section id="s6" class="clip" data-start="{{s6.start}}" data-duration="{{s6.dur}}" data-track-index="0">
+        <div class="eyebrow">CSR trade-offs</div>
+        <h2>The good, and the not so good</h2>
+        <div class="lbl" id="s6-gh" style="left: 140px; top: 235px; color: var(--lime); font-size: 34px">The good</div>
+        <div class="lbl" id="s6-bh" style="left: 960px; top: 235px; color: var(--coral); font-size: 34px">The not so good</div>
+        <div class="card c-lime" id="s6-g1" style="left: 140px; top: 295px; width: 780px; height: 130px"><span class="ico" data-i="piggy" style="position: absolute; left: 24px; top: 22px; width: 84px"></span><div style="position: absolute; left: 140px; top: 22px; font-size: 32px; font-weight: 800; line-height: 1.25">Cheap hosting<br /><span style="font-size: 26px; font-weight: 600; color: var(--muted)">just static files</span></div></div>
+        <div class="card c-lime" id="s6-g2" style="left: 140px; top: 455px; width: 780px; height: 130px"><span class="ico" data-i="bolt" style="position: absolute; left: 24px; top: 22px; width: 84px"></span><div style="position: absolute; left: 140px; top: 22px; font-size: 32px; font-weight: 800; line-height: 1.25">Fast, app-like navigation<br /><span style="font-size: 26px; font-weight: 600; color: var(--muted)">after the first load</span></div></div>
+        <div class="card c-coral" id="s6-b1" style="left: 960px; top: 295px; width: 820px; height: 130px"><span class="ico" data-i="hourglass" style="position: absolute; left: 24px; top: 20px; width: 84px"></span><div style="position: absolute; left: 140px; top: 22px; font-size: 32px; font-weight: 800; line-height: 1.25">Late first content<br /><span style="font-size: 26px; font-weight: 600; color: var(--muted)">code, then data, then paint</span></div></div>
+        <div class="card c-coral" id="s6-b2" style="left: 960px; top: 455px; width: 820px; height: 130px"><span class="ico" data-i="weight" style="position: absolute; left: 24px; top: 24px; width: 84px"></span><div style="position: absolute; left: 140px; top: 22px; font-size: 32px; font-weight: 800; line-height: 1.25">Bigger and bigger bundle<br /><span style="font-size: 26px; font-weight: 600; color: var(--muted)">grows with your app</span></div></div>
+        <div class="card c-coral" id="s6-b3" style="left: 960px; top: 615px; width: 820px; height: 130px"><span class="ico" data-i="eyeoff" style="position: absolute; left: 24px; top: 24px; width: 84px"></span><div style="position: absolute; left: 140px; top: 22px; font-size: 32px; font-weight: 800; line-height: 1.25">Crawlers may see an empty div<br /><span style="font-size: 26px; font-weight: 600; color: var(--muted)">some do not run JavaScript</span></div></div>
+        <div class="tag" id="s6-bub" style="left: 1230px; top: 770px; font-size: 26px; background: #fff; color: var(--ink)">Hmm... an empty div</div>
+      </section>
+
+      <!-- 7 · SSR flow -->
+      <section id="s7" class="clip" data-start="{{s7.start}}" data-duration="{{s7.dur}}" data-track-index="0">
+        <div class="eyebrow">Server side rendering</div>
+        <h2>Build it on the server</h2>
+        <div class="win" id="s7-win" data-w="520" data-h="380" data-url="my-shop.com" data-page="7" style="left: 140px; top: 250px"></div>
+        <div class="actor" id="s7-srv" data-ico="server" style="left: 900px; top: 270px; width: 200px"><span class="nm" style="color: var(--violet)">Server</span></div>
+        <div class="actor" id="s7-db" data-ico="db" style="left: 1560px; top: 290px; width: 160px"><span class="nm" style="color: var(--amber)">Database</span></div>
+        <div class="actor" id="s7-react" data-ico="atom" style="left: 930px; top: 168px; width: 140px"></div>
+        <div class="wire" id="s7-w1" style="left: 690px; top: 400px; width: 190px"></div>
+        <div class="wire" id="s7-w2" style="left: 1120px; top: 400px; width: 420px"></div>
+        <div class="pkt cy" id="s7-p1" style="left: 700px; top: 366px">GET /</div>
+        <div class="pkt cy" id="s7-p2" style="left: 1150px; top: 366px; font-size: 20px">query</div>
+        <div class="pkt li" id="s7-p3" style="left: 1150px; top: 366px; font-size: 20px">data</div>
+        <div class="pkt pk" id="s7-p4" style="left: 770px; top: 348px; font-size: 26px; padding: 12px 26px">&lt;HTML&gt;</div>
+        <div class="node sv" id="s7-t1" style="left: 900px; top: 560px; font-size: 24px">&lt;Page /&gt;</div>
+        <div class="node sv" id="s7-t2" style="left: 1120px; top: 560px; font-size: 24px">&lt;Header /&gt;</div>
+        <div class="node sv" id="s7-t3" style="left: 1360px; top: 560px; font-size: 24px">&lt;Product /&gt;</div>
+        <div class="lbl sm" id="s7-tl" style="left: 900px; top: 620px">React components run here</div>
+        <div class="lane" id="s7-lane" style="top: 690px; height: 118px">
+          <div class="seg" id="s7-g1" style="left: 20px; width: 470px; background: var(--violet)">Server renders</div>
+          <div class="seg" id="s7-g2" style="left: 490px; width: 110px; background: var(--cyan)">HTML</div>
+          <div class="tag li" id="s7-done" style="left: 620px; top: 32px; font-size: 24px; padding: 6px 16px">Content!</div>
+          <div class="lbl sm" style="left: 22px; top: -34px">What the user waits through</div>
+        </div>
+      </section>
+
+      <!-- 8 · SSR code -->
+      <section id="s8" class="clip" data-start="{{s8.start}}" data-duration="{{s8.dur}}" data-track-index="0">
+        <div class="eyebrow">In code</div>
+        <h2>renderToString in action</h2>
+        <div class="code" id="s8-a" style="left: 140px; top: 250px; width: 760px; height: 460px"><span class="ft">server.jsx</span></div>
+        <div class="cons" id="s8-o" style="left: 960px; top: 250px; width: 820px; height: 250px"><div class="ct">HTML sent to the browser (real output)</div></div>
+        <div class="win" id="s8-win" data-w="440" data-h="240" data-url="localhost" data-page="8" style="left: 960px; top: 545px"></div>
+        <div class="tag li" id="s8-t1" style="left: 1440px; top: 570px; font-size: 28px">Crawlers: content</div>
+        <div class="tag li" id="s8-t2" style="left: 1440px; top: 640px; font-size: 28px">Slow phones: content</div>
+        <div class="tag cy" id="s8-t3" style="left: 1440px; top: 710px; font-size: 28px">No JS needed to see it</div>
+      </section>
+
+      <!-- 9 · Hydration -->
+      <section id="s9" class="clip" data-start="{{s9.start}}" data-duration="{{s9.dur}}" data-track-index="0">
+        <div class="eyebrow">Hydration</div>
+        <h2>Making the HTML come alive</h2>
+        <div class="win" id="s9-win" data-w="760" data-h="500" data-url="my-shop.com" data-page="9" style="left: 140px; top: 240px"></div>
+        <div class="tag co" id="s9-dead" style="left: 420px; top: 570px; font-size: 26px">No handlers: dead</div>
+        <div class="tag li" id="s9-alive" style="left: 420px; top: 570px; font-size: 26px">onClick attached: alive</div>
+        <div id="s9-cur" style="position: absolute; left: 830px; top: 650px; width: 46px; z-index: 30"><svg viewBox="0 0 30 40" style="display:block;width:100%"><path d="M3 2 L3 30 L10 24 L15 37 L20 35 L15 22 L25 22z" fill="#fff" stroke="#1f2140" stroke-width="2.5" stroke-linejoin="round"/></svg></div>
+        <div id="s9-rip" style="position: absolute; left: 662px; top: 486px; width: 60px; height: 60px; border-radius: 50%; border: 6px solid #f472b6; z-index: 29"></div>
+        <div class="mo" id="s9-o1" style="left: 145px; top: 291px; width: 760px; height: 46px"></div>
+        <div class="mo" id="s9-o2" style="left: 169px; top: 359px; width: 304px; height: 354px"></div>
+        <div class="mo" id="s9-o3" style="left: 498px; top: 371px; width: 250px; height: 70px"></div>
+        <div class="mo" id="s9-o4" style="left: 498px; top: 481px; width: 420px; height: 78px; border-color: #86efac"></div>
+        <div id="s9-scan" style="position: absolute; left: 145px; top: 291px; width: 760px; height: 8px; background: #22d3ee; box-shadow: 0 0 24px 6px rgba(34,211,238,.8); z-index: 18"></div>
+        <div class="tag li" id="s9-re" style="left: 200px; top: 765px; font-size: 26px">Reuses the same DOM nodes</div>
+        <div class="tag co" id="s9-nr" style="left: 590px; top: 765px; font-size: 26px">Not rebuilt from scratch</div>
+        <div class="pkt" id="s9-js" style="left: 1000px; top: 250px; font-size: 26px; padding: 10px 26px">JavaScript</div>
+        <div class="code" id="s9-c" style="left: 960px; top: 250px; width: 820px; height: 235px"><span class="ft">client.jsx</span></div>
+        <div class="card c-coral" id="s9-mm" style="left: 960px; top: 520px; width: 820px; height: 260px"><div class="hd">Hydration mismatch</div></div>
+        <div class="chip" id="s9-m1" style="left: 1000px; top: 620px; font-size: 28px; color: var(--violet)">Server: 10:01:05</div>
+        <div class="lbl" id="s9-m2" style="left: 1370px; top: 622px; font-size: 44px; color: var(--coral)">≠</div>
+        <div class="chip" id="s9-m3" style="left: 1430px; top: 620px; font-size: 28px; color: var(--cyan)">Browser: 10:01:07</div>
+        <div class="lbl sm" id="s9-m4" style="left: 1000px; top: 700px; font-size: 26px">e.g. Date.now() or Math.random() in render</div>
+      </section>
+
+      <!-- 10 · The race -->
+      <section id="s10" class="clip" data-start="{{s10.start}}" data-duration="{{s10.dur}}" data-track-index="0">
+        <div class="eyebrow">Timeline</div>
+        <h2>Let's race them</h2>
+        <div class="lane" id="s10-l1" style="top: 300px; height: 190px">
+          <div class="lbl" style="left: 22px; top: 70px; font-size: 42px; color: var(--cyan)">CSR</div>
+          <div class="seg" id="s10-a1" style="left: 180px; width: 70px; background: var(--cyan); top: 70px">HTML</div>
+          <div class="seg" id="s10-a2" style="left: 250px; width: 616px; background: var(--amber); top: 70px">JavaScript bundle</div>
+          <div class="seg" id="s10-a3" style="left: 866px; width: 250px; background: var(--lime); top: 70px">Fetch data</div>
+          <div class="seg" id="s10-a4" style="left: 1116px; width: 110px; background: var(--pink); top: 70px">Render</div>
+          <div class="flag" id="s10-f1" style="left: 1226px; top: 30px; height: 140px; border-color: var(--lime)"><span style="background: var(--lime)">Content + interactive</span></div>
+        </div>
+        <div class="lane" id="s10-l2" style="top: 550px; height: 190px">
+          <div class="lbl" style="left: 22px; top: 70px; font-size: 42px; color: var(--violet)">SSR</div>
+          <div class="seg" id="s10-b1" style="left: 180px; width: 420px; background: var(--violet); top: 70px">Server renders</div>
+          <div class="seg" id="s10-b2" style="left: 600px; width: 84px; background: var(--cyan); top: 70px">HTML</div>
+          <div class="flag" id="s10-f2" style="left: 684px; top: 30px; height: 140px; border-color: var(--lime)"><span style="background: var(--lime)">Content</span></div>
+          <div class="seg" id="s10-b3" style="left: 684px; width: 616px; background: var(--amber); top: 70px">JavaScript bundle</div>
+          <div class="seg" id="s10-b4" style="left: 1300px; width: 170px; background: var(--pink); top: 70px">Hydrate</div>
+          <div class="flag" id="s10-f3" style="left: 1470px; top: 30px; height: 140px; border-color: var(--pink)"><span style="background: var(--pink)">Interactive</span></div>
+          <div id="s10-gapbg" style="position: absolute; left: 684px; top: 10px; width: 786px; height: 170px; background: rgba(251, 113, 133, 0.16); border-radius: 14px"></div>
+          <div class="tag co" id="s10-gap" style="left: 700px; top: 132px; font-size: 21px; padding: 3px 14px; z-index: 7">Looks ready, is not interactive</div>
+        </div>
+        <div class="flag" id="s10-ph" style="left: 320px; top: 300px; height: 190px; border-color: #fff; border-left-width: 4px; z-index: 12"></div>
+        <div class="flag" id="s10-ph2" style="left: 320px; top: 550px; height: 190px; border-color: #fff; border-left-width: 4px; z-index: 12"></div>
+        <div class="tag cy" id="s10-e1" style="left: 140px; top: 770px; font-size: 28px">CSR: static files</div>
+        <div class="tag vi" id="s10-e2" style="left: 470px; top: 770px; font-size: 28px">SSR: needs a running server</div>
+        <div class="tag pk" id="s10-e3" style="left: 1010px; top: 770px; font-size: 30px; padding: 8px 28px">A trade-off, not a winner</div>
+      </section>

@@ -1,0 +1,170 @@
+
+      <!-- 11 · Streaming -->
+      <section id="s11" class="clip" data-start="{{s11.start}}" data-duration="{{s11.dur}}" data-track-index="0">
+        <div class="eyebrow">Streaming</div>
+        <h2>Send the page in pieces</h2>
+        <div class="win" id="s11-win" data-w="640" data-h="500" data-url="my-shop.com" data-page="11" style="left: 140px; top: 240px"></div>
+        <div class="code" id="s11-c" style="left: 830px; top: 240px; width: 950px; height: 160px"><span class="ft">Page.jsx</span></div>
+        <div class="cons" id="s11-o" style="left: 830px; top: 440px; width: 950px; height: 340px"><div class="ct">The response, streamed (real output)</div></div>
+        <div class="pkt cy" id="s11-k1" style="left: 830px; top: 500px; font-size: 22px">chunk 1</div>
+        <div class="pkt pk" id="s11-k2" style="left: 830px; top: 640px; font-size: 22px">chunk 2</div>
+      </section>
+
+      <!-- 12 · The catch with SSR -->
+      <section id="s12" class="clip" data-start="{{s12.start}}" data-duration="{{s12.dur}}" data-track-index="0">
+        <div class="eyebrow">The catch</div>
+        <h2>Every component ships its JavaScript</h2>
+        <div class="zone" id="s12-zl" style="left: 140px; top: 250px; width: 720px; height: 540px; border-color: var(--violet)"><div class="zl" style="color: var(--violet)">Your components</div></div>
+        <div class="zone" id="s12-zr" style="left: 1060px; top: 250px; width: 720px; height: 540px; border-color: var(--cyan)"><div class="zl" style="color: var(--cyan)">JS bundle, in the browser</div></div>
+        <div class="node sv" id="s12-a1" style="left: 190px; top: 330px; width: 200px">Header</div>
+        <div class="node sv" id="s12-a2" style="left: 420px; top: 330px; width: 200px">Footer</div>
+        <div class="node sv" id="s12-a3" style="left: 650px; top: 330px; width: 180px">Markdown</div>
+        <div class="node sv" id="s12-a4" style="left: 190px; top: 450px; width: 200px">DateLib</div>
+        <div class="node cl2" id="s12-a5" style="left: 420px; top: 450px; width: 200px">Cart</div>
+        <div class="node cl2" id="s12-a6" style="left: 650px; top: 450px; width: 180px">LikeBtn</div>
+        <div class="node sv" id="s12-b1" style="left: 1130px; top: 330px; width: 300px">Header</div>
+        <div class="node sv" id="s12-b2" style="left: 1130px; top: 405px; width: 300px">Footer</div>
+        <div class="node sv" id="s12-b3" style="left: 1130px; top: 480px; width: 300px">Markdown</div>
+        <div class="node sv" id="s12-b4" style="left: 1130px; top: 555px; width: 300px">DateLib</div>
+        <div class="node cl2" id="s12-b5" style="left: 1130px; top: 630px; width: 300px">Cart</div>
+        <div class="node cl2" id="s12-b6" style="left: 1130px; top: 705px; width: 300px">LikeBtn</div>
+        <div class="tag co" id="s12-q1" style="left: 1450px; top: 330px; font-size: 24px">never changes</div>
+        <div class="tag co" id="s12-q2" style="left: 1450px; top: 405px; font-size: 24px">never changes</div>
+        <div class="tag co" id="s12-q3" style="left: 1450px; top: 480px; font-size: 24px">never changes</div>
+        <div class="tag co" id="s12-q4" style="left: 1450px; top: 555px; font-size: 24px">never changes</div>
+        <div class="tag li" id="s12-q5" style="left: 1450px; top: 630px; font-size: 24px">needs JS</div>
+        <div class="tag li" id="s12-q6" style="left: 1450px; top: 705px; font-size: 24px">needs JS</div>
+        <div class="lbl" id="s12-arr" style="left: 900px; top: 470px; font-size: 90px; color: var(--pink)">→</div>
+        <div class="lbl sm" id="s12-note" style="left: 175px; top: 600px; font-size: 26px; width: 660px; white-space: normal; line-height: 1.4">Downloaded, parsed and run in the browser, only to redo the work the server already did.</div>
+        <div class="card c-pink" id="s12-rsc" style="left: 480px; top: 300px; width: 960px; height: 330px; background: #2b1550; z-index: 15">
+          <div id="s12-atom" style="position: absolute; left: 60px; top: 60px; width: 200px"></div>
+          <div style="position: absolute; left: 300px; top: 60px; font-size: 64px; font-weight: 900; line-height: 1.1">React Server<br />Components</div>
+          <div class="tag pk" style="left: 300px; top: 230px; font-size: 30px">Some components never leave the server</div>
+        </div>
+      </section>
+
+      <!-- 13 · Server components -->
+      <section id="s13" class="clip" data-start="{{s13.start}}" data-duration="{{s13.dur}}" data-track-index="0">
+        <div class="eyebrow">Server components</div>
+        <h2>Code that stays on the server</h2>
+        <div class="code" id="s13-a" style="left: 140px; top: 240px; width: 900px; height: 380px; font-size: 25px"><span class="ft">ProductPage.jsx · server component</span></div>
+        <div class="code" id="s13-b" style="left: 140px; top: 650px; width: 900px; height: 172px; font-size: 25px"><span class="ft">LikeButton.jsx · client component</span></div>
+        <div class="zone" id="s13-zs" style="left: 1090px; top: 215px; width: 690px; height: 310px; border-color: var(--violet)"><div class="zl" style="color: var(--violet)">Server</div></div>
+        <div class="zone" id="s13-zc" style="left: 1090px; top: 555px; width: 690px; height: 250px; border-color: var(--cyan)"><div class="zl" style="color: var(--cyan)">Browser</div></div>
+        <div class="node sv" id="s13-n1" style="left: 1130px; top: 275px; font-size: 28px">&lt;ProductPage /&gt;</div>
+        <div class="tag vi" id="s13-lock" style="left: 1130px; top: 348px; font-size: 24px">code stays here</div>
+        <div class="actor" id="s13-db" data-ico="db" style="left: 1610px; top: 270px; width: 110px"></div>
+        <div class="chip" id="s13-x1" style="left: 1130px; top: 428px; font-size: 22px; color: var(--coral)">useEffect</div>
+        <div class="chip" id="s13-x2" style="left: 1300px; top: 428px; font-size: 22px; color: var(--coral)">loading state</div>
+        <div class="chip" id="s13-x3" style="left: 1500px; top: 428px; font-size: 22px; color: var(--coral)">API route</div>
+        <div class="node cl2" id="s13-n2" style="left: 1130px; top: 640px; font-size: 28px">&lt;LikeButton /&gt;</div>
+        <div class="tag cy" id="s13-js" style="left: 1130px; top: 715px; font-size: 24px">JavaScript shipped + hydrated</div>
+        <div class="pkt pk" id="s13-p1" style="left: 1440px; top: 484px; font-size: 22px">payload + LikeButton.js</div>
+        <div class="tag pk" id="s13-def" style="left: 1470px; top: 165px; font-size: 22px; padding: 4px 16px">Next.js default</div>
+      </section>
+
+      <!-- 14 · The RSC payload -->
+      <section id="s14" class="clip" data-start="{{s14.start}}" data-duration="{{s14.dur}}" data-track-index="0">
+        <div class="eyebrow">The RSC payload</div>
+        <h2>What the server actually sends</h2>
+        <svg class="ov" id="s14-ov">
+          <line id="s14-l1" x1="440" y1="335" x2="250" y2="430" stroke="#a78bfa" stroke-width="5" stroke-linecap="round" />
+          <line id="s14-l2" x1="440" y1="335" x2="400" y2="430" stroke="#a78bfa" stroke-width="5" stroke-linecap="round" />
+          <line id="s14-l3" x1="440" y1="335" x2="580" y2="430" stroke="#f472b6" stroke-width="5" stroke-linecap="round" />
+        </svg>
+        <div class="node sv" id="s14-n0" style="left: 340px; top: 290px">article</div>
+        <div class="node sv" id="s14-n1" style="left: 180px; top: 430px">h1</div>
+        <div class="node sv" id="s14-n2" style="left: 340px; top: 430px">p</div>
+        <div class="node ph" id="s14-n3" style="left: 510px; top: 430px">$L6</div>
+        <div class="lbl sm" id="s14-ln3" style="left: 470px; top: 500px">placeholder for LikeButton</div>
+        <div class="tag co" id="s14-nx1" style="left: 830px; top: 300px; font-size: 34px; text-decoration: line-through">HTML</div>
+        <div class="tag co" id="s14-nx2" style="left: 1010px; top: 300px; font-size: 34px; text-decoration: line-through">JavaScript</div>
+        <div class="win" id="s14-win" data-w="560" data-h="230" data-url="my-shop.com" data-page="14" style="left: 140px; top: 560px"></div>
+        <div class="code" id="s14-c" style="left: 800px; top: 230px; width: 980px; height: 300px; font-size: 28px"><span class="ft">RSC payload · real output, indented</span></div>
+        <div class="tag pk" id="s14-t1" style="left: 800px; top: 560px; font-size: 26px">client reference: file + chunk</div>
+        <div class="tag vi" id="s14-t2" style="left: 1250px; top: 560px; font-size: 26px">server output as plain data</div>
+        <div class="chip" id="s14-f1" style="left: 800px; top: 690px; font-size: 22px; color: var(--cyan)">click a link</div>
+        <div class="lbl" id="s14-fa" style="left: 1012px; top: 686px; font-size: 38px">→</div>
+        <div class="chip" id="s14-f2" style="left: 1065px; top: 690px; font-size: 22px; color: var(--pink)">fetch only the payload</div>
+        <div class="lbl" id="s14-fb" style="left: 1405px; top: 686px; font-size: 38px">→</div>
+        <div class="chip" id="s14-f3" style="left: 1460px; top: 690px; font-size: 22px; color: var(--lime)">page updates in place</div>
+      </section>
+
+      <!-- 15 · The boundary -->
+      <section id="s15" class="clip" data-start="{{s15.start}}" data-duration="{{s15.dur}}" data-track-index="0">
+        <div class="eyebrow">The boundary</div>
+        <h2>Where server meets client</h2>
+        <svg class="ov" id="s15-ov">
+          <line id="s15-l1" x1="960" y1="300" x2="480" y2="370" stroke="#a78bfa" stroke-width="5" stroke-linecap="round" />
+          <line id="s15-l2" x1="960" y1="300" x2="840" y2="370" stroke="#a78bfa" stroke-width="5" stroke-linecap="round" />
+          <line id="s15-l3" x1="960" y1="300" x2="1230" y2="370" stroke="#22d3ee" stroke-width="5" stroke-linecap="round" />
+          <line id="s15-l4" x1="1230" y1="410" x2="1090" y2="480" stroke="#22d3ee" stroke-width="5" stroke-linecap="round" />
+          <line id="s15-l5" x1="1230" y1="410" x2="1345" y2="480" stroke="#22d3ee" stroke-width="5" stroke-linecap="round" />
+        </svg>
+        <div class="node sv" id="s15-n0" style="left: 870px; top: 255px">&lt;Page /&gt;</div>
+        <div class="node sv" id="s15-n1" style="left: 380px; top: 370px">&lt;Header /&gt;</div>
+        <div class="node sv" id="s15-n2" style="left: 720px; top: 370px">&lt;Product /&gt;</div>
+        <div class="node cl2" id="s15-n3" style="left: 1090px; top: 370px">&lt;LikeButton /&gt;</div>
+        <div class="node cl2" id="s15-n4" style="left: 990px; top: 480px">&lt;Icon /&gt;</div>
+        <div class="node cl2" id="s15-n5" style="left: 1240px; top: 480px">&lt;Tooltip /&gt;</div>
+        <div class="tag" id="s15-uc" style="left: 1400px; top: 375px; font-size: 24px">"use client"</div>
+        <div class="tag cy" id="s15-imp" style="left: 1490px; top: 490px; font-size: 22px; padding: 4px 14px">imported = client too</div>
+        <div class="card c-lime" id="s15-r1" style="left: 140px; top: 590px; width: 780px; height: 120px"><div style="position: absolute; left: 26px; top: 20px; font-size: 32px; font-weight: 800; line-height: 1.3"><span style="color: var(--lime)">✓</span> Server can render client<br /><span style="font-size: 24px; font-weight: 600; color: var(--muted)">pass server parts in as children</span></div></div>
+        <div class="card c-coral" id="s15-r2" style="left: 960px; top: 590px; width: 820px; height: 120px"><div style="position: absolute; left: 26px; top: 20px; font-size: 32px; font-weight: 800; line-height: 1.3"><span style="color: var(--coral)">✗</span> Client cannot import server<br /><span style="font-size: 24px; font-weight: 600; color: var(--muted)">it would drag the server code along</span></div></div>
+        <div class="tag pk" id="s15-low" style="left: 140px; top: 745px; font-size: 30px">Keep the client part small: only the interactive leaves</div>
+        <div class="code" id="s15-us" style="left: 140px; top: 585px; width: 960px; height: 190px; font-size: 26px"><span class="ft">actions.js · server function</span></div>
+        <div class="tag co" id="s15-pub" style="left: 1140px; top: 600px; font-size: 30px">Public endpoint!</div>
+        <div class="tag li" id="s15-val" style="left: 1140px; top: 670px; font-size: 26px">validate + authorize inside</div>
+      </section>
+
+      <!-- 16 · Not the same thing -->
+      <section id="s16" class="clip" data-start="{{s16.start}}" data-duration="{{s16.dur}}" data-track-index="0">
+        <div class="eyebrow">Not the same thing</div>
+        <h2>SSR vs Server Components</h2>
+        <div class="card c-violet" id="s16-a" style="left: 140px; top: 240px; width: 740px; height: 200px"><div class="hd">SSR</div><div style="padding: 20px 28px; font-size: 32px; font-weight: 700; line-height: 1.35">Components → HTML<br /><span style="color: var(--muted); font-size: 28px">for a fast first paint</span></div></div>
+        <div class="lbl" id="s16-ne" style="left: 895px; top: 290px; font-size: 90px; color: var(--pink); font-weight: 900">≠</div>
+        <div class="card c-pink" id="s16-b" style="left: 1040px; top: 240px; width: 740px; height: 200px"><div class="hd">Server Components</div><div style="padding: 20px 28px; font-size: 32px; font-weight: 700; line-height: 1.35">Where code runs<br /><span style="color: var(--muted); font-size: 28px">and how much JS ships</span></div></div>
+        <div class="node sv" id="s16-n1" style="left: 140px; top: 540px; width: 290px; white-space: normal">Server components run</div>
+        <div class="node" id="s16-n2" style="left: 477px; top: 540px; width: 290px; background: var(--pink); white-space: normal">RSC payload</div>
+        <div class="node sv" id="s16-n3" style="left: 814px; top: 540px; width: 290px; white-space: normal">Payload → HTML</div>
+        <div class="node cl2" id="s16-n4" style="left: 1151px; top: 540px; width: 290px; white-space: normal">Browser paints</div>
+        <div class="node cl2" id="s16-n5" style="left: 1488px; top: 540px; width: 290px; white-space: normal">Hydrate client parts only</div>
+        <div class="lbl" id="s16-a1" style="left: 435px; top: 548px; font-size: 40px">→</div>
+        <div class="lbl" id="s16-a2" style="left: 772px; top: 548px; font-size: 40px">→</div>
+        <div class="lbl" id="s16-a3" style="left: 1109px; top: 548px; font-size: 40px">→</div>
+        <div class="lbl" id="s16-a4" style="left: 1446px; top: 548px; font-size: 40px">→</div>
+        <div class="lbl sm" id="s16-s" style="left: 140px; top: 640px; font-size: 26px; color: var(--violet)">on the server</div>
+        <div class="lbl sm" id="s16-c" style="left: 1151px; top: 640px; font-size: 26px; color: var(--cyan)">in the browser</div>
+        <div class="pkt pk" id="s16-p" style="left: 150px; top: 700px">data flows →</div>
+      </section>
+
+      <!-- 17 · Which should you use -->
+      <section id="s17" class="clip" data-start="{{s17.start}}" data-duration="{{s17.dur}}" data-track-index="0">
+        <div class="eyebrow">Decide</div>
+        <h2>Which should you use?</h2>
+        <div class="card c-cyan" id="s17-a" style="left: 140px; top: 250px; width: 380px; height: 470px"><span class="ico" data-i="lock" style="position: absolute; left: 130px; top: 30px; width: 120px"></span><div style="position: absolute; left: 24px; right: 24px; top: 190px; font-size: 32px; font-weight: 800; text-align: center; line-height: 1.25">Dashboard<br />behind a login</div><div class="tag cy" style="left: 90px; top: 370px; font-size: 32px">CSR</div></div>
+        <div class="card c-violet" id="s17-b" style="left: 560px; top: 250px; width: 380px; height: 470px"><span class="ico" data-i="cart" style="position: absolute; left: 130px; top: 30px; width: 120px"></span><div style="position: absolute; left: 24px; right: 24px; top: 190px; font-size: 32px; font-weight: 800; text-align: center; line-height: 1.25">Shop, blog,<br />landing page</div><div class="tag vi" style="left: 30px; top: 370px; font-size: 28px">Server rendering</div></div>
+        <div class="card c-amber" id="s17-c" style="left: 980px; top: 250px; width: 380px; height: 470px"><span class="ico" data-i="doc" style="position: absolute; left: 130px; top: 30px; width: 120px"></span><div style="position: absolute; left: 24px; right: 24px; top: 190px; font-size: 32px; font-weight: 800; text-align: center; line-height: 1.25">Pages that<br />never change</div><div class="tag" style="left: 30px; top: 370px; font-size: 28px">Static generation</div></div>
+        <div class="card c-pink" id="s17-d" style="left: 1400px; top: 250px; width: 380px; height: 470px"><span class="ico" data-i="mix" style="position: absolute; left: 130px; top: 30px; width: 120px"></span><div style="position: absolute; left: 24px; right: 24px; top: 190px; font-size: 32px; font-weight: 800; text-align: center; line-height: 1.25">A modern app</div><div class="tag pk" style="left: 24px; top: 300px; font-size: 26px; white-space: normal; width: 330px; text-align: center">Server components by default</div><div class="tag cy" style="left: 24px; top: 385px; font-size: 26px; white-space: normal; width: 330px; text-align: center">Client where interactive</div></div>
+      </section>
+
+      <!-- 18 · Recap -->
+      <section id="s18" class="clip" data-start="{{s18.start}}" data-duration="{{s18.dur}}" data-track-index="0">
+        <div class="eyebrow">Recap</div>
+        <h2>Four things to remember</h2>
+        <div class="card rcp c-cyan" id="rc1" style="top: 250px"><span class="ic" style="color: var(--cyan)">CSR</span><div>Builds the page in the browser<small>simple, but late first content</small></div></div>
+        <div class="card rcp c-violet" id="rc2" style="top: 390px"><span class="ic" style="color: var(--violet)">SSR</span><div>Sends HTML first, then hydrates<small>fast paint, interactive after hydration</small></div></div>
+        <div class="card rcp c-amber" id="rc3" style="top: 530px"><span class="ic" style="color: var(--amber)">Suspense</span><div>Streams the page in pieces<small>slow parts never block the rest</small></div></div>
+        <div class="card rcp c-pink" id="rc4" style="top: 670px"><span class="ic" style="color: var(--pink)">RSC</span><div>Keeps code on the server<small>the browser downloads less JavaScript</small></div></div>
+        <div class="tag pk" id="s18-thx" style="right: 140px; top: 220px; font-size: 32px; padding: 8px 28px">Thanks for watching</div>
+      </section>
+
+      <div id="captions"></div>
+
+      <div class="char" id="sam" data-kind="sam"></div>
+      <div class="char" id="byte" data-kind="byte"></div>
+      <div class="char" id="mal" data-kind="mal"></div>
+      <div class="char" id="guard" data-kind="guard"></div>
+    </div>
+
+    <script>

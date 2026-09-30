@@ -1,0 +1,3 @@
+6:I["./LikeButton.js",["like"],"default"]
+0:["$","article",null,{"children":[["$","h1",null,{"children":"Sneakers"},"$1","$3",1],["$","p",null,{"children":"59 USD"},"$1","$4",1],["$","$L6",null,{"id":7},"$1","$5",1]]},"$1","$2",1]
+

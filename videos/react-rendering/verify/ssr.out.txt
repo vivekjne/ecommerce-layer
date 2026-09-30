@@ -1,0 +1,2 @@
+CSR shell: <div id="root"></div><script src="/bundle.js"></script>
+SSR html : <main><h1>Hello SSR</h1><button>Clicked <!-- -->0<!-- --> times</button></main>
