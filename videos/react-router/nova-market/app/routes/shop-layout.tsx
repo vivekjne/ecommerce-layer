@@ -27,7 +27,8 @@ export default function ShopLayout() {
   const isNavigating = navigation.state !== "idle";
   // each route can describe itself in `handle`
   const crumbs = useMatches().flatMap((m) =>
-    (m.handle as { breadcrumb?: string } | undefined)?.breadcrumb
+    (m.handle as { breadcrumb?: string } | undefined)
+      ?.breadcrumb
       ? [m.handle as { breadcrumb: string }]
       : [],
   );
@@ -79,7 +80,8 @@ export default function ShopLayout() {
       <main className="mx-auto max-w-5xl px-6 py-8">
         {crumbs.length > 0 && (
           <p className="mb-4 text-sm text-slate-500">
-            Nova Market / {crumbs.map((c) => c.breadcrumb).join(" / ")}
+            Nova Market /{" "}
+            {crumbs.map((c) => c.breadcrumb).join(" / ")}
           </p>
         )}
         <Outlet />

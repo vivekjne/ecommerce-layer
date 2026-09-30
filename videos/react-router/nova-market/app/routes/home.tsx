@@ -1,6 +1,13 @@
-import { Link, type ShouldRevalidateFunctionArgs } from "react-router";
+import {
+  Link,
+  type ShouldRevalidateFunctionArgs,
+} from "react-router";
 import type { Route } from "./+types/home";
-import { CATALOG_URL, formatPrice, type Product } from "~/lib/types";
+import {
+  CATALOG_URL,
+  formatPrice,
+  type Product,
+} from "~/lib/types";
 import { ProductArt } from "~/components/product-art";
 
 export async function loader() {
@@ -9,7 +16,7 @@ export async function loader() {
   return { featured: products.slice(0, 3) };
 }
 
-// runs in the browser only: add data that lives in localStorage
+// browser only: adds data from localStorage
 export async function clientLoader({
   serverLoader,
 }: Route.ClientLoaderArgs) {
@@ -29,7 +36,7 @@ export function HydrateFallback() {
   );
 }
 
-// cart changes do not affect this page: skip its loader after them
+// cart changes never affect this page
 export function shouldRevalidate({
   formAction,
   defaultShouldRevalidate,
@@ -38,7 +45,9 @@ export function shouldRevalidate({
   return defaultShouldRevalidate;
 }
 
-export default function Home({ loaderData }: Route.ComponentProps) {
+export default function Home({
+  loaderData,
+}: Route.ComponentProps) {
   return (
     <div>
       <section className="rounded-3xl bg-gradient-to-br from-indigo-600 to-pink-500 p-10 text-white">
@@ -66,7 +75,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             <ProductArt product={p} className="h-40" />
             <div className="p-4">
               <p className="font-bold">{p.name}</p>
-              <p className="text-slate-600">{formatPrice(p.price)}</p>
+              <p className="text-slate-600">
+                {formatPrice(p.price)}
+              </p>
             </div>
           </Link>
         ))}

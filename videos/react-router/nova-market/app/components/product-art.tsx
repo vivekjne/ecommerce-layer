@@ -46,8 +46,22 @@ const SHAPES: Record<Product["art"], React.ReactNode> = {
       strokeLinecap="round"
     >
       <path d="M30 66 V54 a30 30 0 0 1 60 0 V66" />
-      <rect x="24" y="60" width="14" height="22" rx="5" fill="#fff" />
-      <rect x="82" y="60" width="14" height="22" rx="5" fill="#fff" />
+      <rect
+        x="24"
+        y="60"
+        width="14"
+        height="22"
+        rx="5"
+        fill="#fff"
+      />
+      <rect
+        x="82"
+        y="60"
+        width="14"
+        height="22"
+        rx="5"
+        fill="#fff"
+      />
     </g>
   ),
 };
@@ -61,7 +75,9 @@ export function ProductArt({
 }) {
   return (
     <div
-      className={"flex items-center justify-center " + className}
+      className={
+        "flex items-center justify-center " + className
+      }
       style={{
         background: `linear-gradient(135deg, ${product.color}, #6d28d9)`,
       }}

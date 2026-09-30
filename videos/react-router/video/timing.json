@@ -6,82 +6,82 @@
   },
   "s2": {
    "start": 30.844,
-   "dur": 57.66
+   "dur": 64.286
   },
   "s3": {
-   "start": 88.504,
+   "start": 95.131,
    "dur": 82.523
   },
   "s4": {
-   "start": 171.027,
+   "start": 177.654,
    "dur": 34.892
   },
   "s5": {
-   "start": 205.919,
-   "dur": 57.988
+   "start": 212.546,
+   "dur": 57.176
   },
   "s6": {
-   "start": 263.907,
+   "start": 269.722,
    "dur": 85.976
   },
   "s7": {
-   "start": 349.883,
+   "start": 355.697,
    "dur": 91.756
   },
   "s8": {
-   "start": 441.639,
+   "start": 447.454,
    "dur": 52.095
   },
   "s9": {
-   "start": 493.734,
+   "start": 499.549,
    "dur": 77.24
   },
   "s10": {
-   "start": 570.974,
+   "start": 576.788,
    "dur": 50.912
   },
   "s11": {
-   "start": 621.886,
+   "start": 627.7,
    "dur": 103.294
   },
   "s12": {
-   "start": 725.18,
+   "start": 730.994,
    "dur": 43.574
   },
   "s13": {
-   "start": 768.754,
+   "start": 774.569,
    "dur": 47.265
   },
   "s14": {
-   "start": 816.02,
-   "dur": 44.303
+   "start": 821.834,
+   "dur": 44.075
   },
   "s15": {
-   "start": 860.322,
+   "start": 865.909,
    "dur": 54.666
   },
   "s16": {
-   "start": 914.988,
+   "start": 920.575,
    "dur": 33.111
   },
   "s17": {
-   "start": 948.099,
+   "start": 953.686,
    "dur": 28.177
   },
   "s18": {
-   "start": 976.276,
+   "start": 981.863,
    "dur": 32.915
   },
   "s19": {
-   "start": 1009.191,
+   "start": 1014.778,
    "dur": 21.453
   },
   "s20": {
-   "start": 1030.644,
-   "dur": 36.719
+   "start": 1036.23,
+   "dur": 36.795
   },
   "s21": {
-   "start": 1067.362,
+   "start": 1073.025,
    "dur": 28.396
   }
  },
@@ -534,118 +534,190 @@
    "scene": "s2",
    "speaker": "byte",
    "start": 53.991,
-   "dur": 13.567,
+   "dur": 13.052,
    "words": [
     {
      "w": "The",
      "t": 0.0
     },
     {
+     "w": "Layout",
+     "t": 0.363
+    },
+    {
+     "w": "function",
+     "t": 0.969
+    },
+    {
+     "w": "renders",
+     "t": 1.735
+    },
+    {
+     "w": "the",
+     "t": 2.422
+    },
+    {
      "w": "HTML",
-     "t": 0.545
+     "t": 2.785
     },
     {
      "w": "and",
-     "t": 1.212
+     "t": 3.229
     },
     {
      "w": "body",
-     "t": 1.757
+     "t": 3.592
     },
     {
      "w": "tags.",
-     "t": 2.424
+     "t": 4.036
     },
     {
      "w": "Inside",
-     "t": 3.66
+     "t": 5.07
     },
     {
      "w": "the",
-     "t": 4.095
+     "t": 5.54
     },
     {
-     "w": "head,",
-     "t": 4.356
+     "w": "head",
+     "t": 5.822
     },
     {
-     "w": "the",
-     "t": 4.675
+     "w": "go",
+     "t": 6.167
     },
     {
      "w": "Links",
-     "t": 4.936
+     "t": 6.386
     },
     {
      "w": "and",
-     "t": 5.313
+     "t": 6.793
     },
     {
-     "w": "Meta",
-     "t": 5.574
-    },
-    {
-     "w": "components.",
-     "t": 5.893
+     "w": "Meta.",
+     "t": 7.075
     },
     {
      "w": "Inside",
-     "t": 7.21
+     "t": 8.15
     },
     {
      "w": "the",
-     "t": 7.68
+     "t": 8.682
     },
     {
-     "w": "body,",
-     "t": 7.963
+     "w": "body",
+     "t": 9.001
     },
     {
-     "w": "an",
-     "t": 8.308
+     "w": "go",
+     "t": 9.391
     },
     {
-     "w": "Outlet",
-     "t": 8.527
-    },
-    {
-     "w": "for",
-     "t": 8.997
-    },
-    {
-     "w": "the",
-     "t": 9.28
-    },
-    {
-     "w": "current",
-     "t": 9.562
+     "w": "your",
+     "t": 9.64
     },
     {
      "w": "page,",
-     "t": 10.095
+     "t": 10.03
     },
     {
-     "w": "then",
-     "t": 10.89
-    },
-    {
-     "w": "ScrollRestoration",
-     "t": 11.288
+     "w": "ScrollRestoration,",
+     "t": 10.81
     },
     {
      "w": "and",
-     "t": 12.627
+     "t": 12.82
     },
     {
      "w": "Scripts.",
-     "t": 12.952
+     "t": 12.9
     }
    ]
   },
   "s2e": {
    "scene": "s2",
+   "speaker": "byte",
+   "start": 67.543,
+   "dur": 6.641,
+   "words": [
+    {
+     "w": "The",
+     "t": 0.0
+    },
+    {
+     "w": "default",
+     "t": 0.298
+    },
+    {
+     "w": "export",
+     "t": 0.862
+    },
+    {
+     "w": "is",
+     "t": 1.359
+    },
+    {
+     "w": "App,",
+     "t": 1.592
+    },
+    {
+     "w": "and",
+     "t": 2.29
+    },
+    {
+     "w": "it",
+     "t": 2.532
+    },
+    {
+     "w": "returns",
+     "t": 2.721
+    },
+    {
+     "w": "an",
+     "t": 3.178
+    },
+    {
+     "w": "Outlet.",
+     "t": 3.366
+    },
+    {
+     "w": "That",
+     "t": 4.4
+    },
+    {
+     "w": "is",
+     "t": 4.683
+    },
+    {
+     "w": "where",
+     "t": 4.864
+    },
+    {
+     "w": "the",
+     "t": 5.199
+    },
+    {
+     "w": "current",
+     "t": 5.431
+    },
+    {
+     "w": "route",
+     "t": 5.869
+    },
+    {
+     "w": "renders.",
+     "t": 6.204
+    }
+   ]
+  },
+  "s2f": {
+   "scene": "s2",
    "speaker": "sam",
-   "start": 68.058,
+   "start": 74.685,
    "dur": 1.702,
    "words": [
     {
@@ -670,10 +742,10 @@
     }
    ]
   },
-  "s2f": {
+  "s2g": {
    "scene": "s2",
    "speaker": "byte",
-   "start": 70.26,
+   "start": 76.887,
    "dur": 8.205,
    "words": [
     {
@@ -746,10 +818,10 @@
     }
    ]
   },
-  "s2g": {
+  "s2h": {
    "scene": "s2",
    "speaker": "byte",
-   "start": 78.965,
+   "start": 85.592,
    "dur": 8.839,
    "words": [
     {
@@ -833,7 +905,7 @@
   "s3a": {
    "scene": "s3",
    "speaker": "byte",
-   "start": 89.604,
+   "start": 96.231,
    "dur": 8.988,
    "words": [
     {
@@ -913,7 +985,7 @@
   "s3b": {
    "scene": "s3",
    "speaker": "byte",
-   "start": 99.092,
+   "start": 105.718,
    "dur": 5.548,
    "words": [
     {
@@ -977,7 +1049,7 @@
   "s3c": {
    "scene": "s3",
    "speaker": "sam",
-   "start": 105.14,
+   "start": 111.766,
    "dur": 2.907,
    "words": [
     {
@@ -1025,7 +1097,7 @@
   "s3d": {
    "scene": "s3",
    "speaker": "byte",
-   "start": 108.547,
+   "start": 115.174,
    "dur": 6.044,
    "words": [
     {
@@ -1085,7 +1157,7 @@
   "s3e": {
    "scene": "s3",
    "speaker": "byte",
-   "start": 115.091,
+   "start": 121.718,
    "dur": 5.083,
    "words": [
     {
@@ -1153,7 +1225,7 @@
   "s3f": {
    "scene": "s3",
    "speaker": "byte",
-   "start": 120.674,
+   "start": 127.3,
    "dur": 6.519,
    "words": [
     {
@@ -1217,7 +1289,7 @@
   "s3g": {
    "scene": "s3",
    "speaker": "sam",
-   "start": 127.693,
+   "start": 134.32,
    "dur": 3.051,
    "words": [
     {
@@ -1261,7 +1333,7 @@
   "s3h": {
    "scene": "s3",
    "speaker": "byte",
-   "start": 131.244,
+   "start": 137.87,
    "dur": 5.884,
    "words": [
     {
@@ -1317,7 +1389,7 @@
   "s3i": {
    "scene": "s3",
    "speaker": "byte",
-   "start": 137.628,
+   "start": 144.254,
    "dur": 9.777,
    "words": [
     {
@@ -1425,7 +1497,7 @@
   "s3j": {
    "scene": "s3",
    "speaker": "sam",
-   "start": 147.905,
+   "start": 154.532,
    "dur": 3.587,
    "words": [
     {
@@ -1473,7 +1545,7 @@
   "s3k": {
    "scene": "s3",
    "speaker": "byte",
-   "start": 151.992,
+   "start": 158.619,
    "dur": 7.302,
    "words": [
     {
@@ -1561,7 +1633,7 @@
   "s3l": {
    "scene": "s3",
    "speaker": "sam",
-   "start": 159.795,
+   "start": 166.421,
    "dur": 3.226,
    "words": [
     {
@@ -1609,7 +1681,7 @@
   "s3m": {
    "scene": "s3",
    "speaker": "byte",
-   "start": 163.521,
+   "start": 170.147,
    "dur": 6.807,
    "words": [
     {
@@ -1677,7 +1749,7 @@
   "s4a": {
    "scene": "s4",
    "speaker": "byte",
-   "start": 172.127,
+   "start": 178.754,
    "dur": 6.63,
    "words": [
     {
@@ -1749,7 +1821,7 @@
   "s4b": {
    "scene": "s4",
    "speaker": "byte",
-   "start": 179.258,
+   "start": 185.884,
    "dur": 6.347,
    "words": [
     {
@@ -1821,7 +1893,7 @@
   "s4c": {
    "scene": "s4",
    "speaker": "byte",
-   "start": 186.105,
+   "start": 192.731,
    "dur": 7.801,
    "words": [
     {
@@ -1905,7 +1977,7 @@
   "s4d": {
    "scene": "s4",
    "speaker": "sam",
-   "start": 194.405,
+   "start": 201.032,
    "dur": 2.102,
    "words": [
     {
@@ -1933,7 +2005,7 @@
   "s4e": {
    "scene": "s4",
    "speaker": "byte",
-   "start": 197.007,
+   "start": 203.633,
    "dur": 8.212,
    "words": [
     {
@@ -2009,7 +2081,7 @@
   "s5a": {
    "scene": "s5",
    "speaker": "byte",
-   "start": 207.019,
+   "start": 213.646,
    "dur": 4.61,
    "words": [
     {
@@ -2065,7 +2137,7 @@
   "s5b": {
    "scene": "s5",
    "speaker": "byte",
-   "start": 212.129,
+   "start": 218.755,
    "dur": 8.594,
    "words": [
     {
@@ -2157,7 +2229,7 @@
   "s5c": {
    "scene": "s5",
    "speaker": "sam",
-   "start": 221.222,
+   "start": 227.849,
    "dur": 2.245,
    "words": [
     {
@@ -2189,7 +2261,7 @@
   "s5d": {
    "scene": "s5",
    "speaker": "byte",
-   "start": 223.968,
+   "start": 230.594,
    "dur": 9.032,
    "words": [
     {
@@ -2289,7 +2361,7 @@
   "s5e": {
    "scene": "s5",
    "speaker": "byte",
-   "start": 233.5,
+   "start": 240.126,
    "dur": 7.277,
    "words": [
     {
@@ -2369,7 +2441,7 @@
   "s5f": {
    "scene": "s5",
    "speaker": "sam",
-   "start": 241.277,
+   "start": 247.903,
    "dur": 1.75,
    "words": [
     {
@@ -2397,7 +2469,7 @@
   "s5g": {
    "scene": "s5",
    "speaker": "byte",
-   "start": 243.527,
+   "start": 250.153,
    "dur": 8.192,
    "words": [
     {
@@ -2473,8 +2545,8 @@
   "s5h": {
    "scene": "s5",
    "speaker": "byte",
-   "start": 252.219,
-   "dur": 10.989,
+   "start": 258.845,
+   "dur": 10.177,
    "words": [
     {
      "w": "Loaders",
@@ -2505,71 +2577,63 @@
      "t": 2.278
     },
     {
-     "w": "clientLoader",
-     "t": 3.42
-    },
-    {
-     "w": "s",
-     "t": 4.467
+     "w": "clientLoaders",
+     "t": 3.43
     },
     {
      "w": "and",
-     "t": 4.661
+     "t": 4.396
     },
     {
-     "w": "clientAction",
-     "t": 5.01
-    },
-    {
-     "w": "s",
-     "t": 6.057
+     "w": "clientActions",
+     "t": 4.696
     },
     {
      "w": "run",
-     "t": 6.251
+     "t": 5.661
     },
     {
      "w": "in",
-     "t": 6.6
+     "t": 5.961
     },
     {
      "w": "the",
-     "t": 6.872
+     "t": 6.194
     },
     {
      "w": "browser.",
-     "t": 7.221
+     "t": 6.494
     },
     {
      "w": "Your",
-     "t": 8.53
+     "t": 7.68
     },
     {
      "w": "components",
-     "t": 8.886
+     "t": 8.041
     },
     {
      "w": "run",
-     "t": 9.63
+     "t": 8.797
     },
     {
      "w": "in",
-     "t": 9.921
+     "t": 9.092
     },
     {
      "w": "both",
-     "t": 10.147
+     "t": 9.322
     },
     {
      "w": "places.",
-     "t": 10.503
+     "t": 9.684
     }
    ]
   },
   "s6a": {
    "scene": "s6",
    "speaker": "byte",
-   "start": 265.007,
+   "start": 270.822,
    "dur": 11.122,
    "words": [
     {
@@ -2669,7 +2733,7 @@
   "s6b": {
    "scene": "s6",
    "speaker": "sam",
-   "start": 276.629,
+   "start": 282.443,
    "dur": 3.346,
    "words": [
     {
@@ -2709,7 +2773,7 @@
   "s6c": {
    "scene": "s6",
    "speaker": "byte",
-   "start": 280.475,
+   "start": 286.289,
    "dur": 10.238,
    "words": [
     {
@@ -2817,7 +2881,7 @@
   "s6d": {
    "scene": "s6",
    "speaker": "byte",
-   "start": 291.213,
+   "start": 297.028,
    "dur": 5.767,
    "words": [
     {
@@ -2877,7 +2941,7 @@
   "s6e": {
    "scene": "s6",
    "speaker": "byte",
-   "start": 297.48,
+   "start": 303.295,
    "dur": 6.751,
    "words": [
     {
@@ -2953,7 +3017,7 @@
   "s6f": {
    "scene": "s6",
    "speaker": "byte",
-   "start": 304.731,
+   "start": 310.546,
    "dur": 6.542,
    "words": [
     {
@@ -3021,7 +3085,7 @@
   "s6g": {
    "scene": "s6",
    "speaker": "sam",
-   "start": 311.773,
+   "start": 317.587,
    "dur": 2.053,
    "words": [
     {
@@ -3049,7 +3113,7 @@
   "s6h": {
    "scene": "s6",
    "speaker": "byte",
-   "start": 314.326,
+   "start": 320.14,
    "dur": 7.925,
    "words": [
     {
@@ -3125,7 +3189,7 @@
   "s6i": {
    "scene": "s6",
    "speaker": "byte",
-   "start": 322.751,
+   "start": 328.565,
    "dur": 10.417,
    "words": [
     {
@@ -3217,7 +3281,7 @@
   "s6j": {
    "scene": "s6",
    "speaker": "byte",
-   "start": 333.668,
+   "start": 339.482,
    "dur": 8.361,
    "words": [
     {
@@ -3309,7 +3373,7 @@
   "s6k": {
    "scene": "s6",
    "speaker": "byte",
-   "start": 342.528,
+   "start": 348.343,
    "dur": 6.654,
    "words": [
     {
@@ -3385,7 +3449,7 @@
   "s7a": {
    "scene": "s7",
    "speaker": "byte",
-   "start": 350.983,
+   "start": 356.797,
    "dur": 8.764,
    "words": [
     {
@@ -3473,7 +3537,7 @@
   "s7b": {
    "scene": "s7",
    "speaker": "byte",
-   "start": 360.247,
+   "start": 366.062,
    "dur": 4.257,
    "words": [
     {
@@ -3517,7 +3581,7 @@
   "s7c": {
    "scene": "s7",
    "speaker": "sam",
-   "start": 365.005,
+   "start": 370.819,
    "dur": 1.957,
    "words": [
     {
@@ -3549,7 +3613,7 @@
   "s7d": {
    "scene": "s7",
    "speaker": "byte",
-   "start": 367.462,
+   "start": 373.276,
    "dur": 11.052,
    "words": [
     {
@@ -3661,7 +3725,7 @@
   "s7e": {
    "scene": "s7",
    "speaker": "sam",
-   "start": 379.014,
+   "start": 384.828,
    "dur": 3.816,
    "words": [
     {
@@ -3709,7 +3773,7 @@
   "s7f": {
    "scene": "s7",
    "speaker": "byte",
-   "start": 383.33,
+   "start": 389.144,
    "dur": 0.96,
    "words": [
     {
@@ -3721,7 +3785,7 @@
   "s7g": {
    "scene": "s7",
    "speaker": "byte",
-   "start": 384.79,
+   "start": 390.604,
    "dur": 13.355,
    "words": [
     {
@@ -3857,7 +3921,7 @@
   "s7h": {
    "scene": "s7",
    "speaker": "byte",
-   "start": 398.645,
+   "start": 404.459,
    "dur": 5.079,
    "words": [
     {
@@ -3909,7 +3973,7 @@
   "s7i": {
    "scene": "s7",
    "speaker": "sam",
-   "start": 404.223,
+   "start": 410.038,
    "dur": 3.282,
    "words": [
     {
@@ -3961,7 +4025,7 @@
   "s7j": {
    "scene": "s7",
    "speaker": "byte",
-   "start": 408.005,
+   "start": 413.82,
    "dur": 7.286,
    "words": [
     {
@@ -4033,7 +4097,7 @@
   "s7k": {
    "scene": "s7",
    "speaker": "byte",
-   "start": 415.791,
+   "start": 421.605,
    "dur": 10.578,
    "words": [
     {
@@ -4129,7 +4193,7 @@
   "s7l": {
    "scene": "s7",
    "speaker": "byte",
-   "start": 426.869,
+   "start": 432.684,
    "dur": 6.043,
    "words": [
     {
@@ -4197,7 +4261,7 @@
   "s7m": {
    "scene": "s7",
    "speaker": "sam",
-   "start": 433.412,
+   "start": 439.226,
    "dur": 2.282,
    "words": [
     {
@@ -4233,7 +4297,7 @@
   "s7n": {
    "scene": "s7",
    "speaker": "byte",
-   "start": 436.194,
+   "start": 442.009,
    "dur": 4.745,
    "words": [
     {
@@ -4285,7 +4349,7 @@
   "s8a": {
    "scene": "s8",
    "speaker": "byte",
-   "start": 442.739,
+   "start": 448.554,
    "dur": 7.1,
    "words": [
     {
@@ -4357,7 +4421,7 @@
   "s8b": {
    "scene": "s8",
    "speaker": "byte",
-   "start": 450.339,
+   "start": 456.154,
    "dur": 10.71,
    "words": [
     {
@@ -4461,7 +4525,7 @@
   "s8c": {
    "scene": "s8",
    "speaker": "sam",
-   "start": 461.549,
+   "start": 467.363,
    "dur": 1.735,
    "words": [
     {
@@ -4485,7 +4549,7 @@
   "s8d": {
    "scene": "s8",
    "speaker": "byte",
-   "start": 463.784,
+   "start": 469.599,
    "dur": 4.385,
    "words": [
     {
@@ -4545,7 +4609,7 @@
   "s8e": {
    "scene": "s8",
    "speaker": "byte",
-   "start": 468.669,
+   "start": 474.484,
    "dur": 9.787,
    "words": [
     {
@@ -4641,7 +4705,7 @@
   "s8f": {
    "scene": "s8",
    "speaker": "byte",
-   "start": 478.956,
+   "start": 484.771,
    "dur": 5.461,
    "words": [
     {
@@ -4693,7 +4757,7 @@
   "s8g": {
    "scene": "s8",
    "speaker": "byte",
-   "start": 484.917,
+   "start": 490.732,
    "dur": 8.117,
    "words": [
     {
@@ -4777,7 +4841,7 @@
   "s9a": {
    "scene": "s9",
    "speaker": "byte",
-   "start": 494.834,
+   "start": 500.649,
    "dur": 6.184,
    "words": [
     {
@@ -4837,7 +4901,7 @@
   "s9b": {
    "scene": "s9",
    "speaker": "byte",
-   "start": 501.518,
+   "start": 507.333,
    "dur": 8.861,
    "words": [
     {
@@ -4929,7 +4993,7 @@
   "s9c": {
    "scene": "s9",
    "speaker": "byte",
-   "start": 510.879,
+   "start": 516.694,
    "dur": 4.577,
    "words": [
     {
@@ -4977,7 +5041,7 @@
   "s9d": {
    "scene": "s9",
    "speaker": "mallory",
-   "start": 515.957,
+   "start": 521.771,
    "dur": 3.435,
    "words": [
     {
@@ -5013,7 +5077,7 @@
   "s9e": {
    "scene": "s9",
    "speaker": "byte",
-   "start": 519.891,
+   "start": 525.706,
    "dur": 7.624,
    "words": [
     {
@@ -5097,7 +5161,7 @@
   "s9f": {
    "scene": "s9",
    "speaker": "byte",
-   "start": 528.015,
+   "start": 533.83,
    "dur": 6.268,
    "words": [
     {
@@ -5169,7 +5233,7 @@
   "s9g": {
    "scene": "s9",
    "speaker": "sam",
-   "start": 534.783,
+   "start": 540.598,
    "dur": 2.058,
    "words": [
     {
@@ -5193,7 +5257,7 @@
   "s9h": {
    "scene": "s9",
    "speaker": "byte",
-   "start": 537.341,
+   "start": 543.156,
    "dur": 7.743,
    "words": [
     {
@@ -5257,7 +5321,7 @@
   "s9i": {
    "scene": "s9",
    "speaker": "byte",
-   "start": 545.584,
+   "start": 551.398,
    "dur": 5.905,
    "words": [
     {
@@ -5321,7 +5385,7 @@
   "s9j": {
    "scene": "s9",
    "speaker": "byte",
-   "start": 551.989,
+   "start": 557.804,
    "dur": 8.284,
    "words": [
     {
@@ -5381,7 +5445,7 @@
   "s9k": {
    "scene": "s9",
    "speaker": "byte",
-   "start": 560.773,
+   "start": 566.587,
    "dur": 9.501,
    "words": [
     {
@@ -5473,7 +5537,7 @@
   "s10a": {
    "scene": "s10",
    "speaker": "byte",
-   "start": 572.074,
+   "start": 577.888,
    "dur": 5.153,
    "words": [
     {
@@ -5533,7 +5597,7 @@
   "s10b": {
    "scene": "s10",
    "speaker": "byte",
-   "start": 577.727,
+   "start": 583.542,
    "dur": 10.976,
    "words": [
     {
@@ -5617,7 +5681,7 @@
   "s10c": {
    "scene": "s10",
    "speaker": "byte",
-   "start": 589.203,
+   "start": 595.017,
    "dur": 5.185,
    "words": [
     {
@@ -5681,7 +5745,7 @@
   "s10d": {
    "scene": "s10",
    "speaker": "byte",
-   "start": 594.888,
+   "start": 600.703,
    "dur": 8.568,
    "words": [
     {
@@ -5765,7 +5829,7 @@
   "s10e": {
    "scene": "s10",
    "speaker": "sam",
-   "start": 603.957,
+   "start": 609.771,
    "dur": 1.914,
    "words": [
     {
@@ -5797,7 +5861,7 @@
   "s10f": {
    "scene": "s10",
    "speaker": "byte",
-   "start": 606.37,
+   "start": 612.185,
    "dur": 3.775,
    "words": [
     {
@@ -5845,7 +5909,7 @@
   "s10g": {
    "scene": "s10",
    "speaker": "byte",
-   "start": 610.646,
+   "start": 616.46,
    "dur": 6.72,
    "words": [
     {
@@ -5925,7 +5989,7 @@
   "s10h": {
    "scene": "s10",
    "speaker": "byte",
-   "start": 617.866,
+   "start": 623.68,
    "dur": 3.32,
    "words": [
     {
@@ -5961,7 +6025,7 @@
   "s11a": {
    "scene": "s11",
    "speaker": "byte",
-   "start": 622.986,
+   "start": 628.8,
    "dur": 5.748,
    "words": [
     {
@@ -6029,7 +6093,7 @@
   "s11b": {
    "scene": "s11",
    "speaker": "byte",
-   "start": 629.233,
+   "start": 635.048,
    "dur": 8.83,
    "words": [
     {
@@ -6117,7 +6181,7 @@
   "s11c": {
    "scene": "s11",
    "speaker": "sam",
-   "start": 638.563,
+   "start": 644.378,
    "dur": 2.453,
    "words": [
     {
@@ -6149,7 +6213,7 @@
   "s11d": {
    "scene": "s11",
    "speaker": "byte",
-   "start": 641.516,
+   "start": 647.331,
    "dur": 8.182,
    "words": [
     {
@@ -6237,7 +6301,7 @@
   "s11e": {
    "scene": "s11",
    "speaker": "byte",
-   "start": 650.198,
+   "start": 656.013,
    "dur": 6.615,
    "words": [
     {
@@ -6309,7 +6373,7 @@
   "s11f": {
    "scene": "s11",
    "speaker": "byte",
-   "start": 657.313,
+   "start": 663.128,
    "dur": 7.609,
    "words": [
     {
@@ -6385,7 +6449,7 @@
   "s11g": {
    "scene": "s11",
    "speaker": "byte",
-   "start": 665.422,
+   "start": 671.237,
    "dur": 6.531,
    "words": [
     {
@@ -6441,7 +6505,7 @@
   "s11h": {
    "scene": "s11",
    "speaker": "byte",
-   "start": 672.453,
+   "start": 678.268,
    "dur": 8.317,
    "words": [
     {
@@ -6529,7 +6593,7 @@
   "s11i": {
    "scene": "s11",
    "speaker": "sam",
-   "start": 681.27,
+   "start": 687.084,
    "dur": 2.206,
    "words": [
     {
@@ -6569,7 +6633,7 @@
   "s11j": {
    "scene": "s11",
    "speaker": "byte",
-   "start": 683.975,
+   "start": 689.79,
    "dur": 8.609,
    "words": [
     {
@@ -6645,7 +6709,7 @@
   "s11k": {
    "scene": "s11",
    "speaker": "byte",
-   "start": 693.085,
+   "start": 698.899,
    "dur": 8.814,
    "words": [
     {
@@ -6741,7 +6805,7 @@
   "s11l": {
    "scene": "s11",
    "speaker": "byte",
-   "start": 702.399,
+   "start": 708.213,
    "dur": 9.952,
    "words": [
     {
@@ -6841,7 +6905,7 @@
   "s11m": {
    "scene": "s11",
    "speaker": "byte",
-   "start": 712.851,
+   "start": 718.665,
    "dur": 4.398,
    "words": [
     {
@@ -6889,7 +6953,7 @@
   "s11n": {
    "scene": "s11",
    "speaker": "byte",
-   "start": 717.748,
+   "start": 723.563,
    "dur": 6.732,
    "words": [
     {
@@ -6965,7 +7029,7 @@
   "s12a": {
    "scene": "s12",
    "speaker": "byte",
-   "start": 726.28,
+   "start": 732.094,
    "dur": 9.649,
    "words": [
     {
@@ -7065,7 +7129,7 @@
   "s12b": {
    "scene": "s12",
    "speaker": "sam",
-   "start": 736.429,
+   "start": 742.244,
    "dur": 1.94,
    "words": [
     {
@@ -7089,7 +7153,7 @@
   "s12c": {
    "scene": "s12",
    "speaker": "byte",
-   "start": 738.87,
+   "start": 744.684,
    "dur": 8.359,
    "words": [
     {
@@ -7173,7 +7237,7 @@
   "s12d": {
    "scene": "s12",
    "speaker": "byte",
-   "start": 747.729,
+   "start": 753.543,
    "dur": 5.017,
    "words": [
     {
@@ -7213,7 +7277,7 @@
   "s12e": {
    "scene": "s12",
    "speaker": "byte",
-   "start": 753.246,
+   "start": 759.06,
    "dur": 7.617,
    "words": [
     {
@@ -7281,7 +7345,7 @@
   "s12f": {
    "scene": "s12",
    "speaker": "byte",
-   "start": 761.363,
+   "start": 767.177,
    "dur": 6.691,
    "words": [
     {
@@ -7353,7 +7417,7 @@
   "s13a": {
    "scene": "s13",
    "speaker": "byte",
-   "start": 769.854,
+   "start": 775.669,
    "dur": 5.387,
    "words": [
     {
@@ -7421,7 +7485,7 @@
   "s13b": {
    "scene": "s13",
    "speaker": "byte",
-   "start": 775.741,
+   "start": 781.556,
    "dur": 8.346,
    "words": [
     {
@@ -7509,7 +7573,7 @@
   "s13c": {
    "scene": "s13",
    "speaker": "byte",
-   "start": 784.587,
+   "start": 790.401,
    "dur": 6.833,
    "words": [
     {
@@ -7585,7 +7649,7 @@
   "s13d": {
    "scene": "s13",
    "speaker": "sam",
-   "start": 791.92,
+   "start": 797.735,
    "dur": 2.948,
    "words": [
     {
@@ -7629,7 +7693,7 @@
   "s13e": {
    "scene": "s13",
    "speaker": "byte",
-   "start": 795.368,
+   "start": 801.182,
    "dur": 4.262,
    "words": [
     {
@@ -7689,7 +7753,7 @@
   "s13f": {
    "scene": "s13",
    "speaker": "byte",
-   "start": 800.13,
+   "start": 805.944,
    "dur": 5.676,
    "words": [
     {
@@ -7749,7 +7813,7 @@
   "s13g": {
    "scene": "s13",
    "speaker": "byte",
-   "start": 806.306,
+   "start": 812.12,
    "dur": 9.014,
    "words": [
     {
@@ -7825,7 +7889,7 @@
   "s14a": {
    "scene": "s14",
    "speaker": "byte",
-   "start": 817.12,
+   "start": 822.934,
    "dur": 7.928,
    "words": [
     {
@@ -7909,7 +7973,7 @@
   "s14b": {
    "scene": "s14",
    "speaker": "byte",
-   "start": 825.548,
+   "start": 831.363,
    "dur": 12.498,
    "words": [
     {
@@ -8001,7 +8065,7 @@
   "s14c": {
    "scene": "s14",
    "speaker": "mallory",
-   "start": 838.546,
+   "start": 844.36,
    "dur": 4.191,
    "words": [
     {
@@ -8053,7 +8117,7 @@
   "s14d": {
    "scene": "s14",
    "speaker": "byte",
-   "start": 843.237,
+   "start": 849.051,
    "dur": 8.36,
    "words": [
     {
@@ -8157,8 +8221,8 @@
   "s14e": {
    "scene": "s14",
    "speaker": "byte",
-   "start": 852.097,
-   "dur": 7.525,
+   "start": 857.911,
+   "dur": 7.298,
    "words": [
     {
      "w": "Boundaries",
@@ -8166,58 +8230,58 @@
     },
     {
      "w": "are",
-     "t": 0.899
+     "t": 0.815
     },
     {
      "w": "for",
-     "t": 1.25
+     "t": 1.135
     },
     {
      "w": "surprises",
-     "t": 1.602
+     "t": 1.454
     },
     {
      "w": "and",
-     "t": 2.423
+     "t": 2.198
     },
     {
      "w": "for",
-     "t": 2.774
+     "t": 2.517
     },
     {
-     "w": "404",
-     "t": 3.126
+     "w": "missing",
+     "t": 2.836
     },
     {
-     "w": "s.",
-     "t": 4.025
+     "w": "pages.",
+     "t": 3.439
     },
     {
      "w": "Use",
-     "t": 4.8
+     "t": 4.49
     },
     {
      "w": "actionData",
-     "t": 5.127
+     "t": 4.827
     },
     {
      "w": "for",
-     "t": 5.963
+     "t": 5.688
     },
     {
      "w": "form",
-     "t": 6.29
+     "t": 6.025
     },
     {
      "w": "validation.",
-     "t": 6.69
+     "t": 6.437
     }
    ]
   },
   "s15a": {
    "scene": "s15",
    "speaker": "guard",
-   "start": 861.422,
+   "start": 867.009,
    "dur": 2.16,
    "words": [
     {
@@ -8245,7 +8309,7 @@
   "s15b": {
    "scene": "s15",
    "speaker": "byte",
-   "start": 864.082,
+   "start": 869.669,
    "dur": 9.015,
    "words": [
     {
@@ -8337,7 +8401,7 @@
   "s15c": {
    "scene": "s15",
    "speaker": "byte",
-   "start": 873.598,
+   "start": 879.185,
    "dur": 7.749,
    "words": [
     {
@@ -8409,7 +8473,7 @@
   "s15d": {
    "scene": "s15",
    "speaker": "guard",
-   "start": 881.847,
+   "start": 887.433,
    "dur": 2.457,
    "words": [
     {
@@ -8441,7 +8505,7 @@
   "s15e": {
    "scene": "s15",
    "speaker": "byte",
-   "start": 884.803,
+   "start": 890.39,
    "dur": 9.834,
    "words": [
     {
@@ -8541,7 +8605,7 @@
   "s15f": {
    "scene": "s15",
    "speaker": "byte",
-   "start": 895.137,
+   "start": 900.724,
    "dur": 4.087,
    "words": [
     {
@@ -8585,7 +8649,7 @@
   "s15g": {
    "scene": "s15",
    "speaker": "byte",
-   "start": 899.724,
+   "start": 905.311,
    "dur": 4.756,
    "words": [
     {
@@ -8645,7 +8709,7 @@
   "s15h": {
    "scene": "s15",
    "speaker": "sam",
-   "start": 904.98,
+   "start": 910.566,
    "dur": 1.929,
    "words": [
     {
@@ -8673,7 +8737,7 @@
   "s15i": {
    "scene": "s15",
    "speaker": "byte",
-   "start": 907.408,
+   "start": 912.995,
    "dur": 6.88,
    "words": [
     {
@@ -8737,7 +8801,7 @@
   "s16a": {
    "scene": "s16",
    "speaker": "byte",
-   "start": 916.088,
+   "start": 921.675,
    "dur": 6.571,
    "words": [
     {
@@ -8801,7 +8865,7 @@
   "s16b": {
    "scene": "s16",
    "speaker": "byte",
-   "start": 923.159,
+   "start": 928.746,
    "dur": 5.196,
    "words": [
     {
@@ -8853,7 +8917,7 @@
   "s16c": {
    "scene": "s16",
    "speaker": "byte",
-   "start": 928.856,
+   "start": 934.443,
    "dur": 3.887,
    "words": [
     {
@@ -8905,7 +8969,7 @@
   "s16d": {
    "scene": "s16",
    "speaker": "byte",
-   "start": 933.243,
+   "start": 938.83,
    "dur": 8.909,
    "words": [
     {
@@ -9001,7 +9065,7 @@
   "s16e": {
    "scene": "s16",
    "speaker": "byte",
-   "start": 942.652,
+   "start": 948.239,
    "dur": 4.747,
    "words": [
     {
@@ -9057,7 +9121,7 @@
   "s17a": {
    "scene": "s17",
    "speaker": "byte",
-   "start": 949.199,
+   "start": 954.786,
    "dur": 6.364,
    "words": [
     {
@@ -9129,7 +9193,7 @@
   "s17b": {
    "scene": "s17",
    "speaker": "byte",
-   "start": 956.062,
+   "start": 961.649,
    "dur": 9.858,
    "words": [
     {
@@ -9217,7 +9281,7 @@
   "s17c": {
    "scene": "s17",
    "speaker": "byte",
-   "start": 966.42,
+   "start": 972.007,
    "dur": 9.156,
    "words": [
     {
@@ -9301,7 +9365,7 @@
   "s18a": {
    "scene": "s18",
    "speaker": "byte",
-   "start": 977.376,
+   "start": 982.963,
    "dur": 10.219,
    "words": [
     {
@@ -9393,7 +9457,7 @@
   "s18b": {
    "scene": "s18",
    "speaker": "byte",
-   "start": 988.094,
+   "start": 993.681,
    "dur": 4.627,
    "words": [
     {
@@ -9445,7 +9509,7 @@
   "s18c": {
    "scene": "s18",
    "speaker": "byte",
-   "start": 993.221,
+   "start": 998.808,
    "dur": 7.917,
    "words": [
     {
@@ -9517,7 +9581,7 @@
   "s18d": {
    "scene": "s18",
    "speaker": "byte",
-   "start": 1001.639,
+   "start": 1007.226,
    "dur": 6.852,
    "words": [
     {
@@ -9585,7 +9649,7 @@
   "s19a": {
    "scene": "s19",
    "speaker": "byte",
-   "start": 1010.291,
+   "start": 1015.878,
    "dur": 6.372,
    "words": [
     {
@@ -9649,7 +9713,7 @@
   "s19b": {
    "scene": "s19",
    "speaker": "byte",
-   "start": 1017.163,
+   "start": 1022.75,
    "dur": 3.903,
    "words": [
     {
@@ -9693,7 +9757,7 @@
   "s19c": {
    "scene": "s19",
    "speaker": "byte",
-   "start": 1021.566,
+   "start": 1027.153,
    "dur": 8.377,
    "words": [
     {
@@ -9785,7 +9849,7 @@
   "s20a": {
    "scene": "s20",
    "speaker": "byte",
-   "start": 1031.744,
+   "start": 1037.33,
    "dur": 10.752,
    "words": [
     {
@@ -9877,91 +9941,91 @@
   "s20b": {
    "scene": "s20",
    "speaker": "byte",
-   "start": 1042.996,
-   "dur": 9.73,
+   "start": 1048.582,
+   "dur": 9.805,
    "words": [
     {
-     "w": "React",
+     "w": "With",
      "t": 0.0
     },
     {
-     "w": "19",
-     "t": 0.496
+     "w": "React",
+     "t": 0.55
     },
     {
-     "w": "view",
-     "t": 0.763
+     "w": "19.3",
+     "t": 1.2
     },
     {
-     "w": "transitions",
-     "t": 1.183
+     "w": "or",
+     "t": 1.65
     },
     {
-     "w": "can",
-     "t": 2.137
+     "w": "later,",
+     "t": 2.0
     },
     {
-     "w": "animate",
-     "t": 2.481
+     "w": "wrap",
+     "t": 3.21
     },
     {
      "w": "the",
-     "t": 3.129
+     "t": 3.529
     },
     {
      "w": "outlet",
-     "t": 3.473
-    },
-    {
-     "w": "between",
-     "t": 4.045
-    },
-    {
-     "w": "pages.",
-     "t": 4.694
-    },
-    {
-     "w": "Wrap",
-     "t": 5.82
-    },
-    {
-     "w": "it",
-     "t": 6.194
+     "t": 3.79
     },
     {
      "w": "in",
-     "t": 6.432
+     "t": 4.226
     },
     {
      "w": "a",
-     "t": 6.67
+     "t": 4.429
     },
     {
      "w": "ViewTransition",
-     "t": 6.84
+     "t": 4.574
     },
     {
      "w": "component",
-     "t": 7.894
+     "t": 5.473
     },
     {
      "w": "in",
-     "t": 8.608
+     "t": 6.082
     },
     {
      "w": "your",
-     "t": 8.846
+     "t": 6.286
     },
     {
-     "w": "layout.",
-     "t": 9.22
+     "w": "layout,",
+     "t": 6.605
+    },
+    {
+     "w": "and",
+     "t": 7.69
+    },
+    {
+     "w": "page",
+     "t": 8.043
+    },
+    {
+     "w": "changes",
+     "t": 8.473
+    },
+    {
+     "w": "animate.",
+     "t": 9.139
     }
    ]
   },
   "s20c": {
    "scene": "s20",
    "speaker": "byte",
-   "start": 1053.225,
+   "start": 1058.888,
    "dur": 5.262,
    "words": [
     {
@@ -10013,7 +10077,7 @@
   "s20d": {
    "scene": "s20",
    "speaker": "byte",
-   "start": 1058.987,
+   "start": 1064.65,
    "dur": 7.675,
    "words": [
     {
@@ -10093,7 +10157,7 @@
   "s21a": {
    "scene": "s21",
    "speaker": "byte",
-   "start": 1068.462,
+   "start": 1074.125,
    "dur": 1.976,
    "words": [
     {
@@ -10125,7 +10189,7 @@
   "s21b": {
    "scene": "s21",
    "speaker": "byte",
-   "start": 1070.938,
+   "start": 1076.601,
    "dur": 8.445,
    "words": [
     {
@@ -10201,7 +10265,7 @@
   "s21c": {
    "scene": "s21",
    "speaker": "byte",
-   "start": 1079.883,
+   "start": 1085.546,
    "dur": 10.542,
    "words": [
     {
@@ -10281,7 +10345,7 @@
   "s21d": {
    "scene": "s21",
    "speaker": "sam",
-   "start": 1090.925,
+   "start": 1096.587,
    "dur": 2.3,
    "words": [
     {
@@ -10321,7 +10385,7 @@
   "s21e": {
    "scene": "s21",
    "speaker": "byte",
-   "start": 1093.725,
+   "start": 1099.387,
    "dur": 1.334,
    "words": [
     {
@@ -10343,5 +10407,5 @@
    ]
   }
  },
- "total": 1097.759
+ "total": 1103.421
 }

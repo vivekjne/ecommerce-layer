@@ -12,7 +12,7 @@ const setDelay = (q) => fetch("http://localhost:4000/__delay?" + q);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function newPage() {
-  const ctx = await browser.newContext({ viewport: { width: 1000, height: 640 }, deviceScaleFactor: 1.5, userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" });
+  const ctx = await browser.newContext({ viewport: { width: 820, height: 525 }, deviceScaleFactor: 1.5, userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" });
   const page = await ctx.newPage();
   await page.goto(BASE + "/");
   await page.waitForLoadState("networkidle");
@@ -110,6 +110,7 @@ await rv.locator(`a[href="/products/trail-runner"]`).first().click(); await rv.w
 await rv.getByRole("link", { name: "Home", exact: true }).click(); await rv.waitForURL(BASE + "/"); await sleep(700);
 await shot(rv, "home-recent");
 
+manifest.__viewport = { w: 820, h: 525 };
 writeFileSync(OUT + "manifest.json", JSON.stringify(manifest, null, 1));
 await browser.close();
 console.log("frames:", Object.keys(manifest).length);

@@ -1,5 +1,5 @@
 // Synthesizes an original, royalty-free, bright, calm underscore for the
-// React rendering video. No samples or third-party audio: every sound is generated
+// React Router tutorial. No samples or third-party audio: every sound is generated
 // here, so it carries no copyright or attribution requirements. Deterministic.
 //
 //   python3 scripts/voice.py        # writes timing.json (video length)
@@ -12,7 +12,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 
 const timing = JSON.parse(readFileSync(new URL("../timing.json", import.meta.url)));
 const SR = 44100;
-const BPM = 100;
+const BPM = 96;
 const BEAT = 60 / BPM;
 const BAR = BEAT * 4;
 const BARS = Math.ceil((timing.total + 2) / BAR);
@@ -20,7 +20,7 @@ const LEN = Math.ceil(BARS * BAR * SR) + SR;
 const L = new Float32Array(LEN);
 const R = new Float32Array(LEN);
 
-let seed = 47;
+let seed = 83;
 const rand = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296) * 2 - 1;
 const hz = (m) => 440 * 2 ** ((m - 69) / 12);
 const TAU = 2 * Math.PI;
@@ -73,16 +73,16 @@ function brush(t0, g) {
 const C = (root, tones) => ({ root, tones });
 // three gentle sections so 9 minutes doesn't feel like one loop
 const SECTIONS = [
-  [C(40, [59, 64, 67]), C(36, [60, 64, 67]), C(43, [59, 62, 67]), C(38, [57, 62, 66])], // Em  C   G   D
-  [C(36, [60, 64, 67]), C(43, [59, 62, 67]), C(45, [60, 64, 69]), C(38, [57, 62, 66])], // C   G   Am  D
-  [C(43, [59, 62, 67]), C(38, [57, 62, 66]), C(40, [59, 64, 67]), C(36, [60, 64, 67])], // G   D   Em  C
+  [C(45, [57, 60, 64]), C(41, [57, 60, 65]), C(36, [55, 60, 64]), C(43, [55, 59, 62])], // Am  F   C   G
+  [C(41, [57, 60, 65]), C(36, [55, 60, 64]), C(43, [55, 59, 62]), C(45, [57, 60, 64])], // F   C   G   Am
+  [C(36, [55, 60, 64]), C(43, [55, 59, 62]), C(45, [57, 60, 64]), C(41, [57, 60, 65])], // C   G   Am  F
 ];
 const ARPS = [
   [0, 2, 1, 2, 0, 2, 1, 2],
   [0, 1, 2, 12, 2, 1, 0, 1],
   [2, 1, 0, 1, 2, 1, 12, 1],
 ];
-const BARS_PER_SECTION = 12;
+const BARS_PER_SECTION = 16;
 
 for (let bar = 0; bar < BARS; bar++) {
   const t = bar * BAR;

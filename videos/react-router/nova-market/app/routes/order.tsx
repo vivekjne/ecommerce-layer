@@ -9,7 +9,9 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { order };
 }
 
-export default function Order({ loaderData }: Route.ComponentProps) {
+export default function Order({
+  loaderData,
+}: Route.ComponentProps) {
   const { order } = loaderData;
   return (
     <div className="mx-auto max-w-lg text-center">

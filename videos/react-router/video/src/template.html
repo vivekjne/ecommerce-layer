@@ -1,0 +1,1684 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      :root {
+        --bg: #0d1230;
+        --panel: #172050;
+        --panel2: #1f2a6b;
+        --edge: #3a4696;
+        --text: #f4f6ff;
+        --muted: #b4bdf2;
+        --cyan: #22d3ee;
+        --violet: #a78bfa;
+        --pink: #f472b6;
+        --amber: #fbbf24;
+        --lime: #86efac;
+        --coral: #fb7185;
+        --ink: #1f2140;
+        --mono: "JetBrains Mono", "DejaVu Sans Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+      #root {
+        position: relative; width: 100%; height: 100%; overflow: hidden;
+        font-family: Inter, "Helvetica Neue", Arial, ui-sans-serif, system-ui, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 6% 10%, rgba(244, 114, 182, 0.28) 0, transparent 34%),
+          radial-gradient(circle at 94% 90%, rgba(34, 211, 238, 0.26) 0, transparent 38%),
+          radial-gradient(circle at 92% 6%, rgba(167, 139, 250, 0.30) 0, transparent 32%),
+          radial-gradient(circle at 10% 96%, rgba(251, 191, 36, 0.16) 0, transparent 30%),
+          var(--bg);
+      }
+      /* never merge === or => into a single glyph */
+      #root, #root * { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+      .clip { position: absolute; inset: 0; padding: 80px 140px; }
+      .ov { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
+      .eyebrow { display: inline-block; font-size: 24px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); background: var(--cyan); padding: 8px 18px; border-radius: 999px; }
+      h2 { font-size: 60px; font-weight: 800; letter-spacing: -0.03em; margin-top: 14px; color: var(--text); }
+      #badge { position: absolute; right: 60px; top: 50px; font-size: 22px; font-weight: 800; background: var(--pink); color: var(--ink); padding: 8px 18px; border-radius: 999px; z-index: 5; }
+
+      /* characters (persistent, bottom corners) */
+      .char { position: absolute; z-index: 40; }
+      .char svg { display: block; width: 100%; height: auto; overflow: visible; }
+      #sam { left: 40px; top: 838px; width: 170px; }
+      #byte { left: 1712px; top: 838px; width: 170px; }
+      #mal { left: 1510px; top: 838px; width: 170px; }
+      #guard { left: 1510px; top: 838px; width: 170px; }
+      .ico svg { display: block; width: 100%; height: auto; }
+      .pl { position: absolute; background: #d9a066; border: 3px solid #8a5a2b; border-radius: 5px; }
+      .bk { position: absolute; border-radius: 3px; border: 2px solid rgba(0, 0, 0, 0.35); }
+      .mo { position: absolute; border: 4px dashed #f472b6; border-radius: 12px; opacity: 0; z-index: 17; }
+
+      /* captions */
+      #captions { position: absolute; inset: 0; z-index: 50; pointer-events: none; }
+      .cline {
+        position: absolute; left: 250px; top: 918px; width: 1240px; height: 128px;
+        display: flex; align-items: center; justify-content: center; text-align: center;
+        font-size: 38px; font-weight: 800; line-height: 1.25;
+        background: #fff; border: 4px solid var(--violet); border-radius: 28px; padding: 8px 26px;
+        box-shadow: 0 8px 0 rgba(0, 0, 0, 0.35);
+        color: var(--ink);
+      }
+      .cw { color: #6b7299; padding: 0 0.06em; border-radius: 8px; background-color: rgba(255, 201, 60, 0); }
+      .cw.cwk { display: inline-block; font-family: var(--mono); font-weight: 800; color: #6a4df0; background-color: rgba(106, 77, 240, 0.14); padding: 0 0.26em; margin: 0 0.22em; }
+
+      /* cards */
+      .card { position: absolute; background: var(--panel); border: 4px solid var(--edge); border-radius: 22px; box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3); }
+      .card .hd { color: var(--ink); font-size: 24px; font-weight: 800; padding: 8px 20px; border-radius: 16px 16px 0 0; background: var(--cyan); }
+      .c-cyan { border-color: var(--cyan); } .c-cyan .hd { background: var(--cyan); }
+      .c-violet { border-color: var(--violet); } .c-violet .hd { background: var(--violet); }
+      .c-pink { border-color: var(--pink); } .c-pink .hd { background: var(--pink); }
+      .c-amber { border-color: var(--amber); } .c-amber .hd { background: var(--amber); }
+      .c-lime { border-color: var(--lime); } .c-lime .hd { background: var(--lime); }
+      .c-coral { border-color: var(--coral); } .c-coral .hd { background: var(--coral); }
+      .chip { position: absolute; font-family: var(--mono); font-size: 26px; font-weight: 700; background: var(--panel2); color: var(--text); border: 3px solid var(--edge); border-radius: 999px; padding: 6px 20px; white-space: nowrap; }
+      .tag { position: absolute; font-size: 26px; font-weight: 800; color: var(--ink); background: var(--amber); border-radius: 999px; padding: 6px 22px; white-space: nowrap; }
+      .tag.cy { background: var(--cyan); } .tag.vi { background: var(--violet); } .tag.pk { background: var(--pink); } .tag.li { background: var(--lime); } .tag.co { background: var(--coral); }
+      .lbl { position: absolute; font-size: 30px; font-weight: 800; white-space: nowrap; }
+      .lbl.sm { font-size: 24px; font-weight: 700; color: var(--muted); }
+      .zone { position: absolute; border-radius: 28px; border: 4px dashed; }
+      .zone .zl { position: absolute; left: 24px; top: 12px; font-size: 26px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+
+      /* code + console */
+      .code {
+        position: absolute; background: #0a0f2a; border: 4px solid var(--edge); border-radius: 22px; padding: 20px 28px;
+        font-family: var(--mono); font-weight: 600; color: #e9ecff; box-shadow: 0 8px 0 rgba(0, 0, 0, 0.32); white-space: pre; font-size: 27px; line-height: 1.34;
+      }
+      .code .ft { position: absolute; right: 18px; top: -18px; font-family: Inter, Arial, sans-serif; font-size: 20px; font-weight: 800; color: var(--ink); background: var(--amber); border-radius: 999px; padding: 2px 16px; letter-spacing: 0.04em; }
+      .code .cl { display: block; padding: 0 12px; margin: 0 -12px; border-radius: 8px; background-color: rgba(94, 234, 212, 0); }
+      .kw { color: #c4a7ff; } .st { color: #86efac; } .nu { color: #fdba74; } .cm { color: #93a0d6; font-style: italic; } .fn { color: #7dd3fc; } .tg { color: #f9a8d4; }
+      .cons { position: absolute; background: #050818; color: #e9ecff; border: 4px solid var(--edge); border-radius: 22px; padding: 14px 26px 16px; font-family: var(--mono); box-shadow: 0 8px 0 rgba(0, 0, 0, 0.32); }
+      .cons .ct { font-size: 20px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; font-family: Inter, Arial, sans-serif; font-weight: 700; }
+      .cons .out { display: block; font-size: 25px; line-height: 1.5; color: #86efac; white-space: pre; }
+      .cons .out.dim { color: var(--muted); } .cons .out.pk { color: #f9a8d4; } .cons .out.cy { color: #7dd3fc; }
+
+      /* browser window + actors */
+      .win { position: absolute; background: #fff; border: 5px solid var(--cyan); border-radius: 22px; overflow: hidden; box-shadow: 0 10px 0 rgba(0, 0, 0, 0.32), 0 0 40px rgba(34, 211, 238, 0.25); color: var(--ink); }
+      .win .bar { height: 46px; background: #e3e8ff; display: flex; align-items: center; gap: 9px; padding: 0 16px; border-bottom: 3px solid #c9d0f5; }
+      .win .bar i { width: 15px; height: 15px; border-radius: 50%; display: block; }
+      .win .bar i:nth-child(1) { background: #ff6b81; } .win .bar i:nth-child(2) { background: #ffc93c; } .win .bar i:nth-child(3) { background: #3ddc97; }
+      .win .bar b { margin-left: 12px; flex: 1; height: 26px; border-radius: 13px; background: #fff; color: #5b5f86; font: 600 16px/26px Inter, Arial, sans-serif; padding: 0 14px; }
+      .win .body { position: absolute; left: 0; right: 0; top: 46px; bottom: 0; }
+      .pg { position: absolute; }
+      .sk { position: absolute; border-radius: 10px; background: #dfe4ff; }
+      .spin { position: absolute; width: 64px; height: 64px; border-radius: 50%; border: 8px solid #d8dcff; border-top-color: #6a4df0; }
+      .pbtn { position: absolute; font-weight: 800; font-size: 22px; color: #fff; background: #6a4df0; border-radius: 14px; padding: 10px 22px; white-space: nowrap; box-shadow: 0 5px 0 #4a34b8; }
+      .pimg { position: absolute; border-radius: 16px; }
+      .ptx { position: absolute; font-weight: 800; color: var(--ink); white-space: nowrap; }
+      .actor { position: absolute; text-align: center; }
+      .actor svg { display: block; width: 100%; height: auto; overflow: visible; }
+      .actor .nm { position: absolute; left: -40px; right: -40px; bottom: -46px; font-size: 30px; font-weight: 800; }
+      .wire { position: absolute; height: 0; border-top: 6px dashed rgba(180, 189, 242, 0.55); border-radius: 3px; }
+      .vwire { position: absolute; width: 0; border-left: 6px dashed rgba(180, 189, 242, 0.55); }
+      .pkt { position: absolute; font-family: var(--mono); font-weight: 800; font-size: 24px; color: var(--ink); background: var(--amber); border-radius: 12px; padding: 5px 16px; white-space: nowrap; box-shadow: 0 5px 0 rgba(0, 0, 0, 0.3); z-index: 8; }
+      .pkt.cy { background: var(--cyan); } .pkt.vi { background: var(--violet); } .pkt.pk { background: var(--pink); } .pkt.li { background: var(--lime); } .pkt.co { background: var(--coral); }
+      .step { position: absolute; width: 54px; height: 54px; border-radius: 50%; background: var(--pink); color: var(--ink); font-size: 30px; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 0 rgba(0, 0, 0, 0.3); z-index: 9; }
+
+      /* timelines / bars */
+      .lane { position: absolute; left: 140px; width: 1640px; height: 120px; background: var(--panel); border: 4px solid var(--edge); border-radius: 20px; }
+      .seg { position: absolute; top: 34px; height: 52px; border-radius: 12px; color: var(--ink); font-weight: 800; font-size: 22px; line-height: 52px; text-align: center; overflow: hidden; white-space: nowrap; transform-origin: 0 50%; }
+      .flag { position: absolute; width: 0; border-left: 5px solid; z-index: 6; }
+      .flag span { position: absolute; top: -40px; left: 0; transform: translateX(-50%); font-size: 22px; font-weight: 800; color: var(--ink); border-radius: 999px; padding: 3px 14px; white-space: nowrap; }
+      .fine { position: absolute; font-size: 22px; color: var(--muted); }
+
+      /* trees */
+      .node { position: absolute; font-family: var(--mono); font-weight: 800; font-size: 26px; color: var(--ink); border-radius: 16px; padding: 10px 22px; white-space: nowrap; border: 4px solid rgba(255,255,255,.0); box-shadow: 0 6px 0 rgba(0, 0, 0, 0.3); text-align: center; }
+      .node.sv { background: var(--violet); } .node.cl2 { background: var(--cyan); } .node.ph { background: transparent; border: 4px dashed var(--amber); color: var(--amber); box-shadow: none; }
+      .node.nt { background: var(--panel2); color: var(--text); border-color: var(--edge); }
+
+      /* title / recap */
+      #s1 { text-align: center; padding-top: 70px; }
+      #s1 .kick { display: block; margin-bottom: 8px; font-size: 30px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); }
+      #s1 h1 { font-size: 132px; font-weight: 900; letter-spacing: -0.05em; line-height: 1.05; color: var(--text); }
+      #s1 h1 .a { color: var(--pink); } #s1 h1 .b { color: var(--cyan); }
+      #s1 p { font-size: 44px; color: var(--muted); margin-top: 6px; font-weight: 700; }
+      .rcp { position: absolute; left: 140px; width: 1180px; height: 118px; display: flex; align-items: center; gap: 26px; padding: 0 32px; font-size: 34px; font-weight: 800; line-height: 1.25; }
+      .rcp .ic { font-size: 42px; font-family: var(--mono); width: 230px; font-weight: 900; }
+      .rcp small { display: block; font-size: 24px; font-weight: 600; color: var(--muted); margin-top: 2px; }
+      .big-x { position: absolute; font-size: 96px; font-weight: 900; color: var(--coral); line-height: 1; }
+
+      /* speaker label above the caption bar */
+      .cline .spk { position: absolute; left: 26px; top: -38px; font-size: 20px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); padding: 3px 16px; border-radius: 999px; }
+      .spk.byte { background: #34d399; } .spk.sam { background: #a78bfa; } .spk.mallory { background: #fb923c; } .spk.guard { background: #fbbf24; }
+      /* tutorial building blocks */
+      .tab { position: absolute; top: -20px; left: 22px; font: 800 20px Inter, Arial, sans-serif; color: var(--ink); background: var(--amber); border-radius: 999px; padding: 2px 16px; }
+      .win img { position: absolute; left: 0; top: 0; width: 100%; height: auto; display: block; }
+      .urlbar { margin-left: 12px; flex: 1; height: 26px; border-radius: 13px; background: #fff; color: #5b5f86; font: 600 16px/26px Inter, Arial, sans-serif; padding: 0 14px; }
+      .cur { position: absolute; width: 40px; z-index: 30; }
+      .cur svg { display: block; width: 100%; }
+      .rip { position: absolute; width: 56px; height: 56px; border-radius: 50%; border: 6px solid #f472b6; z-index: 29; opacity: 0; }
+      .tn { position: absolute; font-family: var(--mono); font-weight: 700; font-size: 24px; color: var(--ink); border-radius: 12px; padding: 6px 16px; white-space: nowrap; box-shadow: 0 5px 0 rgba(0, 0, 0, 0.3); }
+      .tn.a { background: var(--violet); } .tn.b { background: var(--cyan); } .tn.c { background: var(--amber); } .tn.d { background: var(--pink); } .tn.e { background: var(--lime); } .tn.f { background: var(--coral); } .tn.g { background: #e5e7ff; }
+      .bx { position: absolute; border-radius: 18px; border: 4px solid var(--edge); background: var(--panel); padding: 14px 22px; font-size: 28px; font-weight: 800; text-align: center; box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3); }
+      .bx small { display: block; font-size: 21px; font-weight: 600; color: var(--muted); margin-top: 4px; font-family: Inter, Arial, sans-serif; }
+      .bx.c1 { border-color: var(--cyan); } .bx.c2 { border-color: var(--violet); } .bx.c3 { border-color: var(--pink); } .bx.c4 { border-color: var(--amber); } .bx.c5 { border-color: var(--lime); } .bx.c6 { border-color: var(--coral); }
+      .arrow { position: absolute; font-size: 44px; font-weight: 900; color: var(--pink); line-height: 1; }
+      .note { position: absolute; font-size: 28px; font-weight: 700; line-height: 1.35; color: var(--text); }
+      .note b { color: var(--amber); }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute">
+      <defs>
+        <marker id="ahW" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b4bdf2" /></marker>
+        <marker id="ahP" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#f472b6" /></marker>
+        <marker id="ahC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#22d3ee" /></marker>
+        <marker id="ahV" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#a78bfa" /></marker>
+      </defs>
+    </svg>
+
+    <div id="root" data-composition-id="main" data-start="0" data-duration="{{total}}" data-width="1920" data-height="1080">
+      <audio id="vo" src="assets/voiceover.mp3" data-start="0" data-duration="{{total}}" data-volume="1"></audio>
+      <audio id="bgm" src="assets/music.mp3" data-start="0" data-duration="{{total}}" data-volume="1" data-fade-in="2" data-fade-out="4"></audio>
+
+      <div id="badge">JavaScript Demystified · React Router</div>
+
+      <section id="s1" class="clip" data-start="{{s1.start}}" data-duration="{{s1.dur}}" data-track-index="0">
+        <div class="eyebrow">React Router 8</div>
+        <h2>Build an online store</h2>
+        <div class="stage" id="s1-stage"></div>
+      </section>
+      <section id="s2" class="clip" data-start="{{s2.start}}" data-duration="{{s2.dur}}" data-track-index="0">
+        <div class="eyebrow">Setup</div>
+        <h2>Create the project</h2>
+        <div class="stage" id="s2-stage"></div>
+      </section>
+      <section id="s3" class="clip" data-start="{{s3.start}}" data-duration="{{s3.dur}}" data-track-index="0">
+        <div class="eyebrow">Routing</div>
+        <h2>URLs to route modules</h2>
+        <div class="stage" id="s3-stage"></div>
+      </section>
+      <section id="s4" class="clip" data-start="{{s4.start}}" data-duration="{{s4.dur}}" data-track-index="0">
+        <div class="eyebrow">Route modules</div>
+        <h2>One file, many exports</h2>
+        <div class="stage" id="s4-stage"></div>
+      </section>
+      <section id="s5" class="clip" data-start="{{s5.start}}" data-duration="{{s5.dur}}" data-track-index="0">
+        <div class="eyebrow">Data concepts</div>
+        <h2>Read, write, read again</h2>
+        <div class="stage" id="s5-stage"></div>
+      </section>
+      <section id="s6" class="clip" data-start="{{s6.start}}" data-duration="{{s6.dur}}" data-track-index="0">
+        <div class="eyebrow">Data concepts</div>
+        <h2>Fetching from an API</h2>
+        <div class="stage" id="s6-stage"></div>
+      </section>
+      <section id="s7" class="clip" data-start="{{s7.start}}" data-duration="{{s7.dur}}" data-track-index="0">
+        <div class="eyebrow">Loaders</div>
+        <h2>Load data before rendering</h2>
+        <div class="stage" id="s7-stage"></div>
+      </section>
+      <section id="s8" class="clip" data-start="{{s8.start}}" data-duration="{{s8.dur}}" data-track-index="0">
+        <div class="eyebrow">Navigation</div>
+        <h2>Links and pending UI</h2>
+        <div class="stage" id="s8-stage"></div>
+      </section>
+      <section id="s9" class="clip" data-start="{{s9.start}}" data-duration="{{s9.dur}}" data-track-index="0">
+        <div class="eyebrow">Actions</div>
+        <h2>Forms that write data</h2>
+        <div class="stage" id="s9-stage"></div>
+      </section>
+      <section id="s10" class="clip" data-start="{{s10.start}}" data-duration="{{s10.dur}}" data-track-index="0">
+        <div class="eyebrow">Sessions</div>
+        <h2>Remember the cart</h2>
+        <div class="stage" id="s10-stage"></div>
+      </section>
+      <section id="s11" class="clip" data-start="{{s11.start}}" data-duration="{{s11.dur}}" data-track-index="0">
+        <div class="eyebrow">Fetchers</div>
+        <h2>Save without navigating</h2>
+        <div class="stage" id="s11-stage"></div>
+      </section>
+      <section id="s12" class="clip" data-start="{{s12.start}}" data-duration="{{s12.dur}}" data-track-index="0">
+        <div class="eyebrow">Revalidation</div>
+        <h2>Keep the page fresh</h2>
+        <div class="stage" id="s12-stage"></div>
+      </section>
+      <section id="s13" class="clip" data-start="{{s13.start}}" data-duration="{{s13.dur}}" data-track-index="0">
+        <div class="eyebrow">Streaming</div>
+        <h2>Do not wait for slow data</h2>
+        <div class="stage" id="s13-stage"></div>
+      </section>
+      <section id="s14" class="clip" data-start="{{s14.start}}" data-duration="{{s14.dur}}" data-track-index="0">
+        <div class="eyebrow">Error handling</div>
+        <h2>Error boundaries</h2>
+        <div class="stage" id="s14-stage"></div>
+      </section>
+      <section id="s15" class="clip" data-start="{{s15.start}}" data-duration="{{s15.dur}}" data-track-index="0">
+        <div class="eyebrow">Middleware</div>
+        <h2>Protect the account area</h2>
+        <div class="stage" id="s15-stage"></div>
+      </section>
+      <section id="s16" class="clip" data-start="{{s16.start}}" data-duration="{{s16.dur}}" data-track-index="0">
+        <div class="eyebrow">Client data</div>
+        <h2>Client loaders and actions</h2>
+        <div class="stage" id="s16-stage"></div>
+      </section>
+      <section id="s17" class="clip" data-start="{{s17.start}}" data-duration="{{s17.dur}}" data-track-index="0">
+        <div class="eyebrow">Resource routes</div>
+        <h2>Routes without a page</h2>
+        <div class="stage" id="s17-stage"></div>
+      </section>
+      <section id="s18" class="clip" data-start="{{s18.start}}" data-duration="{{s18.dur}}" data-track-index="0">
+        <div class="eyebrow">Document</div>
+        <h2>Head tags and headers</h2>
+        <div class="stage" id="s18-stage"></div>
+      </section>
+      <section id="s19" class="clip" data-start="{{s19.start}}" data-duration="{{s19.dur}}" data-track-index="0">
+        <div class="eyebrow">Rendering</div>
+        <h2>SSR, SPA, pre-rendering</h2>
+        <div class="stage" id="s19-stage"></div>
+      </section>
+      <section id="s20" class="clip" data-start="{{s20.start}}" data-duration="{{s20.dur}}" data-track-index="0">
+        <div class="eyebrow">Finishing touches</div>
+        <h2>Ship it</h2>
+        <div class="stage" id="s20-stage"></div>
+      </section>
+      <section id="s21" class="clip" data-start="{{s21.start}}" data-duration="{{s21.dur}}" data-track-index="0">
+        <div class="eyebrow">Recap</div>
+        <h2>What you learned</h2>
+        <div class="stage" id="s21-stage"></div>
+      </section>
+
+      <div id="captions"></div>
+
+      <div class="char" id="sam" data-kind="sam"></div>
+      <div class="char" id="byte" data-kind="byte"></div>
+      <div class="char" id="mal" data-kind="mal"></div>
+      <div class="char" id="guard" data-kind="guard"></div>
+    </div>
+
+    <script>
+      const T = /*__TIMING__*/ null;
+      const CODES = {
+ "root-layout": "export function Layout({\n  children,\n}: {\n  children: React.ReactNode;\n}) {\n  return (\n    <html lang=\"en\">\n      <head>\n// ...\n        <Meta />\n        <Links />\n      </head>\n      <body>\n        {children}\n        <ScrollRestoration />\n        <Scripts />\n      </body>\n    </html>\n  );\n}",
+ "root-app": "export default function App() {\n  return <Outlet />;\n}",
+ "root-loader": "export async function loader({ request }: Route.LoaderArgs) {\n  const session = await getSession(\n    request.headers.get(\"Cookie\"),\n  );\n  const cart = session.get(\"cart\") ?? {};\n  const user = users.find(\n    (u) => u.id === session.get(\"userId\"),\n  );\n  return {\n    cartCount: Object.values(cart).reduce(\n      (sum, qty) => sum + qty,\n      0,\n    ),\n    userName: user?.name ?? null,\n  };\n}",
+ "routes-a": "export default [\n  layout(\"routes/shop-layout.tsx\", [\n    index(\"routes/home.tsx\"),\n    route(\"products\", \"routes/products.tsx\"),\n    route(\"products/:slug\", \"routes/product.tsx\"),\n    route(\"cart\", \"routes/cart.tsx\"),\n// ...\n] satisfies RouteConfig;",
+ "routes-b": "...prefix(\"account\", [\n  layout(\"routes/account-layout.tsx\", [\n    index(\"routes/account-orders.tsx\"),\n    route(\"settings\", \"routes/account-settings.tsx\"),\n  ]),\n]),",
+ "routes-c": "route(\"*\", \"routes/not-found.tsx\"),\n// ...\n// resource routes: no default export, so no UI\nroute(\"logout\", \"routes/logout.ts\"),\nroute(\"search\", \"routes/search.ts\"),",
+ "types": "import type { Route } from \"./+types/product\";\n// ...\nexport async function loader({ params }: Route.LoaderArgs) {\n// ...\nexport default function ProductPage({\n  loaderData,\n}: Route.ComponentProps) {\n  const { product, reviews } = loaderData;",
+ "products-loader": "export async function loader({ request }: Route.LoaderArgs) {\n  const url = new URL(request.url);\n  const q = url.searchParams.get(\"q\") ?? \"\";\n  const res = await fetch(\n    `${CATALOG_URL}/products?q=${encodeURIComponent(q)}`,\n  );\n  if (!res.ok)\n    throw data(\"Catalog unavailable\", { status: 502 });\n  const products: Product[] = await res.json();\n  return { products, q };\n}",
+ "products-form": "<Form method=\"get\" className=\"...\">\n  <input\n    name=\"q\"\n    defaultValue={q}\n    placeholder=\"Filter by name\"\n    className=\"...\"\n  />\n  <button className=\"...\">\n    Search\n  </button>\n</Form>",
+ "products-component": "export default function Products({\n  loaderData,\n}: Route.ComponentProps) {\n  const { products, q } = loaderData;",
+ "product-loader": "export async function loader({ params }: Route.LoaderArgs) {\n  const res = await fetch(\n    `${CATALOG_URL}/products/${params.slug}`,\n  );\n  if (res.status === 404)\n    throw data(\"Product not found\", { status: 404 });\n  const product: Product = await res.json();\n\n  // not awaited: reviews stream in after render\n  const reviews: Promise<Review[]> = fetch(\n    `${CATALOG_URL}/products/${params.slug}/reviews`,\n  ).then((r) => r.json());\n\n  return { product, reviews };\n}",
+ "db-server": "export const users = [\n  {\n    id: \"u1\",\n    email: \"sam@example.com\",\n    name: \"Sam\",\n    password: \"password\",\n  },\n];\n\nexport const orders = new Map<string, Order>();\n\nexport function createOrder(order: Omit<Order, \"id\">) {\n  const id = String(1000 + orders.size + 1);\n  orders.set(id, { id, ...order });\n  return id;\n}",
+ "nav": "const link = ({ isActive, isPending }: NavLinkRenderProps) =>\n  \"...\" +\n  (isActive\n    ? \"...\"\n    : isPending\n      ? \"...\"\n      : \"...\");\n// ...\n<nav className=\"...\">\n  <NavLink to=\"/\" end className=\"...\">\n    Home\n  </NavLink>\n  <NavLink to=\"/products\" className=\"...\">\n    Products\n  </NavLink>\n  <NavLink to=\"/account\" className=\"...\">\n    Account\n  </NavLink>\n</nav>",
+ "progress": "const navigation = useNavigation();\n// ...\nconst isNavigating = navigation.state !== \"idle\";\n// ...\n{isNavigating && <ProgressBar />}",
+ "cart-loader": "// one request per cart line, all started together\nconst items = await Promise.all(\n  Object.entries(cart).map(async ([slug, quantity]) => {\n    const res = await fetch(\n      `${CATALOG_URL}/products/${slug}`,\n    );\n    const product: Product = await res.json();\n    return { product, quantity };\n  }),\n);",
+ "root-data": "const root = useRouteLoaderData<typeof rootLoader>(\"root\");\n// ...\n{(root?.cartCount ?? 0) + pendingAdds}",
+ "checkout-guard": "export async function loader({ request }: Route.LoaderArgs) {\n  const session = await getSession(\n    request.headers.get(\"Cookie\"),\n  );\n  if (Object.keys(session.get(\"cart\") ?? {}).length === 0)\n    throw redirect(\"/cart\");\n  return null;\n}",
+ "checkout-validate": "export async function action({ request }: Route.ActionArgs) {\n  const form = await request.formData();\n  const name = String(form.get(\"name\") ?? \"\").trim();\n  const email = String(form.get(\"email\") ?? \"\").trim();\n  const address = String(form.get(\"address\") ?? \"\").trim();\n\n  const errors: Record<string, string> = {};\n  if (name.length < 2) errors.name = \"Please enter your name\";\n  if (!email.includes(\"@\"))\n    errors.email = \"Enter a valid email address\";\n  if (address.length < 8)\n    errors.address = \"Enter your full address\";\n  if (Object.keys(errors).length > 0) {\n    return data(\n      { errors, values: { name, email, address } },\n      { status: 400 },\n    );\n  }",
+ "checkout-create": "  session.set(\"cart\", {});\n  return redirect(`/order/${id}`, {\n    headers: { \"Set-Cookie\": await commitSession(session) },\n  });\n}",
+ "checkout-ui": "export default function Checkout({\n  actionData,\n}: Route.ComponentProps) {\n  const navigation = useNavigation();\n  const placing = navigation.formAction === \"/checkout\";\n// ...\n<Form method=\"post\" className=\"...\">\n  <Field\n    name=\"name\"\n    label=\"Name\"\n    error={errors?.name}\n    defaultValue={values?.name}\n  />\n// ...\n<button\n  disabled={placing}\n  className=\"...\"\n>\n  {placing ? \"Placing order...\" : \"Place order\"}\n</button>",
+ "sessions": "export const { getSession, commitSession, destroySession } =\n  createCookieSessionStorage<SessionData, SessionFlash>({\n    cookie: {\n      name: \"__nova\",\n      httpOnly: true,\n      sameSite: \"lax\",\n      path: \"/\",\n      secrets: [\"demo-secret-change-me\"],\n      secure: false,\n    },\n  });",
+ "cart-action": "export async function action({ request }: Route.ActionArgs) {\n  const session = await getSession(\n    request.headers.get(\"Cookie\"),\n  );\n  const cart = session.get(\"cart\") ?? {};\n// ...\nsession.set(\"cart\", cart);\nreturn data(\n  { ok: true },\n  { headers: { \"Set-Cookie\": await commitSession(session) } },\n);",
+ "add-to-cart": "const fetcher = useFetcher<typeof action>();\nconst busy = fetcher.state !== \"idle\";\nconst added = Boolean(fetcher.data && \"ok\" in fetcher.data);\n// ...\n<fetcher.Form method=\"post\" action=\"/cart\">\n  <input type=\"hidden\" name=\"intent\" value=\"add\" />\n  <input type=\"hidden\" name=\"slug\" value={slug} />\n  <button\n    disabled={soldOut || busy}\n    className=\"...\"\n  >\n    {buttonLabel(soldOut, busy, added)}\n  </button>\n</fetcher.Form>",
+ "cart-stock": "if (intent === \"add\" || intent === \"increase\") {\n  if ((cart[slug] ?? 0) >= product.stock) {\n    return data(\n      { error: `Only ${product.stock} left in stock` },\n      { status: 400 },\n    );\n  }\n  cart[slug] = (cart[slug] ?? 0) + 1;\n} else if (intent === \"decrease\") {",
+ "cart-line": "function nextQuantity(intent: unknown, quantity: number) {\n  if (intent === \"increase\") return quantity + 1;\n  if (intent === \"decrease\") return Math.max(1, quantity - 1);\n  return quantity;\n}\n// ...\nconst fetcher = useFetcher<typeof action>();\nconst intent = fetcher.formData?.get(\"intent\");\nconst shown = nextQuantity(intent, quantity);\nif (intent === \"remove\") return null;",
+ "search-box": "const fetcher = useFetcher<typeof loader>();\nconst results = fetcher.data ?? [];\nconst dimmed = fetcher.state !== \"idle\";\n\nfunction search(q: string) {\n  fetcher.load(`/search?q=${encodeURIComponent(q)}`);\n}\n// ...\nonChange={(e) => search(e.currentTarget.value)}",
+ "pending-fetchers": "// fetchers that are adding to the cart right now\nconst pendingAdds = useFetchers().filter(",
+ "should-revalidate": "// cart changes never affect this page\nexport function shouldRevalidate({\n  formAction,\n  defaultShouldRevalidate,\n}: ShouldRevalidateFunctionArgs) {\n  if (formAction === \"/cart\") return false;\n  return defaultShouldRevalidate;\n}",
+ "suspense": "<Suspense fallback={<ReviewsSkeleton />}>\n  <Await resolve={reviews}>\n    {(list) => <ReviewList reviews={list} />}\n  </Await>\n</Suspense>",
+ "product-error": "// the layout stays: only this part shows the error\nexport function ErrorBoundary({\n  error,\n}: Route.ErrorBoundaryProps) {\n  const message = isRouteErrorResponse(error)\n    ? `${error.status}: ${error.data}`\n    : \"Could not load this product\";\n  return <ErrorCard message={message} />;\n}",
+ "root-error-a": "export function ErrorBoundary({\n  error,\n}: Route.ErrorBoundaryProps) {\n  if (isRouteErrorResponse(error)) {\n    const message = error.data || error.statusText;\n    return (\n      <ErrorPage\n        title={String(error.status)}\n        message={message}\n      />\n    );\n  }",
+ "root-error-b": "  if (error instanceof Error) {\n    return (\n      <ErrorPage\n        title=\"Something broke\"\n        message={error.message}\n      />\n    );\n  }\n  return (\n    <ErrorPage title=\"Unknown error\" message=\"Try again\" />\n  );\n}",
+ "middleware": "// runs before every loader and action inside /account\nconst authMiddleware: Route.MiddlewareFunction = async ({\n  request,\n  context,\n}) => {\n  const session = await getSession(\n    request.headers.get(\"Cookie\"),\n  );\n  const user = users.find(\n    (u) => u.id === session.get(\"userId\"),\n  );\n  if (!user) throw redirect(\"/login\");\n  context.set(userContext, {\n    id: user.id,\n    email: user.email,\n    name: user.name,\n  });\n};\nexport const middleware = [authMiddleware];",
+ "middleware-loader": "export async function loader({ context }: Route.LoaderArgs) {\n  return { user: context.get(userContext) };\n}",
+ "context-def": "export const userContext = createContext<User | null>(null);",
+ "logging": "// Runs on the server before and after every request.\nconst loggingMiddleware: Route.MiddlewareFunction = async (\n  { request },\n  next,\n) => {\n  const start = performance.now();\n  const response = await next();\n  const ms = Math.round(performance.now() - start);\n  const { pathname } = new URL(request.url);\n  console.log(\n    `${request.method} ${pathname} ${response.status} ${ms}ms`,\n  );\n  return response;\n};\nexport const middleware = [loggingMiddleware];",
+ "client-loader": "// browser only: adds data from localStorage\nexport async function clientLoader({\n  serverLoader,\n}: Route.ClientLoaderArgs) {\n  const { featured } = await serverLoader();\n  const recent: string[] = JSON.parse(\n    localStorage.getItem(\"recent\") ?? \"[]\",\n  );\n  return { featured, recent };\n}\n// ...\nclientLoader.hydrate = true as const;\n// ...\nexport function HydrateFallback() {\n  return (\n    <p className=\"...\">\n      Loading the shop...\n    </p>\n  );\n}",
+ "resource-search": "// no default export: a resource route that only returns data\nexport async function loader({ request }: Route.LoaderArgs) {\n  const q = new URL(request.url).searchParams.get(\"q\") ?? \"\";\n  if (q.trim() === \"\")\n    return [] as Pick<Product, \"slug\" | \"name\">[];\n  const res = await fetch(\n    `${CATALOG_URL}/products?q=${encodeURIComponent(q)}`,\n  );\n  const products: Product[] = await res.json();\n  return products\n    .slice(0, 5)\n    .map(({ slug, name }) => ({ slug, name }));\n}",
+ "resource-invoice": "export async function loader({ params }: Route.LoaderArgs) {\n  const order = orders.get(params.id);\n  if (!order) throw data(\"Invoice not found\", { status: 404 });\n  return new Response(invoiceText(order), {\n    headers: {\n      \"Content-Type\": \"text/plain\",\n      \"Content-Disposition\": \"attachment; filename=invoice.txt\",\n    },\n  });\n}",
+ "resource-webhook": "// POST, PUT, PATCH, DELETE go to the action\nexport async function action({ request }: Route.ActionArgs) {\n  const event = await request.json();\n  console.log(\"payment event\", event.type);\n  return Response.json({ received: true });\n}",
+ "meta": "<title>{`${product.name} | Nova Market`}</title>\n<meta name=\"description\" content={product.description} />",
+ "headers": "export function headers() {\n  return { \"Cache-Control\": \"max-age=60\" };\n}\n// ...\nexport const handle = { breadcrumb: \"Products\" };",
+ "breadcrumbs": "// each route can describe itself in `handle`\nconst crumbs = useMatches().flatMap((m) =>\n  (m.handle as { breadcrumb?: string } | undefined)\n    ?.breadcrumb\n    ? [m.handle as { breadcrumb: string }]\n    : [],\n);",
+ "config": "export default {\n  // pages are server rendered by default\n  ssr: true,\n  // pages that never change are built once, at build time\n  async prerender() {\n    return [\"/about\"];\n  },\n} satisfies Config;",
+ "navigate": "const navigate = useNavigate();\n\n// not a click: a timer ran out\nnavigate(\"/logout\");",
+ "fs-routes": "import { flatRoutes } from \"@react-router/fs-routes\";\n\nexport default [\n  route(\"/\", \"./home.tsx\"),\n  ...(await flatRoutes()),\n] satisfies RouteConfig;",
+ "create-cmd": "npx create-react-router@latest nova-market\ncd nova-market\nnpm install\nnpm run dev",
+ "tree": "nova-market/\n├─ app/\n│  ├─ root.tsx\n│  ├─ routes.ts\n│  └─ routes/\n│     ├─ home.tsx\n│     ├─ products.tsx\n│     └─ product.tsx\n└─ react-router.config.ts",
+ "build-cmd": "npm run build\nnpm start",
+ "client-middleware": "export const clientMiddleware = [\n  async ({ request }, next) => {\n    const start = performance.now();\n    await next(); // no Response is returned\n  },\n];",
+ "meta-export": "export function meta() {\n  return [\n    { title: \"Nova Market\" },\n    { name: \"description\", content: \"Everyday things\" },\n  ];\n}",
+ "links-export": "export function links() {\n  return [{ rel: \"stylesheet\", href: \"/styles.css\" }];\n}",
+ "use-hook": "function Reviews({ promise }: { promise: Promise<Review[]> }) {\n  const reviews = use(promise);\n  return <ReviewList reviews={reviews} />;\n}",
+ "stream-timeout": "// app/entry.server.tsx\n// reject pending promises after 10 seconds\nexport const streamTimeout = 10_000;",
+ "config-spa": "export default {\n  ssr: false,\n} satisfies Config;",
+ "testing": "const Stub = createRoutesStub([\n  {\n    path: \"/login\",\n    Component: LoginForm,\n    action: () => ({ errors: { username: \"Required\" } }),\n  },\n]);\n\nrender(<Stub initialEntries={[\"/login\"]} />);",
+ "view-transition": "<ViewTransition>\n  <main>\n    <Outlet />\n  </main>\n</ViewTransition>",
+ "client-action": "export async function clientAction({\n  serverAction,\n}: Route.ClientActionArgs) {\n  localStorage.removeItem(\"recent\");\n  return serverAction();\n}",
+ "link-reload": "<Link reloadDocument to={`/invoices/${order.id}`}>\n  Download invoice\n</Link>",
+ "call-site": "<Form\n  method=\"post\"\n  action=\"/analytics\"\n  defaultShouldRevalidate={false}\n>\n  <button>Track Click</button>\n</Form>",
+ "revalidate": "const revalidator = useRevalidator();\n\nuseEffect(() => {\n  const id = setInterval(() => revalidator.revalidate(), 10_000);\n  return () => clearInterval(id);\n}, [revalidator]);"
+};
+      const FRAMES = {
+ "home": {
+  "url": "/",
+  "click": null
+ },
+ "products": {
+  "url": "/products",
+  "click": null
+ },
+ "products-mug": {
+  "url": "/products?q=mug",
+  "click": null
+ },
+ "products-empty": {
+  "url": "/products?q=zzz",
+  "click": null
+ },
+ "reviews-loading": {
+  "url": "/products/ceramic-mug",
+  "click": null
+ },
+ "reviews-loaded": {
+  "url": "/products/ceramic-mug",
+  "click": null
+ },
+ "product-404": {
+  "url": "/products/nope",
+  "click": null
+ },
+ "root-404": {
+  "url": "/nothing-here",
+  "click": null
+ },
+ "nav-pending": {
+  "url": "/",
+  "click": {
+   "x": 292,
+   "y": 29
+  }
+ },
+ "add-busy": {
+  "url": "/products",
+  "click": {
+   "x": 146,
+   "y": 422
+  }
+ },
+ "add-done": {
+  "url": "/products",
+  "click": null
+ },
+ "add-error": {
+  "url": "/products",
+  "click": null
+ },
+ "live-search": {
+  "url": "/",
+  "click": null
+ },
+ "cart": {
+  "url": "/cart",
+  "click": null
+ },
+ "cart-optimistic": {
+  "url": "/cart",
+  "click": {
+   "x": 690,
+   "y": 196
+  }
+ },
+ "checkout-errors": {
+  "url": "/checkout",
+  "click": {
+   "x": 410,
+   "y": 433
+  }
+ },
+ "checkout-filled": {
+  "url": "/checkout",
+  "click": null
+ },
+ "checkout-pending": {
+  "url": "/checkout",
+  "click": {
+   "x": 410,
+   "y": 505
+  }
+ },
+ "order": {
+  "url": "/order/1001",
+  "click": null
+ },
+ "login-redirect": {
+  "url": "/login",
+  "click": null
+ },
+ "account": {
+  "url": "/account",
+  "click": null
+ },
+ "resource-search": {
+  "url": "/search?q=mu",
+  "click": null
+ },
+ "home-recent": {
+  "url": "/",
+  "click": null
+ },
+ "__viewport": {
+  "w": 820,
+  "h": 525
+ }
+};
+
+      // ---------------- code highlighting ----------------
+      const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      const KW = "function|const|let|var|return|async|await|import|export|default|from|new|if|else|throw|type|true|false|null|typeof";
+      const RE = new RegExp("(\\/\\/.*$)|(\"[^\"]*\"|'[^']*'|`[^`]*`)|(&lt;\\/?[A-Za-z][\\w.]*)|\\b(" + KW + ")\\b|\\b(\\d+)\\b|\\b([A-Za-z_$][\\w$]*)(?=\\()", "g");
+      function highlight(line) {
+        return esc(line).replace(RE, (m, cm, st, tg, kw, nu, fn) =>
+          cm ? '<span class="cm">' + cm + "</span>" : st ? '<span class="st">' + st + "</span>" : tg ? '<span class="tg">' + tg + "</span>" : kw ? '<span class="kw">' + kw + "</span>" : nu ? '<span class="nu">' + nu + "</span>" : '<span class="fn">' + fn + "</span>"
+        );
+      }
+      // ---------------- characters ----------------
+      const INK = "#1f2140";
+      function blob(body, belly, extra) {
+        return `<svg viewBox="0 0 240 290">
+          <ellipse cx="120" cy="280" rx="80" ry="10" fill="rgba(31,33,64,.12)"/>
+          <g class="fx"><g class="inner">
+            <g class="arm-l"><path d="M44 170 q-36 6 -40 44" stroke="${body}" stroke-width="20" stroke-linecap="round" fill="none"/></g>
+            <g class="arm-r"><path d="M196 170 q36 6 40 44" stroke="${body}" stroke-width="20" stroke-linecap="round" fill="none"/></g>
+            <ellipse cx="88" cy="262" rx="26" ry="14" fill="${body}"/><ellipse cx="152" cy="262" rx="26" ry="14" fill="${body}"/>
+            <path d="M112 44 q6 -34 34 -26 q-18 6 -16 28z" fill="${body}"/>
+            <rect x="30" y="40" width="180" height="222" rx="90" fill="${body}"/>
+            <ellipse cx="120" cy="196" rx="58" ry="46" fill="${belly}"/>
+            ${extra}
+            <ellipse cx="74" cy="156" rx="14" ry="9" fill="#ff9bb3" opacity=".8"/><ellipse cx="166" cy="156" rx="14" ry="9" fill="#ff9bb3" opacity=".8"/>
+            <g class="eyes">
+              <ellipse cx="92" cy="122" rx="21" ry="23" fill="#fff"/><ellipse cx="148" cy="122" rx="21" ry="23" fill="#fff"/>
+              <circle cx="95" cy="126" r="10" fill="${INK}"/><circle cx="151" cy="126" r="10" fill="${INK}"/>
+              <circle cx="99" cy="121" r="3.5" fill="#fff"/><circle cx="155" cy="121" r="3.5" fill="#fff"/>
+            </g>
+            <path class="m-happy" d="M100 158 q20 24 40 0" stroke="${INK}" stroke-width="6" stroke-linecap="round" fill="none"/>
+            <path class="m-sad" d="M102 170 q18 -16 36 0" stroke="${INK}" stroke-width="6" stroke-linecap="round" fill="none" opacity="0"/>
+            <ellipse class="m-talk" cx="120" cy="164" rx="14" ry="11" fill="#7a1f3a" opacity="0"/>
+          </g></g>
+        </svg>`;
+      }
+      const SHIELD = `<path d="M120 168 l28 9 v24 q0 20 -28 30 q-28 -10 -28 -30 v-24z" fill="#fff" stroke="${INK}" stroke-width="4"/><path d="M107 200 l10 10 l18 -20" stroke="#06a37a" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+      const MASK = `<path d="M52 104 q68 -22 136 0 v30 q-68 -16 -136 0z" fill="${INK}"/><ellipse cx="92" cy="120" rx="14" ry="9" fill="#fff"/><ellipse cx="148" cy="120" rx="14" ry="9" fill="#fff"/><circle cx="96" cy="121" r="5" fill="${INK}"/><circle cx="152" cy="121" r="5" fill="${INK}"/>`;
+      const BOT = `<svg viewBox="0 0 260 320">
+        <ellipse cx="130" cy="312" rx="90" ry="10" fill="rgba(31,33,64,.12)"/>
+        <g class="fx"><g class="inner">
+          <g class="ant"><line x1="130" y1="40" x2="130" y2="10" stroke="${INK}" stroke-width="6"/><circle class="bulb" cx="130" cy="10" r="12" fill="#c2410c" stroke="${INK}" stroke-width="4"/></g>
+          <g class="arm-l"><rect x="22" y="200" width="36" height="80" rx="18" fill="#05b98a"/></g>
+          <g class="arm-r"><rect x="202" y="200" width="36" height="80" rx="18" fill="#05b98a"/></g>
+          <rect x="66" y="188" width="128" height="110" rx="28" fill="#038a66" stroke="${INK}" stroke-width="5"/>
+          <text x="130" y="258" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-weight="800" font-size="34" fill="#fff">JS</text>
+          <rect class="head" x="30" y="40" width="200" height="150" rx="40" fill="#06d6a0" stroke="${INK}" stroke-width="5"/>
+          <rect x="54" y="62" width="152" height="106" rx="26" fill="${INK}"/>
+          <g class="eyes-n"><rect x="88" y="94" width="22" height="32" rx="11" fill="#7cf3ff"/><rect x="150" y="94" width="22" height="32" rx="11" fill="#7cf3ff"/></g>
+          <g class="eyes-h" opacity="0"><path d="M86 118 q13 -22 26 0 M148 118 q13 -22 26 0" stroke="#7cf3ff" stroke-width="7" stroke-linecap="round" fill="none"/></g>
+          <g class="eyes-a" opacity="0"><path d="M84 96 l28 14 M176 96 l-28 14" stroke="#ff5d73" stroke-width="7" stroke-linecap="round"/><circle cx="100" cy="122" r="9" fill="#ff5d73"/><circle cx="160" cy="122" r="9" fill="#ff5d73"/></g>
+          <g class="eyes-q" opacity="0"><rect x="88" y="104" width="22" height="18" rx="9" fill="#7cf3ff"/><rect x="150" y="96" width="22" height="30" rx="11" fill="#7cf3ff"/></g>
+          <path class="m-n" d="M112 146 h36" stroke="#7cf3ff" stroke-width="6" stroke-linecap="round"/>
+          <rect class="m-talk" x="112" y="138" width="36" height="14" rx="7" fill="#7cf3ff" opacity="0"/>
+        </g></g>
+      </svg>`;
+      const KINDS = {
+        sam: { svg: () => blob("#7b61ff", "#a594ff", ""), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+        mal: { svg: () => blob("#ff8a3d", "#ffb27d", MASK), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+        guard: { svg: () => blob("#ffc93c", "#ffe28a", SHIELD), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+        byte: { svg: () => BOT, ar: "220 205", al: "40 205", o: "130 312", mo: "130 145" },
+      };
+      document.querySelectorAll(".char").forEach((el) => {
+        const k = KINDS[el.dataset.kind];
+        el.innerHTML = k.svg();
+        el.dataset.ar = k.ar; el.dataset.al = k.al; el.dataset.o = k.o; el.dataset.mo = k.mo;
+      });
+
+      // ---------------- captions (word-by-word, timed from the voice) ----------------
+      const capEl = document.getElementById("captions");
+      Object.keys(T.lines).forEach((id) => {
+        const ln = T.lines[id];
+        const div = document.createElement("div");
+        div.className = "cline";
+        div.id = "cap-" + id;
+        div.innerHTML = '<span class="spk ' + ln.speaker + '">' + ({ byte: "Byte", sam: "Sam", mallory: "Mallory", guard: "Guard" })[ln.speaker] + "</span><span>" + ln.words.map((w, i) => '<span class="cw' + (w.code ? ' cwk' : '') + '" id="cw-' + id + "-" + i + '">' + esc(w.w) + "</span>").join(" ") + "</span>";
+        const nch = ln.words.map((w) => w.w).join(" ").length;
+        div.style.fontSize = nch > 150 ? "27px" : nch > 125 ? "30px" : nch > 105 ? "34px" : "38px";
+        capEl.appendChild(div);
+      });
+
+      // ---------------- timeline helpers ----------------
+      const tl = gsap.timeline({ paused: true });
+      const E = "power2.out";
+      const POP = "back.out(1.5)";
+      const S = (id) => T.scenes[id].start;
+      const SE = (id) => T.scenes[id].start + T.scenes[id].dur;
+      const L = (id, off = 0) => T.lines[id].start + off;
+      const LE = (id, off = 0) => T.lines[id].start + T.lines[id].dur + off;
+      const W = (id, i) => T.lines[id].start + T.lines[id].words[i].t;
+      const D = (sel) => document.querySelector(sel).dataset;
+      const $$ = (sel) => gsap.utils.toArray(sel);
+
+      // Things appear with a slide/scale but at full opacity (no half-transparent frames), and disappear quickly.
+      function enter(scene) {
+        const sel = "#" + scene + " .eyebrow, #" + scene + " h2";
+        tl.fromTo(sel, { y: 26 }, { y: 0, duration: 0.8, stagger: 0.18, ease: E }, S(scene) + 0.25);
+        tl.set(sel, { opacity: 0 }, 0); tl.set(sel, { opacity: 1 }, S(scene) + 0.25);
+      }
+      function leave(scene) { tl.to("#" + scene, { opacity: 0, duration: 0.25, ease: "power2.in" }, SE(scene) - 0.4); }
+      function show(sel, t, o = {}) {
+        tl.fromTo(sel, { scale: o.s ?? 0.8, y: o.y ?? 24, x: o.x ?? 0 },
+          { scale: 1, y: 0, x: 0, duration: o.d ?? 0.8, ease: o.ease ?? POP, transformOrigin: o.origin ?? "50% 50%" }, t);
+        tl.set(sel, { opacity: 0 }, 0); tl.set(sel, { opacity: 1 }, t);
+      }
+      function fade(sel, t, d = 0.6) {
+        tl.fromTo(sel, { y: 14 }, { y: 0, duration: d, ease: "power1.out" }, t);
+        tl.set(sel, { opacity: 0 }, 0); tl.set(sel, { opacity: 1 }, t);
+      }
+      function hide(sel, t, d = 0.4) { tl.to(sel, { opacity: 0, duration: Math.min(d, 0.15) }, t); }
+      function pulse(sel, t, scale = 1.35) { tl.fromTo(sel, { scale: 1 }, { scale, duration: 0.25, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "50% 50%", immediateRender: false }, t); }
+      function setText(sel, text, t) { tl.set(sel, { textContent: text }, t); pulse(sel, t); }
+      function glow(sel, t, color, dur = 1.6) {
+        tl.to(sel, { borderColor: color, duration: 0.3 }, t);
+        return dur;
+      }
+      function hl(id, ns, t0, dur, color = "rgba(94,234,212,.30)") {
+        const els = ns.map((n) => $$("#" + id + " .cl")[n - 1]);
+        tl.to(els, { backgroundColor: color, duration: 0.25 }, t0);
+        tl.to(els, { backgroundColor: "rgba(94,234,212,0)", duration: 0.4 }, t0 + dur);
+      }
+      function reveal(id, ns, t0, stagger = 0.16) {
+        const els = ns.map((n) => $$("#" + id + " .cl")[n - 1]);
+        tl.fromTo(els, { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.5, stagger, ease: E }, t0);
+      }
+      function codeIn(id, t, hidden = []) {
+        fade("#" + id, t, 0.7);
+        if (hidden.length) tl.set(hidden.map((n) => $$("#" + id + " .cl")[n - 1]), { opacity: 0 }, 0);
+      }
+      function out(sel, t) { tl.fromTo(sel, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.5, ease: E }, t); }
+      function countdown(id, t0, step) {
+        show("#" + id, t0, { s: 0.5, d: 0.5 });
+        const nums = $$("#" + id + " .cdn");
+        nums.forEach((n, i) => {
+          tl.fromTo(n, { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)", transformOrigin: "50% 50%" }, t0 + 0.2 + i * step);
+          tl.to(n, { opacity: 0, duration: 0.2 }, t0 + 0.2 + (i + 1) * step - 0.2);
+        });
+        hide("#" + id, t0 + 0.2 + nums.length * step, 0.3);
+      }
+
+      // characters ------------------------------------------------------
+      function pop(sel, t) { show(sel, t, { s: 0.5, y: 60, d: 1.0, origin: "50% 100%" }); }
+      function bob(sel, t0, t1, amp = 6, period = 1.8) {
+        const reps = Math.max(1, Math.floor((t1 - t0) / (period / 2)) - 1);
+        tl.to(sel + " .inner", { y: -amp, duration: period / 2, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0);
+      }
+      function breathe(sel, t0, t1) {
+        const reps = Math.max(1, Math.floor((t1 - t0) / 1.6) - 1);
+        tl.to(sel + " .fx", { scaleY: 1.03, svgOrigin: D(sel).o, duration: 1.6, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0);
+      }
+      function tilt(sel, t, deg = 6, dur = 0.7) { tl.to(sel + " .fx", { rotation: deg, svgOrigin: D(sel).o, duration: dur, yoyo: true, repeat: 1, ease: "sine.inOut" }, t); }
+      function wobble(sel, t, times = 3, deg = 6) { tl.to(sel + " .fx", { rotation: deg, svgOrigin: D(sel).o, duration: 0.45, yoyo: true, repeat: times * 2 - 1, ease: "sine.inOut" }, t); }
+      function wave(sel, t, times = 3) { tl.to(sel + " .arm-r", { rotation: -55, svgOrigin: D(sel).ar, duration: 0.45, yoyo: true, repeat: times * 2 - 1, ease: "sine.inOut" }, t); }
+      function armUp(sel, side, t, deg, hold) {
+        const o = D(sel)[side === "r" ? "ar" : "al"];
+        tl.to(sel + " .arm-" + side, { rotation: side === "r" ? -deg : deg, svgOrigin: o, duration: 0.6, ease: "sine.inOut" }, t);
+        tl.to(sel + " .arm-" + side, { rotation: 0, svgOrigin: o, duration: 0.6, ease: "sine.inOut" }, t + hold);
+      }
+      function jump(sel, t, h = 50, n = 2) { tl.to(sel + " .fx", { y: -h, duration: 0.45, yoyo: true, repeat: n * 2 - 1, ease: "sine.inOut" }, t); }
+      function cheer(sel, t) { armUp(sel, "r", t, 140, 2.0); armUp(sel, "l", t, 140, 2.0); jump(sel, t + 0.2, 45, 2); }
+      function nod(sel, t) { tl.to(sel + " .fx", { y: 10, duration: 0.3, yoyo: true, repeat: 3, ease: "sine.inOut" }, t); }
+      function blink(sel, t) {
+        const g = document.querySelector(sel).querySelector(".eyes") ? ".eyes" : ".eyes-n";
+        tl.to(sel + " " + g, { scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.12, yoyo: true, repeat: 1 }, t);
+      }
+      function wiggle(sel, t, n = 2) { tl.to(sel + " .ant", { rotation: 16, svgOrigin: "130 40", duration: 0.3, yoyo: true, repeat: n * 2 - 1, ease: "sine.inOut" }, t); }
+      function mood(sel, m, t) {
+        tl.set(sel + " .m-happy", { opacity: m === "happy" ? 1 : 0 }, t);
+        tl.set(sel + " .m-sad", { opacity: m === "sad" ? 1 : 0 }, t);
+      }
+      function talk(sel, t0, t1) {
+        tl.set(sel + " .m-n", { opacity: 0 }, t0);
+        tl.set(sel + " .m-talk", { opacity: 1 }, t0);
+        tl.fromTo(sel + " .m-talk", { scaleY: 0.3 }, { scaleY: 1.5, svgOrigin: D(sel).mo, duration: 0.24, yoyo: true, repeat: Math.max(1, Math.floor((t1 - t0) / 0.24) - 1), ease: "sine.inOut", immediateRender: false }, t0);
+        tl.set(sel + " .m-talk", { opacity: 0 }, t1);
+        tl.set(sel + " .m-n", { opacity: 1 }, t1);
+      }
+      // works for the robot (Byte) and for the blob characters (Sam, Mallory, Guard)
+      function talkAny(sel, t0, t1) {
+        if (document.querySelector(sel + " .m-n")) return talk(sel, t0, t1);
+        tl.set(sel + " .m-happy", { opacity: 0 }, t0);
+        tl.set(sel + " .m-talk", { opacity: 1 }, t0);
+        tl.fromTo(sel + " .m-talk", { scaleY: 0.3 }, { scaleY: 1.4, svgOrigin: D(sel).mo, duration: 0.24, yoyo: true, repeat: Math.max(1, Math.floor((t1 - t0) / 0.24) - 1), ease: "sine.inOut", immediateRender: false }, t0);
+        tl.set(sel + " .m-talk", { opacity: 0 }, t1);
+        tl.set(sel + " .m-happy", { opacity: 1 }, t1);
+      }
+      function face(sel, f, t) {
+        ["n", "h", "a", "q"].forEach((x) => tl.set(sel + " .eyes-" + x, { opacity: x === f ? 1 : 0 }, t));
+        tl.set(sel + " .bulb", { fill: { n: "#c2410c", h: "#0a8a5f", a: "#d92d48", q: "#0a7fbf" }[f] }, t);
+      }
+      function shake(sel, t) { tl.to(sel, { x: "+=12", duration: 0.08, yoyo: true, repeat: 7, ease: "none" }, t); }
+      function walkIn(sel, t, fromX, dur = 1.8) {
+        tl.fromTo(sel, { opacity: 0, x: fromX }, { opacity: 1, x: 0, duration: dur, ease: "power1.out" }, t);
+        tl.to(sel + " .inner", { y: -18, duration: dur / 8, yoyo: true, repeat: 7, ease: "sine.inOut" }, t);
+      }
+
+      // ===================== captions timeline =====================
+      Object.keys(T.lines).forEach((id) => {
+        const ln = T.lines[id];
+        const t0 = ln.start, t1 = ln.start + ln.dur;
+        tl.set("#cap-" + id, { opacity: 0 }, 0);
+        tl.set("#cap-" + id, { opacity: 1 }, t0 - 0.05);
+        tl.set("#cap-" + id, { opacity: 0 }, t1 + 0.3);
+        ln.words.forEach((w, i) => {
+          const a = t0 + w.t;
+          const b = i + 1 < ln.words.length ? t0 + ln.words[i + 1].t : t1;
+          const sel = "#cw-" + id + "-" + i;
+          const rest = w.code ? "rgba(106,77,240,0.14)" : "rgba(255,201,60,0)";
+          tl.to(sel, { color: w.code ? "#3b2bb5" : "#1f2140", backgroundColor: "rgba(255,201,60,0.75)", duration: 0.08 }, a);
+          tl.to(sel, { backgroundColor: rest, duration: 0.15 }, Math.max(a + 0.09, b - 0.05));
+          if (w.code) tl.fromTo(sel, { scale: 1 }, { scale: 1.12, duration: 0.22, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "50% 60%", immediateRender: false }, a);
+        });
+        // Byte narrates: his mouth moves with the voice
+        talkAny(({ byte: "#byte", sam: "#sam", mallory: "#mal", guard: "#guard" })[ln.speaker], t0 + 0.02, t1 - 0.02);
+      });
+      // gentle idle life for the corner characters, whole video
+      bob("#sam", 0.5, T.total - 1, 5, 2.0);
+      bob("#byte", 0.8, T.total - 1, 5, 2.2);
+      breathe("#sam", 0.5, T.total - 1);
+      for (let t = 4; t < T.total - 2; t += 4.7) { blink("#sam", t); blink("#byte", t + 1.1); }
+
+      // hidden-by-default extras
+      tl.set("#mal, #guard", { opacity: 0 }, 0);
+      fade("#badge", S("s2"), 0.8);
+
+
+      // ===================== builders for this tutorial =====================
+      const stageOf = (sid) => document.getElementById(sid + "-stage");
+      function mk(sid, html) {
+        const d = document.createElement("div");
+        d.innerHTML = html.trim();
+        const first = d.firstElementChild;
+        while (d.firstElementChild) stageOf(sid).appendChild(d.firstElementChild);
+        return first;
+      }
+      // guard: report animation calls that get an empty target (a wrong line number, a missing id)
+      ["to", "fromTo", "set"].forEach((m) => {
+        const orig = tl[m];
+        tl[m] = function (target, ...rest) {
+          const bad = target === undefined || target === null || target === "" || (Array.isArray(target) && target.some((x) => !x));
+          if (bad) console.warn("BAD TARGET in tl." + m + ": " + JSON.stringify(rest[0]).slice(0, 60) + " @ " + (new Error().stack.split("\n")[2] || "").trim());
+          return orig.call(this, target, ...rest);
+        };
+      });
+      const px = (o) => "left:" + o.x + "px;top:" + o.y + "px;" + (o.w ? "width:" + o.w + "px;" : "") + (o.h ? "height:" + o.h + "px;" : "");
+
+      // code panel: real snippet from codes.json (or raw text). Returns its id.
+      function codePanel(sid, id, o) {
+        const text = CODES[o.code] !== undefined ? CODES[o.code] : o.code;
+        const lines = text.split("\n");
+        const maxc = Math.max(...lines.map((l) => l.length));
+        const fs = o.fs || Math.max(17, Math.min(27, Math.floor((o.w - 64) / (maxc * 0.61))));
+        const h = o.h || Math.ceil(lines.length * fs * 1.34 + 52);
+        mk(sid, '<div class="code" id="' + id + '" style="' + px({ x: o.x, y: o.y, w: o.w }) + "height:" + h + "px;font-size:" + fs + 'px"><span class="tab">' + o.name + "</span>" + lines.map((l) => '<span class="cl">' + (l ? highlight(l) : "&nbsp;") + "</span>").join("") + "</div>");
+        return { id, n: lines.length, h, fs };
+      }
+
+      // browser window that shows real screenshots of the running app
+      function browserWin(sid, id, o) {
+        const bodyH = Math.round(o.w * 0.64);
+        const names = o.frames;
+        mk(sid, '<div class="win" id="' + id + '" style="' + px({ x: o.x, y: o.y, w: o.w }) + "height:" + (bodyH + 51) + 'px"><div class="bar"><i></i><i></i><i></i><span class="urlbar" id="' + id + '-url">localhost:5173/</span></div><div class="body">' + names.map((f) => '<img id="' + id + "-f-" + f + '" src="assets/frames/' + f + '.jpg" style="opacity:0" />').join("") + "</div></div>");
+        const sc = (o.w - 10) / (FRAMES.__viewport ? FRAMES.__viewport.w : 1000);
+        const st = { cur: null, pos: null, made: false };
+        const api = {
+          id, h: bodyH + 51, w: o.w,
+          // crossfade to another real frame
+          frame(name, t, d = 0.35) {
+            if (st.cur) tl.to("#" + id + "-f-" + st.cur, { opacity: 0, duration: d }, t);
+            tl.fromTo("#" + id + "-f-" + name, { opacity: 0 }, { opacity: 1, duration: d }, t);
+            tl.set("#" + id + "-url", { textContent: "localhost:5173" + FRAMES[name].url }, t);
+            st.cur = name;
+          },
+          // animated cursor that clicks where the real click happened in that frame
+          click(name, tArrive, dur = 0.9) {
+            const c = FRAMES[name].click;
+            if (!c) return;
+            const tx = o.x + 5 + c.x * sc, ty = o.y + 51 + c.y * sc;
+            const cid = id + "-cur";
+            if (!st.made) {
+              mk(sid, '<div class="cur" id="' + cid + '" style="left:0;top:0;opacity:0"><svg viewBox="0 0 30 40"><path d="M3 2 L3 30 L10 24 L15 37 L20 35 L15 22 L25 22z" fill="#fff" stroke="#1f2140" stroke-width="2.5" stroke-linejoin="round"/></svg></div><div class="rip" id="' + id + '-rip" style="left:0;top:0"></div>');
+              st.made = true;
+              st.pos = { x: o.x + o.w - 120, y: o.y + 51 + 420 };
+              tl.set("#" + cid, { x: st.pos.x, y: st.pos.y }, 0);
+            }
+            tl.to("#" + cid, { opacity: 1, duration: 0.25 }, tArrive - dur - 0.25);
+            tl.fromTo("#" + cid, { x: st.pos.x, y: st.pos.y }, { x: tx, y: ty, duration: dur, ease: "power2.inOut", immediateRender: false }, tArrive - dur);
+            tl.fromTo("#" + cid, { scale: 1 }, { scale: 0.8, duration: 0.1, yoyo: true, repeat: 1, transformOrigin: "0 0", immediateRender: false }, tArrive);
+            tl.fromTo("#" + id + "-rip", { x: tx - 28, y: ty - 28, opacity: 0.9, scale: 0.3 }, { opacity: 0, scale: 2.4, duration: 0.6, ease: "power2.out", immediateRender: false }, tArrive + 0.05);
+            st.pos = { x: tx, y: ty };
+          },
+          hideCursor(t) { if (st.made) tl.to("#" + id + "-cur", { opacity: 0, duration: 0.3 }, t); },
+        };
+        return api;
+      }
+
+      // diagram helpers
+      function box(sid, id, o) { mk(sid, '<div class="bx ' + (o.cls || "c1") + '" id="' + id + '" style="' + px(o) + (o.style || "") + '">' + o.html + "</div>"); return "#" + id; }
+      function tag(sid, id, o) { mk(sid, '<div class="tag ' + (o.cls || "") + '" id="' + id + '" style="' + px({ x: o.x, y: o.y }) + "font-size:" + (o.fs || 26) + 'px">' + o.html + "</div>"); return "#" + id; }
+      function note(sid, id, o) { mk(sid, '<div class="note" id="' + id + '" style="' + px(o) + (o.style || "") + '">' + o.html + "</div>"); return "#" + id; }
+      function chip(sid, id, o) { mk(sid, '<div class="tn ' + (o.cls || "a") + '" id="' + id + '" style="' + px({ x: o.x, y: o.y }) + (o.fs ? "font-size:" + o.fs + "px;" : "") + '">' + o.html + "</div>"); return "#" + id; }
+      function arrowText(sid, id, o) { mk(sid, '<div class="arrow" id="' + id + '" style="' + px({ x: o.x, y: o.y }) + (o.fs ? "font-size:" + o.fs + "px;" : "") + (o.color ? "color:" + o.color + ";" : "") + '">' + (o.html || "→") + "</div>"); return "#" + id; }
+      function svgLayer(sid) {
+        let s = document.getElementById(sid + "-ov");
+        if (!s) { s = document.createElementNS("http://www.w3.org/2000/svg", "svg"); s.setAttribute("class", "ov"); s.id = sid + "-ov"; stageOf(sid).appendChild(s); }
+        return s;
+      }
+      function line(sid, id, o) {
+        const s = svgLayer(sid);
+        const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        l.id = id; l.setAttribute("x1", o.x1); l.setAttribute("y1", o.y1); l.setAttribute("x2", o.x2); l.setAttribute("y2", o.y2);
+        l.setAttribute("stroke", o.color || "#b4bdf2"); l.setAttribute("stroke-width", o.w || 5); l.setAttribute("stroke-linecap", "round");
+        if (o.dash) l.setAttribute("stroke-dasharray", "12 10");
+        if (o.arrow) l.setAttribute("marker-end", "url(#" + (o.arrow === true ? "ahW" : o.arrow) + ")");
+        s.appendChild(l);
+        return "#" + id;
+      }
+      function drawLine(sel, t, dur = 0.5) {
+        const e = document.querySelector(sel);
+        const x2 = +e.getAttribute("x2"), y2 = +e.getAttribute("y2"), x1 = +e.getAttribute("x1"), y1 = +e.getAttribute("y1");
+        tl.fromTo(sel, { attr: { x2: x1, y2: y1 }, opacity: 0 }, { attr: { x2, y2 }, opacity: 1, duration: dur, ease: "power1.out" }, t);
+      }
+
+      function grow(sel, t0, dur) { tl.fromTo(sel, { clipPath: "inset(0% 100% 0% 0% round 12px)" }, { clipPath: "inset(0% 0% 0% 0% round 12px)", duration: dur, ease: "none" }, t0); }
+      function strike(sel, t) { tl.set(sel, { textDecoration: "line-through" }, t); }
+      // travelling packet between two points
+      function packet(sid, id, o) { mk(sid, '<div class="pkt ' + (o.cls || "") + '" id="' + id + '" style="' + px({ x: o.x, y: o.y }) + "opacity:0;font-size:" + (o.fs || 22) + 'px">' + o.html + "</div>"); return "#" + id; }
+      function fly(sel, t, dx, dy, dur = 1.2, keep = false) {
+        tl.fromTo(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.25, ease: E }, t);
+        tl.fromTo(sel, { x: 0, y: 0 }, { x: dx, y: dy, duration: dur, ease: "power1.inOut", immediateRender: false }, t + 0.2);
+        if (!keep) tl.to(sel, { opacity: 0, scale: 0.8, duration: 0.25 }, t + 0.2 + dur);
+      }
+      function hlEl(sel, t0, dur, color = "rgba(94,234,212,.30)") {
+        tl.to(sel, { backgroundColor: color, duration: 0.25 }, t0);
+        tl.to(sel, { backgroundColor: "rgba(94,234,212,0)", duration: 0.4 }, t0 + dur);
+      }
+      // a character cameo (Mallory / Guard) for the lines they speak
+      function cameo(sel, lineId, tail = 0.4) {
+        pop(sel, L(lineId, -0.15));
+        tl.to(sel, { opacity: 0, duration: 0.4 }, LE(lineId, tail));
+      }
+      // split layout constants: code left, live preview right
+      const SPLIT = { cx: 100, cy: 235, cw: 960, px: 1090, py: 235, pw: 710 };
+
+      // ===================== scenes =====================
+      // reveal code lines one by one (lines start hidden)
+      function hideLines(id, ns) { tl.set(ns.map((n) => $$("#" + id + " .cl")[n - 1]), { opacity: 0 }, 0); }
+      function lineAt(id, n, t) { tl.fromTo($$("#" + id + " .cl")[n - 1], { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.45, ease: E }, t); }
+      // crossfade helper for panels that replace each other
+      function swap(outSel, inSel, t) { hide(outSel, t, 0.35); fade(inSel, t + 0.1, 0.5); }
+
+      // ---------- 1 · Intro ----------
+      (function () {
+        const sid = "s1";
+        const w = browserWin(sid, "s1-w", { x: 560, y: 235, w: 800, frames: ["home", "products", "cart", "checkout-filled"] });
+        show("#s1-w", L("s1a", 3.2), { s: 0.85, d: 0.9 });
+        w.frame("home", L("s1a", 3.4));
+        walkIn("#sam", 0.4, -260); walkIn("#byte", 0.6, 260);
+        wave("#byte", L("s1a", 0.2), 2); face("#byte", "h", L("s1a"));
+        // Sam's three things: products, cart, checkout
+        w.frame("products", W("s1b", 3), 0.3); w.frame("cart", W("s1b", 5), 0.3); w.frame("checkout-filled", W("s1b", 7), 0.3);
+        cheer("#sam", W("s1b", 8));
+        // what you will learn: chips around the store
+        const items = [["routes", 7], ["loaders", 8], ["actions", 9], ["fetchers", 10], ["sessions", 11], ["streaming", 12], ["error boundaries", 13], ["middleware", 16]];
+        const cols = ["a", "b", "c", "d", "e", "f", "g", "a"];
+        items.forEach(([label, wi], i) => {
+          const left = i < 4;
+          const sel = chip(sid, "s1-c" + i, { x: left ? 150 : 1400, y: 300 + (i % 4) * 115, html: label, cls: cols[i], fs: 28 });
+          show(sel, W("s1c", wi), { s: 0.5, d: 0.6, x: left ? -60 : 60 });
+        });
+        tl.to("#s1-w", { scale: 1.03, duration: 0.5, yoyo: true, repeat: 1, transformOrigin: "50% 50%" }, W("s1c", 16));
+        face("#byte", "q", L("s1d")); face("#byte", "h", L("s1e"));
+        leave(sid);
+      })();
+
+      // ---------- 2 · Project setup ----------
+      (function () {
+        const sid = "s2";
+        enter(sid);
+        const term = codePanel(sid, "s2-term", { name: "terminal", code: "create-cmd", x: 110, y: 235, w: 780, fs: 27 });
+        const tree = codePanel(sid, "s2-tree", { name: "project", code: "tree", x: 110, y: 470, w: 780, fs: 24 });
+        const w = browserWin(sid, "s2-w", { x: 990, y: 235, w: 810, frames: ["home"] });
+        hideLines(term.id, [1, 2, 3, 4]);
+        fade("#s2-term", L("s2a", 0.2), 0.5);
+        lineAt(term.id, 1, W("s2a", 3)); lineAt(term.id, 2, W("s2a", 4) + 0.4);
+        lineAt(term.id, 3, W("s2a", 5)); lineAt(term.id, 4, W("s2a", 9));
+        show("#s2-w", W("s2a", 11), { s: 0.9, d: 0.8 }); w.frame("home", W("s2a", 11) + 0.2);
+        // the project folder
+        fade("#s2-tree", L("s2b", 0.2), 0.6);
+        hl(tree.id, [2], W("s2b", 2), 1.2); hl(tree.id, [4], W("s2b", 7), 1.4); hl(tree.id, [3], W("s2b", 13), 1.4);
+        // root.tsx in detail
+        hide("#s2-term, #s2-tree, #s2-w", L("s2c", 0.1), 0.4);
+        const root = codePanel(sid, "s2-root", { name: "app/root.tsx", code: "root-layout", x: 110, y: 235, w: 1000, fs: 20 });
+        fade("#s2-root", L("s2c", 0.5), 0.6);
+        hl(root.id, [1], W("s2d", 1), 1.2); hl(root.id, [7, 13], W("s2d", 5), 2.2);
+        hl(root.id, [8, 10, 11], W("s2d", 13), 1.6);
+        hl(root.id, [14], W("s2d", 21), 0.9); hl(root.id, [15], W("s2d", 22), 1.4); hl(root.id, [16], W("s2d", 24), 1.2);
+        const app = codePanel(sid, "s2-app", { name: "app/root.tsx", code: "root-app", x: 1160, y: 235, w: 640, fs: 27 });
+        fade("#s2-app", L("s2e", 0.2), 0.6);
+        hl(app.id, [2], W("s2e", 8), 1.4);
+        show(tag(sid, "s2-t1", { x: 1160, y: 400, html: "the current route renders here", cls: "cy", fs: 26 }), W("s2e", 12), { s: 0.7, d: 0.5 });
+        hl(root.id, [16], W("s2g", 3), 2.2);
+        show(tag(sid, "s2-t2", { x: 1160, y: 470, html: "Scripts: the page becomes interactive", cls: "li", fs: 26 }), W("s2g", 5), { s: 0.7, d: 0.5 });
+        show(tag(sid, "s2-t3", { x: 1160, y: 535, html: "without it: plain server rendered HTML", cls: "co", fs: 26 }), W("s2g", 12), { s: 0.7, d: 0.5 });
+        // the config file
+        hide("#s2-app, #s2-t1, #s2-t2, #s2-t3", L("s2h", 0.1), 0.4);
+        const cfg = codePanel(sid, "s2-cfg", { name: "react-router.config.ts", code: "config", x: 1160, y: 235, w: 640, fs: 24 });
+        fade("#s2-cfg", W("s2h", 3), 0.6);
+        hl(cfg.id, [2], W("s2h", 9), 2.0);
+        leave(sid);
+      })();
+
+      // ---------- 3 · Routing ----------
+      (function () {
+        const sid = "s3";
+        enter(sid);
+        const a = codePanel(sid, "s3-a", { name: "app/routes.ts", code: "routes-a", x: 110, y: 235, w: 640, fs: 25 });
+        const b = codePanel(sid, "s3-b", { name: "app/routes.ts", code: "routes-b", x: 110, y: 235, w: 640, fs: 25 });
+        const c = codePanel(sid, "s3-c", { name: "app/routes.ts", code: "routes-c", x: 110, y: 235, w: 640, fs: 25 });
+        const f = codePanel(sid, "s3-f", { name: "app/routes.ts + fs-routes (docs)", code: "fs-routes", x: 110, y: 235, w: 640, fs: 22 });
+        tl.set("#s3-b, #s3-c, #s3-f", { opacity: 0 }, 0);
+        // the route tree
+        const kid = "font-size:25px;padding:12px 6px;";
+        const N = {
+          root: box(sid, "s3-root", { x: 1110, y: 240, w: 300, cls: "c2", html: "root.tsx<small>every route lives here</small>" }),
+          lay: box(sid, "s3-lay", { x: 1085, y: 375, w: 350, cls: "c1", html: "shop-layout.tsx<small>layout: adds no URL segment</small>" }),
+          idx: box(sid, "s3-idx", { x: 800, y: 540, w: 140, cls: "c5", html: "index<small>/</small>", style: kid }),
+          prd: box(sid, "s3-prd", { x: 950, y: 540, w: 170, cls: "c3", html: "products<small>/products</small>", style: kid }),
+          slg: box(sid, "s3-slg", { x: 1130, y: 540, w: 220, cls: "c4", html: "product<small>/products/:slug</small>", style: kid }),
+          crt: box(sid, "s3-crt", { x: 1360, y: 540, w: 130, cls: "c3", html: "cart<small>/cart</small>", style: kid }),
+          acc: box(sid, "s3-acc", { x: 1500, y: 540, w: 170, cls: "c2", html: "account<small>prefix + layout</small>", style: kid }),
+          spl: box(sid, "s3-spl", { x: 1680, y: 540, w: 120, cls: "c6", html: "*<small>catch-all</small>", style: kid }),
+          ord: box(sid, "s3-ord", { x: 1410, y: 700, w: 180, cls: "c5", html: "orders<small>/account</small>", style: kid }),
+          set: box(sid, "s3-set", { x: 1610, y: 700, w: 190, cls: "c5", html: "settings<small>/account/settings</small>", style: kid }),
+        };
+        const L1 = { root: line(sid, "s3-l0", { x1: 1260, y1: 318, x2: 1260, y2: 375 }) };
+        const kids = [["idx", 870], ["prd", 1035], ["slg", 1240], ["crt", 1425], ["acc", 1585], ["spl", 1740]];
+        kids.forEach(([k, cx]) => { L1[k] = line(sid, "s3-l-" + k, { x1: 1260, y1: 455, x2: cx, y2: 540, color: "#a78bfa" }); });
+        L1.ord = line(sid, "s3-l-ord", { x1: 1585, y1: 620, x2: 1500, y2: 700, color: "#a78bfa" });
+        L1.set = line(sid, "s3-l-set", { x1: 1585, y1: 620, x2: 1705, y2: 700, color: "#a78bfa" });
+        Object.values(N).forEach((s) => tl.set(s, { opacity: 0 }, 0));
+        Object.values(L1).forEach((s) => tl.set(s, { opacity: 0 }, 0));
+
+        // s3a: configure routes
+        fade("#s3-a", L("s3a", 0.3), 0.6);
+        hl(a.id, [1], W("s3a", 4), 1.6); hl(a.id, [4], W("s3a", 9), 1.4); hl(a.id, [4], W("s3a", 13), 1.6);
+        show(N.root, W("s3a", 13), { s: 0.7, d: 0.6 });
+        // s3b: index and products
+        show(N.lay, W("s3b", 0), { s: 0.7, d: 0.6 }); drawLine(L1.root, W("s3b", 0));
+        hl(a.id, [3], W("s3b", 5), 1.4); show(N.idx, W("s3b", 5), { s: 0.7, d: 0.6 }); drawLine(L1.idx, W("s3b", 5) + 0.1);
+        hl(a.id, [4], W("s3b", 11), 1.4); show(N.prd, W("s3b", 11), { s: 0.7, d: 0.6 }); drawLine(L1.prd, W("s3b", 11) + 0.1);
+        // s3d: dynamic segment
+        hl(a.id, [5], W("s3d", 2), 2.4); show(N.slg, W("s3d", 8), { s: 0.7, d: 0.6 }); drawLine(L1.slg, W("s3d", 8) + 0.1);
+        show(chip(sid, "s3-u1", { x: 830, y: 660, html: "/products/trail-runner", cls: "g", fs: 24 }), W("s3d", 9), { s: 0.7, d: 0.5 });
+        show(chip(sid, "s3-u2", { x: 830, y: 720, html: "params.slug = \"trail-runner\"", cls: "e", fs: 24 }), W("s3d", 11), { s: 0.7, d: 0.5 });
+        // s3e/f: layout route and outlet
+        hide("#s3-u1, #s3-u2", L("s3e", 0.3), 0.4);
+        hl(a.id, [2], W("s3e", 6), 2.0);
+        tl.to(N.lay, { boxShadow: "0 0 0 8px rgba(34,211,238,.8)", duration: 0.4 }, W("s3e", 6)); tl.to(N.lay, { boxShadow: "0 8px 0 rgba(0,0,0,.3)", duration: 0.5 }, W("s3e", 11));
+        show(chip(sid, "s3-o", { x: 830, y: 660, html: "&lt;Outlet /&gt; renders the child", cls: "b", fs: 24 }), W("s3f", 7), { s: 0.7, d: 0.5 });
+        drawLine(L1.crt, W("s3e", 2)); show(N.crt, W("s3e", 2), { s: 0.7, d: 0.6 });
+        // s3g/h: header stays, page changes; loaders in parallel
+        const pageSeq = [N.idx, N.prd, N.slg, N.crt];
+        pageSeq.forEach((s, i) => { tl.to(s, { boxShadow: "0 0 0 8px rgba(244,114,182,.9)", duration: 0.25 }, W("s3g", 4) + i * 0.55); tl.to(s, { boxShadow: "0 8px 0 rgba(0,0,0,.3)", duration: 0.3 }, W("s3g", 4) + i * 0.55 + 0.5); });
+        tl.to(N.lay, { boxShadow: "0 0 0 8px rgba(34,211,238,.8)", duration: 0.3 }, W("s3g", 2)); tl.to(N.lay, { boxShadow: "0 8px 0 rgba(0,0,0,.3)", duration: 0.4 }, LE("s3g", 0.1));
+        hide("#s3-o", L("s3h", 0.2), 0.4);
+        const lds = [["s3-ld0", 1425, 250], ["s3-ld1", 1450, 385], ["s3-ld2", 985, 488]].map(([id, x, y]) => chip(sid, id, { x, y: y + 4, html: "loader", cls: "e", fs: 20 }));
+        lds.forEach((s) => { show(s, W("s3h", 9), { s: 0.4, d: 0.4 }); pulse(s, W("s3h", 11), 1.4); hide(s, W("s3h", 11) + 1.6, 0.4); });
+        // s3i: prefix
+        swap("#s3-a", "#s3-b", L("s3i", 0.0));
+        hl(b.id, [1], W("s3i", 1), 1.6);
+        show(N.acc, W("s3i", 20), { s: 0.7, d: 0.6 }); drawLine(L1.acc, W("s3i", 20) + 0.1);
+        show(N.ord, W("s3i", 22), { s: 0.7, d: 0.6 }); drawLine(L1.ord, W("s3i", 22) + 0.1);
+        show(N.set, W("s3i", 24), { s: 0.7, d: 0.6 }); drawLine(L1.set, W("s3i", 24) + 0.1);
+        // s3j/k: splat
+        swap("#s3-b", "#s3-c", L("s3k", 0.0));
+        hl(c.id, [1], W("s3k", 1), 2.0); show(N.spl, W("s3k", 4), { s: 0.7, d: 0.6 }); drawLine(L1.spl, W("s3k", 4) + 0.1);
+        show(chip(sid, "s3-u3", { x: 1440, y: 800, html: "/nothing-here → 404", cls: "f", fs: 24 }), W("s3k", 12), { s: 0.7, d: 0.5 });
+        // s3l/m: file routes
+        swap("#s3-c", "#s3-f", L("s3m", 0.2));
+        hl(f.id, [5], W("s3m", 2), 2.4);
+        leave(sid);
+      })();
+
+      // ---------- 4 · Route modules ----------
+      (function () {
+        const sid = "s4";
+        enter(sid);
+        mk(sid, '<div class="card c-violet" id="s4-card" style="left:110px;top:235px;width:520px;height:570px"><div class="hd">a route module (.tsx)</div></div>');
+        fade("#s4-card", L("s4a", 0.3), 0.6);
+        const rows = [["default", "the component", "s4a", 11, "b"], ["loader", "reads data", "s4b", 6, "e"], ["action", "writes data", "s4b", 8, "d"], ["meta", "head tags", "s4b", 9, "c"], ["links", "stylesheets", "s4b", 10, "c"], ["headers", "HTTP headers", "s4b", 11, "c"], ["ErrorBoundary", "when it fails", "s4b", 15, "f"]];
+        rows.forEach(([name, what, lid, wi, col], i) => {
+          const y = 310 + i * 70;
+          const sel = chip(sid, "s4-r" + i, { x: 140, y, html: name, cls: col, fs: 24 });
+          const sel2 = note(sid, "s4-rn" + i, { x: 390, y: y + 4, html: what, style: "font-size:24px;color:var(--muted);font-weight:600" });
+          show(sel, W(lid, wi), { s: 0.6, d: 0.5, x: -30 }); show(sel2, W(lid, wi) + 0.15, { s: 0.9, d: 0.5 });
+        });
+        const t = codePanel(sid, "s4-types", { name: "app/routes/product.tsx", code: "types", x: 700, y: 235, w: 1100, fs: 28 });
+        fade("#s4-types", W("s4c", 7), 0.6);
+        hl(t.id, [1], W("s4c", 11), 2.0);
+        show(tag(sid, "s4-g1", { x: 700, y: 630, html: "generated for every route", cls: "cy", fs: 26 }), W("s4c", 13), { s: 0.7, d: 0.5 });
+        hl(t.id, [3], W("s4e", 4), 1.6);
+        show(tag(sid, "s4-g2", { x: 700, y: 700, html: "params.slug: string", cls: "li", fs: 26 }), W("s4e", 6), { s: 0.7, d: 0.5 });
+        hl(t.id, [5, 6, 7], W("s4e", 10), 2.4);
+        show(tag(sid, "s4-g3", { x: 700, y: 770, html: "loaderData and actionData: typed", cls: "vi", fs: 26 }), W("s4e", 10), { s: 0.7, d: 0.5 });
+        leave(sid);
+      })();
+
+      // ---------- 5 · How data flows ----------
+      (function () {
+        const sid = "s5";
+        enter(sid);
+        const big = "font-size:30px;padding:16px 12px;";
+        const A = box(sid, "s5-A", { x: 130, y: 300, w: 300, cls: "c1", html: "Request<small>GET /products</small>", style: big });
+        const B = box(sid, "s5-B", { x: 620, y: 300, w: 300, cls: "c2", html: "Loaders<small>read data on the server</small>", style: big });
+        const C = box(sid, "s5-C", { x: 1110, y: 300, w: 300, cls: "c5", html: "Components<small>render with loaderData</small>", style: big });
+        const D = box(sid, "s5-D", { x: 1110, y: 560, w: 300, cls: "c1", html: "Form submit<small>POST /cart</small>", style: big });
+        const E = box(sid, "s5-E", { x: 620, y: 560, w: 300, cls: "c3", html: "Action<small>write data on the server</small>", style: big });
+        const lAB = line(sid, "s5-lAB", { x1: 432, y1: 350, x2: 616, y2: 350, arrow: "ahC", w: 6 });
+        const lBC = line(sid, "s5-lBC", { x1: 922, y1: 350, x2: 1106, y2: 350, arrow: "ahV", w: 6 });
+        const lCD = line(sid, "s5-lCD", { x1: 1260, y1: 410, x2: 1260, y2: 556, arrow: "ahW", w: 6 });
+        const lDE = line(sid, "s5-lDE", { x1: 1108, y1: 610, x2: 924, y2: 610, arrow: "ahP", w: 6 });
+        const lEB = line(sid, "s5-lEB", { x1: 770, y1: 556, x2: 770, y2: 414, arrow: "ahP", w: 6 });
+        [A, B, C, D, E, lAB, lBC, lCD, lDE, lEB].forEach((s) => tl.set(s, { opacity: 0 }, 0));
+        const glow = (sel, t, col = "rgba(244,114,182,.9)") => { tl.to(sel, { boxShadow: "0 0 0 8px " + col, duration: 0.3 }, t); tl.to(sel, { boxShadow: "0 8px 0 rgba(0,0,0,.3)", duration: 0.5 }, t + 1.2); };
+        // request -> loaders -> components
+        show(A, W("s5b", 0), { s: 0.7, d: 0.6 });
+        const p1 = packet(sid, "s5-p1", { x: 445, y: 322, html: "request", cls: "cy" }); fly(p1, W("s5b", 2), 165, 0, 1.0);
+        drawLine(lAB, W("s5b", 3)); show(B, W("s5b", 4), { s: 0.7, d: 0.6 }); glow(B, W("s5b", 5), "rgba(167,139,250,.9)");
+        const p2 = packet(sid, "s5-p2", { x: 935, y: 322, html: "data", cls: "li" }); fly(p2, W("s5b", 12), 165, 0, 1.0);
+        drawLine(lBC, W("s5b", 13)); show(C, W("s5b", 14), { s: 0.7, d: 0.6 }); glow(C, W("s5b", 19), "rgba(134,239,172,.9)");
+        // form -> action -> loaders again
+        drawLine(lCD, W("s5d", 0)); show(D, W("s5d", 0) + 0.2, { s: 0.7, d: 0.6 });
+        drawLine(lDE, W("s5d", 4)); show(E, W("s5d", 5), { s: 0.7, d: 0.6 }); glow(E, W("s5d", 8));
+        drawLine(lEB, W("s5d", 11)); show(chip(sid, "s5-again", { x: 790, y: 470, html: "loaders run again", cls: "d", fs: 24 }), W("s5d", 12), { s: 0.7, d: 0.5 });
+        glow(B, W("s5d", 13), "rgba(167,139,250,.9)"); glow(C, W("s5d", 18), "rgba(134,239,172,.9)");
+        // read, write, read again
+        show(chip(sid, "s5-t1", { x: 640, y: 240, html: "1 read", cls: "b", fs: 26 }), W("s5e", 0), { s: 0.6, d: 0.5 });
+        show(chip(sid, "s5-t2", { x: 640, y: 700, html: "2 write", cls: "d", fs: 26 }), W("s5e", 1), { s: 0.6, d: 0.5 });
+        show(chip(sid, "s5-t3", { x: 900, y: 240, html: "3 read again", cls: "e", fs: 26 }), W("s5e", 2), { s: 0.6, d: 0.5 });
+        const x1 = chip(sid, "s5-x1", { x: 1160, y: 700, html: "copy server data into state", cls: "f", fs: 24 });
+        const x2 = chip(sid, "s5-x2", { x: 1160, y: 760, html: "refresh it by hand", cls: "f", fs: 24 });
+        show(x1, W("s5e", 6), { s: 0.6, d: 0.5 }); strike(x1, W("s5e", 8)); show(x2, W("s5e", 14), { s: 0.6, d: 0.5 }); strike(x2, W("s5e", 16));
+        // state is for the interface only
+        hide("#s5-A, #s5-B, #s5-C, #s5-D, #s5-E, #s5-lAB, #s5-lBC, #s5-lCD, #s5-lDE, #s5-lEB, #s5-again, #s5-t1, #s5-t2, #s5-t3, #s5-x1, #s5-x2, #s5-p1, #s5-p2", L("s5g", 0.0), 0.5);
+        const ui = box(sid, "s5-ui", { x: 180, y: 290, w: 740, h: 420, cls: "c3", html: "" });
+        const sv = box(sid, "s5-sv", { x: 1000, y: 290, w: 740, h: 420, cls: "c2", html: "" });
+        mk(sid, '<div class="tag pk" id="s5-uit" style="left:200px;top:270px;font-size:30px">UI state: useState</div>');
+        mk(sid, '<div class="tag vi" id="s5-svt" style="left:1020px;top:270px;font-size:30px">Server data: loaders</div>');
+        [ui, sv, "#s5-uit", "#s5-svt"].forEach((s) => tl.set(s, { opacity: 0 }, 0));
+        show(ui, W("s5g", 0), { s: 0.9, d: 0.6 }); show("#s5-uit", W("s5g", 0), { s: 0.7, d: 0.5 });
+        [["an open menu", 4], ["a focused input", 7], ["a selected tab", 10]].forEach(([t, wi], i) => show(chip(sid, "s5-u" + i, { x: 230, y: 360 + i * 90, html: t, cls: "d", fs: 28 }), W("s5g", wi), { s: 0.6, d: 0.5 }));
+        show(sv, W("s5g", 12), { s: 0.9, d: 0.6 }); show("#s5-svt", W("s5g", 12), { s: 0.7, d: 0.5 });
+        [["the product list", 13], ["the cart", 14], ["the signed in user", 16]].forEach(([t, wi], i) => show(chip(sid, "s5-s" + i, { x: 1050, y: 360 + i * 90, html: t, cls: "a", fs: 28 }), W("s5g", wi) + i * 0.15, { s: 0.6, d: 0.5 }));
+        // server, browser, both
+        hide("#s5-ui, #s5-sv, #s5-uit, #s5-svt, #s5-u0, #s5-u1, #s5-u2, #s5-s0, #s5-s1, #s5-s2", L("s5h", 0.0), 0.5);
+        const zone = (id, x, col, title) => mk(sid, '<div class="zone" id="' + id + '" style="left:' + x + 'px;top:280px;width:520px;height:420px;border-color:' + col + '"><div class="zl" style="color:' + col + '">' + title + "</div></div>");
+        zone("s5-zs", 110, "#a78bfa", "on the server"); zone("s5-zb", 700, "#22d3ee", "in the browser"); zone("s5-zc", 1290, "#f472b6", "in both places");
+        ["#s5-zs", "#s5-zb", "#s5-zc"].forEach((s) => tl.set(s, { opacity: 0 }, 0));
+        show("#s5-zs", L("s5h", 0.2), { s: 0.9, d: 0.6 }); show(chip(sid, "s5-z1", { x: 150, y: 370, html: "loader", cls: "a", fs: 30 }), W("s5h", 0), { s: 0.6, d: 0.5 }); show(chip(sid, "s5-z2", { x: 150, y: 450, html: "action", cls: "a", fs: 30 }), W("s5h", 2), { s: 0.6, d: 0.5 });
+        show("#s5-zb", W("s5h", 7) - 0.2, { s: 0.9, d: 0.6 }); show(chip(sid, "s5-z3", { x: 740, y: 370, html: "clientLoader", cls: "b", fs: 30 }), W("s5h", 7), { s: 0.6, d: 0.5 }); show(chip(sid, "s5-z4", { x: 740, y: 450, html: "clientAction", cls: "b", fs: 30 }), W("s5h", 9), { s: 0.6, d: 0.5 });
+        show("#s5-zc", W("s5h", 14) - 0.2, { s: 0.9, d: 0.6 }); show(chip(sid, "s5-z5", { x: 1330, y: 370, html: "components", cls: "d", fs: 30 }), W("s5h", 15), { s: 0.6, d: 0.5 });
+        leave(sid);
+      })();
+
+      // ---------- 6 · Fetching data from an API ----------
+      (function () {
+        const sid = "s6";
+        enter(sid);
+        const c1 = codePanel(sid, "s6-c1", { name: "app/routes/product.tsx", code: "product-loader", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw });
+        const c2 = codePanel(sid, "s6-c2", { name: "app/routes/cart.tsx", code: "cart-loader", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw });
+        const c3 = codePanel(sid, "s6-c3", { name: "app/routes/products.tsx", code: "products-loader", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw });
+        const c4 = codePanel(sid, "s6-c4", { name: "app/routes/shop-layout.tsx", code: "root-data", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw });
+        tl.set("#s6-c2, #s6-c3, #s6-c4", { opacity: 0 }, 0);
+        fade("#s6-c1", L("s6a", 0.3), 0.6);
+        // architecture: browser -> your server -> catalog API
+        const big = "font-size:28px;padding:14px 10px;";
+        const Bw = box(sid, "s6-bw", { x: 1090, y: 240, w: 380, cls: "c1", html: "Browser<small>asks for the page</small>", style: big });
+        const Sv = box(sid, "s6-sv", { x: 1090, y: 440, w: 380, cls: "c2", html: "Your server<small>the loader runs here</small>", style: big });
+        const Ap = box(sid, "s6-ap", { x: 1090, y: 640, w: 380, cls: "c4", html: "Catalog API<small>products and reviews</small>", style: big });
+        const l1 = line(sid, "s6-l1", { x1: 1280, y1: 335, x2: 1280, y2: 438, arrow: "ahC", w: 6 });
+        const l2 = line(sid, "s6-l2", { x1: 1280, y1: 535, x2: 1280, y2: 638, arrow: "ahV", w: 6 });
+        [Bw, Sv, Ap, l1, l2].forEach((s) => tl.set(s, { opacity: 0 }, 0));
+        show(Bw, L("s6a", 0.3), { s: 0.7, d: 0.6 }); show(Ap, W("s6a", 7), { s: 0.7, d: 0.6 }); show(Sv, W("s6a", 10), { s: 0.7, d: 0.6 });
+        drawLine(l1, W("s6a", 10) + 0.3); drawLine(l2, W("s6a", 11) + 0.2);
+        hl(c1.id, [2, 3, 4], W("s6a", 13), 2.4);
+        const pf = packet(sid, "s6-pf", { x: 1300, y: 555, html: "fetch", cls: "cy" }); fly(pf, W("s6a", 13), 0, 70, 0.9);
+        hl(c1.id, [14], W("s6a", 19), 1.2); hl(c1.id, [7], W("s6a", 21), 1.6);
+        const pj = packet(sid, "s6-pj", { x: 1300, y: 625, html: "JSON", cls: "li" }); fly(pj, W("s6a", 21), 0, -70, 0.9);
+        const ph = packet(sid, "s6-ph", { x: 1300, y: 425, html: "HTML", cls: "pk" }); fly(ph, W("s6a", 22) + 0.9, 0, -85, 0.9);
+        // why not useEffect?  (a column of crossed-out habits)
+        const y1 = chip(sid, "s6-y1", { x: 1530, y: 250, html: "useEffect", cls: "f", fs: 24 });
+        const y2 = chip(sid, "s6-y2", { x: 1530, y: 315, html: "blank screen", cls: "f", fs: 24 });
+        const y3 = chip(sid, "s6-y3", { x: 1530, y: 380, html: "loading flag", cls: "f", fs: 24 });
+        show(y1, W("s6b", 6), { s: 0.6, d: 0.5 }); strike(y1, L("s6c", 0.5));
+        show(y2, W("s6c", 10), { s: 0.6, d: 0.5 }); strike(y2, W("s6c", 10) + 0.6); show(y3, W("s6c", 13), { s: 0.6, d: 0.5 }); strike(y3, W("s6c", 13) + 0.6);
+        show(tag(sid, "s6-r1", { x: 1500, y: 470, html: "runs on your server", cls: "li", fs: 22 }), W("s6c", 20), { s: 0.7, d: 0.5 });
+        show(tag(sid, "s6-r2", { x: 1500, y: 560, html: "no CORS", cls: "cy", fs: 24 }), W("s6d", 3), { s: 0.7, d: 0.5 });
+        show(tag(sid, "s6-r3", { x: 1500, y: 640, html: "API key stays here", cls: "vi", fs: 22 }), W("s6d", 7), { s: 0.7, d: 0.5 });
+        // parallel loaders
+        const off = "#s6-bw, #s6-sv, #s6-ap, #s6-l1, #s6-l2, #s6-y1, #s6-y2, #s6-y3, #s6-r1, #s6-r2, #s6-r3, #s6-pf, #s6-pj, #s6-ph";
+        hide(off, L("s6e", 0.1), 0.4);
+        note(sid, "s6-lt", { x: 1110, y: 250, html: "time →", style: "font-size:24px;color:var(--muted);font-weight:700" });
+        mk(sid, '<div class="seg" id="s6-b1" style="left:1110px;top:310px;width:520px;height:56px;background:var(--violet);line-height:56px;font-size:24px">layout loader</div>');
+        mk(sid, '<div class="seg" id="s6-b2" style="left:1110px;top:390px;width:660px;height:56px;background:var(--cyan);line-height:56px;font-size:24px">page loader</div>');
+        [ "#s6-lt", "#s6-b1", "#s6-b2"].forEach((s) => tl.set(s, { opacity: 0 }, 0));
+        fade("#s6-lt", W("s6e", 5), 0.5); tl.set("#s6-b1, #s6-b2", { opacity: 1 }, W("s6e", 5));
+        grow("#s6-b1", W("s6e", 12), 1.8); grow("#s6-b2", W("s6e", 12), 2.6);
+        show(tag(sid, "s6-same", { x: 1110, y: 480, html: "they start at the same time", cls: "li", fs: 26 }), W("s6e", 12), { s: 0.7, d: 0.5 });
+        // two calls in one loader
+        swap("#s6-c1", "#s6-c2", L("s6f", 0.0));
+        hide("#s6-lt, #s6-b1, #s6-b2, #s6-same", L("s6f", 0.1), 0.4);
+        mk(sid, '<div class="seg" id="s6-f1" style="left:1110px;top:310px;width:560px;height:56px;background:var(--amber);line-height:56px;font-size:24px">fetch product A</div>');
+        mk(sid, '<div class="seg" id="s6-f2" style="left:1110px;top:390px;width:660px;height:56px;background:var(--amber);line-height:56px;font-size:24px">fetch product B</div>');
+        tl.set("#s6-f1, #s6-f2", { opacity: 0 }, 0); tl.set("#s6-f1, #s6-f2", { opacity: 1 }, W("s6f", 6));
+        hl(c2.id, [3, 4, 5, 6, 7, 8], W("s6f", 6), 2.6); grow("#s6-f1", W("s6f", 6), 2.0); grow("#s6-f2", W("s6f", 6), 2.8);
+        hl(c2.id, [2, 10], W("s6f", 13), 1.8);
+        show(chip(sid, "s6-all", { x: 1110, y: 480, html: "Promise.all: wait for both", cls: "e", fs: 26 }), W("s6f", 13), { s: 0.7, d: 0.5 });
+        // failures
+        swap("#s6-c2", "#s6-c3", L("s6h", 0.0));
+        hide("#s6-f1, #s6-f2, #s6-all", L("s6g", 0.2), 0.4);
+        hl(c3.id, [7], W("s6h", 1), 1.8); hl(c3.id, [8], W("s6h", 6), 1.8);
+        const e1 = box(sid, "s6-e1", { x: 1090, y: 260, w: 640, cls: "c6", html: "API answers 502", style: "font-size:28px" });
+        const e2 = box(sid, "s6-e2", { x: 1090, y: 420, w: 640, cls: "c3", html: "throw data(\"Catalog unavailable\", { status: 502 })", style: "font-size:22px;font-family:var(--mono)" });
+        const e3 = box(sid, "s6-e3", { x: 1090, y: 580, w: 640, cls: "c4", html: "ErrorBoundary renders", style: "font-size:28px" });
+        const el1 = line(sid, "s6-el1", { x1: 1410, y1: 350, x2: 1410, y2: 418, arrow: "ahP", w: 6 }); const el2 = line(sid, "s6-el2", { x1: 1410, y1: 512, x2: 1410, y2: 578, arrow: "ahP", w: 6 });
+        [e1, e2, e3, el1, el2].forEach((s) => tl.set(s, { opacity: 0 }, 0));
+        show(e1, W("s6h", 2), { s: 0.7, d: 0.5 }); drawLine(el1, W("s6h", 5)); show(e2, W("s6h", 6), { s: 0.7, d: 0.5 }); drawLine(el2, W("s6h", 12)); show(e3, W("s6h", 13), { s: 0.7, d: 0.5 });
+        // what a loader can return
+        hide("#s6-e1, #s6-e2, #s6-e3, #s6-el1, #s6-el2", L("s6i", 0.1), 0.4);
+        [["strings", 4], ["numbers", 5], ["dates", 6], ["maps", 7], ["sets", 8], ["promises", 11]].forEach(([t, wi], i) => show(chip(sid, "s6-k" + i, { x: 1110 + (i % 2) * 330, y: 280 + Math.floor(i / 2) * 90, html: t, cls: ["a", "b", "c", "d", "e", "f"][i], fs: 30 }), W("s6i", wi), { s: 0.6, d: 0.5 }));
+        show(tag(sid, "s6-typed", { x: 1110, y: 590, html: "loaderData is typed for you", cls: "li", fs: 28 }), W("s6i", 15), { s: 0.7, d: 0.5 });
+        // useRouteLoaderData: the cart count in the header
+        hide("#s6-k0, #s6-k1, #s6-k2, #s6-k3, #s6-k4, #s6-k5, #s6-typed", L("s6j", 0.1), 0.4);
+        swap("#s6-c3", "#s6-c4", L("s6j", 0.0));
+        const w = browserWin(sid, "s6-w", { x: SPLIT.px, y: SPLIT.py + 40, w: SPLIT.pw, frames: ["add-done"] });
+        show("#s6-w", W("s6j", 8), { s: 0.9, d: 0.8 }); w.frame("add-done", W("s6j", 8) + 0.2);
+        hl(c4.id, [1], W("s6j", 11), 2.2); hl(c4.id, [3], W("s6j", 16), 2.6);
+        show(tag(sid, "s6-cc", { x: 1470, y: 240, html: "cart count", cls: "pk", fs: 26 }), W("s6j", 19), { s: 0.7, d: 0.5 });
+        // client loader teaser
+        show(tag(sid, "s6-cl", { x: 1110, y: 810, html: "browser-only data: clientLoader (later)", cls: "cy", fs: 26 }), W("s6k", 9), { s: 0.7, d: 0.5 });
+        leave(sid);
+      })();
+
+      // ---------- 7 · Loaders ----------
+      (function () {
+        const sid = "s7";
+        enter(sid);
+        const c1 = codePanel(sid, "s7-c1", { name: "app/routes/products.tsx", code: "products-loader", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw });
+        const cc = codePanel(sid, "s7-cc", { name: "same file: the component", code: "products-component", x: SPLIT.cx, y: SPLIT.cy + c1.h + 28, w: SPLIT.cw });
+        const c2 = codePanel(sid, "s7-c2", { name: "app/routes/product.tsx", code: "product-loader", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw });
+        const c3 = codePanel(sid, "s7-c3", { name: "app/routes/products.tsx", code: "products-form", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 26 });
+        tl.set("#s7-cc, #s7-c2, #s7-c3", { opacity: 0 }, 0);
+        const w = browserWin(sid, "s7-w", { x: SPLIT.px, y: SPLIT.py, w: SPLIT.pw, frames: ["products", "product-404", "products-mug"] });
+        fade("#s7-c1", L("s7a", 0.3), 0.6);
+        hl(c1.id, [1], W("s7a", 10), 3.0); hl(c1.id, [10], W("s7a", 17), 1.8);
+        show("#s7-w", W("s7a", 7), { s: 0.9, d: 0.8 }); w.frame("products", W("s7a", 7) + 0.2);
+        fade("#s7-cc", W("s7b", 0), 0.6); hl(cc.id, [1, 2, 3], W("s7b", 5), 1.6); hl(cc.id, [4], W("s7b", 7), 2.0);
+        // the .server boundary
+        hide("#s7-w", L("s7d", 0.1), 0.4);
+        const zs = mk(sid, '<div class="zone" id="s7-zs" style="left:1090px;top:235px;width:330px;height:440px;border-color:#a78bfa"><div class="zl" style="color:#a78bfa">server bundle</div></div>');
+        const zb = mk(sid, '<div class="zone" id="s7-zb" style="left:1450px;top:235px;width:350px;height:440px;border-color:#22d3ee"><div class="zl" style="color:#22d3ee">browser bundle</div></div>');
+        tl.set("#s7-zs, #s7-zb", { opacity: 0 }, 0);
+        show("#s7-zs", W("s7d", 2), { s: 0.9, d: 0.6 }); show("#s7-zb", W("s7d", 2) + 0.2, { s: 0.9, d: 0.6 });
+        show(chip(sid, "s7-z1", { x: 1115, y: 320, html: "db.server.ts", cls: "a", fs: 26 }), W("s7d", 12), { s: 0.6, d: 0.5 });
+        show(chip(sid, "s7-z2", { x: 1115, y: 400, html: "loader", cls: "a", fs: 26 }), W("s7d", 25), { s: 0.6, d: 0.5 });
+        show(chip(sid, "s7-z3", { x: 1485, y: 320, html: "components", cls: "b", fs: 26 }), W("s7d", 17), { s: 0.6, d: 0.5 });
+        show(tag(sid, "s7-z4", { x: 1455, y: 700, html: "never bundled for the browser", cls: "co", fs: 24 }), W("s7d", 16), { s: 0.7, d: 0.5 });
+        show(tag(sid, "s7-z5", { x: 1090, y: 700, html: "no API layer needed", cls: "li", fs: 26 }), W("s7f", 0), { s: 0.7, d: 0.5 });
+        // first visit and later navigations
+        hide("#s7-zs, #s7-zb, #s7-z1, #s7-z2, #s7-z3, #s7-z4, #s7-z5", L("s7g", 0.1), 0.4);
+        show("#s7-w", L("s7g", 0.3), { s: 0.9, d: 0.7 });
+        show(tag(sid, "s7-f1", { x: 1090, y: 790, html: "first visit: HTML arrives with the products", cls: "cy", fs: 24 }), W("s7g", 10), { s: 0.7, d: 0.5 });
+        hide("#s7-f1", W("s7g", 19) - 0.2, 0.3);
+        show(tag(sid, "s7-f2", { x: 1090, y: 790, html: "next: React Router fetches the loader data", cls: "vi", fs: 24 }), W("s7g", 19), { s: 0.7, d: 0.5 });
+        // product page and 404
+        swap("#s7-c1", "#s7-c2", L("s7h", 0.0)); hide("#s7-cc, #s7-f2", L("s7h", 0.0), 0.4);
+        hl(c2.id, [2, 3], W("s7h", 5), 1.6); hl(c2.id, [7], W("s7h", 7), 1.6);
+        hl(c2.id, [5, 6], W("s7j", 0), 3.0); w.frame("product-404", W("s7j", 6), 0.4);
+        show(tag(sid, "s7-n1", { x: 1090, y: 790, html: "the nearest ErrorBoundary renders it", cls: "co", fs: 24 }), W("s7j", 8), { s: 0.7, d: 0.5 });
+        // search lives in the URL
+        hide("#s7-n1", L("s7k", 0.1), 0.4); swap("#s7-c2", "#s7-c3", L("s7k", 0.0));
+        hl(c3.id, [1], W("s7k", 7), 2.2); hl(c3.id, [3], W("s7k", 12), 1.6);
+        w.frame("products-mug", W("s7k", 15), 0.4);
+        swap("#s7-c3", "#s7-c1", L("s7l", 0.0)); hide("#s7-cc", L("s7l", 0.0), 0.2);
+        hl(c1.id, [2], W("s7l", 5), 1.4); hl(c1.id, [3], W("s7l", 10), 1.8); hl(c1.id, [4, 5, 6], W("s7l", 13), 1.8);
+        ["shared", "bookmarked", "survives a refresh"].forEach((t, i) => show(tag(sid, "s7-u" + i, { x: 1090 + i * 220, y: 790, html: t, cls: ["cy", "vi", "li"][i], fs: 22 }), W("s7n", [4, 5, 8][i]), { s: 0.7, d: 0.5 }));
+        leave(sid);
+      })();
+
+      // ---------- 8 · Navigation and pending UI ----------
+      (function () {
+        const sid = "s8";
+        enter(sid);
+        // Link renders a real anchor
+        const lk = chip(sid, "s8-lk", { x: 200, y: 330, html: "&lt;Link to=\"/products\"&gt;", cls: "b", fs: 30 });
+        const la = arrowText(sid, "s8-la", { x: 620, y: 322, html: "→" });
+        const an = chip(sid, "s8-an", { x: 720, y: 330, html: "&lt;a href=\"/products\"&gt;", cls: "e", fs: 30 });
+        [lk, la, an].forEach((s) => tl.set(s, { opacity: 0 }, 0));
+        show(lk, W("s8a", 1), { s: 0.6, d: 0.5 }); show(la, W("s8a", 6), { s: 0.6, d: 0.5 }); show(an, W("s8a", 7), { s: 0.6, d: 0.5 });
+        show(tag(sid, "s8-lt", { x: 200, y: 430, html: "works before JavaScript loads", cls: "li", fs: 28 }), W("s8a", 12), { s: 0.7, d: 0.5 });
+        // NavLink: active and pending
+        hide("#s8-lk, #s8-la, #s8-an, #s8-lt", L("s8b", 0.1), 0.4);
+        const n = codePanel(sid, "s8-n", { name: "app/routes/shop-layout.tsx", code: "nav", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 21 });
+        const w = browserWin(sid, "s8-w", { x: SPLIT.px, y: SPLIT.py, w: SPLIT.pw, frames: ["home", "nav-pending"] });
+        tl.set("#s8-n", { opacity: 0 }, 0);
+        fade("#s8-n", L("s8b", 0.3), 0.6); hl(n.id, [9, 10], W("s8b", 1), 2.0);
+        show("#s8-w", W("s8b", 3), { s: 0.9, d: 0.8 }); w.frame("home", W("s8b", 3) + 0.2);
+        hl(n.id, [1, 2, 3, 4, 5, 6, 7], W("s8b", 11), 4.4);
+        w.click("nav-pending", W("s8d", 1), 1.0); w.frame("nav-pending", W("s8d", 2), 0.3);
+        show(tag(sid, "s8-t1", { x: 1090, y: 790, html: "Home: active", cls: "cy", fs: 24 }), W("s8b", 11), { s: 0.7, d: 0.5 });
+        show(tag(sid, "s8-t2", { x: 1310, y: 790, html: "Products: pending", cls: "pk", fs: 24 }), W("s8d", 3), { s: 0.7, d: 0.5 });
+        // global progress bar with useNavigation
+        hide("#s8-t1, #s8-t2", L("s8e", 0.1), 0.4);
+        const pr = codePanel(sid, "s8-pr", { name: "app/routes/shop-layout.tsx", code: "progress", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 27 });
+        tl.set("#s8-pr", { opacity: 0 }, 0); swap("#s8-n", "#s8-pr", L("s8e", 0.0));
+        hl(pr.id, [1], W("s8e", 8), 1.6); hl(pr.id, [3], W("s8e", 9), 4.0); hl(pr.id, [5], W("s8e", 17), 3.0);
+        show(tag(sid, "s8-t3", { x: 1090, y: 790, html: "progress bar while the loaders run", cls: "pk", fs: 24 }), W("s8e", 17), { s: 0.7, d: 0.5 });
+        // redirect
+        hide("#s8-t3", L("s8f", 0.1), 0.4);
+        const g = codePanel(sid, "s8-g", { name: "app/routes/checkout.tsx", code: "checkout-guard", x: SPLIT.cx, y: SPLIT.cy + 250, w: SPLIT.cw, fs: 24 });
+        tl.set("#s8-g", { opacity: 0 }, 0); fade("#s8-g", L("s8f", 0.3), 0.6); hl(g.id, [6], W("s8f", 4), 2.6);
+        hide("#s8-w", L("s8f", 0.0), 0.4);
+        show(chip(sid, "s8-r1", { x: 1110, y: 300, html: "/checkout", cls: "g", fs: 28 }), W("s8f", 2), { s: 0.6, d: 0.5 });
+        show(arrowText(sid, "s8-ra", { x: 1340, y: 292, html: "→" }), W("s8f", 5), { s: 0.6, d: 0.5 });
+        show(chip(sid, "s8-r2", { x: 1420, y: 300, html: "redirect(\"/cart\")", cls: "d", fs: 28 }), W("s8f", 5), { s: 0.6, d: 0.5 });
+        show(tag(sid, "s8-r3", { x: 1110, y: 390, html: "the cart is empty, so go back", cls: "li", fs: 24 }), W("s8f", 7), { s: 0.7, d: 0.5 });
+        // useNavigate
+        hide("#s8-pr, #s8-g, #s8-r1, #s8-ra, #s8-r2, #s8-r3", L("s8g", 0.0), 0.4);
+        const nv = codePanel(sid, "s8-nv", { name: "useNavigate (docs example)", code: "navigate", x: SPLIT.cx, y: SPLIT.cy, w: 760, fs: 30 });
+        tl.set("#s8-nv", { opacity: 0 }, 0); fade("#s8-nv", W("s8g", 0), 0.6); hl(nv.id, [4], W("s8g", 16), 2.0);
+        show(tag(sid, "s8-nt", { x: 110, y: 470, html: "rare: only when the user is not clicking", cls: "vi", fs: 28 }), W("s8g", 5), { s: 0.7, d: 0.5 });
+        leave(sid);
+      })();
+
+      // ---------- 9 · Actions ----------
+      (function () {
+        const sid = "s9";
+        enter(sid);
+        const a = codePanel(sid, "s9-a", { name: "app/routes/checkout.tsx", code: "checkout-validate", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 22 });
+        const b = codePanel(sid, "s9-b", { name: "app/routes/checkout.tsx", code: "checkout-ui", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 21 });
+        const c = codePanel(sid, "s9-c", { name: "app/routes/checkout.tsx", code: "checkout-create", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 22 });
+        tl.set("#s9-b, #s9-c", { opacity: 0 }, 0);
+        const w = browserWin(sid, "s9-w", { x: SPLIT.px, y: SPLIT.py, w: SPLIT.pw, frames: ["checkout-filled", "checkout-errors", "order", "checkout-pending"] });
+        fade("#s9-a", L("s9a", 0.3), 0.6); hl(a.id, [1], W("s9a", 5), 3.0);
+        // the Form
+        show("#s9-w", W("s9b", 0), { s: 0.9, d: 0.8 }); w.frame("checkout-filled", W("s9b", 0) + 0.2);
+        swap("#s9-a", "#s9-b", W("s9b", 0)); hl(b.id, [7], W("s9b", 2), 3.6);
+        show(chip(sid, "s9-c1", { x: 1090, y: 790, html: "&lt;Form method=\"post\"&gt;", cls: "b", fs: 22 }), W("s9b", 2), { s: 0.6, d: 0.5 });
+        show(arrowText(sid, "s9-c2", { x: 1372, y: 780, html: "→", fs: 36 }), W("s9b", 8), { s: 0.6, d: 0.4 });
+        show(chip(sid, "s9-c3", { x: 1430, y: 790, html: "action({ request })", cls: "d", fs: 22 }), W("s9b", 8), { s: 0.6, d: 0.5 });
+        // request.formData
+        hide("#s9-c1, #s9-c2, #s9-c3", L("s9c", 0.1), 0.4);
+        swap("#s9-b", "#s9-a", L("s9c", 0.0)); hl(a.id, [2], W("s9c", 3), 2.0); hl(a.id, [3, 4, 5], W("s9c", 5), 3.0);
+        // Mallory submits an empty form
+        cameo("#mal", "s9d");
+        w.click("checkout-errors", L("s9d", 2.3), 1.0); w.frame("checkout-errors", L("s9d", 2.6), 0.35);
+        // validate and return errors with a 400
+        hl(a.id, [7, 8, 9, 10, 11, 12], W("s9e", 4), 3.6); hl(a.id, [13, 14, 15, 16, 17, 18], W("s9e", 10), 4.6);
+        show(chip(sid, "s9-v1", { x: 1090, y: 790, html: "data({ errors }, { status: 400 })", cls: "f", fs: 24 }), W("s9e", 13), { s: 0.6, d: 0.5 });
+        // actionData in the component
+        hide("#s9-v1", L("s9f", 0.1), 0.4);
+        swap("#s9-a", "#s9-b", L("s9f", 0.0)); hl(b.id, [2], W("s9f", 5), 2.0); hl(b.id, [11], W("s9f", 10), 3.6);
+        // why 400: only successful responses revalidate
+        show(chip(sid, "s9-h1", { x: 1090, y: 775, html: "2xx: loaders revalidate", cls: "e", fs: 24 }), W("s9h", 1), { s: 0.6, d: 0.5 });
+        show(chip(sid, "s9-h2", { x: 1090, y: 835, html: "400: no reload needed", cls: "f", fs: 24 }), W("s9h", 6), { s: 0.6, d: 0.5 });
+        // valid order: create it and redirect
+        hide("#s9-h1, #s9-h2", L("s9i", 0.1), 0.4);
+        swap("#s9-b", "#s9-c", L("s9i", 0.0)); hl(c.id, [2], W("s9i", 8), 2.6);
+        w.frame("order", W("s9i", 10), 0.4);
+        // pending UI
+        swap("#s9-c", "#s9-b", L("s9j", 0.0)); w.frame("checkout-pending", W("s9j", 1), 0.4);
+        hl(b.id, [4, 5], W("s9j", 4), 3.6); hl(b.id, [16, 19], W("s9j", 10), 2.6);
+        // ?index
+        hide("#s9-w", L("s9k", 0.2), 0.4);
+        show(box(sid, "s9-i1", { x: 1090, y: 280, w: 660, cls: "c2", html: "/projects<small>action=\"/projects\" runs the parent route action</small>", style: "font-size:30px" }), W("s9k", 3), { s: 0.7, d: 0.5 });
+        show(box(sid, "s9-i2", { x: 1090, y: 460, w: 660, cls: "c5", html: "/projects?index<small>runs the index route action</small>", style: "font-size:30px" }), W("s9k", 14), { s: 0.7, d: 0.5 });
+        show(tag(sid, "s9-i3", { x: 1090, y: 640, html: "added for you inside an index route", cls: "cy", fs: 26 }), W("s9k", 19), { s: 0.7, d: 0.5 });
+        leave(sid);
+      })();
+
+      // ---------- 10 · Sessions and cookies ----------
+      (function () {
+        const sid = "s10";
+        enter(sid);
+        const s1 = codePanel(sid, "s10-a", { name: "app/sessions.server.ts", code: "sessions", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 24 });
+        const s2 = codePanel(sid, "s10-b", { name: "app/routes/cart.tsx (action)", code: "cart-action", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 24 });
+        tl.set("#s10-a, #s10-b", { opacity: 0 }, 0);
+        // browser <-> server lifelines
+        const bb = box(sid, "s10-bb", { x: 1110, y: 240, w: 250, cls: "c1", html: "Browser", style: "font-size:30px;padding:12px" });
+        const sb = box(sid, "s10-sb", { x: 1500, y: 240, w: 250, cls: "c2", html: "Server", style: "font-size:30px;padding:12px" });
+        const lb = line(sid, "s10-lb", { x1: 1235, y1: 318, x2: 1235, y2: 790, dash: true, w: 4, color: "#5b66b8" });
+        const ls = line(sid, "s10-ls", { x1: 1625, y1: 318, x2: 1625, y2: 790, dash: true, w: 4, color: "#5b66b8" });
+        [bb, sb, lb, ls].forEach((s) => tl.set(s, { opacity: 0 }, 0));
+        show(bb, W("s10a", 7), { s: 0.7, d: 0.5 }); show(sb, W("s10a", 8), { s: 0.7, d: 0.5 }); drawLine(lb, W("s10a", 9), 0.7); drawLine(ls, W("s10a", 9), 0.7);
+        fade("#s10-a", L("s10b", 0.3), 0.6);
+        hl(s1.id, [1, 2], W("s10b", 0), 2.0); hl(s1.id, [4], W("s10b", 9), 1.6); hl(s1.id, [5], W("s10b", 11), 1.6); hl(s1.id, [6], W("s10b", 13), 1.6); hl(s1.id, [8], W("s10b", 17), 2.0);
+        // read the cookie
+        swap("#s10-a", "#s10-b", L("s10c", 0.0));
+        hl(s2.id, [2, 3, 4], W("s10c", 5), 3.2);
+        const a1 = line(sid, "s10-a1", { x1: 1250, y1: 410, x2: 1610, y2: 410, arrow: "ahC", w: 6, color: "#22d3ee" }); tl.set(a1, { opacity: 0 }, 0);
+        drawLine(a1, W("s10c", 9)); show(chip(sid, "s10-l1", { x: 1300, y: 350, html: "request + Cookie", cls: "b", fs: 22 }), W("s10c", 9), { s: 0.7, d: 0.5 });
+        // get, set, commit
+        hl(s2.id, [5], W("s10d", 0), 1.6); hl(s2.id, [7], W("s10d", 4), 1.6); hl(s2.id, [10], W("s10d", 13), 2.6);
+        show(box(sid, "s10-mid", { x: 1470, y: 470, w: 310, cls: "c3", html: "session.get<br/>session.set", style: "font-size:24px;padding:10px" }), W("s10d", 0), { s: 0.7, d: 0.5 });
+        const a3 = line(sid, "s10-a3", { x1: 1610, y1: 640, x2: 1250, y2: 640, arrow: "ahP", w: 6, color: "#f472b6" }); tl.set(a3, { opacity: 0 }, 0);
+        drawLine(a3, W("s10d", 14)); show(chip(sid, "s10-l3", { x: 1300, y: 580, html: "Set-Cookie", cls: "d", fs: 22 }), W("s10d", 17), { s: 0.7, d: 0.5 });
+        // forgetting to commit
+        show(chip(sid, "s10-f1", { x: 1110, y: 720, html: "no commitSession", cls: "f", fs: 24 }), L("s10f", 0.1), { s: 0.7, d: 0.5 });
+        show(chip(sid, "s10-f2", { x: 1420, y: 720, html: "change lost", cls: "f", fs: 24 }), W("s10f", 3), { s: 0.7, d: 0.5 });
+        hide("#s10-f1, #s10-f2", L("s10g", 0.1), 0.4);
+        // flash
+        mk(sid, '<div class="card c-lime" id="s10-fl" style="left:1150px;top:700px;width:560px;height:70px"><div style="position:absolute;left:24px;top:14px;font-size:30px;font-weight:800">Added to cart ✓</div></div>');
+        tl.set("#s10-fl", { opacity: 0 }, 0);
+        show("#s10-fl", W("s10g", 4), { s: 0.9, d: 0.5 }); hide("#s10-fl", W("s10g", 8), 0.4);
+        show(tag(sid, "s10-fl2", { x: 1150, y: 790, html: "flash: read once, then gone", cls: "li", fs: 24 }), W("s10g", 7), { s: 0.7, d: 0.5 });
+        // log out
+        hide("#s10-fl2", L("s10h", 0.1), 0.4);
+        show(chip(sid, "s10-o1", { x: 1110, y: 720, html: "destroySession", cls: "f", fs: 26 }), W("s10h", 4), { s: 0.7, d: 0.5 });
+        show(arrowText(sid, "s10-o2", { x: 1400, y: 712, html: "→", fs: 36 }), W("s10h", 5), { s: 0.6, d: 0.4 });
+        show(chip(sid, "s10-o3", { x: 1460, y: 720, html: "redirect(\"/\")", cls: "d", fs: 26 }), W("s10h", 6), { s: 0.7, d: 0.5 });
+        leave(sid);
+      })();
+
+      // ---------- 11 · Fetchers ----------
+      (function () {
+        const sid = "s11";
+        enter(sid);
+        const P = (id, name, code, fs) => codePanel(sid, id, { name, code, x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs });
+        const a = P("s11-a", "app/components/add-to-cart.tsx", "add-to-cart", 22);
+        const b = P("s11-b", "app/routes/cart.tsx", "cart-line", 22);
+        const c = P("s11-c", "app/routes/cart.tsx (action)", "cart-stock", 24);
+        const d = P("s11-d", "app/components/search-box.tsx", "search-box", 24);
+        const e = P("s11-e", "app/routes/shop-layout.tsx", "pending-fetchers", 27);
+        tl.set("#s11-a, #s11-b, #s11-c, #s11-d, #s11-e", { opacity: 0 }, 0);
+        const w = browserWin(sid, "s11-w", { x: SPLIT.px, y: SPLIT.py, w: SPLIT.pw, frames: ["products", "add-busy", "add-done", "cart", "cart-optimistic", "add-error", "live-search"] });
+        show("#s11-w", L("s11a", 0.3), { s: 0.9, d: 0.8 }); w.frame("products", L("s11a", 0.5));
+        show(tag(sid, "s11-t1", { x: 1090, y: 790, html: "Form: navigates", cls: "co", fs: 24 }), W("s11a", 2), { s: 0.7, d: 0.5 });
+        show(tag(sid, "s11-t2", { x: 1330, y: 790, html: "stay where you are", cls: "li", fs: 24 }), W("s11a", 10), { s: 0.7, d: 0.5 });
+        // useFetcher + fetcher.Form
+        hide("#s11-t1, #s11-t2", L("s11b", 0.1), 0.4);
+        fade("#s11-a", L("s11b", 0.3), 0.6); hl(a.id, [1], W("s11b", 5), 2.4); hl(a.id, [5], W("s11b", 8), 4.4);
+        // the URL does not change
+        show(chip(sid, "s11-u1", { x: 1090, y: 790, html: "URL stays /products", cls: "b", fs: 24 }), W("s11d", 0), { s: 0.6, d: 0.5 });
+        show(chip(sid, "s11-u2", { x: 1370, y: 790, html: "no new history entry", cls: "b", fs: 24 }), W("s11d", 4), { s: 0.6, d: 0.5 });
+        hide("#s11-u1, #s11-u2", W("s11d", 8), 0.4);
+        show(tag(sid, "s11-u3", { x: 1090, y: 790, html: "URL should change: Form", cls: "co", fs: 24 }), W("s11d", 12), { s: 0.6, d: 0.5 });
+        show(tag(sid, "s11-u4", { x: 1400, y: 790, html: "if not: fetcher", cls: "li", fs: 24 }), W("s11d", 17), { s: 0.6, d: 0.5 });
+        // state
+        hide("#s11-u3, #s11-u4", L("s11e", 0.1), 0.4);
+        hl(a.id, [2], W("s11e", 7), 2.2);
+        w.click("add-busy", W("s11e", 4), 1.0); w.frame("add-busy", W("s11e", 5), 0.3);
+        show(tag(sid, "s11-s1", { x: 1090, y: 790, html: "state: submitting → \"Adding...\"", cls: "pk", fs: 24 }), W("s11e", 10), { s: 0.6, d: 0.5 });
+        // revalidation after the action
+        w.frame("add-done", W("s11f", 2), 0.4);
+        hide("#s11-s1", W("s11f", 4), 0.3);
+        show(tag(sid, "s11-s2", { x: 1090, y: 790, html: "loaders revalidate: the cart count updates", cls: "li", fs: 24 }), W("s11f", 9), { s: 0.6, d: 0.5 });
+        // optimistic UI
+        hide("#s11-s2", L("s11g", 0.1), 0.4);
+        swap("#s11-a", "#s11-b", L("s11g", 0.0)); w.frame("cart", L("s11g", 0.3), 0.4);
+        hl(b.id, [8], W("s11g", 5), 2.4);
+        w.click("cart-optimistic", W("s11h", 3), 1.0); w.frame("cart-optimistic", W("s11h", 3) + 0.3, 0.2);
+        hl(b.id, [1, 2, 3, 4, 5], W("s11h", 4), 2.6); hl(b.id, [9], W("s11h", 8), 2.4);
+        show(tag(sid, "s11-o1", { x: 1090, y: 790, html: "optimistic UI: next state first", cls: "vi", fs: 24 }), W("s11h", 17), { s: 0.6, d: 0.5 });
+        // errors from the action
+        hide("#s11-o1", L("s11j", 0.1), 0.4);
+        swap("#s11-b", "#s11-c", L("s11j", 0.0)); hl(c.id, [2, 3, 4, 5, 6], W("s11j", 0), 4.4);
+        w.frame("add-error", W("s11j", 6), 0.4);
+        show(tag(sid, "s11-e1", { x: 1090, y: 790, html: "fetcher.data.error → shown here", cls: "co", fs: 24 }), W("s11j", 9), { s: 0.6, d: 0.5 });
+        // fetchers that load data: live search
+        hide("#s11-e1", L("s11k", 0.1), 0.4);
+        swap("#s11-c", "#s11-d", L("s11k", 0.0)); hl(d.id, [1], W("s11k", 6), 2.0);
+        hl(d.id, [9], W("s11k", 16), 4.0); w.frame("live-search", W("s11k", 12), 0.4);
+        hl(d.id, [5, 6, 7], W("s11l", 4), 4.0);
+        show(tag(sid, "s11-l1", { x: 1090, y: 790, html: "runs that loader: no navigation", cls: "cy", fs: 24 }), W("s11l", 18), { s: 0.6, d: 0.5 });
+        hl(d.id, [2], W("s11m", 4), 2.4); hide("#s11-l1", W("s11m", 3), 0.3);
+        show(tag(sid, "s11-l2", { x: 1090, y: 790, html: "your live search", cls: "li", fs: 26 }), W("s11m", 7), { s: 0.6, d: 0.5 });
+        // useFetchers
+        hide("#s11-l2", L("s11n", 0.1), 0.4);
+        swap("#s11-d", "#s11-e", L("s11n", 0.0)); hl(e.id, [2], W("s11n", 1), 3.6);
+        w.frame("add-busy", W("s11n", 10), 0.4);
+        show(tag(sid, "s11-n1", { x: 1090, y: 790, html: "pending cart count", cls: "pk", fs: 26 }), W("s11n", 13), { s: 0.6, d: 0.5 });
+        leave(sid);
+      })();
+
+      // ---------- 12 · Revalidation ----------
+      (function () {
+        const sid = "s12";
+        enter(sid);
+        const act = box(sid, "s12-act", { x: 1090, y: 240, w: 640, cls: "c3", html: "an action finishes<small>a successful response</small>", style: "font-size:30px" });
+        const l1 = box(sid, "s12-l1", { x: 1090, y: 400, w: 640, cls: "c2", html: "root loader  ✓ runs again", style: "font-size:28px" });
+        const l2 = box(sid, "s12-l2", { x: 1090, y: 500, w: 640, cls: "c2", html: "shop-layout loader  ✓ runs again", style: "font-size:28px" });
+        const l3 = box(sid, "s12-l3", { x: 1090, y: 600, w: 640, cls: "c2", html: "page loader  ✓ runs again", style: "font-size:28px" });
+        [act, l1, l2, l3].forEach((s) => tl.set(s, { opacity: 0 }, 0));
+        show(act, W("s12a", 0), { s: 0.7, d: 0.5 });
+        [l1, l2, l3].forEach((s, i) => show(s, W("s12a", 4) + i * 0.4, { s: 0.7, d: 0.5 }));
+        show(tag(sid, "s12-fresh", { x: 1090, y: 720, html: "the UI is never out of date", cls: "li", fs: 28 }), W("s12a", 16), { s: 0.7, d: 0.5 });
+        // opt out with shouldRevalidate
+        hide("#s12-fresh", L("s12c", 0.1), 0.4);
+        const sr = codePanel(sid, "s12-a", { name: "app/routes/home.tsx", code: "should-revalidate", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 27 });
+        const cs = codePanel(sid, "s12-b", { name: "call site", code: "call-site", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 27 });
+        const rv = codePanel(sid, "s12-c", { name: "useRevalidator (example)", code: "revalidate", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 22 });
+        tl.set("#s12-a, #s12-b, #s12-c", { opacity: 0 }, 0);
+        fade("#s12-a", L("s12c", 0.2), 0.6);
+        hl(sr.id, [2, 3, 4, 5], W("s12c", 4), 2.6); hl(sr.id, [6], W("s12c", 10), 2.6);
+        tl.to(l3, { backgroundColor: "#4a1d2e", borderColor: "#fb7185", duration: 0.5 }, W("s12c", 10));
+        tl.set(l3, { innerHTML: "home loader  ✗ skipped after /cart" }, W("s12c", 10));
+        hl(sr.id, [7], W("s12d", 3), 2.0);
+        swap("#s12-a", "#s12-b", L("s12e", 0.0)); hl(cs.id, [4], W("s12e", 6), 2.4);
+        swap("#s12-b", "#s12-c", L("s12f", 0.0)); hl(rv.id, [1], W("s12f", 2), 2.0); hl(rv.id, [4], W("s12f", 12), 3.0);
+        leave(sid);
+      })();
+
+      // ---------- 13 · Streaming ----------
+      (function () {
+        const sid = "s13";
+        enter(sid);
+        const P = (id, name, code, fs) => codePanel(sid, id, { name, code, x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs });
+        const c1 = P("s13-a", "app/routes/product.tsx", "product-loader", 22);
+        const c2 = P("s13-b", "app/routes/product.tsx", "suspense", 27);
+        const c3 = P("s13-c", "React 19: use", "use-hook", 26);
+        const c4 = P("s13-d", "streamTimeout", "stream-timeout", 27);
+        tl.set("#s13-a, #s13-b, #s13-c, #s13-d", { opacity: 0 }, 0);
+        const w = browserWin(sid, "s13-w", { x: SPLIT.px, y: SPLIT.py, w: SPLIT.pw, frames: ["reviews-loading", "reviews-loaded"] });
+        show("#s13-w", L("s13a", 0.3), { s: 0.9, d: 0.8 }); w.frame("reviews-loading", L("s13a", 0.5));
+        const t1 = tag(sid, "s13-t1", { x: 1090, y: 790, html: "the whole page waits", cls: "co", fs: 26 });
+        show(t1, W("s13a", 6), { s: 0.7, d: 0.5 }); strike(t1, W("s13a", 9)); hide(t1, L("s13b", 0.2), 0.4);
+        // return the promise without awaiting it
+        fade("#s13-a", L("s13b", 0.2), 0.6);
+        hl(c1.id, [9, 10, 11, 12], W("s13b", 3), 4.0);
+        show(tag(sid, "s13-t2", { x: 1090, y: 790, html: "awaited: the critical data", cls: "li", fs: 26 }), W("s13b", 9), { s: 0.7, d: 0.5 });
+        hl(c1.id, [2, 3, 4, 7], W("s13b", 9), 3.6);
+        hide("#s13-t2", W("s13b", 14) - 0.2, 0.3);
+        show(tag(sid, "s13-t3", { x: 1090, y: 790, html: "not awaited: streamed later", cls: "pk", fs: 26 }), W("s13b", 14), { s: 0.7, d: 0.5 });
+        hl(c1.id, [10, 11, 12], W("s13b", 14), 4.0);
+        // Suspense + Await
+        hide("#s13-t3", L("s13c", 0.1), 0.4);
+        swap("#s13-a", "#s13-b", L("s13c", 0.0));
+        hl(c2.id, [1, 5], W("s13c", 3), 2.6); hl(c2.id, [1], W("s13c", 8), 2.4); hl(c2.id, [2, 3, 4], W("s13c", 12), 3.2);
+        // the use hook
+        swap("#s13-b", "#s13-c", L("s13e", 0.0)); hl(c3.id, [2], W("s13e", 9), 2.4);
+        // it renders right away, then the reviews replace the fallback
+        swap("#s13-c", "#s13-b", L("s13f", 0.0));
+        show(tag(sid, "s13-t4", { x: 1090, y: 790, html: "the page renders right away", cls: "cy", fs: 26 }), W("s13f", 2), { s: 0.7, d: 0.5 });
+        hide("#s13-t4", W("s13f", 5) - 0.1, 0.3);
+        w.frame("reviews-loaded", W("s13f", 5) + 0.2, 0.5);
+        show(tag(sid, "s13-t5", { x: 1090, y: 790, html: "reviews replace the fallback", cls: "li", fs: 26 }), W("s13f", 9), { s: 0.7, d: 0.5 });
+        // the timeout
+        hide("#s13-t5", L("s13g", 0.1), 0.4);
+        swap("#s13-b", "#s13-d", L("s13g", 0.0)); hl(c4.id, [3], W("s13g", 9), 3.0);
+        show(tag(sid, "s13-t6", { x: 1090, y: 790, html: "default: about 5 seconds", cls: "cy", fs: 26 }), W("s13g", 4), { s: 0.7, d: 0.5 });
+        leave(sid);
+      })();
+
+      // ---------- 14 · Error boundaries ----------
+      (function () {
+        const sid = "s14";
+        enter(sid);
+        // who throws
+        const th = [["loader throws", 2, "a"], ["action throws", 4, "d"], ["component throws", 7, "c"]];
+        th.forEach(([t, wi, col], i) => show(chip(sid, "s14-th" + i, { x: 1090, y: 270 + i * 90, html: t, cls: col, fs: 28 }), W("s14a", wi), { s: 0.6, d: 0.5, x: -40 }));
+        show(arrowText(sid, "s14-tha", { x: 1450, y: 340, html: "→", fs: 60 }), W("s14a", 9), { s: 0.6, d: 0.4 });
+        show(box(sid, "s14-thb", { x: 1540, y: 300, w: 250, cls: "c4", html: "closest<br/>ErrorBoundary", style: "font-size:26px;padding:14px 8px" }), W("s14a", 10), { s: 0.7, d: 0.5 });
+        hide("#s14-th0, #s14-th1, #s14-th2, #s14-tha, #s14-thb", L("s14b", 0.1), 0.4);
+        // the root boundary
+        const a = codePanel(sid, "s14-a", { name: "app/root.tsx", code: "root-error-a", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 24 });
+        const b = codePanel(sid, "s14-b", { name: "app/root.tsx", code: "root-error-b", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 24 });
+        const c = codePanel(sid, "s14-c", { name: "app/routes/product.tsx", code: "product-error", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 25 });
+        tl.set("#s14-a, #s14-b, #s14-c", { opacity: 0 }, 0);
+        const w = browserWin(sid, "s14-w", { x: SPLIT.px, y: SPLIT.py, w: SPLIT.pw, frames: ["root-404", "product-404"] });
+        fade("#s14-a", L("s14b", 0.2), 0.6);
+        hl(a.id, [1, 2, 3], W("s14b", 1), 2.0); hl(a.id, [4], W("s14b", 6), 3.6);
+        show("#s14-w", W("s14b", 8), { s: 0.9, d: 0.8 }); w.frame("root-404", W("s14b", 8) + 0.2);
+        swap("#s14-a", "#s14-b", W("s14b", 14) - 0.2);
+        hl(b.id, [1], W("s14b", 15), 2.0); hl(b.id, [9, 10], W("s14b", 18), 3.0);
+        // Mallory breaks the reviews
+        cameo("#mal", "s14c");
+        const wp = chip(sid, "s14-wp", { x: 1090, y: 790, html: "a white page", cls: "f", fs: 28 });
+        show(wp, W("s14c", 7), { s: 0.6, d: 0.5 }); strike(wp, W("s14c", 9)); hide(wp, L("s14d", 0.2), 0.4);
+        // a boundary in the product route
+        swap("#s14-b", "#s14-c", L("s14d", 0.0));
+        hl(c.id, [2, 3, 4], W("s14d", 0), 2.6); w.frame("product-404", W("s14d", 9), 0.4);
+        hl(c.id, [8], W("s14d", 15), 2.4);
+        show(tag(sid, "s14-l1", { x: 1090, y: 790, html: "layout and header stay", cls: "li", fs: 26 }), W("s14d", 18), { s: 0.7, d: 0.5 });
+        // what boundaries are for
+        hide("#s14-l1", L("s14e", 0.1), 0.4);
+        show(chip(sid, "s14-e1", { x: 1090, y: 790, html: "surprises", cls: "f", fs: 26 }), W("s14e", 3), { s: 0.6, d: 0.5 });
+        show(chip(sid, "s14-e2", { x: 1290, y: 790, html: "missing pages", cls: "f", fs: 26 }), W("s14e", 6), { s: 0.6, d: 0.5 });
+        show(chip(sid, "s14-e3", { x: 1090, y: 840, html: "form validation: actionData", cls: "e", fs: 26 }), W("s14e", 9), { s: 0.6, d: 0.5 });
+        leave(sid);
+      })();
+
+      // ---------- 15 · Middleware ----------
+      (function () {
+        const sid = "s15";
+        enter(sid);
+        cameo("#guard", "s15a"); face("#byte", "h", L("s15b"));
+        // the middleware chain
+        const rows = [
+          ["root middleware", "c2", 1, "down"], ["account middleware", "c2", 9, "down"], ["loaders and actions run", "c5", 13, ""],
+          ["account middleware, after", "c2", 16, "up"], ["root middleware, after", "c2", 18, "up"],
+        ];
+        rows.forEach(([t, cls, wi, dir], i) => {
+          const y = 250 + i * 110;
+          show(box(sid, "s15-r" + i, { x: 1090, y, w: 600, cls, html: t, style: "font-size:28px;padding:14px 10px" }), W("s15b", wi), { s: 0.7, d: 0.5 });
+          if (i < rows.length - 1) show(arrowText(sid, "s15-ra" + i, { x: 1370, y: y + 72, html: i < 2 ? "↓" : "↑", fs: 34, color: i < 2 ? "#22d3ee" : "#f472b6" }), W("s15b", rows[i + 1][2]) - 0.3, { s: 0.6, d: 0.4 });
+        });
+        // context and the middleware export
+        const cd = codePanel(sid, "s15-a", { name: "app/context.ts", code: "context-def", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 24 });
+        const m = codePanel(sid, "s15-b", { name: "app/routes/account-layout.tsx", code: "middleware", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 20 });
+        const ml = codePanel(sid, "s15-c", { name: "app/routes/account-layout.tsx", code: "middleware-loader", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 26 });
+        const lg = codePanel(sid, "s15-d", { name: "app/root.tsx", code: "logging", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 22 });
+        const cm = codePanel(sid, "s15-e", { name: "clientMiddleware (docs example)", code: "client-middleware", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 26 });
+        tl.set("#s15-b, #s15-c, #s15-d, #s15-e", { opacity: 0 }, 0);
+        fade("#s15-a", W("s15c", 0), 0.6); hl(cd.id, [1], W("s15c", 5), 2.4);
+        swap("#s15-a", "#s15-b", W("s15c", 6)); hl(m.id, [19], W("s15c", 9), 3.6);
+        show(tag(sid, "s15-g1", { x: 1090, y: 800, html: "a session is required", cls: "li", fs: 26 }), L("s15d", 0.3), { s: 0.7, d: 0.5 }); cameo("#guard", "s15d");
+        hide("#s15-g1", L("s15e", 0.1), 0.4);
+        // reads the session, redirects or stores the user
+        hide("#s15-r0, #s15-r1, #s15-r2, #s15-r3, #s15-r4, #s15-ra0, #s15-ra1, #s15-ra2, #s15-ra3", L("s15e", 0.1), 0.4);
+        hl(m.id, [6, 7, 8], W("s15e", 2), 2.4); hl(m.id, [12], W("s15e", 10), 3.2); hl(m.id, [13, 14, 15, 16, 17], W("s15e", 16), 3.4);
+        const w = browserWin(sid, "s15-w", { x: SPLIT.px, y: SPLIT.py, w: SPLIT.pw, frames: ["login-redirect", "account"] });
+        show("#s15-w", W("s15e", 10), { s: 0.9, d: 0.8 }); w.frame("login-redirect", W("s15e", 10) + 0.2); w.frame("account", W("s15e", 19), 0.4);
+        // child loaders read the user from context
+        swap("#s15-b", "#s15-c", L("s15f", 0.0)); hl(ml.id, [2], W("s15f", 4), 2.2);
+        // logging middleware
+        swap("#s15-c", "#s15-d", L("s15g", 0.0)); hl(lg.id, [6, 7, 8], W("s15g", 9), 3.0);
+        hide("#s15-w", L("s15g", 0.3), 0.4);
+        show(box(sid, "s15-lg", { x: 1090, y: 300, w: 640, cls: "c1", html: "GET /about.data 200 5ms<small>a line from the real server log</small>", style: "font-size:26px;font-family:var(--mono)" }), W("s15g", 10), { s: 0.7, d: 0.5 });
+        // the client version
+        swap("#s15-d", "#s15-e", L("s15i", 0.0)); hide("#s15-lg", L("s15i", 0.0), 0.4); hl(cm.id, [4], W("s15i", 8), 3.4);
+        leave(sid);
+      })();
+
+      // ---------- 16 · Client loaders and actions ----------
+      (function () {
+        const sid = "s16";
+        enter(sid);
+        const c1 = codePanel(sid, "s16-a", { name: "app/routes/home.tsx", code: "client-loader", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 20 });
+        const c2 = codePanel(sid, "s16-b", { name: "clientAction (example)", code: "client-action", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 26 });
+        tl.set("#s16-a, #s16-b", { opacity: 0 }, 0);
+        const w = browserWin(sid, "s16-w", { x: SPLIT.px, y: SPLIT.py, w: SPLIT.pw, frames: ["home", "home-recent"] });
+        show("#s16-w", L("s16a", 0.3), { s: 0.9, d: 0.8 }); w.frame("home", L("s16a", 0.5));
+        show(tag(sid, "s16-t1", { x: 1090, y: 790, html: "recently viewed: localStorage", cls: "vi", fs: 26 }), W("s16a", 7), { s: 0.7, d: 0.5 });
+        fade("#s16-a", L("s16b", 0.2), 0.6); hl(c1.id, [1, 2, 3, 4], W("s16b", 2), 2.4);
+        w.frame("home-recent", W("s16b", 8), 0.4); hide("#s16-t1", L("s16b", 0.2), 0.4);
+        hl(c1.id, [5], W("s16c", 2), 2.0); hl(c1.id, [6, 7, 8, 9], W("s16c", 8), 2.4);
+        hl(c1.id, [12], W("s16d", 9), 2.4); hl(c1.id, [14, 15, 16, 17, 18, 19, 20], W("s16d", 16), 3.4);
+        show(tag(sid, "s16-t2", { x: 1090, y: 790, html: "also runs on the first load", cls: "cy", fs: 26 }), W("s16d", 10), { s: 0.7, d: 0.5 });
+        hide("#s16-t2", L("s16e", 0.1), 0.4);
+        swap("#s16-a", "#s16-b", L("s16e", 0.0)); hl(c2.id, [4, 5], W("s16e", 5), 2.8);
+        show(tag(sid, "s16-t3", { x: 1090, y: 790, html: "browser only: no server needed", cls: "vi", fs: 26 }), W("s16e", 5), { s: 0.7, d: 0.5 });
+        leave(sid);
+      })();
+
+      // ---------- 17 · Resource routes ----------
+      (function () {
+        const sid = "s17";
+        enter(sid);
+        const P = (id, name, code, fs) => codePanel(sid, id, { name, code, x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs });
+        const a = P("s17-a", "app/routes/search.ts", "resource-search", 22);
+        const b = P("s17-b", "app/routes/invoice.ts", "resource-invoice", 24);
+        const c = P("s17-c", "app/routes/webhook.ts", "resource-webhook", 26);
+        const d = P("s17-d", "app/routes/order.tsx", "link-reload", 27);
+        tl.set("#s17-b, #s17-c, #s17-d", { opacity: 0 }, 0);
+        fade("#s17-a", L("s17a", 0.3), 0.6); hl(a.id, [1], W("s17a", 3), 3.0); hl(a.id, [2], W("s17a", 0) + 0.2, 1.6);
+        show(box(sid, "s17-p1", { x: 1090, y: 260, w: 640, cls: "c1", html: "page route<small>default export: renders UI</small>", style: "font-size:30px" }), W("s17a", 4), { s: 0.7, d: 0.5 });
+        show(box(sid, "s17-p2", { x: 1090, y: 430, w: 640, cls: "c2", html: "resource route<small>loader or action only: serves data</small>", style: "font-size:30px" }), W("s17a", 10), { s: 0.7, d: 0.5 });
+        // invoice, JSON, webhook
+        hide("#s17-p1, #s17-p2", L("s17b", 0.1), 0.4);
+        swap("#s17-a", "#s17-b", L("s17b", 0.0)); hl(b.id, [3, 4, 5, 6, 7, 8], W("s17b", 2), 3.0);
+        show(tag(sid, "s17-i1", { x: 1090, y: 300, html: "/invoices/1002 → a file download", cls: "cy", fs: 26 }), W("s17b", 2), { s: 0.7, d: 0.5 });
+        const w = browserWin(sid, "s17-w", { x: SPLIT.px, y: SPLIT.py + 60, w: SPLIT.pw, frames: ["resource-search"] });
+        hide("#s17-i1", W("s17b", 7) - 0.2, 0.3);
+        show("#s17-w", W("s17b", 8), { s: 0.9, d: 0.8 }); w.frame("resource-search", W("s17b", 8) + 0.2);
+        show(tag(sid, "s17-i2", { x: 1090, y: 820, html: "a route that returns JSON", cls: "li", fs: 26 }), W("s17b", 10), { s: 0.7, d: 0.5 });
+        hide("#s17-w, #s17-i2", W("s17b", 12) - 0.2, 0.4);
+        swap("#s17-b", "#s17-c", W("s17b", 12) - 0.2); hl(c.id, [2], W("s17b", 15), 3.0);
+        show(tag(sid, "s17-i3", { x: 1090, y: 300, html: "POST → action", cls: "vi", fs: 28 }), W("s17b", 15), { s: 0.7, d: 0.5 });
+        // linking
+        hide("#s17-i3", L("s17c", 0.1), 0.4);
+        swap("#s17-c", "#s17-d", L("s17c", 0.0)); hl(d.id, [1], W("s17c", 11), 2.6);
+        show(tag(sid, "s17-l1", { x: 1090, y: 300, html: "a normal anchor works too", cls: "li", fs: 26 }), W("s17c", 6), { s: 0.7, d: 0.5 });
+        show(tag(sid, "s17-l2", { x: 1090, y: 380, html: "otherwise: client navigation", cls: "co", fs: 26 }), W("s17c", 13), { s: 0.7, d: 0.5 });
+        leave(sid);
+      })();
+
+      // ---------- 18 · Head tags, headers, handle ----------
+      (function () {
+        const sid = "s18";
+        enter(sid);
+        const P = (id, name, code, fs) => codePanel(sid, id, { name, code, x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs });
+        const a = P("s18-a", "app/routes/product.tsx", "meta", 25);
+        const b = P("s18-b", "meta export", "meta-export", 26);
+        const l = P("s18-l", "links export", "links-export", 26);
+        const h = P("s18-h", "app/routes/products.tsx", "headers", 27);
+        const d = P("s18-d", "app/routes/shop-layout.tsx", "breadcrumbs", 24);
+        tl.set("#s18-b, #s18-l, #s18-h, #s18-d", { opacity: 0 }, 0);
+        // the browser tab and the description
+        mk(sid, '<div id="s18-tab" style="position:absolute;left:1090px;top:250px;width:640px;height:64px;border-radius:16px 16px 0 0;background:#e3e8ff;color:#1f2140;font:700 26px/64px Inter,Arial,sans-serif;padding-left:24px"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:#6a4df0;vertical-align:-3px;margin-right:14px"></span>Ceramic Mug | Nova Market</div>');
+        mk(sid, '<div id="s18-desc" style="position:absolute;left:1090px;top:330px;width:640px;padding:16px 22px;border-radius:14px;background:#172050;border:3px solid #3a4696;font:600 24px/1.4 Inter,Arial,sans-serif;color:#f4f6ff"><b style="color:#22d3ee">description</b><br />Hand glazed, dishwasher safe, holds 350 ml.</div>');
+        tl.set("#s18-tab, #s18-desc", { opacity: 0 }, 0);
+        fade("#s18-a", L("s18a", 0.3), 0.6); hl(a.id, [1], W("s18a", 4), 2.4); hl(a.id, [2], W("s18a", 6), 2.4);
+        show("#s18-tab", W("s18a", 12), { s: 0.9, d: 0.6 }); show("#s18-desc", W("s18a", 18), { s: 0.9, d: 0.6 });
+        // the meta export
+        swap("#s18-a", "#s18-b", L("s18b", 0.0)); hl(b.id, [1], W("s18b", 1), 2.0);
+        show(tag(sid, "s18-t1", { x: 1090, y: 470, html: "the last matching route wins", cls: "pk", fs: 26 }), W("s18b", 7), { s: 0.7, d: 0.5 });
+        // links and headers
+        hide("#s18-t1", L("s18c", 0.1), 0.4);
+        swap("#s18-b", "#s18-l", L("s18c", 0.0)); hl(l.id, [2], W("s18c", 3), 2.4);
+        swap("#s18-l", "#s18-h", W("s18c", 7) - 0.3); hl(h.id, [2], W("s18c", 10), 2.8);
+        show(tag(sid, "s18-t2", { x: 1090, y: 470, html: "Cache-Control for public pages", cls: "cy", fs: 26 }), W("s18c", 11), { s: 0.7, d: 0.5 });
+        // handle + useMatches
+        hide("#s18-tab, #s18-desc, #s18-t2", L("s18d", 0.1), 0.4);
+        hl(h.id, [5], W("s18d", 0), 2.0);
+        swap("#s18-h", "#s18-d", W("s18d", 10) - 0.3); hl(d.id, [2], W("s18d", 12), 2.6);
+        const w = browserWin(sid, "s18-w", { x: SPLIT.px, y: SPLIT.py + 40, w: SPLIT.pw, frames: ["reviews-loaded"] });
+        show("#s18-w", W("s18d", 5), { s: 0.9, d: 0.8 }); w.frame("reviews-loaded", W("s18d", 5) + 0.2);
+        show(tag(sid, "s18-t3", { x: 1090, y: 800, html: "Nova Market / Product: from handle", cls: "vi", fs: 24 }), W("s18d", 8), { s: 0.7, d: 0.5 });
+        leave(sid);
+      })();
+
+      // ---------- 19 · Rendering strategies ----------
+      (function () {
+        const sid = "s19";
+        enter(sid);
+        const a = codePanel(sid, "s19-a", { name: "react-router.config.ts", code: "config", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 27 });
+        const b = codePanel(sid, "s19-b", { name: "react-router.config.ts (SPA)", code: "config-spa", x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs: 30 });
+        tl.set("#s19-b", { opacity: 0 }, 0);
+        const card = (id, y, cls, html) => box(sid, id, { x: 1090, y, w: 690, cls, html, style: "font-size:30px" });
+        const c1 = card("s19-c1", 250, "c2", "ssr: true<small>server rendered on every request</small>");
+        const c2 = card("s19-c2", 400, "c1", "ssr: false<small>a single page app, rendered in the browser</small>");
+        const c3 = card("s19-c3", 550, "c5", "prerender<small>built once, at build time: /about</small>");
+        [c1, c2, c3].forEach((s) => tl.set(s, { opacity: 0 }, 0));
+        fade("#s19-a", L("s19a", 0.3), 0.6); hl(a.id, [3], W("s19a", 4), 2.6); show(c1, W("s19a", 8), { s: 0.7, d: 0.5 });
+        swap("#s19-a", "#s19-b", L("s19b", 0.0)); hl(b.id, [2], W("s19b", 1), 2.4); show(c2, W("s19b", 5), { s: 0.7, d: 0.5 });
+        swap("#s19-b", "#s19-a", L("s19c", 0.0)); hl(a.id, [5, 6, 7], W("s19c", 7), 3.0); show(c3, W("s19c", 15), { s: 0.7, d: 0.5 });
+        show(box(sid, "s19-log", { x: 1090, y: 700, w: 690, cls: "c1", html: "Prerender (html): /about → build/client/about/index.html<small>a line from the real build</small>", style: "font-size:21px;font-family:var(--mono);padding:12px 14px" }), W("s19c", 17), { s: 0.7, d: 0.5 });
+        leave(sid);
+      })();
+
+      // ---------- 20 · Finishing touches ----------
+      (function () {
+        const sid = "s20";
+        enter(sid);
+        const items = [["Progressive enhancement", "forms work before JavaScript", "c5"], ["View transitions", "animate page changes", "c3"], ["Testing", "createRoutesStub", "c2"], ["Deploying", "build, then serve", "c4"]];
+        items.forEach(([t, s, cls], i) => box(sid, "s20-i" + i, { x: 1090, y: 250 + i * 130, w: 690, cls, html: t + "<small>" + s + "</small>", style: "font-size:30px" }));
+        items.forEach((_, i) => tl.set("#s20-i" + i, { opacity: 0 }, 0));
+        const P = (id, name, code, fs) => codePanel(sid, id, { name, code, x: SPLIT.cx, y: SPLIT.cy, w: SPLIT.cw, fs });
+        const v = P("s20-v", "app/routes/shop-layout.tsx (React 19.3+)", "view-transition", 28);
+        const t = P("s20-t", "a test (docs example)", "testing", 24);
+        const d = P("s20-d", "terminal", "build-cmd", 30);
+        tl.set("#s20-v, #s20-t, #s20-d", { opacity: 0 }, 0);
+        // progressive enhancement: form -> html form
+        show("#s20-i0", W("s20a", 0), { s: 0.7, d: 0.5 });
+        show(chip(sid, "s20-f1", { x: 120, y: 300, html: "&lt;Form method=\"post\"&gt;", cls: "b", fs: 30 }), W("s20a", 6), { s: 0.6, d: 0.5 });
+        show(arrowText(sid, "s20-f2", { x: 560, y: 292, html: "→", fs: 50 }), W("s20a", 8), { s: 0.6, d: 0.4 });
+        show(chip(sid, "s20-f3", { x: 640, y: 300, html: "&lt;form method=\"post\"&gt;", cls: "e", fs: 30 }), W("s20a", 9), { s: 0.6, d: 0.5 });
+        show(tag(sid, "s20-f4", { x: 120, y: 400, html: "a plain HTML form: it works without JavaScript", cls: "li", fs: 28 }), W("s20a", 11), { s: 0.7, d: 0.5 });
+        hide("#s20-f1, #s20-f2, #s20-f3, #s20-f4", L("s20b", 0.1), 0.4);
+        // view transitions
+        show("#s20-i1", L("s20b", 0.2), { s: 0.7, d: 0.5 }); fade("#s20-v", L("s20b", 0.3), 0.6); hl(v.id, [1], W("s20b", 10), 3.4);
+        // testing
+        swap("#s20-v", "#s20-t", L("s20c", 0.0)); show("#s20-i2", L("s20c", 0.2), { s: 0.7, d: 0.5 }); hl(t.id, [1], W("s20c", 10), 2.4);
+        // deploying
+        swap("#s20-t", "#s20-d", L("s20d", 0.0)); show("#s20-i3", L("s20d", 0.2), { s: 0.7, d: 0.5 }); hl(d.id, [1], W("s20d", 3), 2.0); hl(d.id, [2], W("s20d", 8), 2.4);
+        leave(sid);
+      })();
+
+      // ---------- 21 · Recap ----------
+      (function () {
+        const sid = "s21";
+        enter(sid);
+        const w = browserWin(sid, "s21-w", { x: SPLIT.px, y: SPLIT.py + 20, w: SPLIT.pw, frames: ["home", "products", "cart", "checkout-filled", "order"] });
+        show("#s21-w", L("s21a", 0.3), { s: 0.9, d: 0.8 }); w.frame("home", L("s21a", 0.5));
+        const rows = [
+          ["Routes map URLs to modules", "c1", "s21b", 0, "products"], ["Loaders read data", "c2", "s21b", 5, "products"], ["Actions write it, loaders refresh", "c3", "s21b", 8, "cart"],
+          ["Fetchers save without navigating", "c4", "s21c", 0, "cart"], ["Sessions remember users", "c5", "s21c", 4, "checkout-filled"], ["Streaming, error boundaries, middleware", "c6", "s21c", 7, "order"],
+        ];
+        rows.forEach(([t, cls, lid, wi, frame], i) => {
+          box(sid, "s21-r" + i, { x: 110, y: 240 + i * 100, w: 880, cls, html: t, style: "font-size:30px;padding:16px 20px;text-align:left" });
+          tl.set("#s21-r" + i, { opacity: 0 }, 0);
+          show("#s21-r" + i, W(lid, wi), { s: 0.9, d: 0.5, x: -50 });
+        });
+        w.frame("products", W("s21b", 0), 0.4); w.frame("cart", W("s21b", 8), 0.4); w.frame("checkout-filled", W("s21c", 4), 0.4); w.frame("order", W("s21c", 7), 0.4);
+        cheer("#sam", L("s21d", 0.2)); mood("#sam", "happy", L("s21d")); cheer("#byte", L("s21e", 0.1)); face("#byte", "h", L("s21e"));
+        show(tag(sid, "s21-thx", { x: 1090, y: 820, html: "Thanks for watching", cls: "pk", fs: 32 }), L("s21e", 0.2), { s: 0.6, d: 0.7 });
+        leave(sid);
+      })();
+
+      // ---------- acting: the characters react to who is speaking ----------
+      (function () {
+        const ids = Object.keys(T.lines);
+        ids.forEach((id, k) => {
+          const sp = T.lines[id].speaker;
+          if (sp === "sam") {
+            tilt("#sam", L(id, 0.1), 7, 0.6);
+            face("#byte", "q", L(id));
+          } else if (k > 0 && T.lines[ids[k - 1]].speaker === "sam") {
+            face("#byte", "h", L(id));
+          } else if (k > 1 && T.lines[ids[k - 2]].speaker === "sam") {
+            face("#byte", "n", L(id));
+          }
+        });
+      })();
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+
+    </script>
+  </body>
+</html>

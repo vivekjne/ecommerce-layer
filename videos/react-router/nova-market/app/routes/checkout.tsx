@@ -1,11 +1,18 @@
-import { data, Form, redirect, useNavigation } from "react-router";
+import {
+  data,
+  Form,
+  redirect,
+  useNavigation,
+} from "react-router";
 import type { Route } from "./+types/checkout";
 import { commitSession, getSession } from "~/sessions.server";
 import { createOrder } from "~/db.server";
 import { CATALOG_URL, type Product } from "~/lib/types";
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await getSession(request.headers.get("Cookie"));
+  const session = await getSession(
+    request.headers.get("Cookie"),
+  );
   if (Object.keys(session.get("cart") ?? {}).length === 0)
     throw redirect("/cart");
   return null;
@@ -21,7 +28,8 @@ export async function action({ request }: Route.ActionArgs) {
   if (name.length < 2) errors.name = "Please enter your name";
   if (!email.includes("@"))
     errors.email = "Enter a valid email address";
-  if (address.length < 8) errors.address = "Enter your full address";
+  if (address.length < 8)
+    errors.address = "Enter your full address";
   if (Object.keys(errors).length > 0) {
     return data(
       { errors, values: { name, email, address } },
@@ -29,7 +37,9 @@ export async function action({ request }: Route.ActionArgs) {
     );
   }
 
-  const session = await getSession(request.headers.get("Cookie"));
+  const session = await getSession(
+    request.headers.get("Cookie"),
+  );
   const cart = session.get("cart") ?? {};
   const items = await Promise.all(
     Object.entries(cart).map(async ([slug, quantity]) => {
@@ -44,7 +54,10 @@ export async function action({ request }: Route.ActionArgs) {
       };
     }),
   );
-  const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const total = items.reduce(
+    (sum, i) => sum + i.price * i.quantity,
+    0,
+  );
   const id = createOrder({
     userEmail: email,
     name,
@@ -66,7 +79,12 @@ type FieldProps = {
   defaultValue?: string;
 };
 
-function Field({ name, label, error, defaultValue }: FieldProps) {
+function Field({
+  name,
+  label,
+  error,
+  defaultValue,
+}: FieldProps) {
   const border = error ? "border-rose-400" : "border-slate-300";
   return (
     <label className="block font-semibold">
@@ -74,16 +92,22 @@ function Field({ name, label, error, defaultValue }: FieldProps) {
       <input
         name={name}
         defaultValue={defaultValue}
-        className={"mt-1 w-full rounded-lg border px-3 py-2 " + border}
+        className={
+          "mt-1 w-full rounded-lg border px-3 py-2 " + border
+        }
       />
       {error && (
-        <em className="text-sm not-italic text-rose-600">{error}</em>
+        <em className="text-sm not-italic text-rose-600">
+          {error}
+        </em>
       )}
     </label>
   );
 }
 
-export default function Checkout({ actionData }: Route.ComponentProps) {
+export default function Checkout({
+  actionData,
+}: Route.ComponentProps) {
   const navigation = useNavigation();
   const placing = navigation.formAction === "/checkout";
   const errors = actionData?.errors;

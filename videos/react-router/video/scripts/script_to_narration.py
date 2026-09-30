@@ -54,6 +54,8 @@ TERMS = [
     ("should revalidate", "shouldRevalidate"),
     ("stream timeout", "streamTimeout"),
     ("hydrate fallback", "HydrateFallback"),
+    ("client loaders", "clientLoaders"),
+    ("client actions", "clientActions"),
     ("client loader", "clientLoader"),
     ("client action", "clientAction"),
     ("reload document", "reloadDocument"),

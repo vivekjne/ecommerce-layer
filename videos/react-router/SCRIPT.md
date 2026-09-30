@@ -59,7 +59,8 @@ BYTE: With one command.
 BYTE: Create the project with create react router, install the packages, and start the dev server.
 BYTE: The app folder holds everything. The file routes dot t s lists your URLs. The file root dot t s x renders the page around every route.
 SAM: What goes in root?
-BYTE: The html and body tags. Inside the head, the Links and Meta components. Inside the body, an Outlet for the current page, then ScrollRestoration and Scripts.
+BYTE: The Layout function renders the html and body tags. Inside the head go Links and Meta. Inside the body go your page, ScrollRestoration, and Scripts.
+BYTE: The default export is App, and it returns an Outlet. That is where the current route renders.
 SAM: Why do we need Scripts?
 BYTE: It loads the JavaScript that makes the page interactive. Without it, you get plain server rendered html.
 BYTE: The last file is react router dot config dot t s. That is where you choose how the app renders. We come back to it.
@@ -195,7 +196,7 @@ BYTE: When a loader, an action, or a component throws, the closest error boundar
 BYTE: Export error boundary from the root. Use is route error response to detect thrown responses with a status. Handle real errors, and unknown values, too.
 MALLORY: I broke the reviews. Nobody will see a white page now.
 BYTE: Put a boundary in the product route as well. Only that part of the page shows the error, and the layout and header stay.
-BYTE: Boundaries are for surprises and for four oh fours. Use action data for form validation.
+BYTE: Boundaries are for surprises and for missing pages. Use action data for form validation.
 
 ## 15. Middleware (Byte, Sam, Guard)  [DEMO: account page redirects to login]
 GUARD: I protect the account area.
@@ -233,7 +234,7 @@ BYTE: Or keep server rendering and add a prerender list. The about page and the 
 
 ## 20. Finishing touches (Byte, Sam)
 BYTE: Forms work before JavaScript loads, because they are plain html forms. That is progressive enhancement, and you get it by default.
-BYTE: React 19 view transitions can animate the outlet between pages. Wrap it in a ViewTransition component in your layout.
+BYTE: With React 19.3 or later, wrap the outlet in a ViewTransition component in your layout, and page changes animate.
 BYTE: To test components that use router hooks, render them with create routes stub.
 BYTE: To ship, run the build, and start it with react router serve, or use a template for your hosting platform.
 

@@ -1,17 +1,25 @@
 import { data, Link, useFetcher } from "react-router";
 import type { Route } from "./+types/cart";
 import { getSession, commitSession } from "~/sessions.server";
-import { CATALOG_URL, formatPrice, type Product } from "~/lib/types";
+import {
+  CATALOG_URL,
+  formatPrice,
+  type Product,
+} from "~/lib/types";
 import { ProductArt } from "~/components/product-art";
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await getSession(request.headers.get("Cookie"));
+  const session = await getSession(
+    request.headers.get("Cookie"),
+  );
   const cart = session.get("cart") ?? {};
 
   // one request per cart line, all started together
   const items = await Promise.all(
     Object.entries(cart).map(async ([slug, quantity]) => {
-      const res = await fetch(`${CATALOG_URL}/products/${slug}`);
+      const res = await fetch(
+        `${CATALOG_URL}/products/${slug}`,
+      );
       const product: Product = await res.json();
       return { product, quantity };
     }),
@@ -24,7 +32,9 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export async function action({ request }: Route.ActionArgs) {
-  const session = await getSession(request.headers.get("Cookie"));
+  const session = await getSession(
+    request.headers.get("Cookie"),
+  );
   const cart = session.get("cart") ?? {};
   const form = await request.formData();
   const intent = String(form.get("intent"));
@@ -36,7 +46,7 @@ export async function action({ request }: Route.ActionArgs) {
   const product: Product = await res.json();
 
   if (intent === "add" || intent === "increase") {
-    if ((cart[slug] ?? 0) + 1 > product.stock) {
+    if ((cart[slug] ?? 0) >= product.stock) {
       return data(
         { error: `Only ${product.stock} left in stock` },
         { status: 400 },
@@ -56,35 +66,42 @@ export async function action({ request }: Route.ActionArgs) {
   );
 }
 
-function CartLine({
-  product,
-  quantity,
-}: {
-  product: Product;
-  quantity: number;
-}) {
+type LineProps = { product: Product; quantity: number };
+
+// optimistic: work out the next quantity from the submitted form
+function nextQuantity(intent: unknown, quantity: number) {
+  if (intent === "increase") return quantity + 1;
+  if (intent === "decrease") return Math.max(1, quantity - 1);
+  return quantity;
+}
+
+function CartLine({ product, quantity }: LineProps) {
   const fetcher = useFetcher<typeof action>();
-  // optimistic UI: use the submitted intent to show the next quantity right away
   const intent = fetcher.formData?.get("intent");
-  const shown =
-    intent === "increase"
-      ? quantity + 1
-      : intent === "decrease"
-        ? Math.max(1, quantity - 1)
-        : quantity;
+  const shown = nextQuantity(intent, quantity);
   if (intent === "remove") return null;
 
   return (
     <li className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-3">
-      <ProductArt product={product} className="h-16 w-16 rounded-xl" />
+      <ProductArt
+        product={product}
+        className="h-16 w-16 rounded-xl"
+      />
       <div className="flex-1">
         <p className="font-bold">{product.name}</p>
-        <p className="text-slate-500">{formatPrice(product.price)}</p>
+        <p className="text-slate-500">
+          {formatPrice(product.price)}
+        </p>
         {fetcher.data && "error" in fetcher.data && (
-          <p className="text-sm text-rose-600">{fetcher.data.error}</p>
+          <p className="text-sm text-rose-600">
+            {fetcher.data.error}
+          </p>
         )}
       </div>
-      <fetcher.Form method="post" className="flex items-center gap-2">
+      <fetcher.Form
+        method="post"
+        className="flex items-center gap-2"
+      >
         <input type="hidden" name="slug" value={product.slug} />
         <button
           name="intent"
@@ -93,7 +110,9 @@ function CartLine({
         >
           −
         </button>
-        <span className="w-6 text-center font-bold">{shown}</span>
+        <span className="w-6 text-center font-bold">
+          {shown}
+        </span>
         <button
           name="intent"
           value="increase"
@@ -113,7 +132,9 @@ function CartLine({
   );
 }
 
-export default function Cart({ loaderData }: Route.ComponentProps) {
+export default function Cart({
+  loaderData,
+}: Route.ComponentProps) {
   const { items, total } = loaderData;
   return (
     <div>
@@ -122,7 +143,10 @@ export default function Cart({ loaderData }: Route.ComponentProps) {
       {items.length === 0 ? (
         <p className="mt-6 text-slate-500">
           Your cart is empty.{" "}
-          <Link to="/products" className="text-indigo-700 underline">
+          <Link
+            to="/products"
+            className="text-indigo-700 underline"
+          >
             Find something you like.
           </Link>
         </p>

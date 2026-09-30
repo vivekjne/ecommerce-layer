@@ -1,0 +1,23 @@
+{
+ "s1": {"eyebrow": "React Router 8", "title": "Build an online store"},
+ "s2": {"eyebrow": "Setup", "title": "Create the project"},
+ "s3": {"eyebrow": "Routing", "title": "URLs to route modules"},
+ "s4": {"eyebrow": "Route modules", "title": "One file, many exports"},
+ "s5": {"eyebrow": "Data concepts", "title": "Read, write, read again"},
+ "s6": {"eyebrow": "Data concepts", "title": "Fetching from an API"},
+ "s7": {"eyebrow": "Loaders", "title": "Load data before rendering"},
+ "s8": {"eyebrow": "Navigation", "title": "Links and pending UI"},
+ "s9": {"eyebrow": "Actions", "title": "Forms that write data"},
+ "s10": {"eyebrow": "Sessions", "title": "Remember the cart"},
+ "s11": {"eyebrow": "Fetchers", "title": "Save without navigating"},
+ "s12": {"eyebrow": "Revalidation", "title": "Keep the page fresh"},
+ "s13": {"eyebrow": "Streaming", "title": "Do not wait for slow data"},
+ "s14": {"eyebrow": "Error handling", "title": "Error boundaries"},
+ "s15": {"eyebrow": "Middleware", "title": "Protect the account area"},
+ "s16": {"eyebrow": "Client data", "title": "Client loaders and actions"},
+ "s17": {"eyebrow": "Resource routes", "title": "Routes without a page"},
+ "s18": {"eyebrow": "Document", "title": "Head tags and headers"},
+ "s19": {"eyebrow": "Rendering", "title": "SSR, SPA, pre-rendering"},
+ "s20": {"eyebrow": "Finishing touches", "title": "Ship it"},
+ "s21": {"eyebrow": "Recap", "title": "What you learned"}
+}

@@ -9,8 +9,12 @@ const authMiddleware: Route.MiddlewareFunction = async ({
   request,
   context,
 }) => {
-  const session = await getSession(request.headers.get("Cookie"));
-  const user = users.find((u) => u.id === session.get("userId"));
+  const session = await getSession(
+    request.headers.get("Cookie"),
+  );
+  const user = users.find(
+    (u) => u.id === session.get("userId"),
+  );
   if (!user) throw redirect("/login");
   context.set(userContext, {
     id: user.id,

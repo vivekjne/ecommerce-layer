@@ -9,6 +9,7 @@ import {
 import type { Route } from "./+types/root";
 import { getSession } from "./sessions.server";
 import { users } from "./db.server";
+import { ErrorPage } from "./components/error-page";
 import "./app.css";
 
 // Runs on the server before and after every request.
@@ -28,16 +29,27 @@ const loggingMiddleware: Route.MiddlewareFunction = async (
 export const middleware = [loggingMiddleware];
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await getSession(request.headers.get("Cookie"));
+  const session = await getSession(
+    request.headers.get("Cookie"),
+  );
   const cart = session.get("cart") ?? {};
-  const user = users.find((u) => u.id === session.get("userId"));
+  const user = users.find(
+    (u) => u.id === session.get("userId"),
+  );
   return {
-    cartCount: Object.values(cart).reduce((sum, qty) => sum + qty, 0),
+    cartCount: Object.values(cart).reduce(
+      (sum, qty) => sum + qty,
+      0,
+    ),
     userName: user?.name ?? null,
   };
 }
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <head>
@@ -62,33 +74,27 @@ export default function App() {
   return <Outlet />;
 }
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export function ErrorBoundary({
+  error,
+}: Route.ErrorBoundaryProps) {
   if (isRouteErrorResponse(error)) {
+    const message = error.data || error.statusText;
     return (
-      <main className="mx-auto max-w-xl p-12 text-center">
-        <h1 className="text-6xl font-black text-indigo-600">
-          {error.status}
-        </h1>
-        <p className="mt-2 text-xl text-slate-700">
-          {error.data || error.statusText}
-        </p>
-        <a
-          href="/"
-          className="mt-6 inline-block rounded-lg bg-indigo-600 px-4 py-2 font-semibold text-white"
-        >
-          Back to the shop
-        </a>
-      </main>
+      <ErrorPage
+        title={String(error.status)}
+        message={message}
+      />
+    );
+  }
+  if (error instanceof Error) {
+    return (
+      <ErrorPage
+        title="Something broke"
+        message={error.message}
+      />
     );
   }
   return (
-    <main className="mx-auto max-w-xl p-12 text-center">
-      <h1 className="text-3xl font-black text-rose-600">
-        Something went wrong
-      </h1>
-      <p className="mt-2 text-slate-700">
-        {error instanceof Error ? error.message : "Unknown error"}
-      </p>
-    </main>
+    <ErrorPage title="Unknown error" message="Try again" />
   );
 }

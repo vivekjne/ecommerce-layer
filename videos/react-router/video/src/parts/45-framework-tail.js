@@ -64,7 +64,7 @@
         div.id = "cap-" + id;
         div.innerHTML = '<span class="spk ' + ln.speaker + '">' + ({ byte: "Byte", sam: "Sam", mallory: "Mallory", guard: "Guard" })[ln.speaker] + "</span><span>" + ln.words.map((w, i) => '<span class="cw' + (w.code ? ' cwk' : '') + '" id="cw-' + id + "-" + i + '">' + esc(w.w) + "</span>").join(" ") + "</span>";
         const nch = ln.words.map((w) => w.w).join(" ").length;
-        div.style.fontSize = nch > 150 ? "29px" : nch > 118 ? "33px" : "38px";
+        div.style.fontSize = nch > 150 ? "27px" : nch > 125 ? "30px" : nch > 105 ? "34px" : "38px";
         capEl.appendChild(div);
       });
 
@@ -80,26 +80,33 @@
       const D = (sel) => document.querySelector(sel).dataset;
       const $$ = (sel) => gsap.utils.toArray(sel);
 
+      // Things appear with a slide/scale but at full opacity (no half-transparent frames), and disappear quickly.
       function enter(scene) {
-        tl.fromTo("#" + scene + " .eyebrow, #" + scene + " h2", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.18, ease: E }, S(scene) + 0.25);
+        const sel = "#" + scene + " .eyebrow, #" + scene + " h2";
+        tl.fromTo(sel, { y: 26 }, { y: 0, duration: 0.8, stagger: 0.18, ease: E }, S(scene) + 0.25);
+        tl.set(sel, { opacity: 0 }, 0); tl.set(sel, { opacity: 1 }, S(scene) + 0.25);
       }
-      function leave(scene) { tl.to("#" + scene, { opacity: 0, duration: 0.5, ease: "power2.in" }, SE(scene) - 0.55); }
+      function leave(scene) { tl.to("#" + scene, { opacity: 0, duration: 0.25, ease: "power2.in" }, SE(scene) - 0.4); }
       function show(sel, t, o = {}) {
-        tl.fromTo(sel, { opacity: 0, scale: o.s ?? 0.8, y: o.y ?? 24, x: o.x ?? 0 },
-          { opacity: 1, scale: 1, y: 0, x: 0, duration: o.d ?? 0.8, ease: o.ease ?? POP, transformOrigin: o.origin ?? "50% 50%" }, t);
+        tl.fromTo(sel, { scale: o.s ?? 0.8, y: o.y ?? 24, x: o.x ?? 0 },
+          { scale: 1, y: 0, x: 0, duration: o.d ?? 0.8, ease: o.ease ?? POP, transformOrigin: o.origin ?? "50% 50%" }, t);
+        tl.set(sel, { opacity: 0 }, 0); tl.set(sel, { opacity: 1 }, t);
       }
-      function fade(sel, t, d = 0.6) { tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power1.out" }, t); }
-      function hide(sel, t, d = 0.4) { tl.to(sel, { opacity: 0, duration: d }, t); }
+      function fade(sel, t, d = 0.6) {
+        tl.fromTo(sel, { y: 14 }, { y: 0, duration: d, ease: "power1.out" }, t);
+        tl.set(sel, { opacity: 0 }, 0); tl.set(sel, { opacity: 1 }, t);
+      }
+      function hide(sel, t, d = 0.4) { tl.to(sel, { opacity: 0, duration: Math.min(d, 0.15) }, t); }
       function pulse(sel, t, scale = 1.35) { tl.fromTo(sel, { scale: 1 }, { scale, duration: 0.25, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "50% 50%", immediateRender: false }, t); }
       function setText(sel, text, t) { tl.set(sel, { textContent: text }, t); pulse(sel, t); }
       function glow(sel, t, color, dur = 1.6) {
         tl.to(sel, { borderColor: color, duration: 0.3 }, t);
         return dur;
       }
-      function hl(id, ns, t0, dur, color = "rgba(255,201,60,.6)") {
+      function hl(id, ns, t0, dur, color = "rgba(94,234,212,.30)") {
         const els = ns.map((n) => $$("#" + id + " .cl")[n - 1]);
         tl.to(els, { backgroundColor: color, duration: 0.25 }, t0);
-        tl.to(els, { backgroundColor: "rgba(255,201,60,0)", duration: 0.4 }, t0 + dur);
+        tl.to(els, { backgroundColor: "rgba(94,234,212,0)", duration: 0.4 }, t0 + dur);
       }
       function reveal(id, ns, t0, stagger = 0.16) {
         const els = ns.map((n) => $$("#" + id + " .cl")[n - 1]);
@@ -180,8 +187,9 @@
       Object.keys(T.lines).forEach((id) => {
         const ln = T.lines[id];
         const t0 = ln.start, t1 = ln.start + ln.dur;
-        tl.fromTo("#cap-" + id, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.2, ease: "power1.out" }, t0 - 0.05);
-        tl.to("#cap-" + id, { opacity: 0, duration: 0.2 }, t1 + 0.3);
+        tl.set("#cap-" + id, { opacity: 0 }, 0);
+        tl.set("#cap-" + id, { opacity: 1 }, t0 - 0.05);
+        tl.set("#cap-" + id, { opacity: 0 }, t1 + 0.3);
         ln.words.forEach((w, i) => {
           const a = t0 + w.t;
           const b = i + 1 < ln.words.length ? t0 + ln.words[i + 1].t : t1;
@@ -192,7 +200,7 @@
           if (w.code) tl.fromTo(sel, { scale: 1 }, { scale: 1.12, duration: 0.22, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "50% 60%", immediateRender: false }, a);
         });
         // Byte narrates: his mouth moves with the voice
-        talkAny("#" + ln.speaker, t0 + 0.02, t1 - 0.02);
+        talkAny(({ byte: "#byte", sam: "#sam", mallory: "#mal", guard: "#guard" })[ln.speaker], t0 + 0.02, t1 - 0.02);
       });
       // gentle idle life for the corner characters, whole video
       bob("#sam", 0.5, T.total - 1, 5, 2.0);

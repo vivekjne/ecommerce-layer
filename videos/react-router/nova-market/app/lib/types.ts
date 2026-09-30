@@ -9,7 +9,11 @@ export type Product = {
   description: string;
 };
 
-export type Review = { author: string; stars: number; text: string };
+export type Review = {
+  author: string;
+  stars: number;
+  text: string;
+};
 
 export const CATALOG_URL = "http://localhost:4000";
 

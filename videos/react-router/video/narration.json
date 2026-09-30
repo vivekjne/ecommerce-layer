@@ -63,22 +63,28 @@
      "id": "s2d",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "The [HTML|H T M L] and body tags. Inside the head, the Links and Meta components. Inside the body, an Outlet for the current page, then ScrollRestoration and Scripts."
+     "text": "The Layout function renders the [HTML|H T M L] and body tags. Inside the head go Links and Meta. Inside the body go your page, ScrollRestoration, and Scripts."
     },
     {
      "id": "s2e",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The default export is App, and it returns an Outlet. That is where the current route renders."
+    },
+    {
+     "id": "s2f",
      "speaker": "sam",
      "voice": "af_nova",
      "text": "Why do we need Scripts?"
     },
     {
-     "id": "s2f",
+     "id": "s2g",
      "speaker": "byte",
      "voice": "am_michael",
      "text": "It loads the JavaScript that makes the page interactive. Without it, you get plain server rendered [HTML|H T M L]."
     },
     {
-     "id": "s2g",
+     "id": "s2h",
      "speaker": "byte",
      "voice": "am_michael",
      "text": "The last file is [react-router.config.ts|react router dot config dot t s]. That is where you choose how the app renders. We come back to it."
@@ -255,7 +261,7 @@
      "id": "s5h",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "Loaders and actions run on the server. [clientLoader|Client loader]s and [clientAction|client action]s run in the browser. Your components run in both places."
+     "text": "Loaders and actions run on the server. [clientLoaders|Client loaders] and [clientActions|client actions] run in the browser. Your components run in both places."
     }
    ]
   },
@@ -807,7 +813,7 @@
      "id": "s14e",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "Boundaries are for surprises and for [404|four oh four]s. Use [actionData|action data] for form validation."
+     "text": "Boundaries are for surprises and for missing pages. Use [actionData|action data] for form validation."
     }
    ]
   },
@@ -999,7 +1005,7 @@
      "id": "s20b",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "React 19 view transitions can animate the outlet between pages. Wrap it in a ViewTransition component in your layout."
+     "text": "With React 19.3 or later, wrap the outlet in a ViewTransition component in your layout, and page changes animate."
     },
     {
      "id": "s20c",

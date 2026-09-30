@@ -4,7 +4,9 @@ import { commitSession, getSession } from "~/sessions.server";
 import { users } from "~/db.server";
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await getSession(request.headers.get("Cookie"));
+  const session = await getSession(
+    request.headers.get("Cookie"),
+  );
   if (session.has("userId")) throw redirect("/account");
   return null;
 }
@@ -17,16 +19,23 @@ export async function action({ request }: Route.ActionArgs) {
       u.password === form.get("password"),
   );
   if (!user)
-    return data({ error: "Wrong email or password" }, { status: 401 });
+    return data(
+      { error: "Wrong email or password" },
+      { status: 401 },
+    );
 
-  const session = await getSession(request.headers.get("Cookie"));
+  const session = await getSession(
+    request.headers.get("Cookie"),
+  );
   session.set("userId", user.id);
   return redirect("/account", {
     headers: { "Set-Cookie": await commitSession(session) },
   });
 }
 
-export default function Login({ actionData }: Route.ComponentProps) {
+export default function Login({
+  actionData,
+}: Route.ComponentProps) {
   return (
     <div className="mx-auto max-w-sm">
       <title>Log in | Nova Market</title>
