@@ -90,7 +90,7 @@
     { "id": "s9x", "lines": [
       { "id": "s9i", "text": "Two more combinators come up in interviews." },
       { "id": "s9j", "text": "[Promise.allSettled|Promise dot all settled] waits for everything, and never rejects. You get a status for each promise." },
-      { "id": "s9k", "text": "[Promise.any|Promise dot {any}] returns the first promise that succeeds, and ignores the failures." },
+      { "id": "s9k", "text": "And [Promise.any|promise dot {any}] returns the first promise that succeeds, and ignores the failures." },
       { "id": "s9l", "text": "If every promise fails, promise dot {any} rejects with an aggregate error." },
       { "id": "s9m", "text": "And one trap: [Promise.race|promise dot race] with an empty array never settles." }
     ]},

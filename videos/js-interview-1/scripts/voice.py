@@ -110,6 +110,8 @@ _VOWELS = set("aeiouɐɑɒæɔəɛɜɪʊʌɚᵻɨɵøœɯ")
 def _emphasise(group: str):
     """Give a phoneme group primary stress (function words like 'this' and 'any' are reduced)."""
     g = group.replace("ˌ", "ˈ")
+    if re.fullmatch(r"ˈ?ɛni", g.rstrip(".,;:!?")):
+        g = "ˈɛniː" + g[len(g.rstrip(".,;:!?")):]      # 'any': lengthened final vowel stays clearly "any" (checked with Whisper)
     if "ˈ" not in g:
         i = next((k for k, c in enumerate(g) if c in _VOWELS), None)
         if i is not None:
@@ -315,7 +317,7 @@ def main():
     for scene in narration["scenes"]:
         for line in scene["lines"]:
             say, tokens, emph = parse(line["text"])
-            key = hashlib.sha1(f"{ENGINE}|{KOKORO_VOICE}|{KOKORO_SPEED}|{say}|{emph}|{'v3' if any(emph) else ''}".encode()).hexdigest()[:10]
+            key = hashlib.sha1(f"{ENGINE}|{KOKORO_VOICE}|{KOKORO_SPEED}|{say}|{emph}|{'v4' if any(emph) else ''}".encode()).hexdigest()[:10]
             raw = VO_DIR / f"{line['id']}.{key}.npy"
             meta = VO_DIR / f"{line['id']}.{key}.json"
             if raw.exists() and meta.exists():
