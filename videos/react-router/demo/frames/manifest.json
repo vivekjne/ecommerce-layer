@@ -1,0 +1,109 @@
+{
+ "home": {
+  "url": "/",
+  "click": null
+ },
+ "products": {
+  "url": "/products",
+  "click": null
+ },
+ "products-mug": {
+  "url": "/products?q=mug",
+  "click": null
+ },
+ "products-empty": {
+  "url": "/products?q=zzz",
+  "click": null
+ },
+ "reviews-loading": {
+  "url": "/products/ceramic-mug",
+  "click": null
+ },
+ "reviews-loaded": {
+  "url": "/products/ceramic-mug",
+  "click": null
+ },
+ "product-404": {
+  "url": "/products/nope",
+  "click": null
+ },
+ "root-404": {
+  "url": "/nothing-here",
+  "click": null
+ },
+ "nav-pending": {
+  "url": "/",
+  "click": {
+   "x": 292,
+   "y": 29
+  }
+ },
+ "add-busy": {
+  "url": "/products",
+  "click": {
+   "x": 176,
+   "y": 386
+  }
+ },
+ "add-done": {
+  "url": "/products",
+  "click": null
+ },
+ "add-error": {
+  "url": "/products",
+  "click": null
+ },
+ "live-search": {
+  "url": "/",
+  "click": null
+ },
+ "cart": {
+  "url": "/cart",
+  "click": null
+ },
+ "cart-optimistic": {
+  "url": "/cart",
+  "click": {
+   "x": 870,
+   "y": 196
+  }
+ },
+ "checkout-errors": {
+  "url": "/checkout",
+  "click": {
+   "x": 500,
+   "y": 433
+  }
+ },
+ "checkout-filled": {
+  "url": "/checkout",
+  "click": null
+ },
+ "checkout-pending": {
+  "url": "/checkout",
+  "click": {
+   "x": 500,
+   "y": 505
+  }
+ },
+ "order": {
+  "url": "/order/1002",
+  "click": null
+ },
+ "login-redirect": {
+  "url": "/login",
+  "click": null
+ },
+ "account": {
+  "url": "/account",
+  "click": null
+ },
+ "resource-search": {
+  "url": "/search?q=mu",
+  "click": null
+ },
+ "home-recent": {
+  "url": "/",
+  "click": null
+ }
+}
