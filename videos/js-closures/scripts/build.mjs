@@ -26,7 +26,7 @@ function master(input, output, pre, I, TP, extra) {
   ff("-i", input, "-af", `${pre}${base}:${measured}`, ...extra, output);
 }
 master(root + "assets/voiceover.wav", root + "assets/voiceover.mp3",
-  "highpass=f=85,acompressor=threshold=-28dB:ratio=6:attack=3:release=70:makeup=6,equalizer=f=3200:t=q:w=1.2:g=2.5,volume=3dB,alimiter=limit=0.89:attack=2:release=30:level=false,",
+  "highpass=f=70,acompressor=threshold=-24dB:ratio=3.5:attack=5:release=90:makeup=4,equalizer=f=3000:t=q:w=1.2:g=1.5,alimiter=limit=0.89:attack=3:release=40:level=false,",
   -14, -1.0, ["-ar", "44100", "-ac", "1", "-b:a", "128k"]);
 master(root + "assets/music.wav", root + "assets/music.mp3", "", -28, -3, ["-ar", "44100", "-b:a", "112k"]);
 
