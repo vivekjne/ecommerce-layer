@@ -56,7 +56,8 @@ def norm(text: str):
 
 
 def spoken(text: str):
-    return re.sub(r"\[([^|\]]+)\|([^\]]+)\]", r"\2", text)
+    t = re.sub(r"\[([^|\]]+)\|([^\]]+)\]", r"\2", text)
+    return t.replace("{", "").replace("}", "")
 
 
 def transcribe(path: Path):

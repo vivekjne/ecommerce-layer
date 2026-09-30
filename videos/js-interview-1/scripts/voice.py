@@ -49,16 +49,41 @@ OUTRO = 2.0
 # --------------------------------------------------------------------------
 # narration markup:  "call [makeCounter|make counter] once"
 # --------------------------------------------------------------------------
-TOKEN = re.compile(r"\[([^|\]]+)\|([^\]]+)\]|(\S+)")
+TOKEN = re.compile(r"\[([^|\]]+)\|([^\]]+)\]|\{([^}]+)\}|(\S+)")
+
+
+def _strip_emph(spoken: str):
+    """'Promise dot {any}' -> ('Promise dot any', [False, False, True])"""
+    words, flags = [], []
+    for w in spoken.split():
+        e = w.startswith("{") and "}" in w
+        words.append(w.replace("{", "").replace("}", ""))
+        flags.append(e)
+    return " ".join(words), flags
 
 
 def parse(text: str):
-    """-> (say string, tokens=[{show, spoken, char_start}]); char_start indexes `say` (1-based)."""
-    say_parts, tokens, pos = [], [], 0
+    """-> (say string, tokens, emph flags per spoken word).
+
+    Markup:  [shown|spoken]   caption text differs from the spoken text
+             {word}           a code word (this, any, ...): spoken with stress and short
+                              pauses, shown as highlighted code in the captions
+             [Promise.any|Promise dot {any}]  emphasis inside a spoken form
+    tokens = [{show, spoken, char_start, emph, code}]; char_start indexes `say` (1-based).
+    """
+    say_parts, tokens, emph, pos = [], [], [], 0
     for m in TOKEN.finditer(text):
-        show, spoken = (m.group(1), m.group(2)) if m.group(1) else (m.group(3), m.group(3))
+        code = False
+        if m.group(1):
+            show, (spoken, flags) = m.group(1), _strip_emph(m.group(2))
+        elif m.group(3):
+            show, spoken, code = m.group(3), m.group(3), True
+            flags = [True] * len(spoken.split())
+        else:
+            show, spoken = m.group(4), m.group(4)
+            flags = [False] * len(spoken.split())
         if tokens and re.fullmatch(r"[.,;:!?]+", show):
-            # punctuation that follows a [shown|spoken] term belongs to that word
+            # punctuation that follows a term belongs to that word
             tokens[-1]["show"] += show
             tokens[-1]["spoken"] += spoken
             say_parts[-1] += spoken
@@ -66,10 +91,11 @@ def parse(text: str):
             continue
         if say_parts:
             pos += 1
-        tokens.append({"show": show, "spoken": spoken, "char_start": pos + 1})
+        tokens.append({"show": show, "spoken": spoken, "char_start": pos + 1, "emph": any(flags), "code": code})
         say_parts.append(spoken)
+        emph.extend(flags)
         pos += len(spoken)
-    return " ".join(say_parts), tokens
+    return " ".join(say_parts), tokens, emph
 
 
 # --------------------------------------------------------------------------
@@ -78,13 +104,45 @@ def parse(text: str):
 _kokoro = None
 
 
-def synth_kokoro(say: str):
-    """-> (float32 samples in [-1, 1], sample_rate, None)"""
+_VOWELS = set("aeiouɐɑɒæɔəɛɜɪʊʌɚᵻɨɵøœɯ")
+
+
+def _emphasise(group: str):
+    """Give a phoneme group primary stress (function words like 'this' and 'any' are reduced)."""
+    g = group.replace("ˌ", "ˈ")
+    if "ˈ" not in g:
+        i = next((k for k, c in enumerate(g) if c in _VOWELS), None)
+        if i is not None:
+            g = g[:i] + "ˈ" + g[i:]
+    return g
+
+
+def synth_kokoro(say: str, emph=None):
+    """-> (float32 samples in [-1, 1], sample_rate, None)
+
+    Emphasised words get primary stress plus a short pause either side: measured on the
+    Kokoro output, stress alone changed pitch by ~1-13 Hz, stress + pauses by 12-45 Hz
+    and +4 dB loudness, which is what makes a code word stand out from plain English.
+    """
     global _kokoro
     if _kokoro is None:
         from kokoro_onnx import Kokoro
 
         _kokoro = Kokoro(str(KOKORO_DIR / "kokoro-v1.0.onnx"), str(KOKORO_DIR / "voices-v1.0.bin"))
+    if emph and any(emph):
+        groups = _kokoro.tokenizer.phonemize(say, "en-us").split(" ")
+        if len(groups) == len(emph):
+            for i, e in enumerate(emph):
+                if not e:
+                    continue
+                groups[i] = _emphasise(groups[i])
+                if i > 0 and not re.search(r"[.,;:!?]$", groups[i - 1]):
+                    groups[i - 1] += ","
+                if i < len(groups) - 1 and not re.search(r"[.,;:!?]$", groups[i]):
+                    groups[i] += ","
+            samples, sr = _kokoro.create(" ".join(groups), voice=KOKORO_VOICE, speed=KOKORO_SPEED, lang="en-us", is_phonemes=True)
+            return samples, sr, None
+        print(f"warn: could not map emphasis onto phonemes for: {say!r}")
     samples, sr = _kokoro.create(say, voice=KOKORO_VOICE, speed=KOKORO_SPEED, lang="en-us")
     return samples, sr, None
 
@@ -118,7 +176,7 @@ def _es_callback(wav, numsamples, events):
 _es_cb_ref = SYNTH_CB(_es_callback)
 
 
-def synth_espeak(say: str):
+def synth_espeak(say: str, emph=None):
     """-> (float32 samples, sample_rate, [(char_position, ms), ...])"""
     global _lib
     import numpy as np
@@ -196,7 +254,10 @@ def words_from_audio(tokens, samples, sr):
     for w in weights:
         run += w
         cum.append(run)
-    boundaries = [i for i in range(n - 1) if re.search(r"[,.;:!?]$", tokens[i]["show"])]
+    boundaries = [
+        i for i in range(n - 1)
+        if re.search(r"[,.;:!?]$", tokens[i]["show"]) or tokens[i].get("emph") or tokens[i + 1].get("emph")
+    ]
     anchors, last = [], -1     # (token index after the pause, gap start, gap end)
     for b in boundaries:
         expect = cum[b] / total * dur
@@ -241,8 +302,8 @@ def main():
     clips, rate = {}, None
     for scene in narration["scenes"]:
         for line in scene["lines"]:
-            say, tokens = parse(line["text"])
-            key = hashlib.sha1(f"{ENGINE}|{KOKORO_VOICE}|{KOKORO_SPEED}|{say}".encode()).hexdigest()[:10]
+            say, tokens, emph = parse(line["text"])
+            key = hashlib.sha1(f"{ENGINE}|{KOKORO_VOICE}|{KOKORO_SPEED}|{say}|{emph}".encode()).hexdigest()[:10]
             raw = VO_DIR / f"{line['id']}.{key}.npy"
             meta = VO_DIR / f"{line['id']}.{key}.json"
             if raw.exists() and meta.exists():
@@ -250,7 +311,7 @@ def main():
                 m = json.loads(meta.read_text())
                 rate, events = m["rate"], m["events"]
             else:
-                samples, rate, events = synth(say)
+                samples, rate, events = synth(say, emph)
                 samples = np.asarray(samples, dtype="float32")
                 np.save(raw, samples)
                 meta.write_text(json.dumps({"rate": rate, "events": events}))
@@ -284,7 +345,7 @@ def main():
                 "scene": scene["id"],
                 "start": round(cur, 3),
                 "dur": round(c["dur"], 3),
-                "words": [{"w": tok["show"], "t": round(st / 1000, 3)} for tok, st in zip(c["tokens"], c["starts"])],
+                "words": [dict({"w": tok["show"], "t": round(st / 1000, 3)}, **({"code": True} if tok.get("code") else {})) for tok, st in zip(c["tokens"], c["starts"])],
             }
             cur += c["dur"] + line.get("after", 0) + LINE_GAP
         end = cur - LINE_GAP + SCENE_TAIL
