@@ -6,7 +6,8 @@ import { CATALOG_URL, type Product } from "~/lib/types";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (Object.keys(session.get("cart") ?? {}).length === 0) throw redirect("/cart");
+  if (Object.keys(session.get("cart") ?? {}).length === 0)
+    throw redirect("/cart");
   return null;
 }
 
@@ -16,27 +17,70 @@ export async function action({ request }: Route.ActionArgs) {
   const email = String(form.get("email") ?? "").trim();
   const address = String(form.get("address") ?? "").trim();
 
-  const errors: { name?: string; email?: string; address?: string } = {};
+  const errors: Record<string, string> = {};
   if (name.length < 2) errors.name = "Please enter your name";
-  if (!email.includes("@")) errors.email = "Enter a valid email address";
+  if (!email.includes("@"))
+    errors.email = "Enter a valid email address";
   if (address.length < 8) errors.address = "Enter your full address";
   if (Object.keys(errors).length > 0) {
-    return data({ errors, values: { name, email, address } }, { status: 400 });
+    return data(
+      { errors, values: { name, email, address } },
+      { status: 400 },
+    );
   }
 
   const session = await getSession(request.headers.get("Cookie"));
   const cart = session.get("cart") ?? {};
   const items = await Promise.all(
     Object.entries(cart).map(async ([slug, quantity]) => {
-      const product: Product = await (await fetch(`${CATALOG_URL}/products/${slug}`)).json();
-      return { slug, name: product.name, price: product.price, quantity };
+      const product: Product = await (
+        await fetch(`${CATALOG_URL}/products/${slug}`)
+      ).json();
+      return {
+        slug,
+        name: product.name,
+        price: product.price,
+        quantity,
+      };
     }),
   );
   const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
-  const id = createOrder({ userEmail: email, name, address, items, total });
+  const id = createOrder({
+    userEmail: email,
+    name,
+    address,
+    items,
+    total,
+  });
 
   session.set("cart", {});
-  return redirect(`/order/${id}`, { headers: { "Set-Cookie": await commitSession(session) } });
+  return redirect(`/order/${id}`, {
+    headers: { "Set-Cookie": await commitSession(session) },
+  });
+}
+
+type FieldProps = {
+  name: string;
+  label: string;
+  error?: string;
+  defaultValue?: string;
+};
+
+function Field({ name, label, error, defaultValue }: FieldProps) {
+  const border = error ? "border-rose-400" : "border-slate-300";
+  return (
+    <label className="block font-semibold">
+      {label}
+      <input
+        name={name}
+        defaultValue={defaultValue}
+        className={"mt-1 w-full rounded-lg border px-3 py-2 " + border}
+      />
+      {error && (
+        <em className="text-sm not-italic text-rose-600">{error}</em>
+      )}
+    </label>
+  );
 }
 
 export default function Checkout({ actionData }: Route.ComponentProps) {
@@ -45,25 +89,33 @@ export default function Checkout({ actionData }: Route.ComponentProps) {
   const errors = actionData?.errors;
   const values = actionData?.values;
 
-  const field = "mt-1 w-full rounded-lg border px-3 py-2 ";
   return (
     <div className="mx-auto max-w-lg">
       <title>Checkout | Nova Market</title>
       <h1 className="text-3xl font-black">Checkout</h1>
       <Form method="post" className="mt-6 space-y-4">
-        <label className="block font-semibold">Name
-          <input name="name" defaultValue={values?.name} className={field + (errors?.name ? "border-rose-400" : "border-slate-300")} />
-          {errors?.name && <em className="text-sm not-italic text-rose-600">{errors.name}</em>}
-        </label>
-        <label className="block font-semibold">Email
-          <input name="email" defaultValue={values?.email} className={field + (errors?.email ? "border-rose-400" : "border-slate-300")} />
-          {errors?.email && <em className="text-sm not-italic text-rose-600">{errors.email}</em>}
-        </label>
-        <label className="block font-semibold">Address
-          <input name="address" defaultValue={values?.address} className={field + (errors?.address ? "border-rose-400" : "border-slate-300")} />
-          {errors?.address && <em className="text-sm not-italic text-rose-600">{errors.address}</em>}
-        </label>
-        <button disabled={placing} className="w-full rounded-xl bg-indigo-600 px-6 py-3 font-bold text-white disabled:bg-slate-400">
+        <Field
+          name="name"
+          label="Name"
+          error={errors?.name}
+          defaultValue={values?.name}
+        />
+        <Field
+          name="email"
+          label="Email"
+          error={errors?.email}
+          defaultValue={values?.email}
+        />
+        <Field
+          name="address"
+          label="Address"
+          error={errors?.address}
+          defaultValue={values?.address}
+        />
+        <button
+          disabled={placing}
+          className="w-full rounded-xl bg-indigo-600 px-6 py-3 font-bold text-white disabled:bg-slate-400"
+        >
           {placing ? "Placing order..." : "Place order"}
         </button>
       </Form>

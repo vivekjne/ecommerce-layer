@@ -14,5 +14,8 @@ export type Review = { author: string; stars: number; text: string };
 export const CATALOG_URL = "http://localhost:4000";
 
 export function formatPrice(cents: number) {
-  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(cents / 100);
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(cents / 100);
 }

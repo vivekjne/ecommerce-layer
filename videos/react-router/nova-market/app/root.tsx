@@ -1,17 +1,31 @@
-import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import {
+  isRouteErrorResponse,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from "react-router";
 import type { Route } from "./+types/root";
 import { getSession } from "./sessions.server";
 import { users } from "./db.server";
 import "./app.css";
 
 // Runs on the server before and after every request.
-const loggingMiddleware: Route.MiddlewareFunction = async ({ request }, next) => {
+const loggingMiddleware: Route.MiddlewareFunction = async (
+  { request },
+  next,
+) => {
   const start = performance.now();
   const response = await next();
-  console.log(`${request.method} ${new URL(request.url).pathname} ${response.status} ${Math.round(performance.now() - start)}ms`);
+  const ms = Math.round(performance.now() - start);
+  const { pathname } = new URL(request.url);
+  console.log(
+    `${request.method} ${pathname} ${response.status} ${ms}ms`,
+  );
   return response;
 };
-export const middleware: Route.MiddlewareFunction[] = [loggingMiddleware];
+export const middleware = [loggingMiddleware];
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -28,7 +42,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1"
+        />
         <Meta />
         <Links />
       </head>
@@ -49,16 +66,29 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   if (isRouteErrorResponse(error)) {
     return (
       <main className="mx-auto max-w-xl p-12 text-center">
-        <h1 className="text-6xl font-black text-indigo-600">{error.status}</h1>
-        <p className="mt-2 text-xl text-slate-700">{error.data || error.statusText}</p>
-        <a href="/" className="mt-6 inline-block rounded-lg bg-indigo-600 px-4 py-2 font-semibold text-white">Back to the shop</a>
+        <h1 className="text-6xl font-black text-indigo-600">
+          {error.status}
+        </h1>
+        <p className="mt-2 text-xl text-slate-700">
+          {error.data || error.statusText}
+        </p>
+        <a
+          href="/"
+          className="mt-6 inline-block rounded-lg bg-indigo-600 px-4 py-2 font-semibold text-white"
+        >
+          Back to the shop
+        </a>
       </main>
     );
   }
   return (
     <main className="mx-auto max-w-xl p-12 text-center">
-      <h1 className="text-3xl font-black text-rose-600">Something went wrong</h1>
-      <p className="mt-2 text-slate-700">{error instanceof Error ? error.message : "Unknown error"}</p>
+      <h1 className="text-3xl font-black text-rose-600">
+        Something went wrong
+      </h1>
+      <p className="mt-2 text-slate-700">
+        {error instanceof Error ? error.message : "Unknown error"}
+      </p>
     </main>
   );
 }

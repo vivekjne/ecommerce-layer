@@ -49,7 +49,7 @@ Everything else uses full-screen code, diagrams and short cards.
 ---
 
 ## 1. Intro (Byte, Sam)
-BYTE: Welcome to JavaScript Demystified. Today we build a complete online store with React Router, in framework mode.
+BYTE: Welcome to JavaScript Demystified. Today we build Nova Market, a complete online store, with React Router in framework mode.
 SAM: A real store? With products, a cart, and checkout?
 BYTE: Yes. Along the way you will learn routes, loaders, actions, fetchers, sessions, streaming, error boundaries, and middleware.
 SAM: That is a lot of ground. Where do we start?
@@ -217,7 +217,7 @@ BYTE: Client action works the same way, for writes that never need the server.
 
 ## 17. Resource routes (Byte, Sam)
 BYTE: A route without a default export is a resource route. It serves data, not a page.
-BYTE: The invoice route returns a pdf response. A products route returns json. A webhook route handles posts in its action.
+BYTE: The invoice route returns a file download. A products route returns json. A webhook route handles posts in its action.
 BYTE: To link to one, use a normal anchor, or Link with reload document. Otherwise the router tries a client navigation.
 
 ## 18. Head tags, headers, handle (Byte, Sam)

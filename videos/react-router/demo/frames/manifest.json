@@ -42,7 +42,7 @@
   "url": "/products",
   "click": {
    "x": 176,
-   "y": 386
+   "y": 422
   }
  },
  "add-done": {
@@ -87,7 +87,7 @@
   }
  },
  "order": {
-  "url": "/order/1002",
+  "url": "/order/1001",
   "click": null
  },
  "login-redirect": {

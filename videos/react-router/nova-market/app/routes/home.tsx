@@ -10,19 +10,30 @@ export async function loader() {
 }
 
 // runs in the browser only: add data that lives in localStorage
-export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
+export async function clientLoader({
+  serverLoader,
+}: Route.ClientLoaderArgs) {
   const { featured } = await serverLoader();
-  const recent: string[] = JSON.parse(localStorage.getItem("recent") ?? "[]");
+  const recent: string[] = JSON.parse(
+    localStorage.getItem("recent") ?? "[]",
+  );
   return { featured, recent };
 }
 clientLoader.hydrate = true as const;
 
 export function HydrateFallback() {
-  return <p className="py-20 text-center text-slate-500">Loading the shop...</p>;
+  return (
+    <p className="py-20 text-center text-slate-500">
+      Loading the shop...
+    </p>
+  );
 }
 
-// the cart changes do not affect this page, so skip its loader after cart requests
-export function shouldRevalidate({ formAction, defaultShouldRevalidate }: ShouldRevalidateFunctionArgs) {
+// cart changes do not affect this page: skip its loader after them
+export function shouldRevalidate({
+  formAction,
+  defaultShouldRevalidate,
+}: ShouldRevalidateFunctionArgs) {
   if (formAction === "/cart") return false;
   return defaultShouldRevalidate;
 }
@@ -31,20 +42,40 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <div>
       <section className="rounded-3xl bg-gradient-to-br from-indigo-600 to-pink-500 p-10 text-white">
-        <h1 className="text-4xl font-black">Everyday things, well made.</h1>
-        <p className="mt-2 max-w-md text-indigo-100">Free shipping over $50. Thirty day returns.</p>
-        <Link to="/products" className="mt-6 inline-block rounded-full bg-white px-5 py-2 font-bold text-indigo-700">Shop all products</Link>
+        <h1 className="text-4xl font-black">
+          Everyday things, well made.
+        </h1>
+        <p className="mt-2 max-w-md text-indigo-100">
+          Free shipping over $50. Thirty day returns.
+        </p>
+        <Link
+          to="/products"
+          className="mt-6 inline-block rounded-full bg-white px-5 py-2 font-bold text-indigo-700"
+        >
+          Shop all products
+        </Link>
       </section>
       <h2 className="mt-10 text-2xl font-black">Featured</h2>
       <div className="mt-4 grid grid-cols-3 gap-5">
         {loaderData.featured.map((p) => (
-          <Link key={p.slug} to={`/products/${p.slug}`} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <Link
+            key={p.slug}
+            to={`/products/${p.slug}`}
+            className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+          >
             <ProductArt product={p} className="h-40" />
-            <div className="p-4"><p className="font-bold">{p.name}</p><p className="text-slate-600">{formatPrice(p.price)}</p></div>
+            <div className="p-4">
+              <p className="font-bold">{p.name}</p>
+              <p className="text-slate-600">{formatPrice(p.price)}</p>
+            </div>
           </Link>
         ))}
       </div>
-      {loaderData.recent.length > 0 && <p className="mt-8 text-slate-600">Recently viewed: {loaderData.recent.join(", ")}</p>}
+      {loaderData.recent.length > 0 && (
+        <p className="mt-8 text-slate-600">
+          Recently viewed: {loaderData.recent.join(", ")}
+        </p>
+      )}
     </div>
   );
 }
