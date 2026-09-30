@@ -1,68 +1,38 @@
-// ===================== 12 · Three modes =====================
+// ===================== 12 · Governed by design =====================
 enter("s12");
-tl.set("#h12, #L12a, #L12b, #L12c, #an12, #hv12, #ht12, #ap12a, #ok12a, #ap12b, #ok12b, #wn12", { opacity: 0 }, 0);
-tl.set("#s12 .act", { opacity: 0 }, 0);
-tl.set("#gt12b", { scaleY: 0.12, transformOrigin: "50% 0%" }, 0);
-put("#dlg", L("s12a", 0.0), 2250, 858, 1.3, 1.2);
-tl.set("#dlg", { opacity: 0 }, L("s12a", 1.3));
-function lanes12(a, b, c, t) { [["#L12a", a], ["#L12b", b], ["#L12c", c]].forEach(([sel, o]) => tl.to(sel, { opacity: o, duration: 0.4 }, t)); }
-const X_GATE = 340, X_END = 980;
-// a green/red action that flows straight through to done
-function pass12(sel, t, dur = 2.3) {
-  tl.fromTo(sel, { x: 0, opacity: 0 }, { opacity: 1, duration: 0.2 }, t);
-  tl.to(sel, { x: X_END, duration: dur, ease: "none" }, t + 0.1);
-  tl.to(sel, { opacity: 0, duration: 0.25 }, t + 0.1 + dur);
-}
-// an action that stops at the gate, asks, and continues once approved
-function stop12(sel, lane, t, lowerAfter) {
-  tl.fromTo(sel, { x: 0, opacity: 0 }, { opacity: 1, duration: 0.2 }, t);
-  tl.to(sel, { x: X_GATE, duration: 0.9, ease: "power1.in" }, t + 0.1);
-  fade("#ap12" + lane, t + 1.0, 0.25); tl.set("#ap12" + lane, { opacity: 0 }, t + 1.75);
-  fade("#ok12" + lane, t + 1.75, 0.2); tl.set("#ok12" + lane, { opacity: 0 }, t + 2.9);
-  tl.to("#gt12" + lane, { scaleY: 0.12, duration: 0.3, transformOrigin: "50% 0%" }, t + 1.95);
-  tl.to(sel, { x: X_END, duration: 1.1, ease: "power1.out" }, t + 2.0);
-  if (lowerAfter) tl.to("#gt12" + lane, { scaleY: 1, duration: 0.3, transformOrigin: "50% 0%" }, t + 2.9);
-  tl.to(sel, { opacity: 0, duration: 0.25 }, t + 3.1);
-}
-// how much freedom? per environment and per task
-fade("#h12", L("s12a", 0.6), 0.5);
-show("#hv12", W("s12a", 9), { y: 16, s: 0.7, d: 0.5 }); show("#ht12", W("s12a", 12), { y: 16, s: 0.7, d: 0.5 });
-hide("#h12, #hv12, #ht12", L("s12b", -0.2), 0.4);
-// the three modes appear
-lanes12(0.5, 0.5, 0.5, L("s12b", 0.2));
-["#L12a", "#L12b", "#L12c"].forEach((sel, i) => tl.fromTo(sel, { opacity: 0, x: -30 }, { opacity: 0.5, x: 0, duration: 0.5, ease: E }, L("s12b", 0.15 + i * 0.25)));
-// 1 · Always ask: every action waits for a yes
-lanes12(1, 0.4, 0.4, L("s12c", 0.0));
-pulse("#lb12a", L("s12c", 0.0), 1.02);
-[0, 1, 2].forEach((i) => stop12("#k12a" + (i + 1), "a", L("s12d", 0.3 + i * 2.1), true));
-tl.set("#gt12a", { scaleY: 1, transformOrigin: "50% 0%" }, 0);
-// 2 · Smart: low-risk flows, risky asks
-lanes12(0.4, 1, 0.4, L("s12e", 0.0));
-pulse("#lb12b", L("s12e", 0.0), 1.02);
-pass12("#k12b1", L("s12f", 0.4)); pass12("#k12b2", L("s12f", 1.2));
-tl.to("#gt12b", { scaleY: 1, duration: 0.3, transformOrigin: "50% 0%" }, L("s12f", 2.4));
-stop12("#k12b3", "b", L("s12f", 2.0), false);
-// 3 · Unrestricted: everything flows, only in trusted environments
-lanes12(0.4, 0.4, 1, L("s12g", 0.0));
-pulse("#lb12c", L("s12g", 0.0), 1.02);
-pass12("#k12c1", L("s12g", 0.6), 2.2); pass12("#k12c2", L("s12g", 1.2), 2.2); pass12("#k12c3", L("s12g", 1.8), 2.2);
-show("#wn12", W("s12h", 4), { y: 12, s: 0.7, d: 0.6 }); shake("#wn12", W("s12h", 4) + 0.6, 8);
-// quick check
-lanes12(1, 1, 1, L("s12i", 0.0));
-face("#byte", "q", L("s12i", 0.0));
-countdown12("cd12", LE("s12i", 0.15), 1.25);
-function countdown12(id, t0, step) {
-  show("#" + id, t0, { s: 0.5, d: 0.5 });
-  const nums = $$("#" + id + " .cdn");
-  nums.forEach((n, i) => {
-    tl.fromTo(n, { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)", transformOrigin: "50% 50%" }, t0 + 0.2 + i * step);
-    tl.to(n, { opacity: 0, duration: 0.2 }, t0 + 0.2 + (i + 1) * step - 0.2);
-  });
-  hide("#" + id, t0 + 0.2 + nums.length * step, 0.3);
-}
-tl.set("#cd12", { opacity: 0 }, 0);
-lanes12(1, 0.35, 0.35, L("s12j", 0.0));
-pulse("#lb12a", L("s12j", 0.0), 1.03);
-show("#an12", L("s12j", 0.1), { s: 0.5, d: 0.5 });
-face("#byte", "h", L("s12j", 0.0)); cheer("#sam", L("s12j", 0.2));
+prep("#in13, #out13");
+tl.set("#op13, #ct13, #ctl13, #ap13, #apl13, #m13a, #m13b, #m13c, #m13d, #oc13a, #oc13c, #vt13, #ap13b, #ar13b, #ky13, #nv13, #tp13a, #tp13b, #rd13, #pe13a, #pe13b, #pe13c, #ar13d, #og13, #bo12, #bi12", { opacity: 0 }, 0);
+tl.set("#rd13", { scaleX: 0 }, 0);
+tl.set("#dlg", { opacity: 1 }, S("s12") + 0.05);
+place("#dlg", 2250, 858, 1.3, S("s12") + 0.04);
+put("#dlg", S("s12") + 0.1, 300, 858, 1.3, 1.4);
+face("#dlg", "h", S("s12") + 1.5);
+// because Delegate ships on the UiPath platform...
+show("#ct13", W("s12a", 5), { y: 30, s: 0.95, d: 0.9 });
+fade("#ctl13", W("s12a", 6), 0.6);
+// ...every operation inherits the controls you already run
+show("#op13", W("s12a", 7), { x: -30, s: 0.7, d: 0.5 }); draw("#in13", W("s12a", 7) + 0.3, 0.5);
+tl.to("#op13", { x: 60, opacity: 0, duration: 0.7, ease: "power2.in" }, W("s12a", 8) + 0.6);
+show("#ap13", W("s12a", 12), { s: 0.5, d: 0.6 }); show("#apl13", W("s12a", 12) + 0.3, { y: 12, d: 0.5 }); draw("#out13", W("s12a", 12) - 0.1, 0.5);
+// Orchestrator: scheduling and run management
+show("#m13a", W("s12b", 0), { y: 30, s: 0.9, d: 0.7 });
+show("#oc13a", W("s12b", 2), { x: -20, s: 0.8, d: 0.5 }); show("#oc13c", W("s12b", 4), { x: -20, s: 0.8, d: 0.5 });
+// a credential vault: secrets never exposed to the agent
+show("#m13b", W("s12c", 1), { y: 30, s: 0.9, d: 0.7 });
+show("#vt13", W("s12c", 3), { s: 0.5, d: 0.5 }); show("#ap13b", W("s12c", 3) + 0.2, { s: 0.5, d: 0.5 }); fade("#ar13b", W("s12c", 3) + 0.3, 0.4);
+show("#ky13", W("s12c", 4), { s: 0.5, d: 0.4 }); tl.to("#ky13", { x: 130, duration: 1.0, ease: "power1.inOut" }, W("s12c", 4) + 0.3);
+show("#nv13", W("s12c", 6), { y: 14, s: 0.8, d: 0.6 }); shake("#nv13", W("s12c", 6) + 0.7, 6);
+// the AI Trust Layer: policy and redaction
+show("#m13c", W("s12d", 1), { y: 30, s: 0.9, d: 0.7 });
+show("#tp13a", W("s12d", 5), { y: 12, s: 0.8, d: 0.5 }); show("#tp13b", W("s12d", 7), { y: 12, s: 0.8, d: 0.5 });
+tl.set("#rd13", { opacity: 1 }, W("s12d", 7) + 0.3); tl.to("#rd13", { scaleX: 1, duration: 0.7, ease: "power2.out" }, W("s12d", 7) + 0.3);
+// role-based access mapped to your organization
+show("#m13d", W("s12e", 1), { y: 30, s: 0.9, d: 0.7 });
+["#pe13a", "#pe13b", "#pe13c"].forEach((sel, i) => show(sel, W("s12e", 3) + i * 0.25, { y: 12, s: 0.6, d: 0.5 }));
+fade("#ar13d", W("s12e", 4), 0.4); show("#og13", W("s12e", 6), { x: 20, s: 0.8, d: 0.6 });
+// not bolted on, built in
+show("#bo12", W("s12f", 1), { x: -20, s: 0.8, d: 0.5 });
+["#m13a", "#m13b", "#m13c", "#m13d"].forEach((sel, i) => { tl.to(sel, { borderColor: "#0b7a85", duration: 0.3 }, W("s12f", 3) + i * 0.15); pulse(sel, W("s12f", 3) + i * 0.15, 1.03); });
+show("#bi12", W("s12f", 3), { x: -20, s: 0.8, d: 0.6 });
+cheer("#dlg", W("s12f", 3));
 leave("s12");

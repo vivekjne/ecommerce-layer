@@ -1,151 +1,94 @@
-// ===================== 7 · A day with Delegate =====================
+// ===================== 7 · Turn data into a deliverable =====================
 enter("s7");
-tl.set("#e71, #e72, #e73, #e74, #e75, #e76, #e77, #e78, #tm7", { opacity: 0 }, 0);
-tl.set("#bb7", { opacity: 0 }, 0);
-tl.set("#w71, #pl71, #r71a, #r71b, #r71c, #r71d, #r71e, #w72, #pn72, #s72a, #s72b, #s72c, #pc72, #w73, #lc73, #tb73, #w74, #tn74, #mz74, #x74, #nz74", { opacity: 0 }, 0);
-tl.set("#qs75, #sr75a, #sr75b, #sr75c, #sr75d, #sr75e, #an75, #d75a, #d75b, #d75c, #d75d, #d75e, #w76, #pc76, #sd76, #pl76, #sf76, #sk76, #wf77, #jb77, #rs77", { opacity: 0 }, 0);
-tl.set("#ct78, #cl78, #t78a, #t78b, #t78c, #t78d, #t78e, #t78f", { opacity: 0 }, 0);
-tl.set("#x73, #nt73", { opacity: 0 }, 0);
-prep("#a71, #q75a, #q75b, #q75c, #q75d, #q75e, #a77, #f78a, #f78b, #f78c, #f78d, #f78e, #f78f");
-tl.set("#w74 .lg, #w76 .l76, #r71a .nm, #r71b .nm, #r71c .nm, #r71d .nm, #r71e .nm", { opacity: 0 }, 0);
-tl.set("#p77a, #p77b, #p77c", { scaleX: 0, transformOrigin: "0% 50%" }, 0);
+prep("#b7a, #b7b, #pa7, #pb7, #pc7, #qa7, #qb7, #qc7, #sp7a, #sp7b");
+tl.set("#rw7, #rwl7, #hg7, #hl7, #dv7, #dvl7, #sa7, #sb7, #sc7, #oa7, #ob7, #oc7, #rp7, #sl7, #ps7, #sr7, #ap7, #cp7a, #cp7b, #cp7c", { opacity: 0 }, 0);
+tl.set("#hr7, #mn7, #bs7, #eye7, #x7, #fd7, #pe7, #bg7, #u7a, #u7b, #u7c, #cl7, #s7 .ok7, #s7 .tx7, #st7, #fm7, #o7a, #o7b, #o7c", { opacity: 0 }, 0);
+tl.set("#s7 .bb7", { scaleY: 0, transformOrigin: "50% 100%" }, 0);
 
-// the cast: Sam (in his headset) and Delegate, side by side for the whole scene
-headset("#sam", true, L("s7a", 0.2));
-put("#sam", L("s7a", 0.0), 250, 858, 1.25, 1.5);
-put("#dlg", L("s7a", 0.0), 545, 858, 1.3, 1.5);
-face("#dlg", "h", L("s7a", 1.5));
-wobble("#sam", L("s7a", 4.9), 2, 4);
+put("#sam", S("s7") + 0.1, 230, 890, 0.95, 1.2);
+put("#dlg", S("s7") + 0.1, 450, 890, 1.0, 1.2);
+face("#dlg", "n", S("s7") + 0.1);
 
-// the day: sun -> moon, eight dots
-fade("#tm7", L("s7b", 0.2), 0.6);
-function day(i, t) {
-  for (let k = 1; k <= 8; k++) {
-    tl.to("#td" + k, { backgroundColor: k <= i ? "#0b7a85" : "#ffffff", scale: k === i ? 1.5 : 1, duration: 0.3, transformOrigin: "50% 50%" }, t);
-  }
-  tl.to("#tmf", { width: (i - 1) * 96.86, duration: 0.6, ease: "power1.inOut" }, t);
-}
-// Sam's prompt, typed into his speech bubble
-function say(title, text, t, dur) {
-  tl.set("#bt7", { textContent: title }, t);
-  tl.set("#bp7", { textContent: "" }, t);
-  typeText("#bp7", text, t + 0.2, dur);
-}
-fade("#bb7", L("s7c", 0.0), 0.5);
+// here's where the hours disappear: turning raw data into something you can send
+show("#hg7", W("s7a", 3), { s: 0.5, d: 0.6 }); show("#hl7", W("s7a", 3) + 0.3, { y: 12, d: 0.5 });
+tl.to("#hg7 svg", { rotation: 180, duration: 0.8, ease: "power2.inOut", transformOrigin: "50% 50%" }, W("s7a", 4));
+show("#rw7", W("s7a", 6), { x: -30, s: 0.6, d: 0.6 }); show("#rwl7", W("s7a", 6) + 0.2, { y: 12, d: 0.5 });
+draw("#b7a", W("s7a", 7), 0.5);
+draw("#b7b", W("s7a", 9) - 0.3, 0.5);
+show("#dv7", W("s7a", 9), { x: 30, s: 0.6, d: 0.6 }); show("#dvl7", W("s7a", 9) + 0.2, { y: 12, d: 0.5 });
+mood("#sam", "sad", L("s7a", 0.5));
 
-// 1 · Morning planning: the backlog sorts itself ------------------------------------------------------------
-day(1, L("s7c", 0.0));
-say("Morning planning", "Pull my case backlog from Salesforce and prioritize the day.", L("s7c", 0.0), 4.2);
-fade("#e71", L("s7c", 0.1), 0.3);
-fade("#w71", W("s7c", 4), 0.5);
-["a", "b", "c", "d", "e"].forEach((k, i) => show("#r71" + k, W("s7c", 5) + i * 0.18, { x: -30, s: 0.95, d: 0.5 }));
-const sortDy = { a: 176, b: 264, c: -176, d: 0, e: -264 };
-Object.keys(sortDy).forEach((k) => { if (sortDy[k]) tl.to("#r71" + k, { y: sortDy[k], duration: 0.9, ease: "power2.inOut" }, W("s7c", 9)); });
-typing("#dlg", W("s7c", 2), LE("s7c", 0.0));
-draw("#a71", W("s7d", 1), 0.5); show("#pl71", W("s7d", 1) + 0.3, { x: 40, s: 0.9, d: 0.7 });
-$$("#w71 .nm").forEach((n, i) => tl.to(n, { opacity: 1, duration: 0.3 }, W("s7d", 8) + i * 0.12));
-face("#dlg", "h", L("s7d", 0.0));
-
-// 2 · Context awareness: summary + related articles + similar cases -----------------------------------------
-hide("#e71", L("s7e", -0.3), 0.4);
-day(2, L("s7e", 0.0));
-say("Context awareness", "Summarize the case I'm viewing with related KB articles and similar past cases.", L("s7e", 0.0), 6.2);
-fade("#e72", L("s7e", 0.0), 0.2);
-fade("#w72", W("s7e", 2), 0.5);
-fade("#pn72", W("s7e", 4), 0.4);
-fade("#s72a", W("s7e", 5), 0.5); fade("#s72b", W("s7e", 8), 0.5); fade("#s72c", W("s7e", 11), 0.5);
-typing("#dlg", W("s7e", 2), LE("s7e", 0.0));
-show("#pc72", W("s7f", 3), { s: 0.4, d: 0.5 });
-tl.to("#pc72", { rotation: 14, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut", transformOrigin: "50% 50%" }, W("s7f", 3) + 0.5);
-pulse("#pn72", W("s7f", 3), 1.03);
-
-// 3 · License lookup: the answer arrives in the chat, no tab hopping -------------------------------------
-hide("#e72", L("s7g", -0.3), 0.4);
-day(3, L("s7g", 0.0));
-say("License lookup", "Look up a customer's licensing data without switching tools.", L("s7g", 0.0), 4.4);
-fade("#e73", L("s7g", 0.0), 0.2);
-fade("#w73", W("s7g", 2), 0.5);
-show("#lc73", W("s7g", 6), { y: 30, s: 0.9, d: 0.7 });
-typing("#dlg", W("s7g", 2), LE("s7g", 0.0));
-pulse("#lc73", W("s7h", 2), 1.04);
-fade("#tb73", W("s7h", 6), 0.5);
-show("#x73", W("s7h", 7), { s: 0.3, d: 0.5 }); show("#nt73", W("s7h", 7), { y: 16, s: 0.7, d: 0.5 });
-
-// 4 · Log analysis: the logs come to you, no digging through Azure ------------------------------------
-hide("#e73", L("s7i", -0.3), 0.4);
-day(4, L("s7i", 0.0));
-say("Log analysis", "Pull recent App Insights logs for a tenant without navigating Azure.", L("s7i", 0.0), 5.0);
-fade("#e74", L("s7i", 0.0), 0.2);
-fade("#w74", W("s7i", 2), 0.5);
-$$("#w74 .lg").forEach((r, i) => fade(r, W("s7i", 3) + i * 0.3, 0.25));
-show("#tn74", W("s7i", 9), { y: 16, s: 0.7, d: 0.6 });
-typing("#dlg", W("s7i", 2), LE("s7i", 0.0));
-fade("#mz74", W("s7j", 4), 0.5);
-show("#x74", W("s7j", 6), { s: 0.3, d: 0.5 }); show("#nz74", W("s7j", 6), { y: 16, s: 0.7, d: 0.5 });
-
-// 5 · Troubleshooting research: one question, five places, one answer -------------------------------
-hide("#e74", L("s7k", -0.3), 0.4);
-day(5, L("s7k", 0.0));
-say("Troubleshooting research", "Search Product Docs, KB, Slack, Confluence and past cases at once.", L("s7k", 0.0), 5.6);
-fade("#e75", L("s7k", 0.0), 0.2);
-show("#qs75", W("s7k", 2), { x: -30, s: 0.8, d: 0.6 });
-[["a", 3], ["b", 6], ["c", 8], ["d", 9], ["e", 11]].forEach(([k, w]) => { show("#sr75" + k, W("s7k", w), { x: 40, s: 0.85, d: 0.5 }); draw("#q75" + k, W("s7k", w) - 0.1, 0.6); });
-typing("#dlg", W("s7k", 2), LE("s7l", 0.0));
-["a", "b", "c", "d", "e"].forEach((k) => pulse("#sr75" + k, W("s7l", 3), 1.08));
-[["a", 304], ["b", 414], ["c", 524], ["d", 634], ["e", 744]].forEach(([k, top], i) => {
-  const t = W("s7l", 5) + i * 0.08;
-  tl.to("#d75" + k, { opacity: 1, duration: 0.1 }, t);
-  tl.to("#d75" + k, { x: -470, y: 706 - top, duration: 0.9, ease: "power2.inOut" }, t);
-  tl.to("#d75" + k, { opacity: 0, duration: 0.2 }, t + 0.9);
+// point Delegate at a spreadsheet, a database export, or a folder of files
+hide("#rw7, #rwl7, #hg7, #hl7, #dv7, #dvl7, #b7a, #b7b", L("s7b", -0.2), 0.4);
+put("#dlg", L("s7b", -0.2), 960, 890, 1.3, 1.2);
+mood("#sam", "happy", L("s7b", 0.5));
+[["#sa7", "#pa7", 4], ["#sb7", "#pb7", 6], ["#sc7", "#pc7", 10]].forEach(([card, arrow, w]) => {
+  show(card, W("s7b", w) - 0.1, { x: -40, s: 0.9, d: 0.6 }); draw(arrow, W("s7b", w) + 0.3, 0.6); nod("#dlg", W("s7b", w) + 0.5);
 });
-show("#an75", W("s7l", 7), { y: 20, s: 0.7, d: 0.6 });
-
-// 6 · First response drafting: draft, edit, send -----------------------------------------------------
-hide("#e75", L("s7m", -0.3), 0.4);
-day(6, L("s7m", 0.0));
-say("First-response drafting", "Generate a reply from case context to iterate on and send to Salesforce.", L("s7m", 0.0), 6.0);
-fade("#e76", L("s7m", 0.0), 0.2);
-fade("#w76", W("s7m", 3), 0.5);
-show("#pc76", W("s7m", 4) + 0.3, { s: 0.5, d: 0.4 });
-$$("#w76 .l76").forEach((r, i) => {
-  fade(r, W("s7m", 5) + i * 0.4, 0.3);
-  if (i > 0) tl.to("#pc76", { y: "+=" + (i === 1 ? 46 : 32), duration: 0.35, ease: "power2.inOut" }, W("s7m", 5) + i * 0.4);
+// ...and ask for a presentation, a proposal, or a report
+[["#oa7", "#qa7", 4], ["#ob7", "#qb7", 6], ["#oc7", "#qc7", 9]].forEach(([card, arrow, w]) => {
+  draw(arrow, W("s7c", w) - 0.3, 0.6); show(card, W("s7c", w), { x: 40, s: 0.9, d: 0.6 });
 });
-tl.to("#pc76", { rotation: -12, duration: 0.25, yoyo: true, repeat: 5, ease: "sine.inOut", transformOrigin: "50% 100%" }, W("s7m", 11));
-typing("#dlg", W("s7m", 3), W("s7m", 12));
-show("#sd76", W("s7m", 13), { s: 0.6, d: 0.4 }); pulse("#sd76", W("s7m", 13) + 0.4, 1.15);
-show("#pl76", W("s7m", 14), { s: 0.5, d: 0.3 });
-tl.to("#pl76", { x: 190, y: -140, scale: 0.8, duration: 0.9, ease: "power2.inOut" }, W("s7m", 14) + 0.3);
-tl.to("#pl76", { opacity: 0, duration: 0.2 }, W("s7m", 14) + 1.2);
-show("#sf76", W("s7m", 15), { x: 40, s: 0.9, d: 0.6 }); fade("#sk76", W("s7m", 15) + 0.6, 0.3);
-pulse("#sf76", W("s7n", 1), 1.05);
+armUp("#sam", "r", L("s7c", 0.3), 120, 1.6);
 
-// 7 · RunDeck jobs: run a predefined job without leaving the workflow -------------------------------
-hide("#e76", L("s7o", -0.3), 0.4);
-day(7, L("s7o", 0.0));
-say("RunDeck jobs", "Run a predefined job with parameters without leaving the workflow.", L("s7o", 0.0), 4.6);
-fade("#e77", L("s7o", 0.0), 0.2);
-show("#jb77", W("s7o", 4), { y: 30, s: 0.9, d: 0.7 });
-fade("#wf77", W("s7o", 8), 0.6);
-[["a", 0.0], ["b", 0.4], ["c", 0.8]].forEach(([k, o]) => tl.to("#p77" + k, { scaleX: 1, duration: 0.4, ease: "power2.out" }, W("s7p", 2) + o));
-pulse("#pb77", W("s7p", 3) + 0.4, 1.06);
-typing("#dlg", W("s7p", 3), W("s7p", 8));
-draw("#a77", W("s7p", 5), 0.4); show("#rs77", W("s7p", 5) + 0.3, { x: 40, s: 0.9, d: 0.6 });
-tl.to("#pg77", { width: "100%", duration: 1.6, ease: "power1.inOut" }, W("s7p", 6));
-
-// 8 · Stay in flow: one chat, every tool ---------------------------------------------------------------------
-hide("#e77", L("s7q", -0.3), 0.4);
-day(8, L("s7q", 0.0));
-say("Stay in flow", "One conversational surface across every tool the PSE touches.", L("s7q", 0.0), 3.4);
-fade("#e78", L("s7q", 0.0), 0.2);
-show("#ct78", L("s7q", 0.4), { s: 0.5, d: 0.7 }); show("#cl78", W("s7r", 1), { y: 16, d: 0.6 });
-["a", "b", "c", "d", "e", "f"].forEach((k, i) => {
-  const t = W("s7r", 3) + i * 0.4;
-  show("#t78" + k, t, { s: 0.6, d: 0.5 }); draw("#f78" + k, t - 0.1, 0.5);
+// it pulls the relevant data, structures it, and applies your formatting
+hide("#sa7, #sb7, #sc7, #oa7, #ob7, #oc7, #pa7, #pb7, #pc7, #qa7, #qb7, #qc7", L("s7d", -0.3), 0.4);
+show("#rp7", L("s7d", -0.1), { x: -40, s: 0.95, d: 0.6 }); show("#sl7", L("s7d", -0.1), { x: 40, s: 0.95, d: 0.6 });
+show("#ps7", W("s7d", 1), { y: 12, s: 0.8, d: 0.5 });
+draw("#sp7a", W("s7d", 1) + 0.2, 0.6);
+["#h7a", "#h7b", "#h7c"].forEach((sel, i) => tl.to(sel + " .skel", { backgroundColor: "#ffe28a", duration: 0.25 }, W("s7d", 3) + i * 0.25));
+["#cp7a", "#cp7b", "#cp7c"].forEach((sel, i) => {
+  show(sel, W("s7d", 3) + 0.4 + i * 0.2, { s: 0.5, d: 0.3 });
+  route(sel, W("s7d", 3) + 0.8 + i * 0.2, [[1250, 500]], 0.7);
+  tl.to(sel, { opacity: 0, scale: 0.4, duration: 0.2 }, W("s7d", 3) + 1.5 + i * 0.2);
 });
-["a", "b", "c", "d", "e", "f"].forEach((k) => pulse("#t78" + k, W("s7r", 7), 1.1));
-pulse("#ct78", W("s7r", 7), 1.12);
-cheer("#sam", W("s7r", 6)); cheer("#dlg", W("s7r", 6) + 0.3);
-mood("#sam", "happy", L("s7q", 0.0));
-headset("#sam", false, SE("s7") - 0.5);
+$$("#s7 .bb7").forEach((b, i) => tl.to(b, { scaleY: 1, duration: 0.5, ease: "back.out(1.6)" }, W("s7d", 3) + 1.5 + i * 0.2));
+show("#sr7", W("s7d", 5), { y: 12, s: 0.8, d: 0.5 });
+draw("#sp7b", W("s7d", 5), 0.6);
+fade("#st7", W("s7d", 5) + 0.2, 0.3);
+$$("#s7 .tx7").forEach((t, i) => fade(t, W("s7d", 5) + 0.4 + i * 0.2, 0.3));
+show("#ap7", W("s7d", 8), { y: 12, s: 0.8, d: 0.5 }); show("#fm7", W("s7d", 8), { y: 16, s: 0.8, d: 0.5 });
+tl.to("#sh7", { backgroundColor: "#0b7a85", duration: 0.5 }, W("s7d", 10));
+tl.to("#st7", { backgroundColor: "#ffffff", duration: 0.5 }, W("s7d", 10));
+[["#sld7 .bb7:nth-child(1)", "#0b7a85"], ["#sld7 .bb7:nth-child(2)", "#ffc93c"], ["#sld7 .bb7:nth-child(3)", "#121a30"]].forEach(([sel, c]) => tl.to(sel, { backgroundColor: c, duration: 0.5 }, W("s7d", 10)));
+pulse("#sl7", W("s7d", 10) + 0.3, 1.03);
+typing("#dlg", W("s7d", 1), LE("s7d", 0.0));
+face("#dlg", "h", W("s7d", 10));
+
+// what used to take hours takes minutes
+hide("#ps7, #sr7, #ap7, #sp7a, #sp7b", L("s7e", -0.2), 0.3);
+show("#hr7", W("s7e", 4), { x: -20, s: 0.8, d: 0.5 });
+show("#mn7", W("s7e", 6), { x: 20, s: 0.8, d: 0.5 }); pulse("#mn7", W("s7e", 6) + 0.4, 1.12);
+// ...and you're editing a finished draft instead of staring at a blank slide
+show("#pe7", W("s7f", 2), { s: 0.5, d: 0.4 });
+tl.to("#pe7", { x: -120, y: 90, rotation: -10, duration: 0.9, yoyo: true, repeat: 3, ease: "sine.inOut", transformOrigin: "50% 100%" }, W("s7f", 2) + 0.4);
+show("#fd7", W("s7f", 4), { y: 12, s: 0.8, d: 0.5 });
+hide("#rp7, #hr7, #mn7", W("s7f", 6) - 0.2, 0.4);
+show("#bs7", W("s7f", 6), { x: -40, s: 0.9, d: 0.6 }); blinkEl("#cr7", W("s7f", 6) + 0.6, W("s7f", 12), 0.5);
+show("#eye7", W("s7f", 8), { y: 12, s: 0.8, d: 0.5 });
+show("#x7", W("s7f", 11), { s: 0.3, d: 0.5 });
+mood("#sam", "sad", W("s7f", 8)); mood("#sam", "happy", W("s7f", 12));
+
+// the same idea powers the bigger enterprise use cases
+hide("#sl7, #bs7, #x7, #eye7, #fd7, #pe7", L("s7g", -0.3), 0.4);
+put("#dlg", L("s7g", -0.3), 960, 895, 0.75, 1.0); put("#sam", L("s7g", -0.3), 230, 890, 0.85, 1.0);
+show("#bg7", W("s7g", 7), { y: 16, s: 0.8, d: 0.5 });
+// 1 · generating process and solution design documents
+show("#u7a", W("s7h", 0) - 0.1, { y: 30, s: 0.9, d: 0.7 });
+show("#pg7a", W("s7h", 1), { y: 24, s: 0.6, d: 0.5 }); show("#pg7b", W("s7h", 3), { y: 24, s: 0.6, d: 0.5 });
+// 2 · running application test cases
+show("#u7b", W("s7h", 6) - 0.1, { y: 30, s: 0.9, d: 0.7 });
+["a", "b", "c"].forEach((k, i) => {
+  const t = W("s7h", 7) + i * 0.7;
+  tl.to("#t7" + k + " .dt", { backgroundColor: "#06d6a0", duration: 0.25 }, t);
+  fade("#t7" + k + " .ok7", t, 0.25); pulse("#t7" + k + " .ok7", t, 1.3);
+});
+// 3 · taking intake and triage off a clerical team's plate
+show("#u7c", W("s7i", 1) - 0.1, { y: 30, s: 0.9, d: 0.7 });
+["a", "b", "c"].forEach((k, i) => {
+  tl.to("#i7" + k, { y: 40, scale: 0.4, opacity: 0, duration: 0.5, ease: "power2.in" }, W("s7i", 2) + i * 0.35);
+  show("#o7" + k, W("s7i", 2) + 0.6 + i * 0.35, { y: -16, s: 0.6, d: 0.4 });
+});
+show("#cl7", W("s7i", 5), { y: 16, s: 0.8, d: 0.6 });
+cheer("#sam", W("s7i", 7)); cheer("#dlg", W("s7i", 7) + 0.3);
 leave("s7");

@@ -1,25 +1,72 @@
 <section id="s10" class="clip" data-start="{{s10.start}}" data-duration="{{s10.dur}}" data-track-index="0">
   <style>
-    #s10 .node { width: 340px; height: 280px; }
-    #s10 .node .lab { left: 0; width: 340px; }
+    #L10a, #L10b, #L10c { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #s10 .lb { position: absolute; left: 140px; width: 340px; height: 140px; }
+    #s10 .lb .tile { left: 18px; top: 28px; }
+    #s10 .lb b { position: absolute; left: 124px; top: 22px; font-size: 32px; letter-spacing: -0.02em; white-space: nowrap; }
+    #s10 .lb .tag { left: 124px; top: 78px; font-size: 17px; }
+    #s10 .bl { position: absolute; left: 500px; width: 1280px; height: 140px; background: #fff; }
+    #s10 .bl::after { content: ""; position: absolute; left: 110px; right: 110px; top: 68px; border-top: 6px dashed #c9d0ea; }
+    #s10 .act { position: absolute; left: 620px; width: 56px; height: 56px; border-radius: 16px; border: 4px solid var(--ink); box-shadow: 0 5px 0 rgba(31,33,64,.18); }
+    #s10 .act.g { background: #06d6a0; }
+    #s10 .act.r { background: #ff5d73; }
+    #s10 .gt { position: absolute; left: 1040px; width: 26px; height: 128px; border-radius: 10px; border: 4px solid var(--ink); }
+    #s10 .sw { position: relative; width: 104px; height: 54px; border-radius: 27px; border: 4px solid var(--ink); background: #c9d0ea; flex: none; }
+    #s10 .sw i { position: absolute; left: 3px; top: 3px; width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 4px solid var(--ink); }
   </style>
-  <div class="eyebrow">How it works</div>
-  <h2>Attach SOPs &amp; automations</h2>
-  <div class="tok trk" style="left: 1010px"><b class="mono">1</b>Compose</div><div class="tok trk" style="left: 1190px"><b class="mono">2</b>Teach</div><div class="tok trk on" style="left: 1330px"><b class="mono">3</b>Attach</div><div class="tok trk" style="left: 1480px"><b class="mono">4</b>Control</div>
+  <div class="eyebrow">You stay in control</div>
+  <h2>Three approval modes</h2>
 
-  <div class="tok" id="h10a" style="left: 520px; top: 290px; font-size: 32px"><img src="assets/deck/paperclip.png" alt="" style="width: 44px; height: 44px; background: var(--navy); border-radius: 11px; padding: 7px" />Attach your SOPs</div>
-  <div class="tok sun" id="h10b" style="left: 1040px; top: 290px; font-size: 32px"><i data-ic="gear" data-s="44"></i>Invoke automations</div>
+  <div id="h10">
+    <div class="tile lg" style="left: 560px; top: 340px"><img src="assets/deck/sliders.png" alt="" /></div>
+    <div class="big" style="position: absolute; left: 730px; top: 372px; font-size: 62px; width: 900px">How much do I trust it?</div>
+  </div>
 
-  <svg class="ov" viewBox="0 0 1920 1080">
-    <path id="c10a" d="M 830 540 C 690 520, 580 420, 452 352" stroke="#1f2140" marker-end="url(#ahInk)" />
-    <path id="c10b" d="M 1090 540 C 1230 520, 1340 420, 1448 352" stroke="#1f2140" marker-end="url(#ahInk)" />
-    <path id="c10c" d="M 830 680 C 690 700, 580 690, 452 642" stroke="#1f2140" marker-end="url(#ahInk)" />
-    <path id="c10d" d="M 1090 680 C 1230 700, 1340 690, 1448 642" stroke="#1f2140" marker-end="url(#ahInk)" />
-  </svg>
-  <div class="tile sm" id="pc10a" style="left: 590px; top: 386px"><img src="assets/deck/paperclip.png" alt="" /></div>
-  <div class="tile sm" id="pc10b" style="left: 1246px; top: 386px"><img src="assets/deck/paperclip.png" alt="" /></div>
-  <div class="node" id="n10a" style="left: 210px; top: 280px"><div class="ntile lg" style="left: 100px; top: 0"><i data-ic="doc" data-s="90"></i></div><div class="lab" style="top: 160px">Your SOPs</div><div class="lab sm muted" style="top: 230px">referenced directly</div></div>
-  <div class="node" id="n10b" style="left: 1370px; top: 280px"><div class="ntile lg" style="left: 100px; top: 0"><i data-ic="folder" data-s="90"></i></div><div class="lab" style="top: 160px">Design documents</div><div class="lab sm muted" style="top: 230px">linked for context</div></div>
-  <div class="node" id="n10c" style="left: 1370px; top: 570px"><div class="ntile lg" style="left: 100px; top: 0"><i data-ic="gear" data-s="90" id="gr10"></i></div><div class="lab" style="top: 160px">Deployed automations</div><div class="lab sm muted" style="top: 230px">invoked by Delegate</div></div>
-  <div class="node" id="n10d" style="left: 210px; top: 570px"><div class="ntile lg" style="left: 100px; top: 0"><i data-ic="clock" data-s="90"></i></div><div class="lab" style="top: 160px">Task trail &amp; history</div><div class="lab sm muted" style="top: 230px">every task, complete</div></div>
+  <!-- lane 1 · Cautious -->
+  <div id="L10a">
+    <div class="card lb" id="lb10a" style="top: 280px"><div class="tile sm"><img src="assets/deck/handshake.png" alt="" /></div><b>Cautious</b><span class="tag green">Safest</span></div>
+    <div class="card bl" style="top: 280px"></div>
+    <div class="tile sm" style="left: 520px; top: 308px"><img src="assets/deck/bolt.png" alt="" /></div>
+    <div class="ntile sm" style="left: 1676px; top: 308px; background: #d9f7ea"><i data-ic="tick" data-s="46"></i></div>
+    <div class="gt" id="gt10a" style="top: 286px; background: var(--teal)"></div>
+    <div class="tok sm" id="ap10a" style="top: 284px; left: 905px; font-size: 21px; padding: 3px 14px 3px 8px"><i data-ic="hand" data-s="26"></i>Approve?</div>
+    <div class="tok sm mint" id="ok10a" style="top: 284px; left: 905px; font-size: 21px; padding: 3px 14px 3px 8px"><i data-ic="tick" data-s="26"></i>Approved</div>
+    <div class="act g" id="k10a1" style="top: 322px"></div><div class="act r" id="k10a2" style="top: 322px"></div><div class="act g" id="k10a3" style="top: 322px"></div>
+  </div>
+  <!-- lane 2 · Adaptive -->
+  <div id="L10b">
+    <div class="card lb" id="lb10b" style="top: 470px"><div class="tile sm"><img src="assets/deck/gauge.png" alt="" /></div><b>Adaptive</b><span class="tag blue" id="rc10">★ Recommended</span></div>
+    <div class="card bl" style="top: 470px"></div>
+    <div class="tile sm" style="left: 520px; top: 498px"><img src="assets/deck/bolt.png" alt="" /></div>
+    <div class="ntile sm" style="left: 1676px; top: 498px; background: #d9f7ea"><i data-ic="tick" data-s="46"></i></div>
+    <div class="gt" id="gt10b" style="top: 476px; background: var(--sun)"></div>
+    <div class="tok sm red" id="ap10b" style="top: 474px; left: 905px; font-size: 21px; padding: 3px 14px 3px 8px"><i data-ic="warn" data-s="26"></i>Not known: ask</div>
+    <div class="tok sm mint" id="ok10b" style="top: 474px; left: 905px; font-size: 21px; padding: 3px 14px 3px 8px"><i data-ic="tick" data-s="26"></i>Approved</div>
+    <div class="act g" id="k10b1" style="top: 512px"></div><div class="act g" id="k10b2" style="top: 512px"></div><div class="act r" id="k10b3" style="top: 512px"></div>
+    <div class="act g" id="k10b4" style="top: 512px"></div><div class="act g" id="k10b5" style="top: 512px"></div><div class="act r" id="k10b6" style="top: 512px"></div>
+  </div>
+  <!-- lane 3 · Full access -->
+  <div id="L10c">
+    <div class="card lb" id="lb10c" style="top: 660px"><div class="tile sm"><img src="assets/deck/rocket.png" alt="" /></div><b>Full access</b><span class="tag amber">Trusted only</span></div>
+    <div class="card bl" style="top: 660px"></div>
+    <div class="tile sm" style="left: 520px; top: 688px"><img src="assets/deck/bolt.png" alt="" /></div>
+    <div class="ntile sm" style="left: 1676px; top: 688px; background: #d9f7ea"><i data-ic="tick" data-s="46"></i></div>
+    <div class="act g" id="k10c1" style="top: 702px"></div><div class="act r" id="k10c2" style="top: 702px"></div><div class="act g" id="k10c3" style="top: 702px"></div>
+  </div>
+
+  <div class="tok red" id="mp10" style="left: 1000px; top: 224px; font-size: 24px"><i data-ic="hand" data-s="32"></i>Most approval prompts</div>
+  <div class="tok mint" id="np10" style="left: 560px; top: 812px; font-size: 24px"><i data-ic="tick" data-s="32"></i>No approval prompts at all</div>
+  <div class="tok red" id="wn10" style="left: 1080px; top: 812px; font-size: 24px"><i data-ic="warn" data-s="32"></i>Only in trusted environments</div>
+  <div class="tok" id="lg10" style="left: 1420px; top: 226px; font-size: 20px; padding: 4px 14px 4px 10px; gap: 10px; opacity: 0"><span style="width: 22px; height: 22px; border-radius: 6px; background: #06d6a0; border: 3px solid var(--ink)"></span>Known safe<span style="width: 22px; height: 22px; border-radius: 6px; background: #ff5d73; border: 3px solid var(--ink); margin-left: 8px"></span>Not known</div>
+
+  <!-- the Smart approvals toggle, inside Adaptive -->
+  <div class="card" id="sa10" style="left: 560px; top: 270px; width: 780px; height: 140px; display: flex; align-items: center; gap: 24px; padding: 0 30px; border-color: var(--teal)">
+    <div class="ntile sm" style="position: static"><i data-ic="toggle" data-s="52"></i></div>
+    <div style="flex: 1"><b style="font-size: 34px; letter-spacing: -0.02em">Smart approvals</b><div style="font-size: 22px; font-weight: 700; color: var(--muted); margin-top: 4px">inside Adaptive: the model judges what is safe</div></div>
+    <div class="sw" id="sw10"><i id="kb10"></i></div>
+  </div>
+  <div class="tok sun" id="mj10" style="left: 900px; top: 424px; font-size: 22px; padding: 4px 16px 4px 8px"><i data-ic="bot" data-s="30"></i>Model judges</div>
+  <div class="tok mint" id="fp10" style="left: 560px; top: 690px; font-size: 28px"><i data-ic="tick" data-s="38"></i>Fewest prompts</div>
+  <div class="tok red" id="cm10" style="left: 900px; top: 690px; font-size: 28px"><i data-ic="warn" data-s="38"></i>The model can misjudge</div>
+  <div class="tok sun" id="ch10" style="left: 1380px; top: 690px; font-size: 28px"><i data-ic="hand" data-s="38"></i>Your choice</div>
 </section>

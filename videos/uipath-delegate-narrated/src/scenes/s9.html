@@ -1,34 +1,55 @@
 <section id="s9" class="clip" data-start="{{s9.start}}" data-duration="{{s9.dur}}" data-track-index="0">
   <style>
-    #s9 .stp { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
-    #s9 .stp b { font-family: var(--mono); font-size: 26px; width: 34px; height: 34px; border-radius: 50%; background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: center; flex: none; }
+    #s9 .rowr { position: absolute; left: 16px; width: 856px; height: 84px; border: 3px solid var(--ink); border-radius: 16px; background: #fff; display: flex; align-items: center; gap: 14px; padding: 0 14px 0 12px; overflow: hidden; }
+    #s9 .rowr .nm { flex: 1; font-size: 26px; font-weight: 800; line-height: 1.1; min-width: 200px; }
+    #s9 .rowr .tok { position: static; font-size: 20px; padding: 4px 12px 4px 8px; gap: 8px; flex: none; }
+    #s9 .rowr .pb { position: absolute; left: 0; bottom: 0; height: 8px; width: 0; background: var(--mint); }
+    #s9 .rn { position: absolute; width: 74px; height: 74px; border-radius: 50%; background: #d9f7ea; border: 4px solid var(--mint); display: flex; align-items: center; justify-content: center; }
   </style>
-  <div class="eyebrow">How it works</div>
-  <h2>Teach skills with Routines</h2>
-  <div class="tok trk" style="left: 1010px"><b class="mono">1</b>Compose</div><div class="tok trk on" style="left: 1190px"><b class="mono">2</b>Teach</div><div class="tok trk" style="left: 1330px"><b class="mono">3</b>Attach</div><div class="tok trk" style="left: 1480px"><b class="mono">4</b>Control</div>
+  <div class="eyebrow">Routines</div>
+  <h2>Save what works, run it again</h2>
 
-  <!-- record once -->
-  <div class="card" id="dc9" style="left: 140px; top: 270px; width: 600px; height: 256px; padding: 16px 26px">
-    <div style="display: flex; align-items: center; justify-content: space-between"><span class="tag ink" style="position: static">Document once</span><span id="rec9" style="font-weight: 800; font-size: 24px; color: var(--coral)">● REC</span></div>
-    <div class="stp" id="a9a"><b>1</b><div class="skel" style="width: 330px"></div></div>
-    <div class="stp" id="a9b"><b>2</b><div class="skel" style="width: 280px"></div></div>
-    <div class="stp" id="a9c"><b>3</b><div class="skel" style="width: 360px"></div></div>
-    <div class="stp" id="a9d"><b>4</b><div class="skel" style="width: 240px"></div></div>
+  <!-- a session that went well -->
+  <div class="win" id="ss9" style="left: 140px; top: 270px; width: 700px; height: 370px">
+    <div class="bar"><b></b><b></b><b></b><span>Delegate session</span></div>
+    <div class="bub" style="left: 24px; top: 62px; width: 440px; min-height: 60px; padding: 12px 18px"><div class="skel" style="width: 90%"></div><div class="skel" style="width: 60%; margin-top: 10px"></div></div>
+    <div style="position: absolute; left: 24px; top: 150px; width: 640px"><div class="skel"></div><div class="skel" style="margin-top: 12px; width: 84%"></div><div class="skel" style="margin-top: 12px; width: 92%"></div></div>
+    <div class="tok mint" id="ok9" style="left: 24px; top: 224px; font-size: 26px"><i data-ic="tick" data-s="36"></i>Session went well</div>
+    <div class="tok teal" id="sv9" style="left: 24px; top: 284px; font-size: 26px"><img src="assets/deck/book.png" alt="" style="width: 34px; height: 34px; background: var(--navy); border-radius: 8px; padding: 4px" />Save as routine</div>
   </div>
+  <div class="tok red" id="da9" style="left: 580px; top: 672px; font-size: 26px; text-decoration: line-through; text-decoration-thickness: 4px"><i data-ic="loop" data-s="38"></i>Do it all again</div>
   <svg class="ov" viewBox="0 0 1920 1080">
-    <path id="r9a" d="M 752 425 L 850 425" stroke="#1f2140" stroke-width="8" marker-end="url(#ahInk)" />
-    <path id="r9b" d="M 1130 470 C 1200 470, 1260 350, 1340 350" stroke="#0b7a85" stroke-width="7" marker-end="url(#ahTeal)" />
-    <path id="r9c" d="M 1130 490 L 1340 490" stroke="#0b7a85" stroke-width="7" marker-end="url(#ahTeal)" />
-    <path id="r9d" d="M 1130 510 C 1200 510, 1260 630, 1340 630" stroke="#0b7a85" stroke-width="7" marker-end="url(#ahTeal)" />
+    <path id="ar9" d="M 850 470 L 876 470" stroke="#0b7a85" stroke-width="8" marker-end="url(#ahTeal)" />
+    <path id="sh9a" d="M 1035 584 L 1035 650" stroke="#0b7a85" stroke-width="7" marker-end="url(#ahTeal)" />
+    <path id="sh9b" d="M 1345 584 L 1345 650" stroke="#0b7a85" stroke-width="7" marker-end="url(#ahTeal)" />
+    <path id="sh9c" d="M 1655 584 L 1655 650" stroke="#0b7a85" stroke-width="7" marker-end="url(#ahTeal)" />
+    <path id="iv9a" d="M 470 350 L 470 410" stroke="#1f2140" stroke-width="7" marker-end="url(#ahInk)" />
   </svg>
-  <div class="tile lg" id="bk9" style="left: 860px; top: 360px"><img src="assets/deck/book.png" alt="" /></div>
-  <div class="lab" id="bl9" style="left: 800px; top: 516px; width: 260px">Routine</div>
-  <div class="lab sm muted" id="bs9" style="left: 780px; top: 556px; width: 300px">a reusable playbook</div>
-  <div class="tok sun" id="in9" style="left: 780px; top: 620px; font-size: 26px"><i data-ic="infinity" data-s="40"></i>Invoke it forever</div>
-  <!-- share with the team -->
-  <div class="card" id="tm9a" style="left: 1350px; top: 290px; width: 420px; height: 130px; display: flex; align-items: center; gap: 18px; padding: 0 24px"><div class="ntile sm" style="position: static"><i data-ic="person" data-s="46"></i></div><b style="font-size: 28px">Teammate</b><i class="ck9" data-ic="tick" data-s="46" style="margin-left: auto"></i></div>
-  <div class="card" id="tm9b" style="left: 1350px; top: 430px; width: 420px; height: 130px; display: flex; align-items: center; gap: 18px; padding: 0 24px"><div class="ntile sm" style="position: static"><i data-ic="person" data-s="46"></i></div><b style="font-size: 28px">Teammate</b><i class="ck9" data-ic="tick" data-s="46" style="margin-left: auto"></i></div>
-  <div class="card" id="tm9c" style="left: 1350px; top: 570px; width: 420px; height: 130px; display: flex; align-items: center; gap: 18px; padding: 0 24px"><div class="ntile sm" style="position: static"><i data-ic="person" data-s="46"></i></div><b style="font-size: 28px">Teammate</b><i class="ck9" data-ic="tick" data-s="46" style="margin-left: auto"></i></div>
-  <div class="tok mint" id="sm9" style="left: 1370px; top: 736px; font-size: 26px"><i data-ic="tick" data-s="38"></i>Same skill, same result</div>
-  <div class="tok" id="tp9" style="left: 780px; top: 720px; font-size: 26px; background: #d9f7ea; border-color: var(--mint)"><i data-ic="spark" data-s="38"></i>Always ready to use</div>
+
+  <!-- the routines list -->
+  <div class="card" id="rl9" style="left: 880px; top: 270px; width: 900px; height: 310px">
+    <span class="tag ink" style="position: absolute; left: 20px; top: 14px">Routines</span>
+    <div class="rowr" id="r9a" style="top: 62px"><div class="tile sm" style="position: static; flex: none"><img src="assets/deck/book.png" alt="" /></div><div class="nm"><span id="rt9a"></span></div>
+      <div class="tok mint" id="run9a"><i data-ic="play" data-s="28"></i>Run</div><div class="tok sun" id="sch9a"><i data-ic="clock" data-s="28"></i>Schedule</div><div class="tok" id="shr9a"><i data-ic="share" data-s="28"></i>Share</div><div class="pb" id="pb9"></div></div>
+    <div class="rowr" id="r9b" style="top: 162px"><div class="tile sm" style="position: static; flex: none"><img src="assets/deck/book.png" alt="" /></div><div class="nm"><span id="rt9b"></span></div>
+      <div class="tok mint"><i data-ic="play" data-s="28"></i>Run</div><div class="tok sun"><i data-ic="clock" data-s="28"></i>Schedule</div><div class="tok"><i data-ic="share" data-s="28"></i>Share</div></div>
+  </div>
+  <div class="card" id="sc9" style="left: 1000px; top: 606px; width: 780px; height: 112px; display: flex; align-items: center; gap: 20px; padding: 0 26px"><i data-ic="calendar" data-s="60"></i><b style="font-size: 30px">Runs on a schedule</b>
+    <div class="tok sun sm" style="position: static">Weekly</div><div class="tok sun sm" style="position: static">Monthly</div><i data-ic="tick" data-s="44" style="margin-left: auto"></i></div>
+  <div class="tok mint" id="dn9" style="left: 1590px; top: 222px; font-size: 26px"><i data-ic="tick" data-s="34"></i>Done</div>
+
+  <!-- teach once, benefit every time -->
+  <div class="tok sun" id="tk9" style="left: 300px; top: 290px; font-size: 32px"><i data-ic="pencil" data-s="42"></i>Teach it once</div>
+  <div id="rn9">
+    <div class="rn" style="left: 150px; top: 430px"><i data-ic="tick" data-s="44"></i></div><div class="rn" style="left: 250px; top: 430px"><i data-ic="tick" data-s="44"></i></div><div class="rn" style="left: 350px; top: 430px"><i data-ic="tick" data-s="44"></i></div>
+    <div class="rn" style="left: 450px; top: 430px"><i data-ic="tick" data-s="44"></i></div><div class="rn" style="left: 550px; top: 430px"><i data-ic="tick" data-s="44"></i></div><div class="rn" style="left: 650px; top: 430px"><i data-ic="tick" data-s="44"></i></div>
+  </div>
+  <div class="tok mint" id="bn9" style="left: 250px; top: 540px; font-size: 30px"><i data-ic="infinity" data-s="42"></i>Benefit every time after</div>
+
+  <!-- share it with the team -->
+  <div class="card" id="tp9a" style="left: 900px; top: 660px; width: 270px; height: 110px; display: flex; align-items: center; gap: 14px; padding: 0 20px"><div class="ntile sm" style="position: static; width: 64px; height: 64px"><i data-ic="person" data-s="40"></i></div><b style="font-size: 26px">Teammate</b><img src="assets/deck/book.png" alt="" style="width: 36px; height: 36px; margin-left: auto; background: var(--navy); border-radius: 9px; padding: 5px" /></div>
+  <div class="card" id="tp9b" style="left: 1210px; top: 660px; width: 270px; height: 110px; display: flex; align-items: center; gap: 14px; padding: 0 20px"><div class="ntile sm" style="position: static; width: 64px; height: 64px"><i data-ic="person" data-s="40"></i></div><b style="font-size: 26px">Teammate</b><img src="assets/deck/book.png" alt="" style="width: 36px; height: 36px; margin-left: auto; background: var(--navy); border-radius: 9px; padding: 5px" /></div>
+  <div class="card" id="tp9c" style="left: 1520px; top: 660px; width: 270px; height: 110px; display: flex; align-items: center; gap: 14px; padding: 0 20px"><div class="ntile sm" style="position: static; width: 64px; height: 64px"><i data-ic="person" data-s="40"></i></div><b style="font-size: 26px">Teammate</b><img src="assets/deck/book.png" alt="" style="width: 36px; height: 36px; margin-left: auto; background: var(--navy); border-radius: 9px; padding: 5px" /></div>
+  <div class="tok red" id="rb9" style="left: 960px; top: 800px; font-size: 26px; text-decoration: line-through; text-decoration-thickness: 4px"><i data-ic="loop" data-s="38"></i>Rebuilding it from scratch</div>
+  <i id="cs9" class="abs" data-ic="cursor" data-s="52" style="left: 700px; top: 640px"></i>
 </section>

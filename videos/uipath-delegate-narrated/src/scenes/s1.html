@@ -1,19 +1,103 @@
 <section id="s1" class="clip" data-start="{{s1.start}}" data-duration="{{s1.dur}}" data-track-index="0">
   <style>
-    #s1 { text-align: center; padding-top: 96px; }
-    #s1 .kick { font-size: 30px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); }
-    #s1 h1 { font-size: 150px; font-weight: 900; letter-spacing: -0.05em; line-height: 1.1; margin-top: 6px; }
+    #s1 h1 { position: absolute; left: 0; width: 1920px; top: 100px; text-align: center; font-size: 150px; font-weight: 900; letter-spacing: -0.05em; line-height: 1.1; }
     #s1 h1 span { color: var(--teal); }
-    #s1 p { font-size: 50px; color: var(--muted); font-weight: 800; margin-top: 6px; }
-    #s1 p b { color: var(--ink); }
+    #s1 .sub { position: absolute; left: 0; width: 1920px; top: 262px; text-align: center; font-size: 56px; color: var(--muted); font-weight: 800; }
+    #s1 .sub b { color: var(--ink); }
+    #s1 .ml { position: absolute; left: 22px; width: 490px; height: 62px; border: 3px solid var(--ink); border-radius: 14px; background: #fff; display: flex; align-items: center; gap: 12px; padding: 0 14px; }
+    #s1 .ml .skel { height: 11px; }
+    #s1 .ev { position: absolute; border: 4px solid var(--ink); border-radius: 12px; font-size: 20px; font-weight: 800; padding: 4px 10px; }
+    #s1 .hr { position: absolute; left: 0; right: 0; border-top: 3px dashed #dfe3f2; }
+    #s1 .hr b { position: absolute; left: 12px; top: -14px; background: #fff; padding: 0 6px; font-size: 20px; color: var(--muted); }
+    #s1 .gc { position: absolute; display: flex; gap: 10px; width: 100%; }
+    #s1 .ap { position: absolute; top: 400px; width: 200px; text-align: center; }
+    #s1 .ap .ntile { position: static; margin: 0 auto; }
+    #s1 .ap span { display: block; margin-top: 12px; font-size: 26px; font-weight: 800; }
+    #s1 .ck { display: flex; align-items: center; gap: 16px; margin-top: 14px; height: 58px; padding: 0 16px; border: 3px solid var(--ink); border-radius: 14px; font-size: 26px; font-weight: 800; }
+    #s1 .ck .bx { width: 34px; height: 34px; border: 4px solid var(--ink); border-radius: 9px; position: relative; flex: none; }
+    #s1 .ck .bx i { position: absolute; left: -2px; top: -3px; }
   </style>
-  <div class="kick">Delegate Demystified</div>
-  <h1><span>UiPath</span> Delegate</h1>
-  <p>Your first <b>AI</b> intern</p>
+
+  <!-- the busy Monday -->
+  <div class="card" id="clk1" style="left: 690px; top: 76px; width: 540px; height: 108px; display: flex; align-items: center; justify-content: center; gap: 22px">
+    <i data-ic="clock" data-s="64"></i><b id="clkt1" style="font-size: 58px; letter-spacing: -0.02em">Mon 8:55</b>
+  </div>
+
+  <div class="win" id="w1a" style="left: 120px; top: 220px; width: 540px; height: 480px">
+    <div class="bar"><b></b><b></b><b></b><span>Inbox</span></div>
+    <div id="cnt1" style="position: absolute; right: 14px; top: 6px; min-width: 52px; height: 34px; padding: 0 10px; border-radius: 17px; background: var(--coral); color: #fff; font-size: 22px; font-weight: 900; display: flex; align-items: center; justify-content: center">3</div>
+    <div class="ml" id="m1a" style="top: 60px"><i data-ic="mail" data-s="36"></i><div style="flex: 1"><div class="skel" style="width: 70%"></div><div class="skel" style="width: 45%; margin-top: 8px"></div></div></div>
+    <div class="ml" id="m1b" style="top: 128px"><i data-ic="mail" data-s="36"></i><div style="flex: 1"><div class="skel" style="width: 60%"></div><div class="skel" style="width: 80%; margin-top: 8px"></div></div></div>
+    <div class="ml" id="m1c" style="top: 196px"><i data-ic="mail" data-s="36"></i><div style="flex: 1"><div class="skel" style="width: 75%"></div><div class="skel" style="width: 40%; margin-top: 8px"></div></div></div>
+    <div class="ml" id="m1d" style="top: 264px"><i data-ic="mail" data-s="36"></i><div style="flex: 1"><div class="skel" style="width: 55%"></div><div class="skel" style="width: 70%; margin-top: 8px"></div></div></div>
+    <div class="ml" id="m1e" style="top: 332px"><i data-ic="mail" data-s="36"></i><div style="flex: 1"><div class="skel" style="width: 80%"></div><div class="skel" style="width: 50%; margin-top: 8px"></div></div></div>
+    <div class="ml" id="m1f" style="top: 400px"><i data-ic="mail" data-s="36"></i><div style="flex: 1"><div class="skel" style="width: 65%"></div><div class="skel" style="width: 60%; margin-top: 8px"></div></div></div>
+    <div class="ml" id="m1g" style="top: 468px"><i data-ic="mail" data-s="36"></i><div style="flex: 1"><div class="skel" style="width: 72%"></div><div class="skel" style="width: 44%; margin-top: 8px"></div></div></div>
+  </div>
+
+  <div class="win" id="w1b" style="left: 700px; top: 220px; width: 560px; height: 480px">
+    <div class="bar"><b></b><b></b><b></b><span>Calendar</span></div>
+    <div class="hr" style="top: 90px"><b>9</b></div><div class="hr" style="top: 190px"><b>10</b></div><div class="hr" style="top: 290px"><b>11</b></div><div class="hr" style="top: 390px"><b>12</b></div>
+    <div class="ev" id="e1a" style="left: 80px; top: 62px; width: 250px; height: 76px; background: #d3f5f8"></div>
+    <div class="ev" id="e1b" style="left: 230px; top: 100px; width: 250px; height: 76px; background: #fff2c4"></div>
+    <div class="ev" id="e1c" style="left: 80px; top: 214px; width: 250px; height: 76px; background: #e6e0ff"></div>
+    <div class="ev" id="e1d" style="left: 230px; top: 252px; width: 250px; height: 76px; background: #ffe1e6"></div>
+    <div class="ev" id="e1e" style="left: 80px; top: 340px; width: 250px; height: 68px; background: #d9f7ea"></div>
+    <div class="ev" id="e1f" style="left: 230px; top: 376px; width: 250px; height: 68px; background: #fff2c4"></div>
+    <i class="abs wn1" data-ic="warn" data-s="54" style="left: 372px; top: 72px"></i>
+    <i class="abs wn1" data-ic="warn" data-s="54" style="left: 372px; top: 224px"></i>
+    <i class="abs wn1" data-ic="warn" data-s="54" style="left: 372px; top: 350px"></i>
+  </div>
+  <div class="tag red" id="cl1" style="left: 890px; top: 716px; font-size: 26px; padding: 8px 22px">3 clashes</div>
+
+  <div class="win" id="w1c" style="left: 1300px; top: 220px; width: 500px; height: 250px">
+    <div class="bar"><b></b><b></b><b></b><span>Last quarter</span></div>
+    <div style="padding: 18px 22px">
+      <div style="display: flex; gap: 12px"><div class="skel" style="height: 34px; flex: 1"></div><div class="skel" style="height: 34px; flex: 1"></div><div class="skel" style="height: 34px; flex: 1"></div></div>
+      <div style="display: flex; gap: 12px; margin-top: 12px"><div class="skel" style="height: 34px; flex: 1"></div><div class="skel" style="height: 34px; flex: 1"></div><div class="skel" style="height: 34px; flex: 1"></div></div>
+      <div style="display: flex; gap: 12px; margin-top: 12px"><div class="skel" style="height: 34px; flex: 1"></div><div class="skel" style="height: 34px; flex: 1"></div><div id="c1n" style="height: 34px; flex: 1; border-radius: 7px; background: #ffe28a; border: 3px solid var(--ink); text-align: center; font-weight: 900; font-size: 24px; line-height: 28px">?</div></div>
+    </div>
+  </div>
+  <div class="win" id="w1d" style="left: 1300px; top: 500px; width: 500px; height: 200px">
+    <div class="bar"><b></b><b></b><b></b><span>CRM record</span></div>
+    <div style="padding: 18px 22px; display: flex; gap: 20px; align-items: center"><i data-ic="crm" data-s="72"></i>
+      <div style="flex: 1"><div class="skel" style="width: 80%"></div><div class="skel" style="width: 55%; margin-top: 12px"></div><div style="margin-top: 14px; width: 130px; height: 34px; border-radius: 7px; background: #ffe28a; border: 3px solid var(--ink); text-align: center; font-weight: 900; font-size: 24px; line-height: 28px">?</div></div></div>
+  </div>
+  <div class="tok sun sm" id="vs1" style="left: 1490px; top: 457px; padding: 2px 16px 2px 8px"><i data-ic="search" data-s="30"></i>same?</div>
+
+  <!-- ...none of it is hard: five apps -->
+  <div class="tok mint" id="nh1" style="left: 800px; top: 300px; font-size: 40px"><i data-ic="tick" data-s="46"></i>None of it is hard</div>
+  <div class="tok sun" id="bw1" style="left: 830px; top: 250px; font-size: 40px"><i data-ic="stack" data-s="46"></i>Busywork</div>
+  <svg class="ov" viewBox="0 0 1920 1080"><path id="wv1" d="M 360 456 Q 510 330 660 456 T 960 456 T 1260 456 T 1560 456" stroke="#d92d48" stroke-width="7" stroke-dasharray="4 16" /></svg>
+  <div class="ap" id="ap1a" style="left: 260px"><div class="ntile"><i data-ic="mail" data-s="70"></i></div><span>Email</span></div>
+  <div class="ap" id="ap1b" style="left: 560px"><div class="ntile"><i data-ic="calendar" data-s="70"></i></div><span>Calendar</span></div>
+  <div class="ap" id="ap1c" style="left: 860px"><div class="ntile"><i data-ic="table" data-s="70"></i></div><span>Spreadsheet</span></div>
+  <div class="ap" id="ap1d" style="left: 1160px"><div class="ntile"><i data-ic="crm" data-s="70"></i></div><span>CRM</span></div>
+  <div class="ap" id="ap1e" style="left: 1460px"><div class="ntile"><i data-ic="doc" data-s="70"></i></div><span>Documents</span></div>
+  <div class="tok red" id="fv1" style="left: 780px; top: 610px; font-size: 38px"><b style="font-size: 46px">5</b> different apps</div>
+
+  <!-- what if you could hand it over: a Delegate session -->
+  <div class="win" id="ss1" style="left: 500px; top: 220px; width: 820px; height: 480px">
+    <div class="bar"><b></b><b></b><b></b><span>Delegate session</span></div>
+    <div class="bub" style="left: 24px; top: 68px; width: 770px; min-height: 84px; padding: 14px 24px; font-size: 26px"><span id="pr1"></span></div>
+    <div id="cks1" style="position: absolute; left: 24px; top: 176px; width: 770px">
+      <div class="ck" id="k1a"><div class="bx"><i data-ic="tick" data-s="34" class="kt1"></i></div><i data-ic="mail" data-s="34"></i>Triage the inbox</div>
+      <div class="ck" id="k1b"><div class="bx"><i data-ic="tick" data-s="34" class="kt1"></i></div><i data-ic="calendar" data-s="34"></i>Fix the calendar clashes</div>
+      <div class="ck" id="k1c"><div class="bx"><i data-ic="tick" data-s="34" class="kt1"></i></div><i data-ic="crm" data-s="34"></i>Check the number in the CRM</div>
+    </div>
+    <div class="tok teal" id="ap1" style="left: 24px; top: 400px; font-size: 26px; padding: 4px 22px 4px 12px"><i data-ic="hand" data-s="36"></i>You approve</div>
+  </div>
+
+  <!-- title card -->
+  <h1 id="ti1"><span>UiPath</span> Delegate</h1>
+  <div class="sub" id="su1">Hire your first <b>AI-intern</b></div>
   <div class="tile sm cf" style="left: 110px; top: 330px"><img src="assets/deck/keyboard.png" alt="" /></div>
   <div class="tile sm cf" style="left: 210px; top: 520px"><img src="assets/deck/mic.png" alt="" /></div>
   <div class="tile sm cf" style="left: 110px; top: 700px"><img src="assets/deck/video.png" alt="" /></div>
   <div class="tile sm cf" style="left: 1726px; top: 330px"><img src="assets/deck/layers.png" alt="" /></div>
   <div class="tile sm cf" style="left: 1626px; top: 520px"><img src="assets/deck/team-gear.png" alt="" /></div>
   <div class="tile sm cf" style="left: 1726px; top: 700px"><img src="assets/deck/shield.png" alt="" /></div>
+  <div class="tok" id="ch1a" style="left: 420px; top: 400px"><img src="assets/deck/bolt.png" alt="" style="width: 40px; height: 40px; background: var(--navy); border-radius: 10px; padding: 6px" />What it does</div>
+  <div class="tok sun" id="ch1b" style="left: 740px; top: 400px"><i data-ic="gear" data-s="40"></i>How it works</div>
+  <div class="tok mint" id="ch1c" style="left: 1080px; top: 400px"><img src="assets/deck/shield.png" alt="" style="width: 40px; height: 40px; background: var(--navy); border-radius: 10px; padding: 6px" />How you keep control</div>
 </section>

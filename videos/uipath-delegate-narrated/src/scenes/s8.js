@@ -1,41 +1,59 @@
-// ===================== 8 · Way 1: compose & execute =====================
+// ===================== 8 · MCP Apps: real screens inside the conversation =====================
 enter("s8");
-prep("#h8p, #zp8a, #zp8b, #zp8c, #sp8a, #sp8b, #sp8c, #fa8");
-tl.set("#tk8a, #tk8b, #tk8c, #tk8d, #h8a, #h8b, #z8a, #z8b, #z8c, #z8d, #y8a, #y8b, #y8c, #y8d, #bb8, #nc8, #wf8, #st8a, #st8b, #st8c, #fb8, #sk8a, #sk8b, #sk8c, #s8 .tk8", { opacity: 0 }, 0);
-put("#sam", L("s8a", 0.0), 230, 858, 1.25, 1.4);
-put("#dlg", L("s8a", 0.0), 810, 858, 1.3, 1.6);
-face("#dlg", "n", L("s8a", 0.0));
-// intro: prompt -> productivity, then the four things
-show("#h8a", W("s8a", 8), { x: -30, s: 0.8, d: 0.6 }); draw("#h8p", W("s8a", 9), 0.6); show("#h8b", W("s8a", 10), { x: 30, s: 0.8, d: 0.6 });
-hide("#h8a, #h8b, #h8p", L("s8b", -0.2), 0.4);
-[["z8a", "y8a", 2], ["z8b", "y8b", 3], ["z8c", "y8c", 4], ["z8d", "y8d", 6]].forEach(([z, y, w], i) => {
-  show("#" + z, W("s8b", w), { y: 24, s: 0.7, d: 0.6 }); show("#" + y, W("s8b", w) + 0.2, { y: 12, d: 0.5 });
-  if (i > 0) draw(["#zp8a", "#zp8b", "#zp8c"][i - 1], W("s8b", w) - 0.3, 0.4);
-});
-hide("#z8a, #z8b, #z8c, #z8d, #y8a, #y8b, #y8c, #y8d, #zp8a, #zp8b, #zp8c", L("s8c", -0.2), 0.4);
-["#tk8a", "#tk8b", "#tk8c", "#tk8d"].forEach((sel, i) => show(sel, L("s8c", 0.1 + i * 0.12), { y: 12, d: 0.4 }));
-// compose: plain language, no code
-fade("#bb8", L("s8d", 0.0), 0.4);
-tl.set("#bp8", { textContent: "" }, 0);
-typeText("#bp8", "Pull my case backlog from Salesforce and prioritize the day.", L("s8d", 0.5), 2.6);
-show("#nc8", W("s8d", 6), { s: 0.5, d: 0.5 });
-mood("#sam", "happy", L("s8d", 0.0));
-// breaks a complex workflow into steps
-show("#wf8", W("s8e", 3), { x: -30, s: 0.8, d: 0.7 });
-draw("#sp8a, #sp8b, #sp8c", W("s8e", 5), 0.6);
-show("#st8a", W("s8e", 6) + 0.1, { x: 40, s: 0.85, d: 0.6 }); show("#st8b", W("s8e", 6) + 0.25, { x: 40, s: 0.85, d: 0.6 }); show("#st8c", W("s8e", 6) + 0.4, { x: 40, s: 0.85, d: 0.6 });
-// UI automation, files, API calls: each gets done
-typing("#dlg", L("s8f", 0.0), LE("s8f", 0.0));
-const tk8 = $$("#s8 .tk8");
-[["#st8a", 2, 0], ["#st8b", 4, 1], ["#st8c", 6, 2]].forEach(([sel, w, i]) => {
-  pulse(sel, W("s8f", w), 1.06); fade(tk8[i], W("s8f", w) + 0.5, 0.3); pulse(tk8[i], W("s8f", w) + 0.5, 1.3);
-});
-face("#dlg", "h", LE("s8f", 0.0));
-// learns from feedback over time
-show("#fb8", W("s8g", 3), { x: 30, s: 0.8, d: 0.6 }); draw("#fa8", W("s8g", 4), 0.6);
-["#sk8a", "#sk8b", "#sk8c"].forEach((sel, i) => {
-  show(sel, L("s8g", 0.8 + i * 0.25), { s: 0.3, d: 0.5 });
-  tl.to(sel, { y: "-=14", rotation: 20, duration: 0.7, yoyo: true, repeat: 3, ease: "sine.inOut", transformOrigin: "50% 50%" }, L("s8g", 1.3 + i * 0.25));
-});
-cheer("#dlg", L("s8g", 1.2));
+prep("#sa8");
+tl.set("#ch8, #ub8, #rp8, #tw8, #jt8, #zr8, #zt8, #ui8a, #ui8b, #ui8c, #ui8d, #fm8, #cs8, #sy8, #syl8, #nx8, #in8, #lt8, #ok8", { opacity: 0 }, 0);
+tl.set("#ut8, #fv8a, #fv8b, #fv8c", { textContent: "" }, 0);
+
+put("#sam", S("s8") + 0.1, 150, 900, 0.7, 1.2);
+put("#dlg", S("s8") + 0.1, 340, 900, 0.6, 1.2);
+face("#dlg", "n", S("s8") + 0.1);
+
+// chat is great, but sometimes you need the real thing: a proper form or table to work in
+show("#ch8", L("s8a", 0.2), { y: 40, s: 0.95, d: 0.7 });
+show("#ub8", L("s8a", 0.9), { y: 16, s: 0.9, d: 0.5 });
+typeText("#ut8", "Show me my open requests.", L("s8a", 1.0), 2.0);
+show("#tw8", W("s8a", 7), { y: 20, s: 0.95, d: 0.6 });
+show("#jt8", W("s8a", 14), { y: 16, s: 0.7, d: 0.5 }); shake("#jt8", W("s8a", 16), 8);
+mood("#sam", "sad", W("s8a", 14)); face("#dlg", "q", W("s8a", 14));
+
+// when Delegate connects to a system with its own interface...
+show("#sy8", W("s8b", 5), { x: 30, s: 0.6, d: 0.6 });
+draw("#sa8", W("s8b", 6), 0.5);
+fade("#syl8", W("s8b", 8), 0.5);
+face("#dlg", "h", W("s8b", 5));
+// ...it can show that system's real screens inside the conversation
+hide("#tw8, #jt8", L("s8c", 0.3), 0.4);
+show("#zr8", W("s8c", 5), { s: 0.98, y: 0, d: 0.6 }); show("#zt8", W("s8c", 5) + 0.2, { y: 8, s: 0.9, d: 0.5 });
+mood("#sam", "happy", W("s8c", 5));
+// lists, forms, tables and dashboards render inline
+show("#ui8a", L("s8d", 0.0), { y: 24, s: 0.85, d: 0.5 });
+show("#ui8b", W("s8d", 1), { y: 24, s: 0.85, d: 0.5 });
+show("#ui8c", W("s8d", 2), { y: 24, s: 0.85, d: 0.5 });
+show("#ui8d", W("s8d", 4), { y: 24, s: 0.85, d: 0.5 });
+pulse("#zr8", W("s8d", 6), 1.01);
+typing("#dlg", W("s8d", 1), LE("s8d", 0.0));
+
+// forms arrive already filled in with sensible values
+hide("#ui8a, #ui8b, #ui8c, #ui8d, #zt8", L("s8e", 0.0), 0.4);
+show("#fm8", L("s8e", 0.3), { y: 20, s: 0.92, d: 0.6 });
+typeText("#fv8a", "Standard", W("s8e", 3), 0.5);
+typeText("#fv8b", "10", W("s8e", 4) + 0.1, 0.3);
+typeText("#fv8c", "Open", W("s8e", 5) + 0.1, 0.4);
+// ...so you change only what matters, instead of describing every field in chat
+show("#cs8", W("s8f", 2), { s: 0.5, d: 0.3 });
+curTo("#cs8", W("s8f", 2) + 0.2, "#qb8", 0.7, 60, 0);
+tl.set("#fv8b", { textContent: "12" }, W("s8f", 4));
+tl.to("#qb8", { backgroundColor: "#ffe28a", duration: 0.3 }, W("s8f", 4)); pulse("#qb8", W("s8f", 4), 1.06);
+curTo("#cs8", W("s8f", 6) - 0.3, "#sb8", 0.7);
+pulse("#sb8", W("s8f", 6) + 0.5, 1.15);
+show("#ok8", W("s8f", 7) + 0.3, { s: 0.3, d: 0.5 });
+show("#nx8", W("s8f", 8), { y: 16, s: 0.7, d: 0.5 }); shake("#nx8", W("s8f", 9), 8);
+// you keep the precision of the real interface without leaving the conversation
+show("#rp8", L("s8g", 0.3), { x: -20, s: 0.9, d: 0.6 });
+pulse("#fm8", W("s8g", 3), 1.03);
+tl.to("#ch8", { borderColor: "#0b7a85", duration: 0.4 }, W("s8g", 3));
+show("#in8", W("s8g", 8), { y: 16, s: 0.7, d: 0.5 });
+// this works through MCP Apps
+show("#lt8", W("s8h", 1), { y: 30, s: 0.9, d: 0.7 });
+cheer("#sam", W("s8h", 3)); cheer("#dlg", W("s8h", 3) + 0.3);
 leave("s8");

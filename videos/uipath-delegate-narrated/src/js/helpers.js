@@ -70,6 +70,28 @@ function blinkEl(sel, t0, t1, per = 0.5) {
   tl.fromTo(sel, { opacity: 1 }, { opacity: 0.15, duration: per, yoyo: true, repeat: reps, ease: "steps(1)", immediateRender: false }, t0);
 }
 
+
+// page-space centre of an element (from offset boxes, so it ignores any running transforms)
+function ctr(sel) {
+  let el = document.querySelector(sel);
+  let x = el.offsetWidth / 2, y = el.offsetHeight / 2;
+  while (el && el.id !== "root") { x += el.offsetLeft + (el.offsetParent && el.offsetParent.id !== "root" ? el.offsetParent.clientLeft : 0); y += el.offsetTop + (el.offsetParent && el.offsetParent.id !== "root" ? el.offsetParent.clientTop : 0); el = el.offsetParent; }
+  return { x, y };
+}
+// move a cursor icon (arrow tip at ~ (0.27*size, 0.15*size) of its box) so its tip lands on the target element
+function curTo(cur, t, target, d = 0.9, dx = 0, dy = 0) {
+  const c = document.querySelector(cur), p = ctr(target), cp = ctr(cur);
+  const sz = c.offsetWidth || 54;
+  tl.to(cur, { x: p.x + dx - cp.x + 0.23 * sz, y: p.y + dy - cp.y + 0.35 * sz, duration: d, ease: "power2.inOut" }, t);
+}
+
+// move an absolutely positioned element (child of a scene section) through page points (top-left corners), one hop each
+function route(sel, t, pts, per = 0.5, ease = "power1.inOut") {
+  const el = document.querySelector(sel);
+  const bx = el.offsetLeft, by = el.offsetTop;
+  pts.forEach(([px, py], i) => tl.to(sel, { x: px - bx, y: py - by, duration: per, ease }, t + i * per));
+}
+
 // characters ------------------------------------------------------
 // put a character's bottom-centre at (cx, by) at scale s (works for any .char, whatever its base position)
 function stage(sel, cx, by, s = 1) {
@@ -128,11 +150,15 @@ function face(sel, f, t) {
 }
 
 // ===================== captions timeline + idle life =====================
-Object.keys(T.lines).forEach((id) => {
+const capIds = Object.keys(T.lines);
+capIds.forEach((id, n) => {
   const ln = T.lines[id];
   const t0 = ln.start, t1 = ln.start + ln.dur;
+  const nextStart = n + 1 < capIds.length ? T.lines[capIds[n + 1]].start : Infinity;
   tl.fromTo("#cap-" + id, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.2, ease: "power1.out" }, t0 - 0.05);
-  tl.to("#cap-" + id, { opacity: 0, duration: 0.2 }, t1 + 0.3);
+  // the caption leaves 0.3 s after its line, but never later than the next caption arrives (short gaps inside one sentence)
+  const hideAt = Math.max(t1, Math.min(t1 + 0.3, nextStart - 0.17));
+  tl.to("#cap-" + id, { opacity: 0, duration: Math.min(0.2, Math.max(0.08, nextStart - 0.05 - hideAt)) }, hideAt);
   ln.words.forEach((w, i) => {
     const a = t0 + w.t;
     const b = i + 1 < ln.words.length ? t0 + ln.words[i + 1].t : t1;

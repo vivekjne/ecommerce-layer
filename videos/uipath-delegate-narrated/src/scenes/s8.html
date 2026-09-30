@@ -1,35 +1,61 @@
 <section id="s8" class="clip" data-start="{{s8.start}}" data-duration="{{s8.dur}}" data-track-index="0">
-  <div class="eyebrow">How it works</div>
-  <h2>Compose &amp; execute tasks</h2>
-  <div class="tok trk on" id="tk8a" style="left: 1010px"><b class="mono">1</b>Compose</div><div class="tok trk" id="tk8b" style="left: 1190px"><b class="mono">2</b>Teach</div><div class="tok trk" id="tk8c" style="left: 1330px"><b class="mono">3</b>Attach</div><div class="tok trk" id="tk8d" style="left: 1480px"><b class="mono">4</b>Control</div>
+  <style>
+    #s8 .th { position: absolute; width: 410px; height: 172px; background: #fff; border: 3px solid var(--ink); border-radius: 16px; overflow: hidden; }
+    #s8 .th .tb { height: 30px; background: #eef1fb; border-bottom: 3px solid var(--ink); display: flex; align-items: center; padding: 0 12px; font-size: 17px; font-weight: 800; color: var(--muted); gap: 8px; }
+    #s8 .lr { display: flex; align-items: center; gap: 10px; height: 26px; margin: 8px 14px 0; }
+    #s8 .lr .cb { width: 18px; height: 18px; border: 3px solid var(--ink); border-radius: 5px; flex: none; }
+    #s8 .lr .skel { flex: 1; height: 10px; }
+    #s8 .tc { display: flex; gap: 8px; margin: 8px 14px 0; }
+    #s8 .tc .skel { flex: 1; height: 16px; }
+    #s8 .ff { display: flex; align-items: center; gap: 18px; margin-top: 14px; }
+    #s8 .ff b { width: 150px; font-size: 26px; }
+    #s8 .ff .bx { flex: 1; height: 46px; border: 3px solid var(--ink); border-radius: 12px; background: #f6f7fd; display: flex; align-items: center; padding: 0 18px; font-size: 26px; font-weight: 800; }
+  </style>
+  <div class="eyebrow">Real screens, in the conversation</div>
+  <h2>Works with a system's own interface</h2>
 
-  <!-- intro: from prompt to productivity, four things -->
-  <div id="i8">
-    <div class="tok" id="h8a" style="left: 470px; top: 330px; font-size: 44px; padding: 14px 34px 14px 20px"><i data-ic="pencil" data-s="56"></i>Prompt</div>
-    <div class="tok sun" id="h8b" style="left: 1150px; top: 330px; font-size: 44px; padding: 14px 34px 14px 20px"><i data-ic="chart" data-s="56"></i>Productivity</div>
-    <svg class="ov" viewBox="0 0 1920 1080"><path id="h8p" d="M 800 380 L 1130 380" stroke="#0b7a85" stroke-width="10" marker-end="url(#ahTeal)" /></svg>
-    <div class="tile lg" id="z8a" style="left: 270px; top: 290px"><img src="assets/deck/terminal.png" alt="" /></div><div class="lab" id="y8a" style="left: 200px; top: 450px; width: 280px">Compose &amp; execute</div>
-    <div class="tile lg" id="z8b" style="left: 650px; top: 290px"><img src="assets/deck/book.png" alt="" /></div><div class="lab" id="y8b" style="left: 580px; top: 450px; width: 280px">Teach with Routines</div>
-    <div class="tile lg" id="z8c" style="left: 1030px; top: 290px"><img src="assets/deck/paperclip.png" alt="" /></div><div class="lab" id="y8c" style="left: 960px; top: 450px; width: 280px">Attach SOPs</div>
-    <div class="tile lg" id="z8d" style="left: 1410px; top: 290px"><img src="assets/deck/sliders.png" alt="" /></div><div class="lab" id="y8d" style="left: 1340px; top: 450px; width: 280px">Control access</div>
-    <svg class="ov" viewBox="0 0 1920 1080"><path id="zp8a" d="M 428 360 L 640 360" stroke="#1f2140" stroke-width="7" marker-end="url(#ahInk)" /><path id="zp8b" d="M 808 360 L 1020 360" stroke="#1f2140" stroke-width="7" marker-end="url(#ahInk)" /><path id="zp8c" d="M 1188 360 L 1400 360" stroke="#1f2140" stroke-width="7" marker-end="url(#ahInk)" /></svg>
+  <!-- the conversation -->
+  <div class="win" id="ch8" style="left: 300px; top: 240px; width: 1320px; height: 480px">
+    <div class="bar"><b></b><b></b><b></b><span>Delegate chat</span></div>
+    <!-- left: the exchange -->
+    <div class="bub" id="ub8" style="left: 20px; top: 62px; width: 380px; min-height: 76px; font-size: 24px; padding: 12px 18px"><span id="ut8"></span></div>
+    <div class="bub" id="rp8" style="left: 20px; top: 300px; width: 380px; min-height: 76px; font-size: 24px; padding: 12px 18px; border-color: var(--mint); background: #f2fdf8; display: flex; align-items: center; gap: 12px"><i data-ic="tick" data-s="40"></i>Submitted. Anything else?</div>
+    <!-- right: plain text vs the real screens -->
+    <div class="bub" id="tw8" style="left: 440px; top: 60px; width: 850px; height: 350px; padding: 20px 28px">
+      <div class="skel" style="height: 12px"></div><div class="skel" style="height: 12px; margin-top: 14px; width: 92%"></div><div class="skel" style="height: 12px; margin-top: 14px"></div><div class="skel" style="height: 12px; margin-top: 14px; width: 88%"></div><div class="skel" style="height: 12px; margin-top: 14px; width: 95%"></div><div class="skel" style="height: 12px; margin-top: 14px; width: 70%"></div><div class="skel" style="height: 12px; margin-top: 14px; width: 90%"></div><div class="skel" style="height: 12px; margin-top: 14px; width: 82%"></div>
+    </div>
+    <div class="tok red" id="jt8" style="left: 720px; top: 340px; font-size: 28px"><i data-ic="x" data-s="38"></i>Just text</div>
+
+    <div id="zr8" style="position: absolute; left: 432px; top: 54px; width: 866px; height: 372px; border: 4px dashed var(--teal); border-radius: 22px"></div>
+    <div class="tag" id="zt8" style="left: 460px; top: 40px; font-size: 18px; padding: 4px 14px">The system's real screens</div>
+
+    <div class="th" id="ui8a" style="left: 450px; top: 68px"><div class="tb"><i data-ic="list" data-s="22"></i>List</div>
+      <div class="lr"><div class="cb"></div><div class="skel"></div></div><div class="lr"><div class="cb"></div><div class="skel" style="width: 70%"></div></div><div class="lr"><div class="cb"></div><div class="skel"></div></div><div class="lr"><div class="cb"></div><div class="skel" style="width: 60%"></div></div></div>
+    <div class="th" id="ui8b" style="left: 880px; top: 68px"><div class="tb"><i data-ic="form" data-s="22"></i>Form</div>
+      <div style="padding: 10px 16px"><div class="skel" style="width: 50%; height: 10px"></div><div style="height: 26px; margin-top: 6px; border: 3px solid var(--ink); border-radius: 8px; background: #f6f7fd"></div><div class="skel" style="width: 40%; height: 10px; margin-top: 10px"></div><div style="height: 26px; margin-top: 6px; border: 3px solid var(--ink); border-radius: 8px; background: #f6f7fd"></div></div></div>
+    <div class="th" id="ui8c" style="left: 450px; top: 252px"><div class="tb"><i data-ic="table" data-s="22"></i>Table</div>
+      <div class="tc"><div class="skel" style="background: #c7cdf0"></div><div class="skel" style="background: #c7cdf0"></div><div class="skel" style="background: #c7cdf0"></div></div><div class="tc"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div><div class="tc"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div><div class="tc"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div></div>
+    <div class="th" id="ui8d" style="left: 880px; top: 252px"><div class="tb"><i data-ic="gauge" data-s="22"></i>Dashboard</div>
+      <div style="display: flex; align-items: flex-end; gap: 14px; height: 100px; margin: 16px 22px 0"><div style="width: 40px; height: 50px; background: #21c7d6; border: 3px solid var(--ink)"></div><div style="width: 40px; height: 90px; background: #ffc93c; border: 3px solid var(--ink)"></div><div style="width: 40px; height: 66px; background: #7b61ff; border: 3px solid var(--ink)"></div><div style="width: 40px; height: 80px; background: #06d6a0; border: 3px solid var(--ink)"></div><div style="margin-left: auto; width: 96px; height: 96px; border-radius: 50%; border: 14px solid #21c7d6; border-top-color: #ffc93c; border-right-color: #ff8fa0"></div></div></div>
+
+    <!-- the form that arrives filled in -->
+    <div class="card" id="fm8" style="left: 560px; top: 62px; width: 640px; height: 350px; padding: 18px 30px; border-color: var(--teal)">
+      <div style="display: flex; align-items: center; gap: 14px"><i data-ic="form" data-s="44"></i><b style="font-size: 30px">Request form</b></div>
+      <div class="ff"><b>Type</b><div class="bx"><span id="fv8a"></span></div></div>
+      <div class="ff"><b>Quantity</b><div class="bx" id="qb8"><span id="fv8b"></span></div></div>
+      <div class="ff"><b>Status</b><div class="bx"><span id="fv8c"></span></div></div>
+      <div class="tok teal" id="sb8" style="position: static; margin-top: 18px; display: inline-flex; font-size: 26px; padding: 4px 30px">Submit</div>
+      <i class="abs" id="ok8" data-ic="tick" data-s="60" style="right: 30px; top: 12px"></i>
+    </div>
+    <i class="abs" id="cs8" data-ic="cursor" data-s="46" style="left: 1150px; top: 380px"></i>
   </div>
 
-  <!-- compose: plain language in, steps out -->
-  <div class="bub" id="bb8" style="left: 140px; top: 270px; width: 660px"><div id="bp8" style="font-size: 30px; font-weight: 700; line-height: 1.3; min-height: 80px"></div></div>
-  <div class="tok red" id="nc8" style="left: 560px; top: 440px; font-size: 26px"><i data-ic="x" data-s="34"></i>No code</div>
-  <div class="card" id="wf8" style="left: 1020px; top: 420px; width: 270px; height: 160px; padding: 18px 24px"><b style="font-size: 30px">Complex workflow</b><div class="skel" style="margin-top: 18px"></div><div class="skel" style="margin-top: 12px; width: 70%"></div><div class="skel" style="margin-top: 12px; width: 85%"></div></div>
-  <svg class="ov" viewBox="0 0 1920 1080">
-    <path id="sp8a" d="M 1292 470 C 1350 450, 1370 340, 1418 340" stroke="#1f2140" marker-end="url(#ahInk)" />
-    <path id="sp8b" d="M 1292 500 L 1418 500" stroke="#1f2140" marker-end="url(#ahInk)" />
-    <path id="sp8c" d="M 1292 530 C 1350 550, 1370 660, 1418 660" stroke="#1f2140" marker-end="url(#ahInk)" />
-    <path id="fa8" d="M 1030 742 C 980 742, 960 700, 950 650" stroke="#0a8a5f" stroke-width="7" marker-end="url(#ahMint)" />
-  </svg>
-  <div class="card" id="st8a" style="left: 1424px; top: 290px; width: 350px; height: 100px; display: flex; align-items: center; gap: 16px; padding: 0 22px"><div class="ntile sm" style="position: static"><i data-ic="cursor" data-s="44"></i></div><b style="font-size: 30px">UI automation</b><i class="tk8" data-ic="tick" data-s="46" style="margin-left: auto"></i></div>
-  <div class="card" id="st8b" style="left: 1424px; top: 450px; width: 350px; height: 100px; display: flex; align-items: center; gap: 16px; padding: 0 22px"><div class="ntile sm" style="position: static"><i data-ic="folder" data-s="44"></i></div><b style="font-size: 30px">Files</b><i class="tk8" data-ic="tick" data-s="46" style="margin-left: auto"></i></div>
-  <div class="card" id="st8c" style="left: 1424px; top: 610px; width: 350px; height: 100px; display: flex; align-items: center; gap: 16px; padding: 0 22px"><div class="tile sm" style="position: static"><img src="assets/deck/plug.png" alt="" /></div><b style="font-size: 30px">API calls</b><i class="tk8" data-ic="tick" data-s="46" style="margin-left: auto"></i></div>
-  <div class="tok mint" id="fb8" style="left: 1030px; top: 712px; font-size: 26px"><i data-ic="loop" data-s="38"></i>Your feedback</div>
-  <i class="abs" id="sk8a" data-ic="spark" data-s="42" style="left: 640px; top: 500px"></i>
-  <i class="abs" id="sk8b" data-ic="spark" data-s="30" style="left: 980px; top: 520px"></i>
-  <i class="abs" id="sk8c" data-ic="spark" data-s="34" style="left: 820px; top: 470px"></i>
+  <!-- a system with its own interface -->
+  <div class="tile lg" id="sy8" style="left: 1670px; top: 390px"><img src="assets/deck/plug.png" alt="" /></div>
+  <div class="lab sm" id="syl8" style="left: 1650px; top: 546px; width: 180px; font-size: 22px">A system with its own interface</div>
+  <svg class="ov" viewBox="0 0 1920 1080"><path id="sa8" d="M 1662 460 L 1632 460" stroke="#0b7a85" stroke-width="8" marker-end="url(#ahTeal)" /></svg>
+
+  <div class="tok red" id="nx8" style="left: 500px; top: 748px; font-size: 24px"><i data-ic="x" data-s="34"></i>Describing every field in chat</div>
+  <div class="tok mint" id="in8" style="left: 1010px; top: 748px; font-size: 24px"><i data-ic="chat" data-s="34"></i>Still in the conversation</div>
+  <div id="lt8" style="position: absolute; left: 560px; top: 800px; width: 800px; height: 96px; background: var(--navy); border-radius: 24px; border: 4px solid var(--ink); display: flex; align-items: center; justify-content: center; gap: 22px; color: #fff; font-size: 44px; font-weight: 900; letter-spacing: -0.02em; box-shadow: 0 8px 0 rgba(31,33,64,.16)"><img src="assets/deck/plug.png" alt="" style="width: 56px; height: 56px" />Works through MCP Apps</div>
 </section>

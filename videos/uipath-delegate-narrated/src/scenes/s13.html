@@ -1,51 +1,51 @@
 <section id="s13" class="clip" data-start="{{s13.start}}" data-duration="{{s13.dur}}" data-track-index="0">
   <style>
-    #s13 .m { position: absolute; width: 480px; height: 240px; }
-    #s13 .m .tile { left: 16px; top: 16px; }
-    #s13 .m b { position: absolute; left: 118px; top: 30px; font-size: 32px; letter-spacing: -0.02em; }
-    #s13 .m .tok { font-size: 19px; padding: 3px 12px 3px 8px; gap: 8px; }
-    #s13 .rd { position: absolute; left: 170px; top: 176px; width: 150px; height: 20px; border-radius: 6px; background: var(--ink); transform-origin: 0 50%; }
+    #s13 .rc { position: absolute; left: 140px; width: 1080px; height: 100px; display: flex; align-items: center; gap: 22px; padding: 0 22px 0 14px; }
+    #s13 .rc b { font-size: 31px; flex: 1; letter-spacing: -0.02em; line-height: 1.1; }
+    #s13 .rc .mn { display: flex; align-items: center; gap: 8px; flex: none; }
+    #s13 .rc .mn .ar { font-size: 30px; font-weight: 900; color: var(--teal); }
+    #s13 .rc .tile, #s13 .rc .ntile { position: static; flex: none; }
+    #s13 .lk { position: absolute; top: 490px; font-size: 27px; }
+    #s13 .sp { position: absolute; left: 540px; font-size: 27px; }
+    #s13 .sp b { font-family: var(--mono); width: 36px; height: 36px; border-radius: 50%; background: var(--navy); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; }
   </style>
-  <div class="eyebrow">Trust layer</div>
-  <h2>Governed by design</h2>
+  <div class="eyebrow">Recap</div>
+  <h2>What Delegate does</h2>
 
-  <svg class="ov" viewBox="0 0 1920 1080">
-    <path id="in13" d="M 452 560 L 508 560" stroke="#0b7a85" stroke-width="9" marker-end="url(#ahTeal)" />
-    <path id="out13" d="M 1570 560 L 1612 560" stroke="#0b7a85" stroke-width="9" marker-end="url(#ahTeal)" />
-  </svg>
-  <div class="tok sun" id="op13" style="left: 330px; top: 470px; font-size: 24px; padding: 4px 16px 4px 8px"><i data-ic="spark" data-s="32"></i>Operation</div>
-  <div class="card dashed" id="ct13" style="left: 520px; top: 270px; width: 1040px; height: 570px; border-style: dashed; background: rgba(255,255,255,.6)"><div class="lab muted" id="ctl13" style="left: 28px; top: 12px; text-align: left; width: 900px; font-size: 24px">Controls you already run UiPath with</div></div>
-  <div class="ntile lg" id="ap13" style="left: 1620px; top: 490px"><i data-ic="stack" data-s="90"></i></div>
-  <div class="lab" id="apl13" style="left: 1580px; top: 646px; width: 220px">Your apps</div>
+  <!-- the five capabilities -->
+  <div class="card rc" id="rc13a" style="top: 250px"><div class="tile sm"><img src="assets/deck/layers.png" alt="" /></div><b>Completes tasks that cross applications</b><div class="mn"><i data-ic="table" data-s="38"></i><span class="ar">→</span><i data-ic="crm" data-s="38"></i><span class="ar">→</span><i data-ic="mail" data-s="38"></i></div></div>
+  <div class="card rc" id="rc13b" style="top: 362px"><div class="tile sm"><img src="assets/deck/video.png" alt="" /></div><b>Learns repetitive work from a recording</b><div class="mn"><i data-ic="rec" data-s="38"></i><span class="ar">→</span><img src="assets/deck/book.png" alt="" style="width: 38px; height: 38px; background: var(--navy); border-radius: 9px; padding: 5px" /></div></div>
+  <div class="card rc" id="rc13c" style="top: 474px"><div class="ntile sm"><i data-ic="slides" data-s="48"></i></div><b>Turns raw data into a finished deliverable</b><div class="mn"><i data-ic="table" data-s="38"></i><span class="ar">→</span><i data-ic="slides" data-s="38"></i></div></div>
+  <div class="card rc" id="rc13d" style="top: 586px"><div class="tile sm"><img src="assets/deck/plug.png" alt="" /></div><b>Works through a system's own screens</b><div class="mn"><i data-ic="form" data-s="38"></i><i data-ic="table" data-s="38"></i><i data-ic="gauge" data-s="38"></i></div></div>
+  <div class="card rc" id="rc13e" style="top: 698px"><div class="tile sm"><img src="assets/deck/book.png" alt="" /></div><b>Saves what works as routines to reuse and share</b><div class="mn"><i data-ic="play" data-s="38"></i><i data-ic="clock" data-s="38"></i><i data-ic="share" data-s="38"></i></div></div>
+  <div class="tok sun" id="am13" style="left: 140px; top: 816px; font-size: 26px"><img src="assets/deck/handshake.png" alt="" style="width: 38px; height: 38px; background: var(--navy); border-radius: 9px; padding: 5px" />…all under approval modes you control</div>
 
-  <!-- Orchestrator -->
-  <div class="card m" id="m13a" style="left: 545px; top: 330px"><div class="tile sm"><img src="assets/deck/layers.png" alt="" /></div><b>Orchestrator</b>
-    <div class="tok sm" id="oc13a" style="left: 18px; top: 122px"><i data-ic="clock" data-s="26"></i>Scheduling</div>
-    <div class="tok sm" id="oc13b" style="left: 190px; top: 122px"><i data-ic="stack" data-s="26"></i>Queues</div>
-    <div class="tok sm" id="oc13c" style="left: 18px; top: 178px"><i data-ic="gear" data-s="26"></i>Run management</div>
+  <!-- the banner -->
+  <div class="card" id="bn13" style="left: 260px; top: 250px; width: 1400px; height: 270px; background: var(--sun); text-align: center; padding-top: 30px">
+    <div id="bn13a" style="font-size: 88px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.1">Delegate the busywork.</div>
+    <div id="bn13b" style="font-size: 88px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.1">Keep the judgment.</div>
   </div>
-  <!-- Credential vault -->
-  <div class="card m" id="m13b" style="left: 1045px; top: 330px"><div class="tile sm"><img src="assets/deck/lock.png" alt="" /></div><b>Credential vault</b>
-    <div class="ntile sm" id="vt13" style="left: 20px; top: 112px; width: 66px; height: 66px"><i data-ic="lock" data-s="40"></i></div>
-    <div class="ntile sm" id="ap13b" style="left: 250px; top: 112px; width: 66px; height: 66px"><i data-ic="stack" data-s="40"></i></div>
-    <span class="abs" style="left: 104px; top: 110px; font-size: 44px; font-weight: 900; color: var(--teal)" id="ar13b">→</span>
-    <i class="abs" id="ky13" data-ic="key" data-s="44" style="left: 100px; top: 122px"></i>
-    <div class="tok sm red" id="nv13" style="left: 18px; top: 190px"><i data-ic="eye" data-s="26"></i>Never exposed to the agent</div>
-  </div>
-  <!-- AI Trust Layer -->
-  <div class="card m" id="m13c" style="left: 545px; top: 590px"><div class="tile sm"><img src="assets/deck/shield.png" alt="" /></div><b>AI Trust Layer</b>
-    <div class="tok sm" id="tp13a" style="left: 16px; top: 110px">Policy</div>
-    <div class="tok sm" id="tp13b" style="left: 118px; top: 110px">Redaction</div>
-    <div class="tok sm" id="tp13c" style="left: 248px; top: 110px">Model governance</div>
-    <div class="skel" style="position: absolute; left: 16px; top: 180px; width: 440px; height: 22px; background: #c7cdf0"></div><div class="rd" id="rd13"></div>
-  </div>
-  <!-- RBAC -->
-  <div class="card m" id="m13d" style="left: 1045px; top: 590px"><div class="tile sm"><img src="assets/deck/sliders.png" alt="" /></div><b>Role-based access</b>
-    <div class="ntile sm" id="pe13a" style="left: 18px; top: 116px; width: 60px; height: 60px"><i data-ic="person" data-s="36"></i></div>
-    <div class="ntile sm" id="pe13b" style="left: 88px; top: 116px; width: 60px; height: 60px"><i data-ic="person" data-s="36"></i></div>
-    <div class="ntile sm" id="pe13c" style="left: 158px; top: 116px; width: 60px; height: 60px"><i data-ic="person" data-s="36"></i></div>
-    <span class="abs" style="left: 232px; top: 112px; font-size: 44px; font-weight: 900; color: var(--teal)" id="ar13d">→</span>
-    <div class="tok sm sun" id="og13" style="left: 290px; top: 122px">Your organization</div>
-  </div>
-  <div class="tok mint" id="an13" style="left: 130px; top: 300px; font-size: 26px"><i data-ic="tick" data-s="38"></i>Applied automatically</div>
+
+  <!-- it ships as an extension of what you have on UiPath -->
+  <div class="card" id="dep13" style="left: 140px; top: 290px; width: 800px; height: 420px; border-style: dashed"><div class="lab" style="left: 30px; top: 20px; text-align: left; font-size: 30px; width: 700px">What you already have on UiPath</div></div>
+  <div class="ntile lg" id="as13" style="left: 230px; top: 420px"><i data-ic="chat" data-s="84"></i></div>
+  <div class="lab" id="asl13" style="left: 190px; top: 576px; width: 220px">UiPath Assistant</div>
+  <div class="tile lg" id="dg13" style="left: 650px; top: 420px"><img src="assets/deck/bolt.png" alt="" /></div>
+  <div class="lab" id="dgl13" style="left: 610px; top: 576px; width: 220px">Delegate</div>
+  <svg class="ov" viewBox="0 0 1920 1080"><path id="up13" d="M 392 490 L 640 490" stroke="#0b7a85" stroke-width="9" marker-end="url(#ahTeal)" /><path id="pl13" d="M 1090 490 L 960 490" stroke="#0b7a85" stroke-width="9" marker-end="url(#ahTeal)" /></svg>
+  <div class="tok sun" id="upl13" style="left: 400px; top: 400px; font-size: 24px">upgrades into</div>
+  <div class="tile lg" id="pg13" style="left: 1100px; top: 420px"><img src="assets/deck/plug.png" alt="" /></div>
+  <div class="lab" id="pgl13" style="left: 1060px; top: 576px; width: 220px">An extension</div>
+  <div class="card" id="nt13a" style="left: 1000px; top: 320px; width: 740px; height: 130px; display: flex; align-items: center; padding: 0 34px; gap: 26px"><div style="font-size: 38px; font-weight: 800; text-decoration: line-through; text-decoration-color: var(--coral); text-decoration-thickness: 5px; flex: 1">New IT approval</div><i data-ic="x" data-s="74"></i></div>
+  <div class="card" id="nt13b" style="left: 1000px; top: 490px; width: 740px; height: 130px; display: flex; align-items: center; padding: 0 34px; gap: 26px"><div style="font-size: 38px; font-weight: 800; text-decoration: line-through; text-decoration-color: var(--coral); text-decoration-thickness: 5px; flex: 1">New upgrade process</div><i data-ic="x" data-s="74"></i></div>
+
+  <!-- the end slide -->
+  <div class="card" id="fin13" style="left: 260px; top: 240px; width: 1400px; height: 110px; background: var(--sun); display: flex; align-items: center; justify-content: center; font-size: 58px; font-weight: 900; letter-spacing: -0.02em">Delegate the busywork. Keep the judgment.</div>
+  <div class="tok mint" id="rdy13" style="left: 480px; top: 366px; font-size: 56px; padding: 10px 40px 10px 22px"><i data-ic="spark" data-s="64"></i>Your first AI-intern is ready.</div>
+  <div class="tok lk" id="lk13a" style="left: 140px"><i data-ic="book" data-s="38"></i>Getting-started guide</div>
+  <div class="tok lk" id="lk13b" style="left: 520px"><i data-ic="window" data-s="38"></i>Interface guide</div>
+  <div class="tok teal lk" id="lk13c" style="left: 820px"><i data-ic="globe" data-s="38"></i>uipath.com/product/delegate</div>
+  <div class="tok sp" id="sp13a" style="top: 600px"><b>1</b>Open a session</div>
+  <div class="tok sp" id="sp13b" style="top: 676px"><b>2</b>Ask for one small thing</div>
+  <div class="tok sp" id="sp13c" style="top: 752px"><b>3</b>Meet your first AI-intern</div>
 </section>

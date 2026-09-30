@@ -25,10 +25,12 @@ function master(input, output, pre, I, TP, extra) {
   const measured = `measured_I=${m.input_i}:measured_TP=${m.input_tp}:measured_LRA=${m.input_lra}:measured_thresh=${m.input_thresh}:offset=${m.target_offset}:linear=true`;
   ff("-i", input, "-af", `${pre}${base}:${measured}`, ...extra, output);
 }
+if (!process.env.SKIP_AUDIO) {   // SKIP_AUDIO=1: rebuild index.html only (fast iteration on visuals)
 master(root + "assets/voiceover.wav", root + "assets/voiceover.mp3",
   "highpass=f=70,acompressor=threshold=-24dB:ratio=3.5:attack=5:release=90:makeup=4,equalizer=f=3000:t=q:w=1.2:g=1.5,alimiter=limit=0.89:attack=3:release=40:level=false,",
   -14, -1.0, ["-ar", "44100", "-ac", "1", "-b:a", "128k"]);
 master(root + "assets/music.wav", root + "assets/music.mp3", "", -28, -3, ["-ar", "44100", "-b:a", "112k"]);
+}
 
 let html = readFileSync(root + "src/template.html", "utf8");
 // src/ is split into parts: <!--#include scenes/s2.html--> and /*#include js/helpers.js*/ are inlined here

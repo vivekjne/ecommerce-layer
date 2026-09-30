@@ -1,48 +1,110 @@
 <section id="s4" class="clip" data-start="{{s4.start}}" data-duration="{{s4.dur}}" data-track-index="0">
   <style>
-    #s4 .ln { position: absolute; left: 280px; width: 720px; height: 112px; display: flex; align-items: center; padding: 0 26px; gap: 22px; }
-    #s4 .ln b { font-size: 29px; width: 236px; flex: none; line-height: 1.15; }
-    #s4 .wv { display: flex; gap: 9px; align-items: center; height: 70px; }
-    #s4 .wv i { display: block; width: 11px; height: 66px; border-radius: 6px; background: var(--grape); }
-    #s4 .tp { font-family: var(--mono); font-size: 23px; font-weight: 600; white-space: nowrap; }
-    #s4 .mini { position: relative; width: 210px; height: 74px; background: #eef1fb; border: 3px solid var(--ink); border-radius: 12px; }
-    #s4 .stack { position: relative; width: 190px; height: 76px; }
-    #s4 .stack div { position: absolute; top: 6px; width: 64px; height: 66px; border: 3px solid var(--ink); border-radius: 10px; background: #fff; }
-    #s4 .stack div i { display: block; height: 8px; border-radius: 4px; background: #dfe3f2; margin: 12px 9px 0; }
+    #s4 .chip { position: absolute; }
+    #s4 .rowi { display: flex; align-items: center; gap: 12px; height: 44px; margin-top: 12px; padding: 0 12px; border: 3px solid var(--ink); border-radius: 12px; background: #fff; }
+    #s4 .rowi .skel { flex: 1; height: 11px; }
+    #s4 .ln4 { margin-top: 16px; }
   </style>
-  <div class="eyebrow">How to hand it work</div>
-  <h2>Four ways to delegate</h2>
+  <div class="eyebrow">Demo</div>
+  <h2>One session, tasks that cross systems</h2>
 
-  <div id="ways4">
-    <div class="tile" id="tl4a" style="left: 140px; top: 262px"><img src="assets/deck/keyboard.png" alt="" /></div>
-    <div class="card ln" id="l4a" style="top: 262px"><b>Type a prompt</b><div class="tp" id="ty4"></div></div>
-    <div class="tile" id="tl4b" style="left: 140px; top: 402px"><img src="assets/deck/mic.png" alt="" /></div>
-    <div class="card ln" id="l4b" style="top: 402px"><b>Speak a command</b><div class="wv" id="wv4"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-    <div class="tile" id="tl4c" style="left: 140px; top: 542px"><img src="assets/deck/video.png" alt="" /></div>
-    <div class="card ln" id="l4c" style="top: 542px"><b>Record your screen</b><div class="mini"><span id="rec4" style="position: absolute; left: 12px; top: 8px; font-weight: 800; font-size: 20px; color: var(--coral)">● REC</span><i id="cur4" data-ic="cursor" data-s="34" style="position: absolute; left: 20px; top: 34px"></i><div class="skel" style="position: absolute; right: 14px; top: 20px; width: 60px; height: 12px"></div><div class="skel" style="position: absolute; right: 14px; top: 44px; width: 90px; height: 12px"></div></div></div>
-    <div class="tile" id="tl4d" style="left: 140px; top: 682px"><img src="assets/deck/layers.png" alt="" /></div>
-    <div class="card ln" id="l4d" style="top: 682px"><b>Start from a template</b><div class="stack"><div id="tp4a" style="left: 0"><i></i><i></i></div><div id="tp4b" style="left: 60px"><i></i><i></i></div><div id="tp4c" style="left: 120px"><i></i><i></i></div></div></div>
+  <!-- the session: three prompts, one after another -->
+  <div class="win" id="cv4" style="left: 130px; top: 250px; width: 560px; height: 420px">
+    <div class="bar"><b></b><b></b><b></b><span>Delegate session</span></div>
+    <div class="bub" id="pb41" style="left: 20px; top: 62px; width: 510px; min-height: 96px; font-size: 24px; padding: 12px 18px"><span id="pt41"></span></div>
+    <div class="bub" id="pb42" style="left: 20px; top: 178px; width: 510px; min-height: 76px; font-size: 24px; padding: 12px 18px"><span id="pt42"></span></div>
+    <div class="bub" id="pb43" style="left: 20px; top: 272px; width: 510px; min-height: 76px; font-size: 24px; padding: 12px 18px"><span id="pt43"></span></div>
   </div>
-  <svg class="ov" viewBox="0 0 1920 1080">
-    <path id="ar4a" d="M 1010 318 C 1130 318, 1220 520, 1350 560" stroke="#0b7a85" marker-end="url(#ahTeal)" />
-    <path id="ar4b" d="M 1010 458 C 1130 458, 1230 550, 1350 575" stroke="#0b7a85" marker-end="url(#ahTeal)" />
-    <path id="ar4c" d="M 1010 598 C 1130 598, 1230 600, 1350 600" stroke="#0b7a85" marker-end="url(#ahTeal)" />
-    <path id="ar4d" d="M 1010 738 C 1130 738, 1230 660, 1350 625" stroke="#0b7a85" marker-end="url(#ahTeal)" />
-  </svg>
 
-  <div class="win" id="bw4" style="left: 150px; top: 270px; width: 640px; height: 380px">
-    <div class="bar"><b></b><b></b><b></b><span>Browser</span></div>
-    <div style="padding: 20px 26px"><div class="skel" style="width: 62%; height: 24px; border: 3px solid var(--ink); background: #fff"></div>
-      <div style="display: flex; gap: 20px; margin-top: 26px"><div class="skel" style="width: 46%; height: 120px; background: #d3f5f8"></div><div style="flex: 1"><div class="skel"></div><div class="skel" style="margin-top: 16px; width: 80%"></div><div class="skel" style="margin-top: 16px; width: 60%"></div></div></div>
-      <div id="btn4" class="tok teal sm" style="position: static; margin-top: 30px; display: inline-flex">Submit</div></div>
+  <!-- tasks that cross systems -->
+  <div id="g40">
+    <div class="tok sun" id="cs40" style="left: 780px; top: 270px; font-size: 32px"><i data-ic="layers" data-s="38"></i>Tasks that cross systems</div>
+    <div class="ntile lg" id="sx4a" style="left: 780px; top: 400px"><i data-ic="table" data-s="80"></i></div>
+    <div class="ntile lg" id="sx4b" style="left: 1130px; top: 400px"><i data-ic="crm" data-s="80"></i></div>
+    <div class="ntile lg" id="sx4c" style="left: 1480px; top: 400px"><i data-ic="mail" data-s="80"></i></div>
+    <svg class="ov" viewBox="0 0 1920 1080">
+      <path id="sy4a" d="M 930 470 L 1120 470" stroke="#0b7a85" stroke-width="8" marker-end="url(#ahTeal)" />
+      <path id="sy4b" d="M 1280 470 L 1470 470" stroke="#0b7a85" stroke-width="8" marker-end="url(#ahTeal)" />
+    </svg>
   </div>
-  <div class="win" id="aw4" style="left: 500px; top: 470px; width: 620px; height: 340px">
-    <div class="bar"><b></b><b></b><b></b><span>Desktop app</span></div>
-    <div style="padding: 18px 26px"><div class="skel" style="height: 26px; background: #dfe3f2"></div><div style="display: flex; gap: 14px; margin-top: 16px"><div class="skel" style="height: 40px; flex: 1"></div><div class="skel" style="height: 40px; flex: 1"></div><div id="cell4" class="skel" style="height: 40px; flex: 1; background: #ffe28a"></div></div><div style="display: flex; gap: 14px; margin-top: 14px"><div class="skel" style="height: 40px; flex: 1"></div><div class="skel" style="height: 40px; flex: 1"></div><div class="skel" style="height: 40px; flex: 1"></div></div></div>
+
+  <!-- 1 · a figure from a report, checked against the CRM record -->
+  <div id="g41">
+    <div class="win" id="rp4" style="left: 750px; top: 300px; width: 280px; height: 270px"><div class="bar"><b></b><b></b><b></b><span>Report</span></div>
+      <div style="padding: 14px 18px"><div class="skel" style="width: 60%; height: 14px; background: #c7cdf0"></div>
+        <div style="display: flex; align-items: flex-end; gap: 12px; height: 74px; margin-top: 14px"><div style="width: 36px; height: 34px; background: #21c7d6; border: 3px solid var(--ink)"></div><div style="width: 36px; height: 58px; background: #ffc93c; border: 3px solid var(--ink)"></div><div style="width: 36px; height: 44px; background: #7b61ff; border: 3px solid var(--ink)"></div></div>
+        <div class="skel" style="margin-top: 14px"></div>
+        <div id="fg4" style="margin-top: 12px; height: 32px; border-radius: 8px; background: #ffe28a; border: 3px solid var(--ink); width: 130px"></div></div>
+    </div>
+    <div class="win" id="cr4" style="left: 1130px; top: 300px; width: 280px; height: 270px"><div class="bar"><b></b><b></b><b></b><span>CRM record</span></div>
+      <div style="padding: 14px 18px; display: flex; gap: 14px; align-items: center"><i data-ic="crm" data-s="60"></i><div style="flex: 1"><div class="skel"></div><div class="skel" style="margin-top: 10px; width: 70%"></div></div></div>
+      <div style="padding: 0 18px"><div class="skel" style="margin-top: 6px"></div><div class="skel" style="margin-top: 12px; width: 80%"></div>
+        <div id="fc4" style="margin-top: 20px; height: 32px; border-radius: 8px; background: #f0f2fb; border: 3px solid var(--ink); width: 130px"></div></div>
+      <i id="tk4" class="abs" data-ic="tick" data-s="52" style="right: 22px; bottom: 16px"></i>
+    </div>
+    <div class="card" id="an4" style="left: 1510px; top: 300px; width: 270px; height: 270px; border-color: var(--mint); background: #f2fdf8; text-align: center; padding-top: 26px"><i data-ic="tick" data-s="96" style="margin: 0 auto"></i><div style="font-size: 30px; font-weight: 800; margin-top: 12px">One answer</div><div class="skel" style="margin: 20px 34px 0"></div><div class="skel" style="margin: 12px 60px 0"></div></div>
+    <svg class="ov" viewBox="0 0 1920 1080">
+      <path id="a41" d="M 1040 435 L 1120 435" stroke="#0b7a85" stroke-width="8" marker-end="url(#ahTeal)" />
+      <path id="a42" d="M 1420 435 L 1500 435" stroke="#0b7a85" stroke-width="8" marker-end="url(#ahTeal)" />
+      <path id="ch4" d="M 760 656 H 1770" stroke="#0b7a85" stroke-width="10" />
+    </svg>
+    <div class="tok sm" id="s41" style="left: 750px; top: 586px"><i data-ic="chart" data-s="30"></i>Step 1: the figure</div>
+    <div class="tok sm" id="s42" style="left: 1130px; top: 586px"><i data-ic="crm" data-s="30"></i>Step 2: the record</div>
+    <div class="tok red" id="ns4" style="left: 750px; top: 700px"><i data-ic="stop" data-s="38"></i>Not just step one</div>
+    <div class="tok teal" id="wc4" style="left: 1130px; top: 700px"><i data-ic="link" data-s="38"></i>The whole chain</div>
+    <div class="tok red" id="pz4" style="left: 1130px; top: 790px; font-size: 24px"><i data-ic="x" data-s="34"></i>No piecing it together</div>
+    <div class="tok" id="fl4" style="left: 770px; top: 460px; padding: 4px 16px 4px 8px"><i data-ic="target" data-s="34"></i>the figure</div>
   </div>
-  <i id="cur4b" class="abs" data-ic="cursor" data-s="54" style="left: 640px; top: 590px"></i>
-  <div class="tok dark" id="cu4" style="left: 1150px; top: 470px"><i data-ic="cursor" data-s="34"></i>Computer use</div>
-  <div class="tok sun" id="ba4" style="left: 700px; top: 828px; padding-left: 22px">Browsers and apps</div>
-  <div class="tok mint" id="pe4" style="left: 1300px; top: 270px"><i data-ic="gear" data-s="38"></i>Programmatic execution</div>
-  <div class="tok mint" id="er4" style="left: 1300px; top: 350px"><i data-ic="tick" data-s="38"></i>Enterprise-grade reliability</div>
+
+  <!-- 2 · the morning routine: triage email and calendar -->
+  <div id="g42">
+    <div class="tok sun" id="am4" style="left: 750px; top: 240px; font-size: 26px; padding: 4px 18px 4px 10px"><i data-ic="sun" data-s="36"></i>First thing in the morning</div>
+    <div class="win" id="ml4" style="left: 750px; top: 300px; width: 300px; height: 250px"><div class="bar"><b></b><b></b><b></b><span>Email</span></div>
+      <div style="padding: 4px 16px 0"><div class="rowi"><i data-ic="mail" data-s="26"></i><div class="skel"></div></div><div class="rowi"><i data-ic="mail" data-s="26"></i><div class="skel"></div></div><div class="rowi"><i data-ic="mail" data-s="26"></i><div class="skel"></div></div></div></div>
+    <div class="win" id="cd4" style="left: 750px; top: 580px; width: 300px; height: 250px"><div class="bar"><b></b><b></b><b></b><span>Calendar</span></div>
+      <div style="padding: 4px 16px 0"><div class="rowi" style="background: #d3f5f8"><i data-ic="calendar" data-s="26"></i><div class="skel"></div></div><div class="rowi" style="background: #fff2c4"><i data-ic="calendar" data-s="26"></i><div class="skel"></div></div><div class="rowi" style="background: #e6e0ff"><i data-ic="calendar" data-s="26"></i><div class="skel"></div></div></div></div>
+    <div class="ntile lg" id="fn4" style="left: 1120px; top: 470px"><i data-ic="funnel" data-s="90"></i></div>
+    <svg class="ov" viewBox="0 0 1920 1080">
+      <path id="m41" d="M 1062 420 C 1090 440, 1100 480, 1122 510" stroke="#1f2140" marker-end="url(#ahInk)" />
+      <path id="m42" d="M 1062 700 C 1090 680, 1100 620, 1122 590" stroke="#1f2140" marker-end="url(#ahInk)" />
+      <path id="m43" d="M 1270 520 C 1300 480, 1310 440, 1330 420" stroke="#d92d48" marker-end="url(#ahRed)" />
+      <path id="m44" d="M 1270 570 C 1300 620, 1310 680, 1330 700" stroke="#0a8a5f" marker-end="url(#ahMint)" />
+    </svg>
+    <div class="card" id="nm4" style="left: 1340px; top: 290px; width: 440px; height: 250px; border-color: var(--coral); padding: 16px 22px"><span class="tag red" style="position: static">Needs me</span>
+      <div class="rowi"><i data-ic="mail" data-s="26"></i><div class="skel"></div></div><div class="rowi"><i data-ic="calendar" data-s="26"></i><div class="skel"></div></div></div>
+    <div class="card" id="cw4" style="left: 1340px; top: 580px; width: 440px; height: 250px; border-color: var(--mint); padding: 16px 22px"><span class="tag green" style="position: static">Can wait</span>
+      <div class="rowi"><i data-ic="mail" data-s="26"></i><div class="skel"></div></div><div class="rowi"><i data-ic="mail" data-s="26"></i><div class="skel"></div></div><div class="rowi"><i data-ic="calendar" data-s="26"></i><div class="skel"></div></div></div>
+    <div class="ntile sm" id="f4a" style="left: 780px; top: 400px; width: 56px; height: 56px; border-radius: 14px"><i data-ic="mail" data-s="34"></i></div>
+    <div class="ntile sm" id="f4b" style="left: 780px; top: 430px; width: 56px; height: 56px; border-radius: 14px"><i data-ic="mail" data-s="34"></i></div>
+    <div class="ntile sm" id="f4c" style="left: 780px; top: 690px; width: 56px; height: 56px; border-radius: 14px"><i data-ic="calendar" data-s="34"></i></div>
+    <div class="ntile sm" id="f4d" style="left: 780px; top: 720px; width: 56px; height: 56px; border-radius: 14px"><i data-ic="calendar" data-s="34"></i></div>
+    <div class="ntile sm" id="f4e" style="left: 780px; top: 460px; width: 56px; height: 56px; border-radius: 14px"><i data-ic="mail" data-s="34"></i></div>
+  </div>
+
+  <!-- 3 · draft a follow-up from what it found; you review, tone, and approve -->
+  <div id="g43">
+    <div class="tok" id="fd4a" style="left: 750px; top: 320px; font-size: 26px"><i data-ic="chart" data-s="36"></i>The figure</div>
+    <div class="tok" id="fd4b" style="left: 750px; top: 420px; font-size: 26px"><i data-ic="crm" data-s="36"></i>The CRM record</div>
+    <div class="tok" id="fd4c" style="left: 750px; top: 520px; font-size: 26px"><i data-ic="mail" data-s="36"></i>Email and calendar</div>
+    <svg class="ov" viewBox="0 0 1920 1080">
+      <path id="df4a" d="M 1010 345 C 1040 345, 1050 380, 1076 400" stroke="#0b7a85" stroke-width="5" marker-end="url(#ahTeal)" />
+      <path id="df4b" d="M 1040 445 L 1076 445" stroke="#0b7a85" stroke-width="5" marker-end="url(#ahTeal)" />
+      <path id="df4c" d="M 1040 545 C 1055 545, 1060 510, 1076 490" stroke="#0b7a85" stroke-width="5" marker-end="url(#ahTeal)" />
+    </svg>
+    <div class="win" id="dr4" style="left: 1090px; top: 290px; width: 560px; height: 430px"><div class="bar"><b></b><b></b><b></b><span>Draft message</span></div>
+      <div style="padding: 18px 26px">
+        <div style="display: flex; gap: 14px; align-items: center"><b style="font-size: 22px; color: var(--muted)">To</b><div class="skel" style="width: 220px"></div></div>
+        <div class="skel l43 ln4" style="margin-top: 28px"></div><div class="skel l43 ln4" style="width: 92%"></div><div class="skel l43 ln4"></div><div class="skel l43 ln4" style="width: 84%"></div><div class="skel l43 ln4" style="width: 60%"></div>
+        <div style="display: flex; align-items: center; gap: 16px; margin-top: 34px"><b style="font-size: 24px; width: 70px">Tone</b><span style="font-size: 20px; font-weight: 700; color: var(--muted)">Formal</span>
+          <div style="position: relative; width: 190px; height: 16px; border-radius: 8px; background: #dfe3f2; border: 3px solid var(--ink)"><div id="kn4" style="position: absolute; top: -9px; left: 0; width: 34px; height: 34px; border-radius: 50%; background: var(--teal); border: 4px solid var(--ink)"></div></div>
+          <span style="font-size: 20px; font-weight: 700; color: var(--muted)">Friendly</span></div>
+      </div>
+    </div>
+    <i class="abs" id="pc4" data-ic="pencil" data-s="60" style="left: 1170px; top: 400px"></i>
+    <div class="tok sm" id="rv4" style="left: 1670px; top: 300px"><i data-ic="eye" data-s="30"></i>You review</div>
+    <div class="tok teal" id="sd4" style="left: 1090px; top: 750px; font-size: 26px"><i data-ic="send" data-s="34"></i>Send</div>
+    <div class="tok red" id="gt4" style="left: 1290px; top: 750px; font-size: 24px; padding: 4px 16px 4px 8px"><i data-ic="hand" data-s="34"></i>Waits for you</div>
+    <div class="tok mint" id="st4" style="left: 1670px; top: 620px; font-size: 26px"><i data-ic="tick" data-s="34"></i>Sent</div>
+    <i class="abs" id="pl4" data-ic="send" data-s="70" style="left: 1230px; top: 730px"></i>
+  </div>
 </section>

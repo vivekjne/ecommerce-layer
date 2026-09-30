@@ -1,87 +1,68 @@
-// ===================== 5 · Use cases =====================
+// ===================== 5 · The support example =====================
 enter("s5");
-prep("#p51a, #p51b, #p51c, #p51d, #p51e, #p53a, #p53b, #p53c, #fa5a, #fa5b, #fa5c, #fb5a, #fb5b, #fb5c");
-tl.set("#h52, #h53, #h54, #fl5a, #fl5b, #c5a, #c5b, #c5c, #n51a, #n51b, #n51c, #n51d, #n51e, #n51f, #tg51, #v52, #v53, #v54", { opacity: 0 }, 0);
-tl.set("#pA, #pB, #pC, #pD, #tg52, #fn5, #fl5, #i5a, #i5b, #i5c, #L5a, #L5b, #L5c, #tg53, #F5a, #F5b", { opacity: 0 }, 0);
-tl.set("#pA .k5, #tk5, #bg5, #fk5a, #fk5b, #fk5c, #ft5a, #fp5a, #fp5b, #fp5c, #fd5, #fg5, #fu5, #mg5, #pc5", { opacity: 0 }, 0);
-function chap(n, t) {
-  [["#c5a", 1], ["#c5b", 2], ["#c5c", 3]].forEach(([sel, k]) =>
-    tl.to(sel, { backgroundColor: k === n ? "#0b7a85" : "#ffffff", color: k === n ? "#ffffff" : "#1f2140", duration: 0.35 }, t));
-}
-// intro: three use cases
-show("#c5a", W("s5a", 7), { y: 20, d: 0.6 }); show("#c5b", W("s5a", 9), { y: 20, d: 0.6 }); show("#c5c", W("s5a", 11), { y: 20, d: 0.6 });
+prep("#a51, #a52, #f55a, #f55b, #f55c, #f55d");
+tl.set("#ro5a, #ro5b, #ro5c, #rt5, #rl5, #bb5, #e51, #e52, #e53, #e54, #e55", { opacity: 0 }, 0);
+tl.set("#bp5", { textContent: "" }, 0);
+tl.set("#s5 .l54", { opacity: 0 }, 0);
 
-// 1 · PDD & SDD generation: a pipeline ---------------------------------------------------
-chap(1, L("s5b", 0.0));
-tl.set("#dlg", { opacity: 1 }, L("s5b", -0.02));
-place("#dlg", 2250, 852, 1.2, L("s5b", -0.03));
-put("#dlg", L("s5b", 0.0), 700, 852, 1.2, 1.6);
-show("#tg51", L("s5b", 1.4), { y: 20, d: 0.6 });
-[["#n51a", 0], ["#n51b", 2], ["#n51c", 4], ["#n51d", 8]].forEach(([n, w], i) => {
-  if (i > 0) draw(["#p51a", "#p51b", "#p51c"][i - 1], W("s5c", w) - 0.35, 0.5);
-  show(n, W("s5c", w), { y: 26, s: 0.7, d: 0.6 });
+put("#sam", S("s5") + 0.1, 250, 885, 1.15, 1.2);
+put("#dlg", S("s5") + 0.1, 545, 885, 1.2, 1.2);
+face("#dlg", "n", S("s5") + 0.1);
+
+// this pattern shows up across roles
+["#ro5a", "#ro5b", "#ro5c"].forEach((sel, i) => show(sel, W("s5a", 3) + i * 0.2, { y: 30, s: 0.6, d: 0.5 }));
+show("#rt5", W("s5a", 4), { y: 16, s: 0.8, d: 0.5 });
+tl.to("#ro5a, #ro5b, #ro5c", { rotation: 6, duration: 0.5, yoyo: true, repeat: 3, ease: "sine.inOut", transformOrigin: "50% 50%" }, W("s5a", 5) - 0.2);
+// in our support example: a Product Support Engineer, starting the day with one prompt
+hide("#ro5a, #ro5b, #ro5c, #rt5", W("s5b", 4), 0.4);
+show("#rl5", W("s5b", 5), { x: -30, s: 0.9, d: 0.6 });
+headset("#sam", true, W("s5b", 5)); wobble("#sam", W("s5b", 6), 2, 4);
+show("#bb5", W("s5b", 12), { y: 20, s: 0.9, d: 0.6 });
+typeText("#bp5", "Pull my case backlog from Salesforce and prioritize the day.", L("s5c", 0.0), 4.2);
+typing("#dlg", L("s5c", 0.6), W("s5d", 17));
+
+// 1 · the backlog sorts itself into a plan for the day
+fade("#e51", L("s5c", 0.0), 0.2);
+fade("#w51", W("s5c", 3), 0.5);
+["a", "b", "c", "d", "e"].forEach((k, i) => show("#r51" + k, W("s5c", 3) + 0.4 + i * 0.15, { x: -30, s: 0.95, d: 0.5 }));
+const sortDy = { a: 176, b: 264, c: -176, d: 0, e: -264 };
+Object.keys(sortDy).forEach((k) => { if (sortDy[k]) tl.to("#r51" + k, { y: sortDy[k], duration: 0.8, ease: "power2.inOut" }, W("s5c", 6)); });
+$$("#w51 .nm").forEach((n, i) => tl.to(n, { opacity: 1, duration: 0.3 }, W("s5c", 7) + 0.3 + i * 0.12));
+draw("#a51", W("s5c", 8), 0.5); show("#pl51", W("s5c", 8) + 0.3, { x: 40, s: 0.9, d: 0.7 });
+face("#dlg", "h", W("s5c", 8));
+
+// 2 · summarize the case in front of them
+hide("#e51, #a51", L("s5d", 0.4), 0.4);
+fade("#e52", L("s5d", 0.6), 0.3);
+show("#c52", W("s5d", 2), { x: -20, s: 0.8, d: 0.5 });
+show("#w52", W("s5d", 2) + 0.2, { x: -30, s: 0.9, d: 0.6 });
+draw("#a52", W("s5d", 3), 0.5); show("#pn52", W("s5d", 3) + 0.3, { x: 40, s: 0.9, d: 0.6 });
+// 3 · look up licensing data
+hide("#e52, #a52", W("s5d", 9) - 0.3, 0.3);
+fade("#e53", W("s5d", 9) - 0.2, 0.3);
+show("#c53", W("s5d", 9), { x: -20, s: 0.8, d: 0.5 });
+show("#w53", W("s5d", 9) + 0.1, { x: -30, s: 0.9, d: 0.6 });
+show("#lc53", W("s5d", 11), { y: 30, s: 0.9, d: 0.6 });
+// 4 · draft a first response
+hide("#e53", W("s5d", 13) - 0.2, 0.3);
+fade("#e54", W("s5d", 13) - 0.1, 0.3);
+show("#c54", W("s5d", 14), { x: -20, s: 0.8, d: 0.5 });
+show("#w54", W("s5d", 14) + 0.1, { x: -30, s: 0.9, d: 0.6 });
+show("#pc54", W("s5d", 14) + 0.5, { s: 0.5, d: 0.3 });
+$$("#s5 .l54").forEach((r, i) => {
+  fade(r, W("s5d", 15) + i * 0.2, 0.2);
+  if (i > 0) tl.to("#pc54", { y: "+=" + (i === 1 ? 46 : 32), duration: 0.2, ease: "power2.inOut" }, W("s5d", 15) + i * 0.2);
 });
-typing("#dlg", L("s5c", 0.4), LE("s5d", -0.4));
-draw("#p51d", W("s5d", 1), 0.8);
-show("#n51e", W("s5d", 4), { y: 26, s: 0.7, d: 0.6 });
-draw("#p51e", W("s5d", 8), 0.6);
-show("#n51f", W("s5d", 9) + 0.3, { y: 26, s: 0.6, d: 0.7 });
-pulse("#n51f", W("s5d", 11), 1.12);
-face("#dlg", "h", L("s5d", 4.6));
+tl.to("#pc54", { rotation: -12, duration: 0.2, yoyo: true, repeat: 5, ease: "sine.inOut", transformOrigin: "50% 100%" }, W("s5d", 15));
 
-// 2 · Application testing: four mini demos -----------------------------------------------
-hide("#v51, #tg51", L("s5e", -0.4), 0.5);
-put("#dlg", L("s5e", -0.4), 2250, 852, 1.2, 1.3);
-tl.set("#dlg", { opacity: 0 }, L("s5e", 1.0));
-chap(2, L("s5e", 0.0));
-tl.set("#v52", { opacity: 1 }, L("s5e", 0.4));
-show("#tg52", L("s5e", 1.0), { y: 20, d: 0.6 });
-show("#h52", L("s5e", 0.3), { y: 20, s: 0.8, d: 0.7 }); hide("#h52", W("s5f", 0) - 0.5, 0.4);
-const k5 = $$("#pA .k5");
-show("#pA", W("s5f", 0), { y: 30, s: 0.9, d: 0.7 });
-[0.9, 1.4, 1.9, 2.4].forEach((o, i) => { fade(k5[i], L("s5f", o), 0.25); pulse(k5[i], L("s5f", o), 1.3); });
-show("#pB", W("s5f", 3), { y: 30, s: 0.9, d: 0.7 });
-tl.to("#gr5", { rotation: 720, duration: 6, ease: "none", transformOrigin: "50% 50%" }, W("s5f", 3));
-$$("#pB .dt5").forEach((d, i) => tl.to(d, { backgroundColor: "#06d6a0", duration: 0.25 }, W("s5f", 5) + 0.3 + i * 0.4));
-show("#pC", W("s5f", 6), { y: 30, s: 0.9, d: 0.7 });
-show("#mg5", W("s5f", 6) + 0.6, { s: 0.5, d: 0.4 });
-move("#mg5", W("s5f", 6) + 1.0, 150, 0, 0.7); move("#mg5", W("s5f", 6) + 1.9, 150, 0, 0.7);
-tl.to("#bl5", { backgroundColor: "#ff8fa0", duration: 0.3 }, W("s5f", 6) + 2.7);
-show("#bg5", W("s5f", 6) + 2.7, { s: 0.3, d: 0.5 });
-show("#pD", W("s5f", 10), { y: 30, s: 0.9, d: 0.7 });
-show("#pc5", W("s5f", 10) + 0.6, { s: 0.5, d: 0.4 });
-move("#pc5", W("s5f", 10) + 1.0, 132, 0, 0.7);
-show("#tk5", W("s5f", 10) + 1.8, { s: 0.3, d: 0.5 });
-
-// 3 · Personal productivity: triage funnel -----------------------------------------------
-hide("#v52, #tg52", L("s5g", -0.4), 0.5);
-chap(3, L("s5g", 0.0));
-tl.set("#v53", { opacity: 1 }, L("s5g", 0.4));
-show("#h53", L("s5g", 0.3), { y: 20, s: 0.8, d: 0.7 }); hide("#h53", W("s5h", 0) - 0.6, 0.4);
-show("#fn5", W("s5h", 0) - 0.3, { s: 0.6, d: 0.7 }); show("#fl5", W("s5h", 0), { y: 16, d: 0.6 });
-show("#tg53", L("s5g", 1.2), { y: 20, d: 0.6 });
-[["#i5a", 190], ["#i5b", 80], ["#i5c", -30]].forEach(([sel, dx], i) => {
-  tl.fromTo(sel, { opacity: 0, y: -40, x: 0, scale: 1 }, { opacity: 1, y: 0, duration: 0.4 }, W("s5h", 0) + i * 0.35);
-  tl.to(sel, { x: dx, y: 150, scale: 0.3, opacity: 0, duration: 0.7, ease: "power2.in" }, W("s5h", 0) + 0.7 + i * 0.35);
-});
-draw("#p53a", W("s5h", 4), 0.6); show("#L5a", W("s5h", 4) + 0.3, { x: 40, s: 0.9, d: 0.7 });
-draw("#p53b", W("s5i", 2), 0.6); show("#L5b", W("s5i", 2) + 0.3, { x: 40, s: 0.9, d: 0.7 });
-draw("#p53c", W("s5i", 4), 0.6); show("#L5c", W("s5i", 4) + 0.3, { x: 40, s: 0.9, d: 0.7 });
-
-// future: two dashed "coming later" cards -----------------------------------------------
-hide("#v53, #tg53, #chap5", L("s5j", -0.3), 0.5);
-tl.set("#v54", { opacity: 1 }, L("s5j", 0.2));
-show("#h54", L("s5j", 0.3), { y: 20, s: 0.8, d: 0.7 }); hide("#h54", W("s5j", 6) - 0.4, 0.4);
-show("#F5a", W("s5j", 6), { y: 30, s: 0.9, d: 0.8 });
-show("#F5b", W("s5j", 9), { y: 30, s: 0.9, d: 0.8 });
-show("#ft5a", W("s5k", 3), { s: 0.5, d: 0.6 }); show("#fl5a", W("s5k", 3) + 0.3, { y: 12, d: 0.5 });
-[["#fk5a", "#fa5a", 9], ["#fk5b", "#fa5b", 10], ["#fk5c", "#fa5c", 12]].forEach(([chip, arrow, w]) => {
-  show(chip, W("s5k", w), { x: -30, s: 0.8, d: 0.6 }); draw(arrow, W("s5k", w) + 0.2, 0.6);
-});
-pulse("#ft5a", W("s5k", 12) + 0.8, 1.12);
-[["#fp5a", 3], ["#fp5b", 4], ["#fp5c", 5]].forEach(([sel, w]) => show(sel, W("s5l", w), { x: -30, s: 0.8, d: 0.6 }));
-draw("#fb5a, #fb5b, #fb5c", W("s5l", 5) + 0.3, 0.7);
-show("#fd5", W("s5l", 5) + 0.8, { s: 0.5, d: 0.7 }); show("#fl5b", W("s5l", 5) + 1.1, { y: 12, d: 0.5 });
-show("#fg5", W("s5l", 7), { y: 20, s: 0.8, d: 0.7 });
-show("#fu5", W("s5l", 12), { s: 0.3, d: 0.6 }); tl.to("#fu5", { y: -16, duration: 0.9, yoyo: true, repeat: 3, ease: "sine.inOut" }, W("s5l", 12) + 0.7);
+// all from one conversational surface, without switching tools
+hide("#e54", L("s5e", -0.1), 0.3);
+fade("#e55", L("s5e", 0.0), 0.2);
+show("#ct55", L("s5e", 0.3), { s: 0.5, d: 0.7 }); show("#cl55", W("s5e", 3), { y: 16, d: 0.6 });
+["a", "b", "c", "d"].forEach((k, i) => { const t = W("s5e", 3) + 0.2 + i * 0.25; show("#t55" + k, t, { s: 0.6, d: 0.5 }); draw("#f55" + k, t - 0.1, 0.5); });
+show("#nt55", W("s5e", 5), { y: 16, s: 0.7, d: 0.5 }); shake("#nt55", W("s5e", 6), 8);
+pulse("#ct55", W("s5e", 7), 1.12);
+mood("#sam", "happy", L("s5e", 0.0));
+cheer("#sam", W("s5e", 6)); cheer("#dlg", W("s5e", 6) + 0.3);
+headset("#sam", false, SE("s5") - 0.5);
 leave("s5");
