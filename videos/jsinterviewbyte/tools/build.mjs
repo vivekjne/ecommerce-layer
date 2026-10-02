@@ -11,7 +11,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const root = (process.env.VID || process.cwd()) + "/";
-const eng = new URL("../engine/", import.meta.url).pathname;
+const eng = new URL("../" + (process.env.ENGINE || "engine") + "/", import.meta.url).pathname;
 const timing = JSON.parse(readFileSync(root + "timing.json", "utf8"));
 const meta = JSON.parse(readFileSync(root + "meta.json", "utf8"));
 const ff = (...args) => execFileSync("ffmpeg", ["-v", "error", "-y", ...args], { stdio: "inherit" });

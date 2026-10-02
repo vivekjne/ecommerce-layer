@@ -42,3 +42,12 @@ npx hyperframes check
 npx hyperframes render -f 30 -q standard -o rendered.mp4
 node ../tools/finalize.mjs rendered.mp4 final.mp4 26      # loudness -14.5 LUFS
 ```
+
+## Landscape episodes (`landscape-1/`)
+Landscape 1920×1080, several questions in one video (built with `ENGINE=engine-landscape`).
+Episode 1 (new questions, not in the vertical set): higher-order functions (#13), currying (#15),
+event flow / capturing / bubbling / delegation (#87–89, #111), memoization (#25).
+Code outputs are verified by `tools/verify_cases.mjs`; the browser behaviour (event order, phases,
+`stopPropagation`, delegation) by `l3-event-flow/verify_browser.mjs` (Chromium), output in `verified.txt`.
+Each part is rendered separately (intro, then one folder per question) and the finalized parts are
+concatenated with ffmpeg.

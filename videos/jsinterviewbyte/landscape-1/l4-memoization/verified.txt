@@ -1,0 +1,3 @@
+ok  0: (script) -> ["compute","81","81","compute","16"]
+ok  1: (script) -> ["6765 21891"]
+ok  2: (script) -> ["6765 21"]

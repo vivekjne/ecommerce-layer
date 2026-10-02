@@ -1,0 +1,6 @@
+A bubbling default: ["button","middle","outer"]
+B capture on outer+middle, bubble on button: ["outer","middle","button"]
+C all both phases: ["outer capture","middle capture","button capture","button bubble","middle bubble","outer bubble"]
+D stopPropagation in middle: ["button","middle"]
+E delegation: ["A","C"]
+F eventPhase: ["outer:1","button:2","button:2","outer:3"]

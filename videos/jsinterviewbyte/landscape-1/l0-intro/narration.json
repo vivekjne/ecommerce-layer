@@ -1,0 +1,34 @@
+{
+ "scenes": [
+  {
+   "id": "s1",
+   "title": "Intro",
+   "lines": [
+    {
+     "id": "s1a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Welcome to JS Interview [Byte|bite]. Today, four interview questions, each explained step by step with animations."
+    },
+    {
+     "id": "s1b",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Which four?"
+    },
+    {
+     "id": "s1c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "One, higher order functions. Two, currying. Three, how events travel through the page. Four, memoization."
+    },
+    {
+     "id": "s1d",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Let us start."
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,37 @@
+[
+ {
+  "script": "const double = (x) => x * 2;\nconst increment = (x) => x + 1;\nconsole.log(typeof double);\nconst fns = [double, increment];\nconsole.log(fns[0](5), fns[1](5));",
+  "expect": [
+   "function",
+   "10 6"
+  ]
+ },
+ {
+  "script": "function applyTwice(fn, x) {\n  return fn(fn(x));\n}\nconst double = (x) => x * 2;\nconsole.log(applyTwice(double, 3));",
+  "expect": [
+   "12"
+  ]
+ },
+ {
+  "script": "function multiplier(n) {\n  return (x) => x * n;\n}\nconst triple = multiplier(3);\nconsole.log(triple(5));\nconsole.log(typeof multiplier(3));",
+  "expect": [
+   "15",
+   "function"
+  ]
+ },
+ {
+  "script": "const nums = [1, 2, 3, 4];\nconsole.log(nums.map((n) => n * 2).join());\nconsole.log(nums.filter((n) => n % 2 === 0).join());\nconsole.log(nums.reduce((sum, n) => sum + n, 0));\nconsole.log(nums.join());",
+  "expect": [
+   "2,4,6,8",
+   "2,4",
+   "10",
+   "1,2,3,4"
+  ]
+ },
+ {
+  "script": "const hello = () => console.log(\"hi\");\nconst run = (callback) => callback();\nrun(hello);",
+  "expect": [
+   "hi"
+  ]
+ }
+]

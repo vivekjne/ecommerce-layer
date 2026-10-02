@@ -1,0 +1,130 @@
+{
+ "scenes": [
+  {
+   "id": "s1",
+   "title": "Hook",
+   "lines": [
+    {
+     "id": "s1a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What is currying?"
+    },
+    {
+     "id": "s1b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Currying turns one function that takes many arguments, into a chain of functions that each take just one."
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "Normal",
+   "lines": [
+    {
+     "id": "s2a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Here is a normal function. It takes three arguments, a, b, and c, and adds them. Call it with one, two, three, and you get six."
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "Curried",
+   "lines": [
+    {
+     "id": "s3a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The curried version takes only a, and returns a function."
+    },
+    {
+     "id": "s3b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "That function takes b, and returns another. The last one takes c, and does the adding."
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "Calls",
+   "lines": [
+    {
+     "id": "s4a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Call it with one. You get back a function, waiting for b."
+    },
+    {
+     "id": "s4b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Give it two. Another function, waiting for c. Give it three, and you finally get the answer: six."
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "Closure",
+   "lines": [
+    {
+     "id": "s5a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "How does it remember a and b?"
+    },
+    {
+     "id": "s5b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "With closures. Each inner function keeps the arguments of the functions around it, in its backpack."
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "Use",
+   "lines": [
+    {
+     "id": "s6a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The payoff is partial application. Fix the first argument once, and reuse the result."
+    },
+    {
+     "id": "s6b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "[discount|discount|c] takes a percent. Give it ten, and you get a new function, [tenOff|ten off|c]."
+    },
+    {
+     "id": "s6c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Ten off of two hundred is one eighty. Ten off of fifty is forty five."
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "title": "Wrap",
+   "lines": [
+    {
+     "id": "s7a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Currying means one argument at a time, using closures. And partial application is the payoff."
+    },
+    {
+     "id": "s7b",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Got it. One argument, one function."
+    }
+   ]
+  }
+ ]
+}

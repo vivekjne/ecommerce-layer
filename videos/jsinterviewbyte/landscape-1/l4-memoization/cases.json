@@ -1,0 +1,24 @@
+[
+ {
+  "script": "const square = (n) => {\n  console.log(\"compute\");\n  return n * n;\n};\nconst memo = (fn) => {\n  const cache = new Map();\n  return (n) => {\n    if (cache.has(n)) return cache.get(n);\n    const result = fn(n);\n    cache.set(n, result);\n    return result;\n  };\n};\nconst fast = memo(square);\nconsole.log(fast(9));\nconsole.log(fast(9));\nconsole.log(fast(4));",
+  "expect": [
+   "compute",
+   "81",
+   "81",
+   "compute",
+   "16"
+  ]
+ },
+ {
+  "script": "let calls = 0;\nconst fib = (n) => {\n  calls++;\n  return n < 2 ? n : fib(n - 1) + fib(n - 2);\n};\nconsole.log(fib(20), calls);",
+  "expect": [
+   "6765 21891"
+  ]
+ },
+ {
+  "script": "let calls = 0;\nconst cache = new Map();\nconst fib = (n) => {\n  if (cache.has(n)) return cache.get(n);\n  calls++;\n  const r = n < 2 ? n : fib(n - 1) + fib(n - 2);\n  cache.set(n, r);\n  return r;\n};\nconsole.log(fib(20), calls);",
+  "expect": [
+   "6765 21"
+  ]
+ }
+]

@@ -1,0 +1,148 @@
+{
+ "scenes": [
+  {
+   "id": "s1",
+   "title": "Hook",
+   "lines": [
+    {
+     "id": "s1a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What is memoization?"
+    },
+    {
+     "id": "s1b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "It means remembering the result of a function call, so the same call never has to be worked out twice."
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "Idea",
+   "lines": [
+    {
+     "id": "s2a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Think of a calculator with a notepad. Before calculating, check the notepad. If the answer is there, just read it."
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "Code",
+   "lines": [
+    {
+     "id": "s3a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Here is a function, [square|square|c]. It prints compute, whenever it really does the work."
+    },
+    {
+     "id": "s3b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The [memo|memo|c] function wraps it. It creates a cache, a [Map|map|c], that lives in a closure."
+    },
+    {
+     "id": "s3c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Inside, it first asks: does the cache already have this input? If {true}, return the saved answer."
+    },
+    {
+     "id": "s3d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Otherwise, run the real function, save the result in the cache, and return it."
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "Run",
+   "lines": [
+    {
+     "id": "s4a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Call it with nine. A cache miss. It prints compute, and returns eighty one."
+    },
+    {
+     "id": "s4b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Call it with nine again. A cache hit. No compute, same answer, instantly."
+    },
+    {
+     "id": "s4c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Now four. A new input, so a miss. Compute, sixteen."
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "Fibonacci",
+   "lines": [
+    {
+     "id": "s5a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "When does it really matter?"
+    },
+    {
+     "id": "s5b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Recursion. Fibonacci of twenty, done the plain way, calls the function twenty one thousand, eight hundred and ninety one times."
+    },
+    {
+     "id": "s5c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "With a cache, the same answer takes just twenty one calls."
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "Caveat",
+   "lines": [
+    {
+     "id": "s6a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The trade is memory for speed."
+    },
+    {
+     "id": "s6b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Use it only for pure functions, which always return the same output for the same input."
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "title": "Wrap",
+   "lines": [
+    {
+     "id": "s7a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "So, check the notepad first."
+    },
+    {
+     "id": "s7b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Exactly. A closure for the cache, and a pure function inside."
+    }
+   ]
+  }
+ ]
+}

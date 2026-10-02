@@ -1,0 +1,23 @@
+[
+ {
+  "script": "const add = (a, b, c) => a + b + c;\nconsole.log(add(1, 2, 3));",
+  "expect": [
+   "6"
+  ]
+ },
+ {
+  "script": "const curriedAdd = (a) => (b) => (c) => a + b + c;\nconsole.log(typeof curriedAdd(1));\nconsole.log(typeof curriedAdd(1)(2));\nconsole.log(curriedAdd(1)(2)(3));",
+  "expect": [
+   "function",
+   "function",
+   "6"
+  ]
+ },
+ {
+  "script": "const discount = (pct) => (price) => price - (price * pct) / 100;\nconst tenOff = discount(10);\nconsole.log(tenOff(200));\nconsole.log(tenOff(50));",
+  "expect": [
+   "180",
+   "45"
+  ]
+ }
+]

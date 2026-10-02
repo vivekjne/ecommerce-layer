@@ -1,0 +1,154 @@
+{
+ "scenes": [
+  {
+   "id": "s1",
+   "title": "Hook",
+   "lines": [
+    {
+     "id": "s1a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "How do events travel through the page?"
+    },
+    {
+     "id": "s1b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "When you click a button, the click does not only happen on the button. It travels through its parents too. This journey is called event flow."
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "Setup",
+   "lines": [
+    {
+     "id": "s2a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Picture a button, inside a middle box, inside an outer box."
+    },
+    {
+     "id": "s2b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A click starts at the very top, and walks down toward the button."
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "Phases",
+   "lines": [
+    {
+     "id": "s3a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Phase one is capturing. The event goes down: outer, then middle."
+    },
+    {
+     "id": "s3b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Phase two is the target. The event reaches the button you really clicked."
+    },
+    {
+     "id": "s3c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Phase three is bubbling. The event goes back up, like a bubble: middle, then outer."
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "Listeners",
+   "lines": [
+    {
+     "id": "s4a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "And where do my listeners run?"
+    },
+    {
+     "id": "s4b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "By default, a listener runs during bubbling. Put one on each box, and a click prints button, middle, outer."
+    },
+    {
+     "id": "s4c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "To listen while capturing, pass {true} as the third argument to [addEventListener|add event listener|c]."
+    },
+    {
+     "id": "s4d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Now outer and middle run first, on the way down. Then the button."
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "Stop",
+   "lines": [
+    {
+     "id": "s5a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Can I stop the journey?"
+    },
+    {
+     "id": "s5b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Yes. Call [stopPropagation|stop propagation|c] on the event. Do it in the middle box, and the outer listener never runs."
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "Delegation",
+   "lines": [
+    {
+     "id": "s6a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Bubbling gives us a great trick, called event delegation."
+    },
+    {
+     "id": "s6b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Instead of a listener on every list item, put one listener on the list. Every click bubbles up to it."
+    },
+    {
+     "id": "s6c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Then use [event.target|event dot target|c] to see which item was clicked. Items added later work automatically."
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "title": "Wrap",
+   "lines": [
+    {
+     "id": "s7a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Capturing goes down. Bubbling goes up. And listeners use bubbling, unless you pass {true}."
+    },
+    {
+     "id": "s7b",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Down, target, up. Got it."
+    }
+   ]
+  }
+ ]
+}

@@ -11,3 +11,10 @@ out/
 __pycache__/
 */work-*/
 */.rendered.*/
+landscape-1/*/assets/
+landscape-1/*/rendered.mp4
+landscape-1/*/index.html
+landscape-1/*/snapshots/
+landscape-1/*/work-*/
+landscape-1/*/.rendered.*/
+landscape-1/out/

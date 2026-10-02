@@ -1,0 +1,148 @@
+{
+ "scenes": [
+  {
+   "id": "s1",
+   "title": "Hook",
+   "lines": [
+    {
+     "id": "s1a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What is a higher order function?"
+    },
+    {
+     "id": "s1b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "It is a function that works with other functions. Let us see what that means."
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "Values",
+   "lines": [
+    {
+     "id": "s2a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "In JavaScript, a function is a value, just like a number or a string."
+    },
+    {
+     "id": "s2b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "You can store it in a variable, put it in an array, and call it later."
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "Rule one",
+   "lines": [
+    {
+     "id": "s3a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Rule one. A higher order function can accept a function as an argument."
+    },
+    {
+     "id": "s3b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Here [applyTwice|apply twice|c] takes a function, and calls it two times. Double of three is six. Double of six is twelve."
+    },
+    {
+     "id": "s3c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The function that you pass in, is called a callback."
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "Rule two",
+   "lines": [
+    {
+     "id": "s4a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Rule two. It can return a function."
+    },
+    {
+     "id": "s4b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The [multiplier|multiplier|c] function remembers the number three, and hands back a new function."
+    },
+    {
+     "id": "s4c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Call that new function with five, and you get fifteen."
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "Built in",
+   "lines": [
+    {
+     "id": "s5a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Do I already use these?"
+    },
+    {
+     "id": "s5b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Every day. [map|map|c], [filter|filter|c], and [reduce|reduce|c] are all higher order functions."
+    },
+    {
+     "id": "s5c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "[map|Map|c] runs your callback on every item, and builds a new array: two, four, six, eight."
+    },
+    {
+     "id": "s5d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "[filter|Filter|c] keeps only the items where the callback returns {true}."
+    },
+    {
+     "id": "s5e",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "[reduce|Reduce|c] folds the whole array into one value. Here, the sum: ten."
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "Wrap",
+   "lines": [
+    {
+     "id": "s6a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A function that neither takes nor returns a function, is called a first order function."
+    },
+    {
+     "id": "s6b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "So: accepts a function, or returns a function, or both, and it is higher order."
+    },
+    {
+     "id": "s6c",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Got it. Functions in, functions out."
+    }
+   ]
+  }
+ ]
+}

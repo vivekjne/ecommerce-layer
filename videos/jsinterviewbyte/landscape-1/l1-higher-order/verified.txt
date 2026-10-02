@@ -1,0 +1,5 @@
+ok  0: (script) -> ["function","10 6"]
+ok  1: (script) -> ["12"]
+ok  2: (script) -> ["15","function"]
+ok  3: (script) -> ["2,4,6,8","2,4","10","1,2,3,4"]
+ok  4: (script) -> ["hi"]
