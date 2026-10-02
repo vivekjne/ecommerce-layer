@@ -19,7 +19,7 @@ console.log(`measured ${measured} LUFS -> applying ${gain.toFixed(2)} dB to reac
 execFileSync("ffmpeg", [
   "-v", "error", "-y", "-i", input,
   "-c:v", "libx264", "-crf", crf, "-preset", "medium", "-pix_fmt", "yuv420p",
-  "-af", `volume=${gain.toFixed(2)}dB,alimiter=limit=0.89:attack=2:release=40:level=false`,
+  "-af", `volume=${gain.toFixed(2)}dB,alimiter=limit=0.79:attack=2:release=40:level=false`,
   "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", output,
 ], { stdio: "inherit" });
 

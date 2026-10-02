@@ -61,3 +61,15 @@ behaviour with `node:crypto` (tampering, expiry, audience/issuer, `alg: none`, R
 confusion, a dictionary-cracked weak secret, token sizes, logout not invalidating a stateless token);
 output in `verified.txt`. The "careless library" verifiers are minimal stand-ins for the attack classes
 in RFC 8725, not real libraries (current libraries mostly reject these by default).
+
+## Semantic HTML & landmarks (`semantic-html/`)
+Landscape, 3:22. Research: WAI-ARIA landmark mappings (banner, navigation, main, complementary,
+contentinfo, region, form, search), HTML `<search>` (all major browsers since Oct 2023), screen-reader
+landmark keys (NVDA D, JAWS R, VoiceOver rotor), WebAIM Screen Reader Survey #10 (2024: 71.6% find
+information via headings), the first rule of ARIA, and WCAG 1.3.1 / 2.4.1 / 4.1.2.
+`verify_a11y.mjs` reads Chromium's accessibility tree (CDP `Accessibility.getFullAXTree`) and drives the
+keyboard; `verified.txt` holds every role and behaviour shown: div soup is all `generic`; page-level
+header/footer → banner/contentinfo but `sectionheader`/`sectionfooter` inside `<article>`; unnamed
+`<section>`/`<form>` → generic, named → region/form; labelled input named "Email", unlabelled has no
+name; `<div onclick>` skipped by Tab; `role=button tabindex=0` focusable but Enter/Space do nothing;
+`<button>` fires on both.

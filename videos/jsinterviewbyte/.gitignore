@@ -25,3 +25,10 @@ jwt-explainer/snapshots/
 jwt-explainer/work-*/
 jwt-explainer/.rendered.*/
 jwt-explainer/out/
+semantic-html/assets/
+semantic-html/rendered.mp4
+semantic-html/index.html
+semantic-html/snapshots/
+semantic-html/work-*/
+semantic-html/.rendered.*/
+semantic-html/out/
