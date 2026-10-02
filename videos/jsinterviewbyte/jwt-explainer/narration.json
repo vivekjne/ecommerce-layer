@@ -8,199 +8,390 @@
      "id": "s1a",
      "speaker": "sam",
      "voice": "af_nova",
-     "text": "What is a [JWT|J W T|c], and is it safe to use?"
+     "text": "What is a [JWT|J W T|c]? And is it safe to use?"
     },
     {
      "id": "s1b",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "A [JWT|J W T|c] is a signed note that says who you are. It is very useful, but easy to misuse. Let us see both sides."
+     "text": "A [JWT|J W T|c] is a signed note from the server. It says: this is user forty two.",
+     "after": 0.6
+    },
+    {
+     "id": "s1c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "It is very useful, but also easy to misuse. So let us look at both sides.",
+     "after": 0.5
     }
    ]
   },
   {
    "id": "s2",
-   "title": "Anatomy",
+   "title": "Three parts",
    "lines": [
     {
      "id": "s2a",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "A [JWT|J W T|c] has three parts, separated by dots: the header, the payload, and the signature."
+     "text": "Here is a real token. It looks random, but it has two dots.",
+     "after": 0.5
     },
     {
      "id": "s2b",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "The header names the algorithm. The payload holds claims, like the user, and when the token expires."
+     "text": "The dots split it into three parts. The header.",
+     "after": 0.3
     },
     {
      "id": "s2c",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "The signature is a hash of the first two parts, made with a secret key."
+     "text": "The payload.",
+     "after": 0.3
     },
     {
      "id": "s2d",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "But look. The parts are only base sixty four encoded. Anyone can read the payload. It is signed, not secret."
+     "text": "And the signature.",
+     "after": 0.8
     }
    ]
   },
   {
    "id": "s3",
-   "title": "Flow",
+   "title": "Reading it",
    "lines": [
     {
      "id": "s3a",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "Here is the flow. You log in, and the server signs a token and sends it back."
+     "text": "The header and payload are just JSON, encoded as base sixty four.",
+     "after": 0.4
     },
     {
      "id": "s3b",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "Your app sends it with every request. The server recomputes the signature, and checks the expiry. No database lookup."
+     "text": "The header says which algorithm signed it: [HS256|H S two fifty six|c].",
+     "after": 0.8
     },
     {
      "id": "s3c",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "Change one letter of the payload, say role admin, and the signature no longer matches. The token is rejected."
+     "text": "The payload holds the claims. [sub|sub|c] is the user. [role|role|c] is what they may do.",
+     "after": 0.6
+    },
+    {
+     "id": "s3d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "And [exp|exp|c] is when the token expires: fifteen minutes after it was issued.",
+     "after": 0.8
+    },
+    {
+     "id": "s3e",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Did you need a key to read all that?"
+    },
+    {
+     "id": "s3f",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "No. Anyone with the token can read it. A [JWT|J W T|c] is signed, not secret.",
+     "after": 1.0
     }
    ]
   },
   {
    "id": "s4",
-   "title": "Upsides",
+   "title": "The signature",
    "lines": [
     {
      "id": "s4a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Then what stops me from changing it?"
+    },
+    {
+     "id": "s4b",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "That is the upside. The server stays stateless, and any service that has the key can verify the token."
+     "text": "The signature. The server feeds the header, the payload, and its secret key into [HMAC|H MAC|c].",
+     "after": 0.6
+    },
+    {
+     "id": "s4c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Out comes the signature. Only someone with the key can make one that matches.",
+     "after": 0.8
     }
    ]
   },
   {
    "id": "s5",
-   "title": "Downsides",
+   "title": "The flow",
    "lines": [
     {
      "id": "s5a",
-     "speaker": "sam",
-     "voice": "af_nova",
-     "text": "So what is the catch?"
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Now, a real login. Your app sends your email and password.",
+     "after": 0.5
     },
     {
      "id": "s5b",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "First, you cannot take a token back. After logout, it still works until it expires."
+     "text": "The server checks them, signs a token, and sends it back.",
+     "after": 0.5
     },
     {
      "id": "s5c",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "Second, claims go stale. If the role changes, the old token still says the old role."
+     "text": "Your app sends that token with every request, in the Authorization header.",
+     "after": 0.5
     },
     {
      "id": "s5d",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "Third, it is bigger than a session id, and travels with every request."
-    },
-    {
-     "id": "s5e",
-     "speaker": "byte",
-     "voice": "am_michael",
-     "text": "Fourth, in local storage, one cross site scripting bug can steal it."
+     "text": "The server recomputes the signature, and checks the expiry. No database lookup needed.",
+     "after": 0.8
     }
    ]
   },
   {
    "id": "s6",
-   "title": "Dont",
+   "title": "Tampering",
    "lines": [
     {
      "id": "s6a",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "Now, what not to do."
+     "text": "Let us try to cheat. We change the role from user to admin.",
+     "after": 0.6
     },
     {
      "id": "s6b",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "Never trust the algorithm in the header."
+     "text": "The server recomputes the signature from the edited payload. It does not match.",
+     "after": 0.6
     },
     {
      "id": "s6c",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "An attacker sets [alg|alg|c] to [none|none|c], and a careless library skips the signature check."
-    },
-    {
-     "id": "s6d",
-     "speaker": "byte",
-     "voice": "am_michael",
-     "text": "Pin the allowed algorithm on the server. That also stops key confusion, where a public key is misused as a secret."
-    },
-    {
-     "id": "s6e",
-     "speaker": "byte",
-     "voice": "am_michael",
-     "text": "Never use a weak secret. Short words are cracked offline. Use at least thirty two random bytes."
-    },
-    {
-     "id": "s6f",
-     "speaker": "byte",
-     "voice": "am_michael",
-     "text": "Never skip the checks: expiry, issuer, and audience. And never put secrets in the payload."
+     "text": "So the token is rejected. Without the key, you cannot forge a signature.",
+     "after": 0.8
     }
    ]
   },
   {
    "id": "s7",
-   "title": "Do",
+   "title": "Upsides",
    "lines": [
     {
      "id": "s7a",
-     "speaker": "byte",
-     "voice": "am_michael",
-     "text": "Instead, keep access tokens short, five to fifteen minutes."
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "So why is it so popular?"
     },
     {
      "id": "s7b",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "Keep the refresh token in an [HttpOnly|HTTP only|c], Secure, SameSite cookie, and rotate it on every use."
-    },
-    {
-     "id": "s7c",
-     "speaker": "byte",
-     "voice": "am_michael",
-     "text": "And if one server session is all you need, plain sessions are simpler. That is a fine choice."
+     "text": "The server stays stateless, and any service with the key can check the token by itself.",
+     "after": 1.0
     }
    ]
   },
   {
    "id": "s8",
-   "title": "Wrap",
+   "title": "Downsides",
    "lines": [
     {
      "id": "s8a",
      "speaker": "sam",
      "voice": "af_nova",
-     "text": "So a [JWT|J W T|c] is a tool, not a default."
+     "text": "And what is the catch?"
     },
     {
      "id": "s8b",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "Exactly. Signed, not secret. Short lived. Verified strictly."
+     "text": "Catch one: you cannot take a token back.",
+     "after": 0.3
+    },
+    {
+     "id": "s8c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A user logs out at ten. But a copied token still works until it expires, at ten fifteen.",
+     "after": 0.8
+    },
+    {
+     "id": "s8d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Catch two: claims go stale.",
+     "after": 0.3
+    },
+    {
+     "id": "s8e",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The role changes to editor in the database, but the token still says user.",
+     "after": 0.8
+    },
+    {
+     "id": "s8f",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Catch three: size. A session id is thirty two characters. Our token is two hundred thirty five, and it grows with every claim.",
+     "after": 0.8
+    },
+    {
+     "id": "s8g",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Catch four: in local storage, one cross site scripting bug lets a script steal the token.",
+     "after": 1.0
+    }
+   ]
+  },
+  {
+   "id": "s9",
+   "title": "Mistakes",
+   "lines": [
+    {
+     "id": "s9a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Now, the mistakes to avoid.",
+     "after": 0.3
+    },
+    {
+     "id": "s9b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "One: trusting the algorithm in the header. An attacker sets [alg|alg|c] to [none|none|c], meaning no signature.",
+     "after": 0.5
+    },
+    {
+     "id": "s9c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A careless verifier skips the check, and accepts a fake admin token.",
+     "after": 0.6
+    },
+    {
+     "id": "s9d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The fix: pin the algorithm on the server, and reject anything else.",
+     "after": 0.8
+    },
+    {
+     "id": "s9e",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Pinning also stops key confusion, where a public key is misused as the secret.",
+     "after": 1.6
+    },
+    {
+     "id": "s9f",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Two: a weak secret. With one token, an attacker guesses offline.",
+     "after": 0.4
+    },
+    {
+     "id": "s9g",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Our test secret fell on the fifth guess. Use at least thirty two random bytes.",
+     "after": 0.8
+    },
+    {
+     "id": "s9h",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Three: skipping checks. Always check expiry, issuer, and audience.",
+     "after": 0.8
+    },
+    {
+     "id": "s9i",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Four: secrets in the payload. Remember, anyone can read it.",
+     "after": 0.8
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "title": "Do instead",
+   "lines": [
+    {
+     "id": "s10a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "So what should I do instead?"
+    },
+    {
+     "id": "s10b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Keep access tokens short: five to fifteen minutes.",
+     "after": 0.5
+    },
+    {
+     "id": "s10c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Keep the refresh token in an [HttpOnly|HTTP only|c] cookie, so scripts cannot read it.",
+     "after": 0.5
+    },
+    {
+     "id": "s10d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Rotate it on every use. If an old one comes back, it was stolen.",
+     "after": 0.8
+    },
+    {
+     "id": "s10e",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "And for a single server, a classic session is simpler, and easy to revoke.",
+     "after": 0.8
+    }
+   ]
+  },
+  {
+   "id": "s11",
+   "title": "Wrap",
+   "lines": [
+    {
+     "id": "s11a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "So a [JWT|J W T|c] is a tool, not a default."
+    },
+    {
+     "id": "s11b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Exactly. Signed, not secret. Short lived. Verified strictly.",
+     "after": 1.0
     }
    ]
   }

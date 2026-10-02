@@ -53,7 +53,7 @@ Each part is rendered separately (intro, then one folder per question) and the f
 concatenated with ffmpeg.
 
 ## JWT explainer (`jwt-explainer/`)
-Landscape, 2:38. Anatomy, flow, upsides, downsides, what not to do, what to do. Facts were checked
+Landscape, 4:26 (v2: one visual per sentence, reading pauses; voice at normal speed, built with LINE_GAP=0.4 SCENE_LEAD=0.7 SCENE_TAIL=0.4). Anatomy, flow, upsides, downsides, what not to do, what to do. Facts were checked
 against search results quoting RFC 7519 (claims, structure), RFC 8725 (algorithm pinning, `none`,
 key confusion, weak secrets, `iss`/`aud` validation), the OWASP cheat sheets (token storage, cookies,
 revocation) and RFC 9700 (refresh-token rotation). `verify_jwt.mjs` reproduces every demonstrated

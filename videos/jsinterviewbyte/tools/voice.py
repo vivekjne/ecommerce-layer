@@ -39,9 +39,9 @@ ENGINE = os.environ.get(
     "VOICE_ENGINE", "kokoro" if (KOKORO_DIR / "kokoro-v1.0.onnx").exists() else "espeak"
 )
 
-LINE_GAP = 0.3      # seconds of silence between sentences
-SCENE_LEAD = 0.25   # silence at the start of each scene (titles animate in)
-SCENE_TAIL = 0.2    # silence at the end of each scene
+LINE_GAP = float(os.environ.get("LINE_GAP", "0.3"))      # seconds of silence between sentences
+SCENE_LEAD = float(os.environ.get("SCENE_LEAD", "0.25"))   # silence at the start of each scene (titles animate in)
+SCENE_TAIL = float(os.environ.get("SCENE_TAIL", "0.2"))    # silence at the end of each scene
 INTRO = 0.4
 OUTRO = 1.4
 
