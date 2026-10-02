@@ -51,3 +51,13 @@ Code outputs are verified by `tools/verify_cases.mjs`; the browser behaviour (ev
 `stopPropagation`, delegation) by `l3-event-flow/verify_browser.mjs` (Chromium), output in `verified.txt`.
 Each part is rendered separately (intro, then one folder per question) and the finalized parts are
 concatenated with ffmpeg.
+
+## JWT explainer (`jwt-explainer/`)
+Landscape, 2:38. Anatomy, flow, upsides, downsides, what not to do, what to do. Facts were checked
+against search results quoting RFC 7519 (claims, structure), RFC 8725 (algorithm pinning, `none`,
+key confusion, weak secrets, `iss`/`aud` validation), the OWASP cheat sheets (token storage, cookies,
+revocation) and RFC 9700 (refresh-token rotation). `verify_jwt.mjs` reproduces every demonstrated
+behaviour with `node:crypto` (tampering, expiry, audience/issuer, `alg: none`, RS256→HS256 key
+confusion, a dictionary-cracked weak secret, token sizes, logout not invalidating a stateless token);
+output in `verified.txt`. The "careless library" verifiers are minimal stand-ins for the attack classes
+in RFC 8725, not real libraries (current libraries mostly reject these by default).

@@ -1,0 +1,208 @@
+{
+ "scenes": [
+  {
+   "id": "s1",
+   "title": "Hook",
+   "lines": [
+    {
+     "id": "s1a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What is a [JWT|J W T|c], and is it safe to use?"
+    },
+    {
+     "id": "s1b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A [JWT|J W T|c] is a signed note that says who you are. It is very useful, but easy to misuse. Let us see both sides."
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "Anatomy",
+   "lines": [
+    {
+     "id": "s2a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A [JWT|J W T|c] has three parts, separated by dots: the header, the payload, and the signature."
+    },
+    {
+     "id": "s2b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The header names the algorithm. The payload holds claims, like the user, and when the token expires."
+    },
+    {
+     "id": "s2c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The signature is a hash of the first two parts, made with a secret key."
+    },
+    {
+     "id": "s2d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "But look. The parts are only base sixty four encoded. Anyone can read the payload. It is signed, not secret."
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "Flow",
+   "lines": [
+    {
+     "id": "s3a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Here is the flow. You log in, and the server signs a token and sends it back."
+    },
+    {
+     "id": "s3b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Your app sends it with every request. The server recomputes the signature, and checks the expiry. No database lookup."
+    },
+    {
+     "id": "s3c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Change one letter of the payload, say role admin, and the signature no longer matches. The token is rejected."
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "Upsides",
+   "lines": [
+    {
+     "id": "s4a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "That is the upside. The server stays stateless, and any service that has the key can verify the token."
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "Downsides",
+   "lines": [
+    {
+     "id": "s5a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "So what is the catch?"
+    },
+    {
+     "id": "s5b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "First, you cannot take a token back. After logout, it still works until it expires."
+    },
+    {
+     "id": "s5c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Second, claims go stale. If the role changes, the old token still says the old role."
+    },
+    {
+     "id": "s5d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Third, it is bigger than a session id, and travels with every request."
+    },
+    {
+     "id": "s5e",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Fourth, in local storage, one cross site scripting bug can steal it."
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "Dont",
+   "lines": [
+    {
+     "id": "s6a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Now, what not to do."
+    },
+    {
+     "id": "s6b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Never trust the algorithm in the header."
+    },
+    {
+     "id": "s6c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "An attacker sets [alg|alg|c] to [none|none|c], and a careless library skips the signature check."
+    },
+    {
+     "id": "s6d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Pin the allowed algorithm on the server. That also stops key confusion, where a public key is misused as a secret."
+    },
+    {
+     "id": "s6e",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Never use a weak secret. Short words are cracked offline. Use at least thirty two random bytes."
+    },
+    {
+     "id": "s6f",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Never skip the checks: expiry, issuer, and audience. And never put secrets in the payload."
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "title": "Do",
+   "lines": [
+    {
+     "id": "s7a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Instead, keep access tokens short, five to fifteen minutes."
+    },
+    {
+     "id": "s7b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Keep the refresh token in an [HttpOnly|HTTP only|c], Secure, SameSite cookie, and rotate it on every use."
+    },
+    {
+     "id": "s7c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "And if one server session is all you need, plain sessions are simpler. That is a fine choice."
+    }
+   ]
+  },
+  {
+   "id": "s8",
+   "title": "Wrap",
+   "lines": [
+    {
+     "id": "s8a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "So a [JWT|J W T|c] is a tool, not a default."
+    },
+    {
+     "id": "s8b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Exactly. Signed, not secret. Short lived. Verified strictly."
+    }
+   ]
+  }
+ ]
+}

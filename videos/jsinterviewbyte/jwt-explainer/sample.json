@@ -1,0 +1,14 @@
+{
+ "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyXzQyIiwicm9sZSI6InVzZXIiLCJpc3MiOiJodHRwczovL2F1dGguZXhhbXBsZS5jb20iLCJhdWQiOiJzaG9wLWFwaSIsImlhdCI6MTcwMDAwMDAwMCwiZXhwIjoxNzAwMDAwOTAwfQ.Abdu8UPZ1qI_V8wt0ro2V1BY14t973bZZWMUHiAfsiI",
+ "h": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+ "p": "eyJzdWIiOiJ1c2VyXzQyIiwicm9sZSI6InVzZXIiLCJpc3MiOiJodHRwczovL2F1dGguZXhhbXBsZS5jb20iLCJhdWQiOiJzaG9wLWFwaSIsImlhdCI6MTcwMDAwMDAwMCwiZXhwIjoxNzAwMDAwOTAwfQ",
+ "s": "Abdu8UPZ1qI_V8wt0ro2V1BY14t973bZZWMUHiAfsiI",
+ "payload": {
+  "sub": "user_42",
+  "role": "user",
+  "iss": "https://auth.example.com",
+  "aud": "shop-api",
+  "iat": 1700000000,
+  "exp": 1700000900
+ }
+}

@@ -1,0 +1,7 @@
+{
+ "id": "jb-jwt",
+ "name": "JWT",
+ "tag": "JWT",
+ "question": "JWT",
+ "questionHtml": "What is a <code>JWT</code>, and is it safe?"
+}

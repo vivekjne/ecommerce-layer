@@ -1,0 +1,25 @@
+1 parts: 3
+1 header decoded: {"alg":"HS256","typ":"JWT"}
+1 payload decoded: {"sub":"user_42","role":"user","iss":"https://auth.example.com","aud":"shop-api","iat":1700000000,"exp":1700000900}
+1 signature bytes: 32
+1 has padding '=': false
+2 recomputed signature matches: true
+3 tampered payload verifies: false
+3 recomputed signature for tampered payload: O5o5m6dqckElPntvIBEU45VbQMcOa_ByPFwTIeoKO3Y
+3 tampered payload part: eyJzdWIiOiJ1c2VyXzQyIiwicm9sZSI6ImFkbWluIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLmV4YW1wbGUuY29tIiwiYXVkIjoic2hvcC1hcGkiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTcwMDAwMDkwMH0
+4 valid token: {"ok":true,"claims":{"sub":"user_42","role":"user","iss":"https://auth.example.com","aud":"shop-api","iat":1700000000,"exp":1700000900}}
+4 after exp: {"ok":false,"why":"expired"}
+4 wrong issuer: {"ok":false,"why":"wrong issuer"}
+4 wrong audience: {"ok":false,"why":"wrong audience"}
+5 naive accepts alg none: {"ok":true,"claims":{"sub":"user_42","role":"admin","iss":"https://auth.example.com","aud":"shop-api","iat":1700000000,"exp":1700000900}}
+5 pinned verifier on alg none: {"ok":false,"why":"alg none not allowed"}
+6 real RS256 token verifies with public key: true
+6 confused verifier accepts forged admin token: true
+6 pinned RS256 verifier on forged token: rejected: alg HS256
+7 dictionary finds weak secret: secret
+8 session id length (bytes): 32
+8 basic JWT length: 235
+8 JWT with more claims length: 659
+9 valid right after 'logout' (no server state): true
+9 role change in DB not seen until exp: true
+10 payload readable without key: user_42

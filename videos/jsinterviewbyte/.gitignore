@@ -18,3 +18,10 @@ landscape-1/*/snapshots/
 landscape-1/*/work-*/
 landscape-1/*/.rendered.*/
 landscape-1/out/
+jwt-explainer/assets/
+jwt-explainer/rendered.mp4
+jwt-explainer/index.html
+jwt-explainer/snapshots/
+jwt-explainer/work-*/
+jwt-explainer/.rendered.*/
+jwt-explainer/out/
