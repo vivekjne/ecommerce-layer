@@ -1,0 +1,14 @@
+1 localStorage types: {"count":"42","countType":"string","user":"[object Object]","cartBack":3}
+2 sessionStorage after reload (same tab): Hello
+2 new tab sees localStorage count: 42
+2 new tab sees sessionStorage draft: null
+3 storage event in other tab: ["theme=dark"]
+3 storage event in writing tab: []
+4 localStorage limit: {"error":"QuotaExceededError","charsStored":5177571,"approxMB":4.94}
+5 document.cookie (JS view): theme=dark
+5 Cookie header the server received: theme=dark; sid=abc123
+6 oversized cookie stored?: false
+6 4000-byte cookie stored?: true
+7 IndexedDB: {"order":["put() returned","transaction complete"],"placedIsDate":true,"itemsIsArray":true,"receiptIsBlob":true,"total":4999}
+8 Cache API: {"matched":true,"body":"[{\"id\":1}]"}
+9 storage estimate: {"quotaGB":0.9}

@@ -194,6 +194,37 @@ def _es_callback(wav, numsamples, events):
 _es_cb_ref = SYNTH_CB(_es_callback)
 
 
+# --------------------------------------------------------------------------
+# engine: qwen (Qwen3-TTS CustomVoice; expressive, instruction-controlled)
+#   QWEN_MODEL      local model dir (default $KOKORO_DIR/../qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice)
+#   QWEN_SPEAKERS   speaker map, e.g. "byte=Ryan,sam=Serena"
+#   QWEN_INSTRUCT_<SPEAKER>  optional style instruction per character
+# --------------------------------------------------------------------------
+_qwen = None
+QWEN_SPEAKERS = dict(p.split("=") for p in os.environ.get("QWEN_SPEAKERS", "byte=Ryan,sam=Serena").split(","))
+QWEN_INSTRUCT = {
+    "byte": os.environ.get("QWEN_INSTRUCT_BYTE", "A friendly, confident developer explaining a concept to a colleague. Natural conversational pace, lively intonation, light emphasis on technical terms."),
+    "sam": os.environ.get("QWEN_INSTRUCT_SAM", "A curious, upbeat junior developer asking a question. Natural pace, genuinely curious tone."),
+}
+
+
+def synth_qwen(say: str, character: str):
+    """-> (float32 samples, sample_rate, None). Word timings are estimated from the audio afterwards."""
+    global _qwen
+    import numpy as np
+    import torch
+    if _qwen is None:
+        from qwen_tts import Qwen3TTSModel
+        path = os.environ.get("QWEN_MODEL", str(KOKORO_DIR.parent / "qwen" / "Qwen3-TTS-12Hz-1.7B-CustomVoice"))
+        torch.set_num_threads(os.cpu_count() or 4)
+        _qwen = Qwen3TTSModel.from_pretrained(path, device_map="cpu", dtype=torch.float32)
+    wavs, sr = _qwen.generate_custom_voice(
+        text=say, language="English", speaker=QWEN_SPEAKERS.get(character, "Ryan"),
+        instruct=QWEN_INSTRUCT.get(character, ""),
+    )
+    return np.asarray(wavs[0], dtype="float32"), sr, None
+
+
 def synth_espeak(say: str, emph=None):
     """-> (float32 samples, sample_rate, [(char_position, ms), ...])"""
     global _lib
@@ -322,7 +353,8 @@ def main():
         for line in scene["lines"]:
             say, tokens, emph = parse(line["text"])
             voice = line.get("voice", KOKORO_VOICE)
-            key = hashlib.sha1(f"{ENGINE}|{voice}|{KOKORO_SPEED}|{say}|{emph}|{'v4' if any(emph) else ''}".encode()).hexdigest()[:10]
+            qkey = f"{QWEN_SPEAKERS.get(line.get('speaker', 'byte'))}|{QWEN_INSTRUCT.get(line.get('speaker', 'byte'))}" if ENGINE == "qwen" else ""
+            key = hashlib.sha1(f"{ENGINE}|{voice}|{KOKORO_SPEED}|{say}|{emph}|{'v4' if any(emph) else ''}|{qkey}".encode()).hexdigest()[:10]
             raw = VO_DIR / f"{line['id']}.{key}.npy"
             meta = VO_DIR / f"{line['id']}.{key}.json"
             if raw.exists() and meta.exists():
@@ -330,7 +362,7 @@ def main():
                 m = json.loads(meta.read_text())
                 rate, events = m["rate"], m["events"]
             else:
-                samples, rate, events = synth(say, emph, voice) if ENGINE == "kokoro" else synth(say, emph)
+                samples, rate, events = synth_qwen(say, line.get("speaker", "byte")) if ENGINE == "qwen" else (synth(say, emph, voice) if ENGINE == "kokoro" else synth(say, emph))
                 samples = np.asarray(samples, dtype="float32")
                 np.save(raw, samples)
                 meta.write_text(json.dumps({"rate": rate, "events": events}))

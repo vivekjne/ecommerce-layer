@@ -32,3 +32,10 @@ semantic-html/snapshots/
 semantic-html/work-*/
 semantic-html/.rendered.*/
 semantic-html/out/
+browser-storage/assets/
+browser-storage/rendered.mp4
+browser-storage/index.html
+browser-storage/snapshots/
+browser-storage/work-*/
+browser-storage/.rendered.*/
+browser-storage/out/

@@ -1,0 +1,7 @@
+{
+ "id": "jb-storage",
+ "name": "Browser storage",
+ "tag": "Web \u00b7 storage",
+ "question": "Browser storage",
+ "questionHtml": "Where should a web app <code>store</code> data?"
+}

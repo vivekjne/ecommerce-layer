@@ -1,0 +1,285 @@
+{
+ "scenes": [
+  {
+   "id": "s1",
+   "title": "Hook",
+   "lines": [
+    {
+     "id": "s1a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "I switched the site to dark mode, refreshed, and it went right back to light. Why?"
+    },
+    {
+     "id": "s1b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Because the page forgot. Every refresh starts from scratch, unless the app saves your choice in the browser.",
+     "after": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "title": "localStorage",
+   "lines": [
+    {
+     "id": "s2a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The simplest place is [localStorage|local storage|c]. One call saves the theme: [setItem|set item|c], with a key and a value.",
+     "after": 0.6
+    },
+    {
+     "id": "s2b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Close the browser, come back next week, and [getItem|get item|c] still returns dark.",
+     "after": 0.6
+    },
+    {
+     "id": "s2c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Every tab on the same site shares it. Change it in one tab, and the other tabs get a [storage|storage|c] event.",
+     "after": 0.6
+    },
+    {
+     "id": "s2d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "But it only stores strings. Save the number forty two, and you get back the string forty two.",
+     "after": 0.4
+    },
+    {
+     "id": "s2e",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Save an object, and you get object Object. So use [JSON.stringify|JSON dot stringify|c] going in, and [JSON.parse|JSON dot parse|c] coming out.",
+     "after": 0.6
+    },
+    {
+     "id": "s2f",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The limit is about five megabytes per site. In our test, Chrome threw a quota error just under five million characters.",
+     "after": 0.4
+    },
+    {
+     "id": "s2g",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "And it is synchronous, so every read and write blocks the page for a moment. Keep it small.",
+     "after": 0.8
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "title": "sessionStorage",
+   "lines": [
+    {
+     "id": "s3a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What if I only need data while the tab is open? Like a half filled checkout form?"
+    },
+    {
+     "id": "s3b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "That is [sessionStorage|session storage|c]. Same methods, but every tab gets its own private copy.",
+     "after": 0.5
+    },
+    {
+     "id": "s3c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Reload the page, and the draft is still there. Open the site in a new tab, and that tab starts empty. Close the tab, and it is gone.",
+     "after": 0.8
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "title": "Cookies",
+   "lines": [
+    {
+     "id": "s4a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "And cookies? They are the oldest one."
+    },
+    {
+     "id": "s4b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A cookie is a small string the browser sends back to the server, with every request to that site.",
+     "after": 0.5
+    },
+    {
+     "id": "s4c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "That is the whole point. The server can read it, which is how it remembers that you are logged in.",
+     "after": 0.5
+    },
+    {
+     "id": "s4d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The server sets one with a [Set-Cookie|set cookie|c] header. In our test, the next request carried it back automatically.",
+     "after": 0.5
+    },
+    {
+     "id": "s4e",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Mark it [HttpOnly|HTTP only|c], and page scripts cannot read it at all. [document.cookie|document dot cookie|c] showed the theme, but not the session id.",
+     "after": 0.6
+    },
+    {
+     "id": "s4f",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Add [Secure|secure|c], so it only travels over HTTPS, and [SameSite|same site|c], to limit when other sites can send it.",
+     "after": 0.5
+    },
+    {
+     "id": "s4g",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "But cookies are tiny: about four kilobytes each. Our five thousand character cookie was silently dropped.",
+     "after": 0.8
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "title": "IndexedDB",
+   "lines": [
+    {
+     "id": "s5a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "What if my app needs lots of data, like a product catalog that works offline?"
+    },
+    {
+     "id": "s5b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Then use [IndexedDB|indexed D B|c]. It is a real database, inside the browser.",
+     "after": 0.5
+    },
+    {
+     "id": "s5c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "It stores real objects, not just strings. Our saved order came back with a real date, a real array, and even a file blob.",
+     "after": 0.6
+    },
+    {
+     "id": "s5d",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Writes happen in transactions, so they fully succeed, or not at all. And indexes make lookups fast.",
+     "after": 0.5
+    },
+    {
+     "id": "s5e",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "It is asynchronous. The put call returns right away, and the result arrives later, so the page never freezes.",
+     "after": 0.5
+    },
+    {
+     "id": "s5f",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "And it holds far more than local storage, often gigabytes, depending on free disk space.",
+     "after": 0.8
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "title": "Cache API",
+   "lines": [
+    {
+     "id": "s6a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "For offline pages, there is the [Cache|cache|c] API. It saves whole requests, together with their responses.",
+     "after": 0.5
+    },
+    {
+     "id": "s6b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A service worker answers from that cache when the network is down. That is how an app still opens offline.",
+     "after": 0.8
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "title": "Rules",
+   "lines": [
+    {
+     "id": "s7a",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A few rules apply to all of them. First, data belongs to one origin: the scheme, the host, and the port.",
+     "after": 0.6
+    },
+    {
+     "id": "s7b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Second, the browser may clear it when the disk runs low. [navigator.storage.persist|navigator dot storage dot persist|c] asks it to keep yours.",
+     "after": 0.6
+    },
+    {
+     "id": "s7c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "Third, any script on your page can read local storage, session storage, and IndexedDB. So never keep tokens or secrets there.",
+     "after": 1.0
+    }
+   ]
+  },
+  {
+   "id": "s8",
+   "title": "Which one",
+   "lines": [
+    {
+     "id": "s8a",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "So which one should I pick?"
+    },
+    {
+     "id": "s8b",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "The login session: an [HttpOnly|HTTP only|c] cookie. The theme or language: local storage.",
+     "after": 0.4
+    },
+    {
+     "id": "s8c",
+     "speaker": "byte",
+     "voice": "am_michael",
+     "text": "A form draft for one tab: session storage. Big or offline data: IndexedDB. Offline pages: the Cache API.",
+     "after": 0.6
+    },
+    {
+     "id": "s8d",
+     "speaker": "sam",
+     "voice": "af_nova",
+     "text": "Got it. Same browser, different shelves for different things.",
+     "after": 1.0
+    }
+   ]
+  }
+ ]
+}
