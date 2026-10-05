@@ -73,3 +73,17 @@ header/footer → banner/contentinfo but `sectionheader`/`sectionfooter` inside 
 `<section>`/`<form>` → generic, named → region/form; labelled input named "Email", unlabelled has no
 name; `<div onclick>` skipped by Tab; `role=button tabindex=0` focusable but Enter/Space do nothing;
 `<button>` fires on both.
+
+## Browser storage (`browser-storage/`)
+Landscape, 4:24. localStorage, sessionStorage, cookies, IndexedDB and the Cache API, then the shared
+rules (per-origin, eviction + `navigator.storage.persist()`, scripts can read everything but HttpOnly
+cookies) and a "which one" cheat sheet. `verify_storage.mjs` runs every claim in Chromium over
+http://localhost; `verified.txt` holds the results: 42 → `"42"`, objects → `"[object Object]"`; the
+`storage` event fires only in the other tab; sessionStorage survives reload but not a new tab;
+QuotaExceededError at 5,177,571 characters; `document.cookie` hides the HttpOnly `sid` while the
+server's Cookie header carries both; a 5,000-char cookie is dropped and a 4,000-byte one kept; IndexedDB
+returns a real Date/Array/Blob and `put()` returns before the transaction completes; Cache API
+`match()` returns the stored body.
+Voice: `voice.py` has a Qwen3-TTS engine (`VOICE_ENGINE=qwen`, speakers via `QWEN_SPEAKERS`, style via
+`QWEN_INSTRUCT_*`), which needs the Qwen3-TTS-12Hz-1.7B-CustomVoice weights in `$KOKORO_DIR/../qwen/`.
+The current render uses Kokoro because huggingface.co was not reachable from the build environment.

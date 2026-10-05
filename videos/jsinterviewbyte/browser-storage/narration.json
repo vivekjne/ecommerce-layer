@@ -62,7 +62,7 @@
      "id": "s2f",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "The limit is about five megabytes per site. In our test, Chrome threw a quota error just under five million characters.",
+     "text": "The limit is about five megabytes per site. Our test hit a quota error near five million characters.",
      "after": 0.4
     },
     {
@@ -135,7 +135,7 @@
      "id": "s4e",
      "speaker": "byte",
      "voice": "am_michael",
-     "text": "Mark it [HttpOnly|HTTP only|c], and page scripts cannot read it at all. [document.cookie|document dot cookie|c] showed the theme, but not the session id.",
+     "text": "Mark it [HttpOnly|HTTP only|c], and scripts cannot read it. [document.cookie|document dot cookie|c] showed the theme, not the session id.",
      "after": 0.6
     },
     {

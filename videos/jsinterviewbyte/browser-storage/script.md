@@ -8,7 +8,7 @@ BYTE: Close the browser, come back next week, and [getItem|get item|c] still ret
 BYTE: Every tab on the same site shares it. Change it in one tab, and the other tabs get a [storage|storage|c] event. (after 0.6)
 BYTE: But it only stores strings. Save the number forty two, and you get back the string forty two. (after 0.4)
 BYTE: Save an object, and you get object Object. So use [JSON.stringify|JSON dot stringify|c] going in, and [JSON.parse|JSON dot parse|c] coming out. (after 0.6)
-BYTE: The limit is about five megabytes per site. In our test, Chrome threw a quota error just under five million characters. (after 0.4)
+BYTE: The limit is about five megabytes per site. Our test hit a quota error near five million characters. (after 0.4)
 BYTE: And it is synchronous, so every read and write blocks the page for a moment. Keep it small. (after 0.8)
 
 ## sessionStorage
@@ -21,7 +21,7 @@ SAM: And cookies? They are the oldest one.
 BYTE: A cookie is a small string the browser sends back to the server, with every request to that site. (after 0.5)
 BYTE: That is the whole point. The server can read it, which is how it remembers that you are logged in. (after 0.5)
 BYTE: The server sets one with a [Set-Cookie|set cookie|c] header. In our test, the next request carried it back automatically. (after 0.5)
-BYTE: Mark it [HttpOnly|HTTP only|c], and page scripts cannot read it at all. [document.cookie|document dot cookie|c] showed the theme, but not the session id. (after 0.6)
+BYTE: Mark it [HttpOnly|HTTP only|c], and scripts cannot read it. [document.cookie|document dot cookie|c] showed the theme, not the session id. (after 0.6)
 BYTE: Add [Secure|secure|c], so it only travels over HTTPS, and [SameSite|same site|c], to limit when other sites can send it. (after 0.5)
 BYTE: But cookies are tiny: about four kilobytes each. Our five thousand character cookie was silently dropped. (after 0.8)
 

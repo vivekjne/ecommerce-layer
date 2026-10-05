@@ -125,7 +125,7 @@
       // ================= 3. sessionStorage =================
       sceneStart("s3");
       chapter("sessionStorage", S("s3") + 0.2);
-      const form = win("form", { x: 260, y: 500, w: 560, h: 340, url: "shop.example/checkout", fs: 26, html: '<div>Checkout</div><div style="background:#fff;border:3px solid #c9d0f5;border-radius:10px;width:80%;padding:6px 12px;text-align:left">Name: Sam Rivera</div><div style="background:#fff;border:3px solid #c9d0f5;border-radius:10px;width:80%;padding:6px 12px;text-align:left;color:#93a0d6">Address: …</div>' });
+      const form = win("form", { x: 260, y: 500, w: 560, h: 340, url: "shop.example/checkout", fs: 26, html: '<div>Checkout</div><div style="background:#fff;border:3px solid #c9d0f5;border-radius:10px;width:80%;padding:6px 12px;text-align:left">Name: Sam Rivera</div><div style="background:#fff;border:3px solid #c9d0f5;border-radius:10px;width:80%;padding:6px 12px;text-align:left;color:#5b5f86">Address: …</div>' });
       appear(form, L("s3a", 0.3));
       const T3b = L("s3b", -0.1);
       gone(form, T3b);
@@ -158,7 +158,7 @@
       const jar = kv("jar", { x: 60, y: 980, w: 380, title: "cookie jar", fs: 24, rows: [["theme", "dark"], ["sid", "abc123", false]] });
       appear(jar, WD("s4b", "small"));
       // every request carries the cookie
-      const req = (id, y, label, t) => { const l = line(id + "l", { x1: 195, y1: y + 30, x2: 885, y2: y + 30, c: "C", w: 5 }); drawLine(l, t, 1.0); const p = tok(id, { x: 210, y, w: 330, cls: "c", fs: 22, html: label }); appear(p, t, { s: 0.7 }); moveTo(p, t + 0.3, [0, 0], [330, 0], 1.0); return [l, p]; };
+      const req = (id, y, label, t) => { const l = line(id + "l", { x1: 195, y1: y + 30, x2: 885, y2: y + 30, c: "C", w: 5 }); drawLine(l, t, 1.0); const p = tok(id, { x: 210, y, w: 470, cls: "c", fs: 22, html: label }); appear(p, t, { s: 0.7 }); moveTo(p, t + 0.3, [0, 0], [200, 0], 1.0); return [l, p]; };
       const r1 = req("rq1", 620, "GET /  · Cookie: theme=dark", WD("s4b", "every") - 0.3);
       const r2 = req("rq2", 690, "GET /cart · Cookie: theme=dark", WD("s4b", "request") - 0.1);
       const rd = tok("rd", { x: 560, y: 770, w: 320, cls: "e", fs: 24, html: "server reads it ✓" });
@@ -179,7 +179,7 @@
       const T4e = L("s4e", -0.1);
       [sc, scp, r3[0], r3[1], auto].forEach((e) => gone(e, T4e));
       const dc = codeBlock("dc", { x: 470, w: 550, y: 640, fs: 28, name: "page script", lines: [["document.cookie", '"theme=dark"']] });
-      appear(dc.sel, WD("s4e", "page")); resIn(dc, 1, WD("s4e", "document.cookie") + 0.4);
+      appear(dc.sel, WD("s4e", "scripts")); resIn(dc, 1, WD("s4e", "document.cookie") + 0.4);
       const hid = pill("hid", { x: 470, y: 780, cls: "vi", fs: 28, html: LOCK + " sid is HttpOnly: hidden from JS" });
       appear(hid, WD("s4e", "session")); tl.set("#jar-r1", { backgroundColor: "#2b2050" }, WD("s4e", "HttpOnly"));
       // Secure + SameSite
@@ -207,10 +207,10 @@
       [cat, off].forEach((e) => gone(e, T5b));
       const dbx = box("dbx", { x: 600, y: 500, w: 420, h: 300, cls: "c2", fs: 40, html: 'database "shop"<small>object store: orders</small>' });
       appear(dbx, WD("s5b", "database"));
-      const ob = codeBlock("ob", { x: 60, w: 500, y: 500, fs: 26, name: "an order object", lines: ["{", "  id: 1,", "  total: 4999,", '  placed: new Date("2026-10-01"),', '  items: ["shoes", "bag"],', '  receipt: new Blob([…])', "}"] });
+      const ob = codeBlock("ob", { x: 60, w: 500, y: 500, fs: 26, name: "an order object", lines: ["{", "  id: 1,", "  total: 4999,", '  placed: new Date(),', '  items: ["shoes", "bag"],', '  receipt: new Blob([…])', "}"] });
       appear(ob.sel, L("s5c", 0.1), { y: 20 });
-      const pkt = tok("pkt5", { x: 340, y: 620, w: 160, cls: "c", fs: 28, html: "put()" });
-      appear(pkt, WD("s5c", "saved") - 0.2); moveTo(pkt, WD("s5c", "saved"), [0, 0], [330, 0], 0.8); gone(pkt, WD("s5c", "saved") + 0.9);
+      const pkt = tok("pkt5", { x: 400, y: 830, w: 160, cls: "c", fs: 28, html: "put()" });
+      appear(pkt, WD("s5c", "saved") - 0.2); allowOverlap("#pkt5"); moveTo(pkt, WD("s5c", "saved"), [0, 0], [300, -150], 0.8); gone(pkt, WD("s5c", "saved") + 0.9);
       const chk = [["placed is a Date", "date,"], ["items is an Array", "array,"], ["receipt is a Blob", "blob."]].map(([t, w], i) => { const s = pill("ck" + i, { x: 600, y: 830 + i * 70, cls: "li", fs: 28, html: TICK + " " + t }); appear(s, WD("s5c", w.replace(/[,.]/g, ""))); return s; });
       // transactions + indexes
       const T5d = L("s5d", -0.1);
@@ -231,7 +231,7 @@
       appear(spin, WD("s5e", "freezes") - 0.4); tl.fromTo(spin, { rotation: -6 }, { rotation: 6, duration: 0.3, yoyo: true, repeat: 5, immediateRender: false }, WD("s5e", "freezes") - 0.4);
       // size comparison
       const T5f = L("s5f", -0.1);
-      [ord.sel, spin].forEach((e) => gone(e, T5f));
+      [ord.sel, spin, dbx].forEach((e) => gone(e, T5f));
       const sz1 = lab("sz1", { x: 60, y: 560, fs: 30, html: "localStorage" });
       const sb1 = tok("sb1", { x: 330, y: 550, w: 30, h: 56, cls: "b", fs: 20, html: "" });
       const sn1 = lab("sn1", { x: 380, y: 560, fs: 30, html: "≈ 5 MB" });
@@ -244,7 +244,7 @@
       // ================= 6. Cache API =================
       sceneStart("s6");
       chapter("Cache API", S("s6") + 0.2);
-      const cb = kv("cb", { x: 560, y: 500, w: 460, title: 'cache "v1"', fs: 22, rows: [["GET /api/products", '200 · [{"id":1}]', false], ["GET /app.js", "200 · …", false]] });
+      const cb = kv("cb", { x: 440, y: 500, w: 580, title: 'cache "v1"', fs: 22, rows: [["GET /api/products", '200 · [{"id":1}]', false], ["GET /app.js", "200 · …", false]] });
       appear(cb, L("s6a", 0.1)); showRow("cb", 0, WD("s6a", "requests")); showRow("cb", 1, WD("s6a", "responses"));
       const pg6 = box("pg6", { x: 60, y: 760, w: 220, h: 100, cls: "c1", fs: 30, html: "page" });
       const sw6 = box("sw6", { x: 330, y: 760, w: 260, h: 100, cls: "c4", fs: 28, html: "service worker" });
@@ -265,9 +265,9 @@
       const orig = mk('<div id="orig" style="left:60px;top:520px;width:960px;text-align:center;font:800 54px var(--mono);color:#f4f6ff"><span id="o1" style="color:#22d3ee">https://</span><span id="o2" style="color:#fbbf24">shop.example</span><span id="o3" style="color:#f472b6">:443</span></div>', "orig");
       appear("#orig", WD("s7a", "origin") - 0.3);
       const ol = [["scheme", "#o1", 230, "cy"], ["host", "#o2", 520, ""], ["port", "#o3", 840, "pk"]].map(([n, s, x, c]) => { const p = pill("ol" + n, { x, y: 610, cls: c, fs: 30, html: n }); appear(p, WD("s7a", n)); return p; });
-      const oth = tok("oth", { x: 260, y: 700, w: 560, cls: "g", fs: 28, html: LOCK + " https://blog.example cannot read it" });
+      const oth = tok("oth", { x: 150, y: 700, w: 780, cls: "g", fs: 28, html: LOCK + " https://blog.example cannot read it" });
       appear(oth, LE("s7a", -0.4));
-      const disk = box("disk", { x: 60, y: 790, w: 460, h: 110, cls: "c6", fs: 30, html: "disk almost full<small>best-effort data may be cleared</small>" });
+      const disk = box("disk", { x: 60, y: 790, w: 460, h: 140, cls: "c6", fs: 28, html: "disk almost full<small>best-effort data may be cleared</small>" });
       appear(disk, WD("s7b", "disk") - 0.2);
       const per = codeBlock("per", { x: 560, w: 460, y: 790, fs: 26, name: "ask to keep it", lines: ["await navigator.storage.persist()"] });
       appear(per.sel, WD("s7b", "navigator.storage.persist"));
