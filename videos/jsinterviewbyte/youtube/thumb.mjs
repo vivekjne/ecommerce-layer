@@ -7,6 +7,18 @@ h1 .y{color:#fbbf24}.sub{position:absolute;left:54px;font-size:44px;font-weight:
 .tok{position:absolute;font-family:"DejaVu Sans Mono",monospace;font-weight:800;border-radius:14px;padding:10px 18px;color:#1f2140}
 .pill{position:absolute;font-size:40px;font-weight:900;border-radius:999px;padding:8px 26px;color:#1f2140}`;
 const pages = {
+  "thumb-storage.png": `<div class="brand">JS Interview<b>Byte</b></div>
+<h1 style="font-size:104px">Browser<br><span class="y">storage</span></h1>
+<div class="sub" style="top:345px;color:#b4bdf2">which one, and when?</div>
+<div class="pill" style="left:54px;top:430px;background:#22d3ee">localStorage</div>
+<div class="pill" style="left:390px;top:430px;background:#a78bfa">sessionStorage</div>
+<div class="pill" style="left:54px;top:520px;background:#fbbf24">🍪 cookies</div>
+<div class="pill" style="left:330px;top:520px;background:#86efac">IndexedDB</div>
+<div class="pill" style="left:54px;top:610px;background:#f472b6">Cache API</div>
+<div style="position:absolute;right:60px;top:170px;width:420px;height:400px;border-radius:40px;background:#172050;border:8px solid #fb7185;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px">
+<div style="font-family:monospace;font-size:34px;font-weight:900;color:#c4a7ff">setItem("n", 42)</div>
+<div style="font-family:monospace;font-size:34px;font-weight:900;color:#f4f6ff">getItem("n") →</div>
+<div style="white-space:nowrap;font-family:monospace;font-size:64px;font-weight:900;background:#fb7185;color:#1f2140;padding:6px 26px;border-radius:16px;transform:rotate(-5deg)">"42" ?!</div></div>`,
   "thumb-jwt.png": `<div class="brand">JS Interview<b>Byte</b></div>
 <h1>JWT<br><span class="y">explained</span></h1>
 <div class="tok" style="left:54px;top:400px;font-size:34px;background:#a78bfa">eyJhbGci…</div>

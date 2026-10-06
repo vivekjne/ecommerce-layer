@@ -71,6 +71,52 @@ re-explained and re-verified.
 event capturing, event delegation, memoization, closures, frontend interview, javascript tutorial
 
 ---------------------------------------------------------------------------
+## Video 3: Browser storage
+
+**Title:** Browser Storage Explained: localStorage vs sessionStorage vs Cookies vs IndexedDB
+
+Alternatives:
+- localStorage, Cookies or IndexedDB? Where Your Web App Should Store Data
+- Why localStorage Returns "42" Instead of 42 (Browser Storage Explained)
+
+**Description:**
+```
+Where should a web app store data? Browser storage explained with animations: localStorage, sessionStorage, cookies, IndexedDB and the Cache API, and when to use each one. Every behaviour shown was tested in Chrome.
+
+You'll learn:
+• Why localStorage only stores strings (42 comes back as "42", objects as "[object Object]"), and the JSON fix
+• How tabs stay in sync with the storage event
+• Why sessionStorage survives a reload but not a new tab
+• How cookies travel with every request, and what HttpOnly, Secure and SameSite do
+• Why a 5,000-character cookie gets silently dropped
+• How IndexedDB stores real objects (Dates, arrays, Blobs) without freezing the page
+• How the Cache API and a service worker make an app open offline
+• The rules for all of them: origins, eviction, and why tokens don't belong in localStorage
+
+Chapters
+0:00 Why the page forgot dark mode
+0:14 localStorage
+1:09 sessionStorage
+1:31 Cookies
+2:24 IndexedDB
+3:10 Cache API
+3:27 Rules for all storage
+3:57 Which one should you pick?
+
+Cheat sheet
+Login session → HttpOnly cookie
+Theme, language → localStorage
+Form draft for one tab → sessionStorage
+Big or offline data → IndexedDB
+Offline pages → Cache API
+
+#javascript #webdevelopment #frontend
+```
+
+**Tags:** browser storage, localStorage, sessionStorage, cookies, IndexedDB, Cache API, web storage, localStorage vs sessionStorage, localStorage vs cookies, HttpOnly cookie, service worker, offline web app, javascript interview questions, frontend interview, web development, JS InterviewByte
+
+**Thumbnail:** `thumb-storage.png` · **Subtitles:** `browser-storage.en.srt` (English)
+
 ## Upload checklist (YouTube Studio)
 1. studio.youtube.com → **Create → Upload videos** → pick the MP4.
 2. Paste title + description. Chapters appear automatically (first must be 0:00, at least 3, each ≥ 10 s — both lists meet this).

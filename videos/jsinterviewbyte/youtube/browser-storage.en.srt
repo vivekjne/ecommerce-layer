@@ -1,0 +1,135 @@
+1
+00:00:01,000 --> 00:00:05,687
+Sam: I switched the site to dark mode, refreshed, and it went right back to light. Why?
+
+2
+00:00:06,037 --> 00:00:13,152
+Byte: Because the page forgot. Every refresh starts from scratch, unless the app saves your choice in the browser.
+
+3
+00:00:14,602 --> 00:00:22,040
+Byte: The simplest place is localStorage. One call saves the theme: setItem, with a key and a value.
+
+4
+00:00:22,990 --> 00:00:27,771
+Byte: Close the browser, come back next week, and getItem still returns dark.
+
+5
+00:00:28,720 --> 00:00:35,927
+Byte: Every tab on the same site shares it. Change it in one tab, and the other tabs get a storage event.
+
+6
+00:00:36,878 --> 00:00:42,745
+Byte: But it only stores strings. Save the number forty two, and you get back the string forty two.
+
+7
+00:00:43,495 --> 00:00:53,272
+Byte: Save an object, and you get object Object. So use JSON.stringify going in, and JSON.parse coming out.
+
+8
+00:00:54,222 --> 00:01:01,064
+Byte: The limit is about five megabytes per site. Our test hit a quota error near five million characters.
+
+9
+00:01:01,814 --> 00:01:07,815
+Byte: And it is synchronous, so every read and write blocks the page for a moment. Keep it small.
+
+10
+00:01:09,564 --> 00:01:14,150
+Sam: What if I only need data while the tab is open? Like a half filled checkout form?
+
+11
+00:01:14,500 --> 00:01:20,422
+Byte: That is sessionStorage. Same methods, but every tab gets its own private copy.
+
+12
+00:01:21,272 --> 00:01:30,143
+Byte: Reload the page, and the draft is still there. Open the site in a new tab, and that tab starts empty. Close the tab, and it is gone.
+
+13
+00:01:31,893 --> 00:01:34,050
+Sam: And cookies? They are the oldest one.
+
+14
+00:01:34,400 --> 00:01:40,511
+Byte: A cookie is a small string the browser sends back to the server, with every request to that site.
+
+15
+00:01:41,360 --> 00:01:47,537
+Byte: That is the whole point. The server can read it, which is how it remembers that you are logged in.
+
+16
+00:01:48,388 --> 00:01:55,939
+Byte: The server sets one with a Set-Cookie header. In our test, the next request carried it back automatically.
+
+17
+00:01:56,788 --> 00:02:05,571
+Byte: Mark it HttpOnly, and scripts cannot read it. document.cookie showed the theme, not the session id.
+
+18
+00:02:06,521 --> 00:02:14,646
+Byte: Add Secure, so it only travels over HTTPS, and SameSite, to limit when other sites can send it.
+
+19
+00:02:15,496 --> 00:02:22,908
+Byte: But cookies are tiny: about four kilobytes each. Our five thousand character cookie was silently dropped.
+
+20
+00:02:24,658 --> 00:02:29,315
+Sam: What if my app needs lots of data, like a product catalog that works offline?
+
+21
+00:02:29,665 --> 00:02:34,949
+Byte: Then use IndexedDB. It is a real database, inside the browser.
+
+22
+00:02:35,799 --> 00:02:44,827
+Byte: It stores real objects, not just strings. Our saved order came back with a real date, a real array, and even a file blob.
+
+23
+00:02:45,777 --> 00:02:52,993
+Byte: Writes happen in transactions, so they fully succeed, or not at all. And indexes make lookups fast.
+
+24
+00:02:53,843 --> 00:03:01,758
+Byte: It is asynchronous. The put call returns right away, and the result arrives later, so the page never freezes.
+
+25
+00:03:02,608 --> 00:03:08,947
+Byte: And it holds far more than local storage, often gigabytes, depending on free disk space.
+
+26
+00:03:10,697 --> 00:03:18,439
+Byte: For offline pages, there is the Cache API. It saves whole requests, together with their responses.
+
+27
+00:03:19,289 --> 00:03:26,254
+Byte: A service worker answers from that cache when the network is down. That is how an app still opens offline.
+
+28
+00:03:28,004 --> 00:03:35,940
+Byte: A few rules apply to all of them. First, data belongs to one origin: the scheme, the host, and the port.
+
+29
+00:03:36,891 --> 00:03:45,772
+Byte: Second, the browser may clear it when the disk runs low. navigator.storage.persist asks it to keep yours.
+
+30
+00:03:46,721 --> 00:03:56,177
+Byte: Third, any script on your page can read local storage, session storage, and IndexedDB. So never keep tokens or secrets there.
+
+31
+00:03:58,128 --> 00:03:59,886
+Sam: So which one should I pick?
+
+32
+00:04:00,235 --> 00:04:07,104
+Byte: The login session: an HttpOnly cookie. The theme or language: local storage.
+
+33
+00:04:07,855 --> 00:04:17,503
+Byte: A form draft for one tab: session storage. Big or offline data: IndexedDB. Offline pages: the Cache API.
+
+34
+00:04:18,453 --> 00:04:21,643
+Sam: Got it. Same browser, different shelves for different things.
