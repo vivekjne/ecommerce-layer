@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+:root {
+  --bg: #fff6e5;
+  --ink: #1f2140;
+  --muted: #4f5478;
+  --coral: #d92d48;
+  --sun: #ffc93c;
+  --mint: #0a8a5f;
+  --sky: #0a7fbf;
+  --grape: #6a4df0;
+  --teal: #0b7a85;
+  --cyan: #21c7d6;
+  --navy: #121a30;
+  --mono: "JetBrains Mono", "DejaVu Sans Mono", ui-monospace, monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+#root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: Inter, "Helvetica Neue", Arial, ui-sans-serif, system-ui, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 8% 12%, #ffe1ea 0, transparent 36%),
+    radial-gradient(circle at 92% 88%, #d3f5f8 0, transparent 40%),
+    radial-gradient(circle at 90% 8%, #fff0b8 0, transparent 30%),
+    var(--bg);
+}
+.clip { position: absolute; inset: 0; padding: 80px 140px; }
+.ov { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
+.ov path, .ov line { fill: none; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+.eyebrow {
+  display: inline-block;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--teal);
+  padding: 8px 18px;
+  border-radius: 999px;
+}
+h2 { font-size: 56px; font-weight: 800; letter-spacing: -0.03em; margin-top: 12px; }
+#badge {
+  position: absolute;
+  right: 60px;
+  top: 50px;
+  font-size: 22px;
+  font-weight: 800;
+  background: var(--ink);
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 999px;
+  z-index: 5;
+}
+
+/* characters */
+.char { position: absolute; z-index: 40; }
+.char svg { display: block; width: 100%; height: auto; overflow: visible; }
+#sam { left: 40px; top: 838px; width: 170px; }
+#byte { left: 1712px; top: 838px; width: 170px; }
+#dlg { left: 0; top: 0; width: 210px; z-index: 41; }
+
+/* captions */
+#captions { position: absolute; inset: 0; z-index: 50; pointer-events: none; }
+.cline {
+  position: absolute;
+  left: 250px;
+  top: 918px;
+  width: 1240px;
+  height: 128px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1.25;
+  background: #fff;
+  border: 4px solid var(--ink);
+  border-radius: 28px;
+  padding: 8px 26px;
+  box-shadow: 0 8px 0 rgba(31, 33, 64, 0.14);
+}
+.cw { color: #7d84ab; padding: 0 0.06em; border-radius: 8px; background-color: rgba(255, 201, 60, 0); }
+
+/* ---------- building blocks used by every scene ---------- */
+.ic { display: block; }
+i[data-ic] { display: inline-flex; font-style: normal; }
+.abs { position: absolute; }
+.tile {                                    /* navy tile for a deck icon */
+  position: absolute;
+  width: 112px;
+  height: 112px;
+  border-radius: 26px;
+  background: var(--navy);
+  border: 4px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 0 rgba(31, 33, 64, 0.16);
+}
+.tile img { width: 68px; height: 68px; display: block; }
+.tile.sm { width: 84px; height: 84px; border-radius: 20px; }
+.tile.sm img { width: 50px; height: 50px; }
+.tile.lg { width: 140px; height: 140px; border-radius: 32px; }
+.tile.lg img { width: 88px; height: 88px; }
+.tok {                                     /* a task token / label pill with an icon */
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border: 4px solid var(--ink);
+  border-radius: 20px;
+  padding: 8px 22px 8px 12px;
+  font-size: 28px;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: 0 6px 0 rgba(31, 33, 64, 0.14);
+}
+.tok.sm { font-size: 24px; padding: 6px 16px 6px 10px; gap: 10px; border-radius: 16px; }
+.tok.dark { background: var(--navy); color: #fff; }
+.tok.teal { background: var(--teal); color: #fff; }
+.tok.sun { background: var(--sun); }
+.tok.mint { background: #d9f7ea; border-color: var(--mint); }
+.tok.red { background: #ffe1e6; border-color: var(--coral); }
+.win {
+  position: absolute;
+  background: #fff;
+  border: 4px solid var(--ink);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 8px 0 rgba(31, 33, 64, 0.14);
+}
+.win .bar { height: 46px; background: var(--ink); display: flex; align-items: center; gap: 8px; padding: 0 16px; color: #fff; font-size: 22px; font-weight: 800; }
+.win .bar b { width: 13px; height: 13px; border-radius: 50%; display: inline-block; }
+.win .bar b:nth-child(1) { background: #ff8fa0; }
+.win .bar b:nth-child(2) { background: var(--sun); }
+.win .bar b:nth-child(3) { background: #06d6a0; }
+.win .bar span { margin-left: 8px; }
+.card {
+  position: absolute;
+  background: #fff;
+  border: 4px solid var(--ink);
+  border-radius: 24px;
+  box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+}
+.bub {                                     /* speech bubble */
+  position: absolute;
+  background: #fff;
+  border: 4px solid var(--ink);
+  border-radius: 26px;
+  padding: 16px 26px;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.3;
+  box-shadow: 0 8px 0 rgba(31, 33, 64, 0.12);
+}
+.lab { position: absolute; font-size: 28px; font-weight: 800; text-align: center; line-height: 1.2; }
+.lab.sm { font-size: 24px; }
+.lab.muted { color: var(--muted); font-weight: 700; }
+.tag {
+  position: absolute;
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--teal);
+  white-space: nowrap;
+}
+.tag.amber { background: var(--sun); color: var(--ink); }
+.tag.green { background: var(--mint); }
+.tag.blue { background: var(--sky); }
+.tag.red { background: var(--coral); }
+.tag.ink { background: var(--ink); }
+.skel { height: 14px; border-radius: 7px; background: #dfe3f2; }
+.big { font-size: 46px; font-weight: 900; letter-spacing: -0.02em; }
+.stamp {
+  position: absolute;
+  font-size: 40px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: var(--mint);
+  border: 6px solid var(--mint);
+  border-radius: 14px;
+  padding: 4px 18px;
+  transform: rotate(-8deg);
+}
+.stamp.red { color: var(--coral); border-color: var(--coral); }
+.mono { font-family: var(--mono); }
+.ntile {                                   /* white tile for my own (non-deck) icons */
+  position: absolute;
+  width: 112px;
+  height: 112px;
+  border-radius: 26px;
+  background: #fff;
+  border: 4px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 0 rgba(31, 33, 64, 0.16);
+}
+.ntile.sm { width: 84px; height: 84px; border-radius: 20px; }
+.ntile.lg { width: 140px; height: 140px; border-radius: 32px; }
+.node { position: absolute; width: 340px; height: 280px; }
+.node .lab { left: 0; width: 340px; }
+.trk { top: 158px; font-size: 22px; padding: 5px 14px 5px 8px; }          /* "1 Compose · 2 Teach · 3 Attach · 4 Control" tracker */
+.trk.on { background: var(--teal); color: #fff; }
+
+/* ---- Maestro: BPMN-style shapes ---- */
+.bp-ev { position: absolute; width: 64px; height: 64px; border-radius: 50%; border: 5px solid var(--ink); background: #d9f7ea; }
+.bp-ev.end { border-width: 11px; background: #ffe1e6; }
+.bp-tk { position: absolute; width: 210px; height: 112px; border-radius: 20px; border: 5px solid var(--ink); background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-weight: 800; font-size: 25px; text-align: center; line-height: 1.1; box-shadow: 0 6px 0 rgba(31, 33, 64, 0.14); }
+.bp-gw { position: absolute; width: 96px; height: 96px; }
+
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute">
+      <defs>
+        <marker id="ahInk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1f2140" /></marker>
+        <marker id="ahTeal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0b7a85" /></marker>
+        <marker id="ahRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d92d48" /></marker>
+        <marker id="ahMint" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0a8a5f" /></marker>
+      </defs>
+    </svg>
+
+    <div id="root" data-composition-id="main" data-start="0" data-duration="288.962" data-width="1920" data-height="1080">
+      <audio id="vo" src="assets/voiceover.mp3" data-start="0" data-duration="288.962" data-volume="1"></audio>
+      <audio id="bgm" src="assets/music.mp3" data-start="0" data-duration="288.962" data-volume="1" data-fade-in="2" data-fade-out="4"></audio>
+
+      <div id="badge">UiPath Maestro</div>
+
+      <section id="s1" class="clip" data-start="0.6" data-duration="25.175" data-track-index="0">
+  <style>
+    #s1 .tkx { position: absolute; top: 350px; width: 210px; height: 120px; border-radius: 20px; border: 5px solid var(--ink); background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 26px; font-weight: 800; box-shadow: 0 6px 0 rgba(31,33,64,.14); }
+    #s1 .tkx i.ck { position: absolute; right: -16px; top: -18px; }
+  </style>
+  <div class="eyebrow">Why Maestro</div>
+  <h2>Everything expensive happens between the tasks</h2>
+
+  <div class="tkx" id="k1a" style="left: 160px"><i data-ic="bot" data-s="52"></i>Task<i class="ck" data-ic="tick" data-s="50"></i></div>
+  <div class="tkx" id="k1b" style="left: 560px"><i data-ic="gear" data-s="52"></i>Task<i class="ck" data-ic="tick" data-s="50"></i></div>
+  <div class="tkx" id="k1c" style="left: 960px"><i data-ic="doc" data-s="52"></i>Task<i class="ck" data-ic="tick" data-s="50"></i></div>
+  <div class="tkx" id="k1d" style="left: 1360px"><i data-ic="mail" data-s="52"></i>Task<i class="ck" data-ic="tick" data-s="50"></i></div>
+  <svg class="ov" viewBox="0 0 1920 1080">
+    <path id="a1a" d="M 380 410 L 550 410" stroke="#d92d48" stroke-width="7" stroke-dasharray="3 16" marker-end="url(#ahRed)" />
+    <path id="a1b" d="M 780 410 L 950 410" stroke="#d92d48" stroke-width="7" stroke-dasharray="3 16" marker-end="url(#ahRed)" />
+    <path id="a1c" d="M 1180 410 L 1350 410" stroke="#d92d48" stroke-width="7" stroke-dasharray="3 16" marker-end="url(#ahRed)" />
+  </svg>
+  <div class="tok red" id="g1a" style="left: 290px; top: 520px; font-size: 26px"><i data-ic="clock" data-s="38"></i>Waiting on an approval</div>
+  <div class="tok red" id="g1b" style="left: 700px; top: 520px; font-size: 26px"><i data-ic="person" data-s="38"></i>Waiting on a person</div>
+  <div class="tok red" id="g1c" style="left: 1090px; top: 520px; font-size: 26px"><i data-ic="bot" data-s="38"></i>Agent hands off to a robot</div>
+  <div class="card" id="mb1" style="left: 340px; top: 640px; width: 1240px; height: 84px; background: var(--teal); border-color: var(--teal); display: flex; align-items: center; justify-content: center; gap: 18px; color: #fff; font-size: 40px; font-weight: 900; letter-spacing: -0.01em"><i data-ic="flow" data-s="52"></i>UiPath Maestro orchestrates the in-between</div>
+  <div class="tok sun" id="c1a" style="left: 560px; top: 758px; font-size: 28px">2 products</div>
+  <div class="tok sun" id="c1b" style="left: 830px; top: 758px; font-size: 28px">1 engine</div>
+  <div class="tok sun" id="c1c" style="left: 1060px; top: 758px; font-size: 28px">How to choose</div>
+</section>
+
+      <section id="s2" class="clip" data-start="25.775" data-duration="28.111" data-track-index="0">
+  <div class="eyebrow">Two products, one engine</div>
+  <h2>UiPath Maestro</h2>
+
+  <div class="card" id="au2" style="left: 160px; top: 270px; width: 760px; height: 350px; padding: 26px 34px">
+    <div style="display: flex; align-items: center; gap: 18px"><div class="ntile sm" style="position: static"><i data-ic="spark" data-s="50"></i></div><b style="font-size: 50px; letter-spacing: -0.03em">Maestro Automate</b></div>
+    <div class="tag amber" style="position: static; margin-top: 22px; font-size: 22px">Short-running</div>
+    <div style="display: flex; gap: 16px; margin-top: 22px"><div class="tok" id="au2a" style="position: static"><i data-ic="bot" data-s="40"></i>AI agents</div><div class="tok" id="au2b" style="position: static"><i data-ic="link" data-s="40"></i>APIs</div></div>
+    <div style="display: flex; align-items: center; gap: 16px; margin-top: 28px"><i data-ic="clock" data-s="50"></i><div style="width: 170px; height: 22px; border-radius: 11px; background: var(--sun); border: 4px solid var(--ink)"></div><b style="font-size: 30px">minutes or hours</b></div>
+  </div>
+  <div class="card" id="or2" style="left: 1000px; top: 270px; width: 760px; height: 350px; padding: 26px 34px; border-color: var(--teal)">
+    <div style="display: flex; align-items: center; gap: 18px"><div class="ntile sm" style="position: static"><i data-ic="flow" data-s="50"></i></div><b style="font-size: 50px; letter-spacing: -0.03em">Maestro Orchestrate</b></div>
+    <div class="tag" style="position: static; margin-top: 22px; font-size: 22px">Long-running</div>
+    <div style="display: flex; gap: 16px; margin-top: 22px"><div class="tok" id="or2a" style="position: static"><i data-ic="bot" data-s="40"></i>Agents</div><div class="tok" id="or2b" style="position: static"><i data-ic="gear" data-s="40"></i>Robots</div><div class="tok" id="or2c" style="position: static"><i data-ic="person" data-s="40"></i>People</div></div>
+    <div style="display: flex; align-items: center; gap: 16px; margin-top: 28px"><i data-ic="clock" data-s="50"></i><div style="width: 330px; height: 22px; border-radius: 11px; background: var(--teal); border: 4px solid var(--ink)"></div><b style="font-size: 30px">days, weeks</b></div>
+  </div>
+  <div class="card" id="en2" style="left: 160px; top: 690px; width: 1600px; height: 120px; background: var(--navy); border-color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 26px; color: #fff">
+    <i data-ic="stack" data-s="64"></i><b style="font-size: 44px; letter-spacing: -0.02em">The Maestro engine</b>
+    <div class="tok sun" id="d2a" style="position: static; font-size: 26px; color: var(--ink)">Durable</div><div class="tok sun" id="d2b" style="position: static; font-size: 26px; color: var(--ink)">Stateful</div>
+  </div>
+  <svg class="ov" viewBox="0 0 1920 1080"><path id="s2l" d="M 540 626 L 540 684" stroke="#1f2140" stroke-width="7" marker-end="url(#ahInk)" /><path id="s2r" d="M 1380 626 L 1380 684" stroke="#1f2140" stroke-width="7" marker-end="url(#ahInk)" /></svg>
+</section>
+
+      <section id="s3" class="clip" data-start="53.886" data-duration="36.751" data-track-index="0">
+  <style>
+    #s3 .seg { position: absolute; top: 408px; height: 64px; border: 4px solid var(--ink); border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 25px; font-weight: 800; }
+    #s3 .seg.act { background: var(--teal); }
+    #s3 .seg.wait { background: repeating-linear-gradient(45deg, #fff0b8 0 14px, #ffe08a 14px 28px); }
+    #s3 .wl { position: absolute; top: 488px; font-size: 24px; font-weight: 800; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  </style>
+  <div class="eyebrow">Maestro Orchestrate</div>
+  <h2>Long-running processes, coordinated</h2>
+
+  <div class="tok" id="a3a" style="left: 160px; top: 272px"><i data-ic="bot" data-s="40"></i>AI agents</div>
+  <div class="tok" id="a3b" style="left: 420px; top: 272px"><i data-ic="gear" data-s="40"></i>Robots</div>
+  <div class="tok" id="a3c" style="left: 640px; top: 272px"><i data-ic="person" data-s="40"></i>People</div>
+  <div class="tok dark" id="a3d" style="left: 880px; top: 272px"><i data-ic="stack" data-s="40"></i>Across systems</div>
+
+  <div class="card" id="tr3" style="left: 160px; top: 390px; width: 1600px; height: 100px"></div>
+  <div class="seg act" id="g3a" style="left: 180px; width: 80px"><i data-ic="play" data-s="30"></i></div>
+  <div class="seg wait" id="g3b" style="left: 268px; width: 300px">hours</div>
+  <div class="seg act" id="g3c" style="left: 576px; width: 80px"><i data-ic="spark" data-s="30"></i></div>
+  <div class="seg wait" id="g3d" style="left: 664px; width: 380px">days</div>
+  <div class="seg act" id="g3e" style="left: 1052px; width: 80px"><i data-ic="spark" data-s="30"></i></div>
+  <div class="seg wait" id="g3f" style="left: 1140px; width: 480px">weeks</div>
+  <div class="seg act" id="g3g" style="left: 1628px; width: 110px; background: #d9f7ea"><i data-ic="tick" data-s="34"></i></div>
+  <div class="wl" id="w3a" style="left: 300px"><i data-ic="person" data-s="30"></i>waiting on a person</div>
+  <div class="wl" id="w3b" style="left: 700px"><i data-ic="gear" data-s="30"></i>waiting on a system</div>
+  <div class="wl" id="w3c" style="left: 1230px"><i data-ic="flag" data-s="30"></i>waiting on an event</div>
+
+  <div id="r3" style="position: absolute; left: 160px; top: 556px; width: 1600px; display: flex; align-items: center; gap: 18px">
+    <div class="tok sun" id="n3a" style="position: static; font-size: 25px"><i data-ic="infinity" data-s="36"></i>No cap on duration</div>
+    <div class="tok sun" id="n3b" style="position: static; font-size: 25px"><i data-ic="infinity" data-s="36"></i>No cap on concurrency</div>
+    <div class="tok red" id="f3a" style="position: static; font-size: 25px"><i data-ic="warn" data-s="36"></i>Failure or redeploy</div>
+    <svg id="a3x" width="46" height="20" viewBox="0 0 46 20"><path d="M2 10 L38 10" stroke="#1f2140" stroke-width="5" fill="none" stroke-linecap="round" marker-end="url(#ahInk)" /></svg>
+    <div class="tok mint" id="f3b" style="position: static; font-size: 25px"><i data-ic="tick" data-s="36"></i>Picks up where it left off</div>
+  </div>
+  <div class="card" id="c3a" style="left: 160px; top: 660px; width: 480px; height: 120px; display: flex; align-items: center; gap: 20px; padding: 0 28px"><i data-ic="flow" data-s="56"></i><div><b style="font-size: 40px">BPMN</b><div class="lab sm muted" style="position: static; text-align: left">Process diagram</div></div></div>
+  <div class="card" id="c3b" style="left: 670px; top: 660px; width: 480px; height: 120px; display: flex; align-items: center; gap: 20px; padding: 0 28px"><i data-ic="folder" data-s="56"></i><div><b style="font-size: 40px">Case</b><div class="lab sm muted" style="position: static; text-align: left">Stages and milestones</div></div></div>
+  <div class="card" id="c3c" style="left: 1180px; top: 660px; width: 480px; height: 120px; display: flex; align-items: center; gap: 20px; padding: 0 28px"><i data-ic="window" data-s="56"></i><div><b style="font-size: 40px">Flow</b><div class="lab sm muted" style="position: static; text-align: left">Developer-first canvas</div></div></div>
+  <div class="card" id="e3" style="left: 160px; top: 810px; width: 1500px; height: 62px; background: var(--navy); display: flex; align-items: center; justify-content: center; gap: 16px; color: #fff; font-size: 30px; font-weight: 800"><i data-ic="stack" data-s="38"></i>Same Maestro engine underneath</div>
+</section>
+
+      <section id="s4" class="clip" data-start="90.637" data-duration="32.076" data-track-index="0">
+  <div class="eyebrow">Orchestrate · BPMN</div>
+  <h2>The diagram your business signs off is the one that runs</h2>
+
+  <div class="bp-ev" id="e4s" style="left: 160px; top: 400px"></div>
+  <div class="bp-tk" id="t4a" style="left: 270px; top: 376px"><i data-ic="bot" data-s="40"></i>Agent: check claim</div>
+  <svg class="bp-gw" id="g4" viewBox="0 0 96 96" style="left: 540px; top: 384px"><polygon points="48,4 92,48 48,92 4,48" fill="#fff0b8" stroke="#1f2140" stroke-width="5" /><path d="M34 34L62 62M62 34L34 62" stroke="#1f2140" stroke-width="6" stroke-linecap="round" /></svg>
+  <div class="bp-tk" id="t4b" style="left: 700px; top: 290px"><i data-ic="gear" data-s="40"></i>Robot: update system</div>
+  <div class="bp-tk" id="t4c" style="left: 700px; top: 464px"><i data-ic="person" data-s="40"></i>Person: approve</div>
+  <div class="bp-tk" id="t4d" style="left: 1000px; top: 376px; border-style: double; border-width: 8px"><i data-ic="stack" data-s="40"></i>Sub-process</div>
+  <div class="bp-ev end" id="e4e" style="left: 1290px; top: 400px"></div>
+  <svg class="ov" viewBox="0 0 1920 1080">
+    <path id="p4a" d="M 226 432 L 266 432" stroke="#1f2140" stroke-width="6" marker-end="url(#ahInk)" />
+    <path id="p4b" d="M 484 432 L 536 432" stroke="#1f2140" stroke-width="6" marker-end="url(#ahInk)" />
+    <path id="p4c" d="M 588 384 L 588 346 L 696 346" stroke="#1f2140" stroke-width="6" marker-end="url(#ahInk)" />
+    <path id="p4d" d="M 588 480 L 588 520 L 696 520" stroke="#1f2140" stroke-width="6" marker-end="url(#ahInk)" />
+    <path id="p4e" d="M 914 346 L 1115 346 L 1115 372" stroke="#1f2140" stroke-width="6" marker-end="url(#ahInk)" />
+    <path id="p4f" d="M 914 520 L 1115 520 L 1115 496" stroke="#1f2140" stroke-width="6" marker-end="url(#ahInk)" />
+    <path id="p4g" d="M 1234 432 L 1284 432" stroke="#1f2140" stroke-width="6" marker-end="url(#ahInk)" />
+  </svg>
+  <div id="r4" style="position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%; background: var(--coral); border: 4px solid var(--ink)"></div>
+
+  <div class="card" id="d4" style="left: 1440px; top: 290px; width: 340px; height: 290px; padding: 18px 22px; font-weight: 800; font-size: 24px">
+    <div style="display: flex; align-items: center; gap: 12px"><i data-ic="table" data-s="38"></i><b style="font-size: 28px">DMN table</b></div>
+    <div style="margin-top: 14px; border-top: 4px solid var(--ink)"></div>
+    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 3px solid #dfe3f2"><span>Small</span><span style="color: var(--mint)">Auto</span></div>
+    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 3px solid #dfe3f2"><span>Medium</span><span style="color: var(--sky)">Agent</span></div>
+    <div style="display: flex; justify-content: space-between; padding: 12px 0"><span>Large</span><span style="color: var(--coral)">Person</span></div>
+  </div>
+  <div class="tok sun" id="v4" style="left: 1335px; top: 610px"><i data-ic="loop" data-s="38"></i>Versioned with the model</div>
+
+  <div class="tok mint" id="b4" style="left: 160px; top: 690px"><i data-ic="person" data-s="40"></i>Business signs off<i data-ic="tick" data-s="36"></i></div>
+  <div class="tok mint" id="i4" style="left: 640px; top: 690px"><i data-ic="gear" data-s="40"></i>IT signs off<i data-ic="tick" data-s="36"></i></div>
+  <div class="tok" id="u4" style="left: 1000px; top: 690px"><i data-ic="flow" data-s="40"></i>BPMN 2.0 + UiPath tasks</div>
+  <div class="tok teal" id="x4" style="left: 160px; top: 790px"><i data-ic="play" data-s="40"></i>That same diagram runs</div>
+  <div class="tok red" id="y4" style="left: 740px; top: 790px"><i data-ic="x" data-s="40"></i>No re-implementation step</div>
+</section>
+
+      <section id="s5" class="clip" data-start="122.714" data-duration="30.571" data-track-index="0">
+  <style>
+    #s5 .col { position: absolute; top: 350px; width: 360px; height: 270px; padding: 18px 22px; }
+    #s5 .col h4 { font-size: 32px; font-weight: 900; letter-spacing: -0.02em; }
+    #s5 .col .sk { height: 18px; margin-top: 14px; border-radius: 9px; background: #dfe3f2; }
+    #s5 .col .fl { position: absolute; right: 18px; top: 16px; }
+    #s5 .col .sla { position: absolute; left: 22px; bottom: 18px; display: flex; align-items: center; gap: 8px; font-size: 22px; font-weight: 800; color: var(--coral); }
+    #s5 .col .sm { position: absolute; right: 18px; bottom: 14px; }
+  </style>
+  <div class="eyebrow">Orchestrate · Case</div>
+  <h2>For work that does not follow a straight line</h2>
+
+  <div class="tok" id="k5a" style="left: 160px; top: 264px"><i data-ic="folder" data-s="38"></i>Claims</div>
+  <div class="tok" id="k5b" style="left: 400px; top: 264px"><i data-ic="folder" data-s="38"></i>Loans</div>
+  <div class="tok" id="k5c" style="left: 620px; top: 264px"><i data-ic="folder" data-s="38"></i>Disputes</div>
+  <div class="tok" id="k5d" style="left: 880px; top: 264px"><i data-ic="folder" data-s="38"></i>Referrals</div>
+
+  <div class="card col" id="u5a" style="left: 160px"><h4>Intake</h4><div class="sk" style="width: 70%"></div><div class="sk" style="width: 50%"></div><i class="fl" data-ic="flag" data-s="36"></i><div class="sla"><i data-ic="clock" data-s="28"></i>SLA</div><i class="sm" data-ic="bot" data-s="40"></i></div>
+  <div class="card col" id="u5b" style="left: 570px"><h4>Verification</h4><div class="sk" style="width: 60%"></div><div class="sk" style="width: 75%"></div><i class="fl" data-ic="flag" data-s="36"></i><div class="sla"><i data-ic="clock" data-s="28"></i>SLA</div><i class="sm" data-ic="bot" data-s="40"></i></div>
+  <div class="card col" id="u5c" style="left: 980px"><h4>Assessment</h4><div class="sk" style="width: 80%"></div><div class="sk" style="width: 45%"></div><i class="fl" data-ic="flag" data-s="36"></i><div class="sla"><i data-ic="clock" data-s="28"></i>SLA</div><i class="sm" data-ic="bot" data-s="40"></i></div>
+  <div class="card col" id="u5d" style="left: 1390px"><h4>Settlement</h4><div class="sk" style="width: 65%"></div><div class="sk" style="width: 55%"></div><i class="fl" data-ic="flag" data-s="36"></i><div class="sla"><i data-ic="clock" data-s="28"></i>SLA</div><i class="sm" data-ic="bot" data-s="40"></i></div>
+
+  <svg class="ov" viewBox="0 0 1920 1080">
+    <path id="q5a" d="M 340 626 C 340 700, 1160 700, 1160 626" stroke="#6a4df0" stroke-width="7" marker-end="url(#ahInk)" />
+    <path id="q5b" d="M 1120 626 C 1120 740, 750 740, 750 626" stroke="#0b7a85" stroke-width="7" marker-end="url(#ahInk)" />
+    <path id="q5c" d="M 790 626 C 790 770, 1570 770, 1570 626" stroke="#d92d48" stroke-width="7" marker-end="url(#ahInk)" />
+  </svg>
+  <div class="tok sun" id="o5a" style="left: 160px; top: 742px; font-size: 25px; border-color: #6a4df0"><i data-ic="flag" data-s="34"></i>Events</div>
+  <div class="tok sun" id="o5b" style="left: 420px; top: 742px; font-size: 25px; border-color: #0b7a85"><i data-ic="spark" data-s="34"></i>AI decisions</div>
+  <div class="tok sun" id="o5c" style="left: 770px; top: 742px; font-size: 25px; border-color: #d92d48"><i data-ic="person" data-s="34"></i>Human judgment</div>
+
+  <div class="card" id="m5" style="left: 160px; top: 812px; width: 1120px; height: 64px; background: var(--navy); display: flex; align-items: center; gap: 16px; padding: 0 26px; color: #fff; font-size: 28px; font-weight: 800"><i data-ic="bot" data-s="40"></i>Case Manager agent governs the case lifecycle</div>
+  <div class="tok mint" id="h5" style="left: 1310px; top: 812px"><i data-ic="person" data-s="40"></i>People stay in the loop</div>
+</section>
+
+      <section id="s6" class="clip" data-start="153.284" data-duration="26.019" data-track-index="0">
+  <div class="eyebrow">Orchestrate · Flow</div>
+  <h2>A developer-first canvas</h2>
+
+  <div class="win" id="w6" style="left: 160px; top: 270px; width: 1000px; height: 400px"><div class="bar"><b></b><b></b><b></b><span>Flow canvas</span></div></div>
+  <div class="tok" id="n6a" style="left: 200px; top: 390px"><i data-ic="bot" data-s="40"></i>Agent</div>
+  <div class="tok" id="n6b" style="left: 450px; top: 390px"><i data-ic="link" data-s="40"></i>API</div>
+  <div class="tok" id="n6c" style="left: 680px; top: 390px"><i data-ic="db" data-s="40"></i>Data</div>
+  <div class="tok" id="n6d" style="left: 200px; top: 540px"><i data-ic="doc" data-s="40"></i>Document</div>
+  <div class="tok mint" id="n6e" style="left: 520px; top: 540px"><i data-ic="person" data-s="40"></i>Human step</div>
+  <svg class="ov" viewBox="0 0 1920 1080">
+    <path id="m6a" d="M 386 418 L 446 418" stroke="#1f2140" stroke-width="6" marker-end="url(#ahInk)" />
+    <path id="m6b" d="M 599 418 L 676 418" stroke="#1f2140" stroke-width="6" marker-end="url(#ahInk)" />
+    <path id="m6c" d="M 760 456 L 760 495 L 320 495 L 320 534" stroke="#1f2140" stroke-width="6" marker-end="url(#ahInk)" />
+    <path id="m6d" d="M 446 572 L 514 572" stroke="#1f2140" stroke-width="6" marker-end="url(#ahInk)" />
+    <path id="m6e" d="M 1530 490 L 1530 514" stroke="#6a4df0" stroke-width="7" stroke-dasharray="3 14" marker-end="url(#ahInk)" />
+  </svg>
+
+  <div class="card" id="p6" style="left: 1230px; top: 270px; width: 550px; height: 215px; padding: 18px 24px">
+    <div style="display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 24px; color: var(--muted)"><i data-ic="pencil" data-s="30"></i>Describe the flow</div>
+    <div id="pt6" class="mono" style="margin-top: 10px; font-size: 26px; font-weight: 700; line-height: 1.3"></div>
+  </div>
+  <div class="tok dark" id="ca6" style="left: 1330px; top: 520px"><i data-ic="bot" data-s="40"></i>Coding agent builds it</div>
+  <div class="tok sun" id="rf6" style="left: 1330px; top: 610px"><i data-ic="cursor" data-s="40"></i>Or refine visually</div>
+
+  <div class="tok" id="cc6" style="left: 160px; top: 730px"><i data-ic="globe" data-s="40"></i>Cloud canvas</div>
+  <div class="card" id="fl6" style="left: 560px; top: 716px; width: 360px; height: 90px; display: flex; align-items: center; justify-content: center; gap: 14px; font-size: 30px; font-weight: 800" ><i data-ic="doc" data-s="44"></i><span class="mono">refund.flow</span></div>
+  <div class="tok" id="vs6" style="left: 1010px; top: 730px"><i data-ic="window" data-s="40"></i>VS Code</div>
+  <div class="tok teal" id="gt6" style="left: 615px; top: 828px"><i data-ic="share" data-s="40"></i>Lives in Git</div>
+  <svg class="ov" viewBox="0 0 1920 1080">
+    <path id="z6a" d="M 450 761 L 552 761" stroke="#1f2140" stroke-width="6" marker-end="url(#ahInk)" />
+    <path id="z6b" d="M 1002 761 L 928 761" stroke="#1f2140" stroke-width="6" marker-end="url(#ahInk)" />
+  </svg>
+</section>
+
+      <section id="s7" class="clip" data-start="179.304" data-duration="24.631" data-track-index="0">
+  <style>
+    #s7 .row { position: absolute; left: 190px; width: 940px; height: 56px; display: flex; align-items: center; gap: 22px; font-size: 25px; font-weight: 800; border-radius: 12px; padding: 0 14px; }
+    #s7 .ck { width: 32px; height: 32px; border: 4px solid var(--ink); border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: center; }
+    #s7 .ck i { opacity: 0; }
+    #s7 .st { margin-left: auto; font-size: 20px; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 14px; border-radius: 999px; color: #fff; }
+    #s7 .hd { position: absolute; width: 22px; height: 22px; border-radius: 50%; background: var(--teal); border: 4px solid var(--ink); }
+  </style>
+  <div class="eyebrow">Orchestrate · Operate</div>
+  <h2>Stay in control of live instances</h2>
+
+  <div class="card" id="t7" style="left: 160px; top: 270px; width: 1000px; height: 320px"></div>
+  <div class="row" id="r7a" style="top: 290px"><span class="ck"><i data-ic="tick" data-s="22"></i></span><span class="mono">#1042</span><div class="skel" style="width: 280px"></div><span class="st" style="background: var(--mint)">Running</span></div>
+  <div class="row" id="r7b" style="top: 360px"><span class="ck"><i data-ic="tick" data-s="22"></i></span><span class="mono">#1043</span><div class="skel" style="width: 330px"></div><span class="st" style="background: var(--sky)">Waiting</span></div>
+  <div class="row" id="r7c" style="top: 430px"><span class="ck"><i data-ic="tick" data-s="22"></i></span><span class="mono">#1044</span><div class="skel" style="width: 250px"></div><span class="st" style="background: var(--coral)">Faulted</span></div>
+  <div class="row" id="r7d" style="top: 500px"><span class="ck"><i data-ic="tick" data-s="22"></i></span><span class="mono">#1045</span><div class="skel" style="width: 300px"></div><span class="st" style="background: var(--grape)">Paused</span></div>
+
+  <div class="tok sm" id="c7a" style="left: 1230px; top: 270px"><i data-ic="loop" data-s="32"></i>Retry</div>
+  <div class="tok sm" id="c7b" style="left: 1500px; top: 270px"><i data-ic="x" data-s="32"></i>Cancel</div>
+  <div class="tok sm" id="c7c" style="left: 1230px; top: 360px"><i data-ic="stop" data-s="32"></i>Pause</div>
+  <div class="tok sm" id="c7d" style="left: 1500px; top: 360px"><i data-ic="play" data-s="32"></i>Resume</div>
+  <div class="tok sm" id="c7e" style="left: 1230px; top: 450px"><i data-ic="share" data-s="32"></i>Migrate</div>
+  <div class="tok sm" id="c7f" style="left: 1500px; top: 450px"><i data-ic="target" data-s="32"></i>Go to step</div>
+  <div class="tok sun sm" id="c7g" style="left: 1230px; top: 540px"><i data-ic="list" data-s="32"></i>One or in bulk</div>
+
+  <div class="card" id="h7" style="left: 160px; top: 630px; width: 1600px; height: 100px"></div>
+  <div class="hd" id="d7a" style="left: 260px; top: 669px"></div><div class="hd" id="d7b" style="left: 560px; top: 669px"></div><div class="hd" id="d7c" style="left: 860px; top: 669px"></div><div class="hd" id="d7d" style="left: 1160px; top: 669px"></div><div class="hd" id="d7e" style="left: 1460px; top: 669px"></div>
+  <div id="l7"><div class="lab sm muted" style="left: 171px; top: 702px; width: 200px; font-size: 22px">Start</div><div class="lab sm muted" style="left: 471px; top: 702px; width: 200px; font-size: 22px">Agent</div><div class="lab sm muted" style="left: 771px; top: 702px; width: 200px; font-size: 22px">Variables</div><div class="lab sm muted" style="left: 1071px; top: 702px; width: 200px; font-size: 22px">Robot</div><div class="lab sm muted" style="left: 1371px; top: 702px; width: 200px; font-size: 22px">Approval</div></div>
+  <svg class="ov" viewBox="0 0 1920 1080"><path id="s7l" d="M 282 680 L 1460 680" stroke="#0b7a85" stroke-width="6" /></svg>
+  <div class="tok sm" id="p7a" style="left: 160px; top: 780px"><i data-ic="flag" data-s="32"></i>Policy</div>
+  <div class="tok sm" id="p7b" style="left: 380px; top: 780px"><i data-ic="key" data-s="32"></i>Access control</div>
+  <div class="tok sm" id="p7c" style="left: 710px; top: 780px"><i data-ic="logs" data-s="32"></i>Tamper-evident audit trail</div>
+  <div class="tok dark sm" id="p7d" style="left: 1230px; top: 780px"><i data-ic="stack" data-s="32"></i>From the UiPath Platform</div>
+</section>
+
+      <section id="s8" class="clip" data-start="203.935" data-duration="43.072" data-track-index="0">
+  <div class="eyebrow">Maestro Automate</div>
+  <h2>Short-running workflows of agents and APIs</h2>
+
+  <div id="gn8" style="position: absolute; left: 160px; top: 270px; width: 1600px; display: flex; align-items: center; gap: 14px">
+    <div class="tok" id="gn8a" style="position: static; font-size: 26px"><i data-ic="flag" data-s="38"></i>An event comes in</div>
+    <svg id="gy8a" width="44" height="20" viewBox="0 0 44 20"><path d="M2 10 L36 10" stroke="#1f2140" stroke-width="5" fill="none" stroke-linecap="round" marker-end="url(#ahInk)" /></svg>
+    <div class="tok" id="gn8b" style="position: static; font-size: 26px"><i data-ic="bot" data-s="38"></i>Agents reason</div>
+    <svg id="gy8b" width="44" height="20" viewBox="0 0 44 20"><path d="M2 10 L36 10" stroke="#1f2140" stroke-width="5" fill="none" stroke-linecap="round" marker-end="url(#ahInk)" /></svg>
+    <div class="tok" id="gn8c" style="position: static; font-size: 26px"><i data-ic="link" data-s="38"></i>APIs act</div>
+    <svg id="gy8c" width="44" height="20" viewBox="0 0 44 20"><path d="M2 10 L36 10" stroke="#1f2140" stroke-width="5" fill="none" stroke-linecap="round" marker-end="url(#ahInk)" /></svg>
+    <div class="tok sun" id="gn8d" style="position: static; font-size: 26px"><i data-ic="clock" data-s="38"></i>Done in minutes or hours</div>
+  </div>
+  <div id="fr8" style="position: absolute; left: 160px; top: 270px; width: 1600px; display: flex; align-items: center; gap: 14px">
+    <div class="tok" id="x8a" style="position: static; font-size: 26px"><i data-ic="link" data-s="38"></i>Order webhook</div>
+    <svg id="y8a" width="44" height="20" viewBox="0 0 44 20"><path d="M2 10 L36 10" stroke="#1f2140" stroke-width="5" fill="none" stroke-linecap="round" marker-end="url(#ahInk)" /></svg>
+    <div class="tok" id="x8b" style="position: static; font-size: 26px"><i data-ic="bot" data-s="38"></i>Agent validates</div>
+    <svg id="y8b" width="44" height="20" viewBox="0 0 44 20"><path d="M2 10 L36 10" stroke="#1f2140" stroke-width="5" fill="none" stroke-linecap="round" marker-end="url(#ahInk)" /></svg>
+    <div class="tok" id="x8c" style="position: static; font-size: 26px"><i data-ic="stack" data-s="38"></i>Stock API</div>
+    <svg id="y8c" width="44" height="20" viewBox="0 0 44 20"><path d="M2 10 L36 10" stroke="#1f2140" stroke-width="5" fill="none" stroke-linecap="round" marker-end="url(#ahInk)" /></svg>
+    <div class="tok" id="x8d" style="position: static; font-size: 26px"><i data-ic="gauge" data-s="38"></i>Credit API</div>
+    <svg id="y8d" width="44" height="20" viewBox="0 0 44 20"><path d="M2 10 L36 10" stroke="#1f2140" stroke-width="5" fill="none" stroke-linecap="round" marker-end="url(#ahInk)" /></svg>
+    <div class="tok mint" id="x8e" style="position: static; font-size: 26px"><i data-ic="db" data-s="38"></i>ERP order</div>
+  </div>
+  <div class="tok sun" id="m8" style="left: 160px; top: 360px; font-size: 26px"><i data-ic="clock" data-s="36"></i>Done in minutes</div>
+
+  <div class="win" id="ed8" style="left: 160px; top: 450px; width: 980px; height: 300px"><div class="bar"><b></b><b></b><b></b><span>Your editor</span></div>
+    <div style="padding: 18px 24px; display: flex; flex-direction: column; gap: 16px">
+      <div style="display: flex; gap: 16px; align-items: center"><span class="mono" style="color: var(--muted)">1</span><div class="skel" style="width: 380px"></div></div>
+      <div style="display: flex; gap: 16px; align-items: center"><span class="mono" style="color: var(--muted)">2</span><div class="skel" style="width: 520px"></div><i id="pr8" data-ic="eye" data-s="30"></i></div>
+      <div style="display: flex; gap: 16px; align-items: center"><span class="mono" style="color: var(--muted)">3</span><div class="skel" style="width: 300px"></div></div>
+      <div style="display: flex; gap: 16px; align-items: center"><span class="mono" style="color: var(--muted)">4</span><div class="skel" style="width: 450px"></div><span id="bk8" style="width: 24px; height: 24px; border-radius: 50%; background: var(--coral); border: 4px solid var(--ink)"></span></div>
+    </div>
+  </div>
+  <div class="tok" id="cl8a" style="left: 1230px; top: 450px"><i data-ic="bot" data-s="40"></i>Claude Code</div>
+  <div class="tok" id="cl8b" style="left: 1230px; top: 535px"><i data-ic="bot" data-s="40"></i>Codex</div>
+  <div class="tok" id="cl8c" style="left: 1230px; top: 620px"><i data-ic="bot" data-s="40"></i>Copilot</div>
+  <svg class="ov" viewBox="0 0 1920 1080"><path id="a8" d="M 1222 540 L 1150 540" stroke="#1f2140" stroke-width="6" marker-end="url(#ahInk)" /></svg>
+  <div class="tag amber" id="tp8" style="left: 805px; top: 557px; font-size: 18px">Probe</div>
+  <div class="tag red" id="tb8" style="left: 735px; top: 637px; font-size: 18px">Breakpoint</div>
+  <div class="tok mint" id="ea8" style="left: 1230px; top: 705px"><i data-ic="tick" data-s="40"></i>Evaluate</div>
+  <div class="tok sun" id="lv8" style="left: 1500px; top: 705px"><i data-ic="play" data-s="40"></i>Go live</div>
+
+  <div class="tok" id="ex8a" style="left: 160px; top: 785px"><i data-ic="gear" data-s="40"></i>Existing robots</div>
+  <div class="tok" id="ex8b" style="left: 480px; top: 785px"><i data-ic="link" data-s="40"></i>API workflows</div>
+  <div class="tok" id="ex8c" style="left: 790px; top: 785px"><i data-ic="bot" data-s="40"></i>Agents</div>
+  <div class="tok sun" id="ex8d" style="left: 1010px; top: 785px"><i data-ic="flow" data-s="40"></i>Called as nodes, not rebuilt</div>
+</section>
+
+      <section id="s9" class="clip" data-start="247.007" data-duration="23.78" data-track-index="0">
+  <div class="eyebrow">Choosing</div>
+  <h2>Which one should you start with?</h2>
+
+  <div class="card" id="au9" style="left: 160px; top: 270px; width: 760px; height: 320px; padding: 26px 34px">
+    <b style="font-size: 48px; letter-spacing: -0.03em">Maestro Automate</b>
+    <div class="tok" id="au9a" style="position: static; margin-top: 24px; width: max-content"><i data-ic="clock" data-s="40"></i>Short-running</div>
+    <div class="tok sun" id="au9b" style="position: static; margin-top: 18px; width: max-content"><i data-ic="gauge" data-s="40"></i>The builder wants speed</div>
+  </div>
+  <div class="card" id="or9" style="left: 1000px; top: 270px; width: 760px; height: 320px; padding: 26px 34px; border-color: var(--teal)">
+    <b style="font-size: 48px; letter-spacing: -0.03em">Maestro Orchestrate</b>
+    <div class="tok" id="or9a" style="position: static; margin-top: 24px; width: max-content"><i data-ic="hourglass" data-s="40"></i>Runs long</div>
+    <div class="tok teal" id="or9b" style="position: static; margin-top: 18px; width: max-content"><i data-ic="target" data-s="40"></i>Carries the business</div>
+  </div>
+  <svg class="ov" viewBox="0 0 1920 1080"><path id="cv9" d="M 540 600 C 540 740, 1380 740, 1380 600" stroke="#6a4df0" stroke-width="8" stroke-dasharray="3 16" marker-end="url(#ahInk)" /></svg>
+  <div class="tok" id="eo9" style="left: 840px; top: 650px; border-color: var(--coral)"><i data-ic="x" data-s="40"></i>Not either-or</div>
+  <div class="tok sun" id="cn9" style="left: 640px; top: 760px; font-size: 30px"><i data-ic="loop" data-s="42"></i>Converts to Orchestrate</div>
+  <div class="tok mint" id="sm9" style="left: 1130px; top: 760px; font-size: 30px"><i data-ic="doc" data-s="42"></i>Same canvas, same file</div>
+  <div class="tok dark" id="nr9" style="left: 760px; top: 840px; font-size: 26px"><i data-ic="tick" data-s="36"></i>Nothing to rebuild</div>
+</section>
+
+      <section id="s10" class="clip" data-start="270.787" data-duration="16.175" data-track-index="0">
+  <div class="eyebrow">Get started</div>
+  <h2>Start your first orchestration</h2>
+
+  <div class="card" id="st10a" style="left: 160px; top: 280px; width: 790px; height: 330px; padding: 26px 34px">
+    <div class="tag" style="position: static; font-size: 20px">Step 1</div>
+    <b style="display: block; margin-top: 14px; font-size: 40px; letter-spacing: -0.02em">Create a project under</b>
+    <div class="tok teal" id="bo10" style="position: static; margin-top: 14px; width: max-content"><i data-ic="flow" data-s="40"></i>Business Orchestration</div>
+    <div style="display: flex; gap: 16px; margin-top: 22px"><div class="tok sm" id="vs10" style="position: static"><i data-ic="window" data-s="32"></i>VS Code</div><div class="tok sm" id="sw10" style="position: static"><i data-ic="globe" data-s="32"></i>Studio Web</div></div>
+  </div>
+  <div class="card" id="st10b" style="left: 1000px; top: 280px; width: 760px; height: 330px; padding: 26px 34px">
+    <div class="tag amber" style="position: static; font-size: 20px">Step 2</div>
+    <b style="display: block; margin-top: 14px; font-size: 40px; letter-spacing: -0.02em">Pick a canvas</b>
+    <div style="display: flex; gap: 14px; margin-top: 22px; width: max-content">
+      <div class="tok" id="cb10" style="position: static"><i data-ic="flow" data-s="38"></i>BPMN</div>
+      <div class="tok" id="cc10" style="position: static"><i data-ic="folder" data-s="38"></i>Case</div>
+      <div class="tok" id="cf10" style="position: static"><i data-ic="window" data-s="38"></i>Flow</div>
+    </div>
+  </div>
+  <svg class="ov" viewBox="0 0 1920 1080"><path id="ar10" d="M 956 445 L 994 445" stroke="#1f2140" stroke-width="7" marker-end="url(#ahInk)" /></svg>
+  <div class="card" id="bn10" style="left: 160px; top: 690px; width: 1600px; height: 150px; background: var(--navy); border-color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 24px; color: #fff"><b style="font-size: 56px; letter-spacing: -0.03em">Orchestrate the whole process, not just the tasks.</b></div>
+</section>
+
+
+      <div id="captions"></div>
+
+      <div class="char" id="sam" data-kind="sam"></div>
+      <div class="char" id="byte" data-kind="byte"></div>
+      <div class="char" id="dlg" data-kind="dlg"></div>
+    </div>
+
+    <script>
+      const T = {"scenes":{"s1":{"start":0.6,"dur":25.175},"s2":{"start":25.775,"dur":28.111},"s3":{"start":53.886,"dur":36.751},"s4":{"start":90.637,"dur":32.076},"s5":{"start":122.714,"dur":30.571},"s6":{"start":153.284,"dur":26.019},"s7":{"start":179.304,"dur":24.631},"s8":{"start":203.935,"dur":43.072},"s9":{"start":247.007,"dur":23.78},"s10":{"start":270.787,"dur":16.175}},"lines":{"s1a":{"scene":"s1","start":1.7,"dur":2.67,"words":[{"w":"Most","t":0},{"w":"companies","t":0.381},{"w":"have","t":1.11},{"w":"automated","t":1.491},{"w":"tasks.","t":2.219}]},"s1b":{"scene":"s1","start":4.87,"dur":5.804,"words":[{"w":"But","t":0},{"w":"the","t":0.283},{"w":"expensive","t":0.565},{"w":"part","t":1.225},{"w":"happens","t":1.571},{"w":"between","t":2.105},{"w":"the","t":2.639},{"w":"tasks:","t":2.922},{"w":"a","t":3.87},{"w":"claim","t":4.012},{"w":"waiting","t":4.382},{"w":"on","t":4.865},{"w":"an","t":5.064},{"w":"approval,","t":5.263}]},"s1bx":{"scene":"s1","start":10.824,"dur":5.22,"words":[{"w":"an","t":0},{"w":"invoice","t":0.224},{"w":"waiting","t":0.769},{"w":"on","t":1.314},{"w":"a","t":1.539},{"w":"person,","t":1.699},{"w":"an","t":2.67},{"w":"agent","t":2.921},{"w":"handing","t":3.388},{"w":"off","t":3.999},{"w":"to","t":4.322},{"w":"a","t":4.574},{"w":"robot.","t":4.753}]},"s1c":{"scene":"s1","start":16.544,"dur":3.732,"words":[{"w":"UiPath","t":0},{"w":"Maestro","t":0.602},{"w":"is","t":1.284},{"w":"built","t":1.565},{"w":"for","t":2.087},{"w":"that","t":2.448},{"w":"in-between.","t":2.889}]},"s1d":{"scene":"s1","start":20.776,"dur":4.299,"words":[{"w":"In","t":0},{"w":"five","t":0.224},{"w":"minutes:","t":0.576},{"w":"two","t":1.55},{"w":"products,","t":1.819},{"w":"one","t":2.387},{"w":"engine,","t":2.656},{"w":"and","t":3.104},{"w":"how","t":3.373},{"w":"to","t":3.642},{"w":"choose.","t":3.851}]},"s2a":{"scene":"s2","start":26.875,"dur":8.551,"words":[{"w":"UiPath","t":0},{"w":"Maestro","t":0.573},{"w":"has","t":1.222},{"w":"two","t":1.566},{"w":"products","t":1.91},{"w":"on","t":2.636},{"w":"one","t":2.903},{"w":"engine:","t":3.247},{"w":"durable,","t":4.46},{"w":"stateful","t":5.48},{"w":"execution","t":6.101},{"w":"built","t":6.787},{"w":"for","t":7.211},{"w":"the","t":7.506},{"w":"enterprise.","t":7.8}]},"s2b":{"scene":"s2","start":35.926,"dur":8.605,"words":[{"w":"Maestro","t":0},{"w":"Automate","t":0.691},{"w":"is","t":1.464},{"w":"for","t":1.749},{"w":"short-running","t":2.115},{"w":"workflows","t":3.213},{"w":"of","t":4.067},{"w":"AI","t":4.352},{"w":"agents","t":4.637},{"w":"and","t":5.247},{"w":"APIs,","t":5.613},{"w":"finished","t":6.63},{"w":"within","t":7.158},{"w":"minutes","t":7.576},{"w":"or","t":8.049},{"w":"hours.","t":8.243}]},"s2c":{"scene":"s2","start":45.031,"dur":8.156,"words":[{"w":"Maestro","t":0},{"w":"Orchestrate","t":0.621},{"w":"is","t":1.533},{"w":"for","t":1.789},{"w":"long-running","t":2.118},{"w":"business","t":3.03},{"w":"processes","t":3.724},{"w":"that","t":4.491},{"w":"coordinate","t":4.893},{"w":"agents,","t":5.732},{"w":"robots,","t":6.61},{"w":"and","t":7.204},{"w":"people.","t":7.561}]},"s3a":{"scene":"s3","start":54.986,"dur":1.593,"words":[{"w":"Start","t":0},{"w":"with","t":0.423},{"w":"Orchestrate.","t":0.78}]},"s3b":{"scene":"s3","start":57.079,"dur":7.008,"words":[{"w":"It","t":0},{"w":"coordinates","t":0.301},{"w":"AI","t":1.375},{"w":"agents,","t":1.676},{"w":"robots,","t":2.72},{"w":"and","t":3.86},{"w":"people","t":4.143},{"w":"across","t":4.615},{"w":"the","t":5.088},{"w":"systems","t":5.371},{"w":"you","t":5.906},{"w":"already","t":6.189},{"w":"run.","t":6.724}]},"s3c":{"scene":"s3","start":64.587,"dur":7.781,"words":[{"w":"An","t":0},{"w":"instance","t":0.299},{"w":"can","t":1.112},{"w":"hold","t":1.497},{"w":"its","t":1.968},{"w":"state","t":2.353},{"w":"for","t":2.909},{"w":"hours,","t":3.294},{"w":"days,","t":4.26},{"w":"or","t":4.423},{"w":"weeks","t":4.527},{"w":"while","t":4.72},{"w":"it","t":4.913},{"w":"waits","t":5.017},{"w":"on","t":5.209},{"w":"a","t":5.313},{"w":"person,","t":5.387},{"w":"a","t":5.96},{"w":"system,","t":6.152},{"w":"or","t":6.9},{"w":"an","t":7.128},{"w":"event.","t":7.357}]},"s3d":{"scene":"s3","start":72.868,"dur":6.563,"words":[{"w":"There","t":0},{"w":"is","t":0.429},{"w":"no","t":0.66},{"w":"cap","t":0.89},{"w":"on","t":1.187},{"w":"duration","t":1.418},{"w":"or","t":2.045},{"w":"concurrency,","t":2.276},{"w":"and","t":3.69},{"w":"it","t":3.971},{"w":"survives","t":4.19},{"w":"failures","t":4.783},{"w":"and","t":5.376},{"w":"redeployments.","t":5.657}]},"s3e":{"scene":"s3","start":79.931,"dur":4.113,"words":[{"w":"You","t":0},{"w":"pick","t":0.258},{"w":"the","t":0.573},{"w":"canvas:","t":0.83},{"w":"BPMN,","t":1.67},{"w":"Case,","t":2.75},{"w":"or","t":3.267},{"w":"Flow.","t":3.596}]},"s3f":{"scene":"s3","start":84.544,"dur":5.394,"words":[{"w":"The","t":0},{"w":"canvas","t":0.281},{"w":"changes","t":0.75},{"w":"how","t":1.281},{"w":"you","t":1.562},{"w":"build.","t":1.844},{"w":"What","t":2.79},{"w":"runs","t":3.157},{"w":"underneath","t":3.524},{"w":"stays","t":4.292},{"w":"the","t":4.726},{"w":"same.","t":5.026}]},"s4a":{"scene":"s4","start":91.737,"dur":6.313,"words":[{"w":"Maestro","t":0},{"w":"BPMN","t":0.662},{"w":"is","t":1.559},{"w":"for","t":1.832},{"w":"a","t":2.182},{"w":"process","t":2.377},{"w":"that","t":3.04},{"w":"business","t":3.468},{"w":"and","t":4.209},{"w":"IT","t":4.559},{"w":"both","t":4.832},{"w":"sign","t":5.261},{"w":"off","t":5.69},{"w":"on.","t":6.04}]},"s4b":{"scene":"s4","start":98.55,"dur":9.963,"words":[{"w":"You","t":0},{"w":"model","t":0.511},{"w":"it","t":1.25},{"w":"in","t":1.648},{"w":"BPMN","t":2.045},{"w":"2.0,","t":3.352},{"w":"extended","t":4.36},{"w":"with","t":5.122},{"w":"UiPath","t":5.564},{"w":"tasks","t":6.165},{"w":"for","t":6.687},{"w":"robots,","t":7.048},{"w":"agents,","t":7.96},{"w":"and","t":8.549},{"w":"sub-processes.","t":8.902}]},"s4c":{"scene":"s4","start":109.013,"dur":6.427,"words":[{"w":"Business","t":0},{"w":"rules","t":0.811},{"w":"live","t":1.366},{"w":"in","t":1.836},{"w":"DMN","t":2.134},{"w":"decision","t":2.519},{"w":"tables,","t":3.33},{"w":"versioned","t":4.44},{"w":"alongside","t":5.092},{"w":"the","t":5.744},{"w":"model.","t":6.023}]},"s4d":{"scene":"s4","start":115.94,"dur":6.074,"words":[{"w":"And","t":0},{"w":"the","t":0.275},{"w":"diagram","t":0.549},{"w":"you","t":1.068},{"w":"sign","t":1.342},{"w":"off","t":1.678},{"w":"on","t":1.953},{"w":"is","t":2.166},{"w":"the","t":2.38},{"w":"one","t":2.654},{"w":"that","t":2.929},{"w":"runs.","t":3.264},{"w":"No","t":4.19},{"w":"re-implementation","t":4.439},{"w":"step.","t":5.683}]},"s5a":{"scene":"s5","start":123.814,"dur":7.851,"words":[{"w":"Maestro","t":0},{"w":"Case","t":0.636},{"w":"is","t":1.047},{"w":"for","t":1.309},{"w":"work","t":1.646},{"w":"that","t":2.057},{"w":"doesn't","t":2.469},{"w":"follow","t":3.03},{"w":"a","t":3.591},{"w":"straight","t":3.778},{"w":"line:","t":4.489},{"w":"claims,","t":5.21},{"w":"loans,","t":6.09},{"w":"disputes,","t":6.459},{"w":"and","t":6.999},{"w":"referrals.","t":7.254}]},"s5b":{"scene":"s5","start":132.164,"dur":4.287,"words":[{"w":"You","t":0},{"w":"model","t":0.328},{"w":"stages,","t":0.803},{"w":"milestones,","t":1.62},{"w":"and","t":2.73},{"w":"SLAs","t":3.08},{"w":"up","t":3.509},{"w":"front.","t":3.781}]},"s5c":{"scene":"s5","start":136.952,"dur":4.918,"words":[{"w":"Then","t":0},{"w":"events,","t":0.398},{"w":"AI","t":1.27},{"w":"decisions,","t":1.59},{"w":"and","t":2.78},{"w":"human","t":3.027},{"w":"judgment","t":3.383},{"w":"decide","t":3.904},{"w":"the","t":4.315},{"w":"order.","t":4.562}]},"s5d":{"scene":"s5","start":142.37,"dur":6.928,"words":[{"w":"A","t":0},{"w":"Case","t":0.2},{"w":"Manager","t":0.64},{"w":"agent","t":1.32},{"w":"governs","t":1.84},{"w":"the","t":2.52},{"w":"lifecycle,","t":2.88},{"w":"Stage","t":4.04},{"w":"Manager","t":4.498},{"w":"agents","t":5.096},{"w":"drive","t":5.625},{"w":"each","t":6.083},{"w":"phase,","t":6.47}]},"s5dx":{"scene":"s5","start":149.447,"dur":3.137,"words":[{"w":"and","t":0},{"w":"people","t":0.254},{"w":"stay","t":0.678},{"w":"in","t":0.989},{"w":"the","t":1.187},{"w":"loop","t":1.441},{"w":"where","t":1.752},{"w":"judgment","t":2.12},{"w":"matters.","t":2.657}]},"s6a":{"scene":"s6","start":154.384,"dur":3.584,"words":[{"w":"Maestro","t":0},{"w":"Flow","t":0.677},{"w":"is","t":1.115},{"w":"the","t":1.394},{"w":"developer-first","t":1.752},{"w":"canvas.","t":2.987}]},"s6b":{"scene":"s6","start":158.468,"dur":6.891,"words":[{"w":"Agents,","t":0},{"w":"APIs,","t":0.87},{"w":"data,","t":2.02},{"w":"documents,","t":2.98},{"w":"and","t":3.86},{"w":"human","t":4.141},{"w":"steps","t":4.547},{"w":"are","t":4.954},{"w":"all","t":5.235},{"w":"nodes","t":5.516},{"w":"on","t":5.922},{"w":"one","t":6.141},{"w":"canvas.","t":6.422}]},"s6c":{"scene":"s6","start":165.859,"dur":5.683,"words":[{"w":"Describe","t":0},{"w":"what","t":0.593},{"w":"you","t":0.937},{"w":"want","t":1.218},{"w":"and","t":1.561},{"w":"a","t":1.842},{"w":"coding","t":1.999},{"w":"agent","t":2.467},{"w":"builds","t":2.873},{"w":"it,","t":3.341},{"w":"or","t":4},{"w":"refine","t":4.245},{"w":"it","t":4.771},{"w":"visually.","t":5.017}]},"s6d":{"scene":"s6","start":172.042,"dur":6.562,"words":[{"w":"The","t":0},{"w":"same","t":0.335},{"w":"flow","t":0.745},{"w":"file","t":1.155},{"w":"opens","t":1.565},{"w":"in","t":2.05},{"w":"the","t":2.31},{"w":"cloud","t":2.646},{"w":"canvas","t":3.13},{"w":"or","t":3.689},{"w":"in","t":3.95},{"w":"VS Code,","t":4.211},{"w":"and","t":5.25},{"w":"lives","t":5.561},{"w":"in","t":6.009},{"w":"Git.","t":6.251}]},"s7a":{"scene":"s7","start":180.404,"dur":4.928,"words":[{"w":"Whichever","t":0},{"w":"canvas","t":0.656},{"w":"you","t":1.125},{"w":"pick,","t":1.406},{"w":"you","t":2.19},{"w":"stay","t":2.487},{"w":"in","t":2.85},{"w":"control","t":3.081},{"w":"of","t":3.641},{"w":"live","t":3.872},{"w":"instances.","t":4.235}]},"s7b":{"scene":"s7","start":185.832,"dur":6.827,"words":[{"w":"Retry,","t":0},{"w":"cancel,","t":0.84},{"w":"pause,","t":1.71},{"w":"resume,","t":2.141},{"w":"migrate,","t":2.639},{"w":"or","t":3.203},{"w":"go","t":3.435},{"w":"to","t":3.667},{"w":"a","t":3.899},{"w":"step,","t":4.065},{"w":"one","t":4.91},{"w":"at","t":5.213},{"w":"a","t":5.448},{"w":"time","t":5.616},{"w":"or","t":5.986},{"w":"in","t":6.221},{"w":"bulk.","t":6.457}]},"s7c":{"scene":"s7","start":193.158,"dur":2.641,"words":[{"w":"Every","t":0},{"w":"step","t":0.44},{"w":"and","t":0.813},{"w":"variable","t":1.117},{"w":"is","t":1.761},{"w":"recorded,","t":1.997}]},"s7cx":{"scene":"s7","start":195.949,"dur":7.286,"words":[{"w":"and","t":0},{"w":"policy,","t":0.356},{"w":"access","t":1.24},{"w":"control,","t":1.793},{"w":"and","t":2.78},{"w":"a","t":3.083},{"w":"tamper-evident","t":3.251},{"w":"audit","t":4.226},{"w":"trail","t":4.663},{"w":"come","t":5.1},{"w":"from","t":5.47},{"w":"the","t":5.84},{"w":"UiPath","t":6.143},{"w":"Platform.","t":6.647}]},"s8a":{"scene":"s8","start":205.035,"dur":1.796,"words":[{"w":"Now","t":0},{"w":"Maestro","t":0.359},{"w":"Automate.","t":1.038}]},"s8b":{"scene":"s8","start":207.331,"dur":7.665,"words":[{"w":"An","t":0},{"w":"event","t":0.219},{"w":"comes","t":0.625},{"w":"in,","t":1.031},{"w":"agents","t":1.67},{"w":"reason,","t":2.265},{"w":"APIs","t":3.16},{"w":"act,","t":3.886},{"w":"and","t":4.87},{"w":"the","t":5.103},{"w":"workflow","t":5.336},{"w":"finishes","t":5.828},{"w":"within","t":6.319},{"w":"minutes","t":6.707},{"w":"or","t":7.147},{"w":"hours.","t":7.329}]},"s8c":{"scene":"s8","start":215.496,"dur":5.606,"words":[{"w":"Take","t":0},{"w":"order","t":0.322},{"w":"intake:","t":0.702},{"w":"an","t":1.68},{"w":"order","t":1.908},{"w":"arrives","t":2.332},{"w":"by","t":2.887},{"w":"webhook,","t":3.115},{"w":"an","t":3.89},{"w":"agent","t":4.14},{"w":"validates","t":4.605},{"w":"it,","t":5.356}]},"s8cx":{"scene":"s8","start":221.252,"dur":5.582,"words":[{"w":"checks","t":0},{"w":"stock","t":0.562},{"w":"and","t":1.05},{"w":"credit","t":1.388},{"w":"over","t":1.95},{"w":"API,","t":2.363},{"w":"and","t":3.18},{"w":"creates","t":3.476},{"w":"the","t":4.036},{"w":"order","t":4.332},{"w":"in","t":4.759},{"w":"the","t":4.99},{"w":"ERP.","t":5.286}]},"s8d":{"scene":"s8","start":227.334,"dur":5.927,"words":[{"w":"Build","t":0},{"w":"it","t":0.446},{"w":"in","t":0.687},{"w":"your","t":0.927},{"w":"editor","t":1.304},{"w":"with","t":1.819},{"w":"a","t":2.197},{"w":"coding","t":2.369},{"w":"agent","t":2.884},{"w":"like","t":3.33},{"w":"Claude","t":3.707},{"w":"Code,","t":4.222},{"w":"Codex,","t":4.85},{"w":"or","t":5.228},{"w":"Copilot.","t":5.432}]},"s8e":{"scene":"s8","start":233.761,"dur":5.227,"words":[{"w":"Debug","t":0},{"w":"it","t":0.413},{"w":"with","t":0.635},{"w":"probes","t":0.984},{"w":"and","t":1.461},{"w":"breakpoints,","t":1.746},{"w":"and","t":2.99},{"w":"evaluate","t":3.245},{"w":"it","t":3.783},{"w":"before","t":3.981},{"w":"it","t":4.406},{"w":"goes","t":4.604},{"w":"live.","t":4.915}]},"s8f":{"scene":"s8","start":239.488,"dur":6.819,"words":[{"w":"Your","t":0},{"w":"existing","t":0.374},{"w":"robots,","t":1.02},{"w":"API","t":1.86},{"w":"workflows,","t":2.181},{"w":"and","t":2.931},{"w":"agents","t":3.253},{"w":"are","t":3.789},{"w":"called","t":4.11},{"w":"as","t":4.646},{"w":"nodes,","t":4.896},{"w":"not","t":5.79},{"w":"rebuilt.","t":6.146}]},"s9a":{"scene":"s9","start":248.107,"dur":1.1,"words":[{"w":"So","t":0},{"w":"which","t":0.266},{"w":"one?","t":0.759}]},"s9b":{"scene":"s9","start":249.707,"dur":4.894,"words":[{"w":"Choose","t":0},{"w":"Automate","t":0.437},{"w":"when","t":0.99},{"w":"the","t":1.311},{"w":"workflow","t":1.573},{"w":"is","t":2.127},{"w":"short-running","t":2.331},{"w":"and","t":3.117},{"w":"the","t":3.379},{"w":"builder","t":3.641},{"w":"wants","t":4.137},{"w":"speed.","t":4.515}]},"s9c":{"scene":"s9","start":255.101,"dur":4.864,"words":[{"w":"Choose","t":0},{"w":"Orchestrate","t":0.477},{"w":"when","t":1.272},{"w":"the","t":1.621},{"w":"process","t":1.907},{"w":"runs","t":2.448},{"w":"long","t":2.798},{"w":"and","t":3.147},{"w":"carries","t":3.433},{"w":"the","t":3.974},{"w":"business.","t":4.26}]},"s9d":{"scene":"s9","start":260.465,"dur":6.044,"words":[{"w":"It","t":0},{"w":"is","t":0.232},{"w":"not","t":0.463},{"w":"either-or.","t":0.761},{"w":"A","t":1.96},{"w":"workflow","t":2.125},{"w":"that","t":2.75},{"w":"outgrows","t":3.113},{"w":"Automate","t":3.738},{"w":"converts","t":4.364},{"w":"to","t":4.99},{"w":"Orchestrate:","t":5.22}]},"s9dx":{"scene":"s9","start":266.659,"dur":3.428,"words":[{"w":"same","t":0},{"w":"canvas,","t":0.453},{"w":"same","t":1.26},{"w":"file,","t":1.638},{"w":"nothing","t":2.017},{"w":"to","t":2.602},{"w":"rebuild.","t":2.843}]},"s10a":{"scene":"s10","start":271.887,"dur":10.268,"words":[{"w":"To","t":0},{"w":"start,","t":0.248},{"w":"create","t":0.98},{"w":"a","t":1.592},{"w":"project","t":1.796},{"w":"under","t":2.489},{"w":"Business","t":3.02},{"w":"Orchestration","t":3.795},{"w":"in","t":4.978},{"w":"VS Code","t":5.263},{"w":"or","t":5.875},{"w":"Studio","t":6.161},{"w":"Web,","t":6.773},{"w":"and","t":7.27},{"w":"pick","t":7.565},{"w":"BPMN,","t":7.926},{"w":"Case,","t":8.9},{"w":"or","t":9.419},{"w":"Flow.","t":9.749}]},"s10b":{"scene":"s10","start":282.655,"dur":3.607,"words":[{"w":"Orchestrate","t":0},{"w":"the","t":0.734},{"w":"whole","t":0.999},{"w":"process,","t":1.381},{"w":"not","t":2.2},{"w":"just","t":2.502},{"w":"the","t":2.87},{"w":"tasks.","t":3.172}]}},"total":288.962};
+      // ---------------- icon set (48x48, ink outline, flat fills) ----------------
+const IC = {
+  mail: '<rect x="5" y="11" width="38" height="27" rx="6" fill="#fff"/><path d="M7 14 L24 28 L41 14"/>',
+  chart: '<rect x="5" y="7" width="38" height="34" rx="6" fill="#fff"/><rect x="12" y="24" width="6" height="11" fill="#21c7d6"/><rect x="21" y="16" width="6" height="19" fill="#ffc93c"/><rect x="30" y="20" width="6" height="15" fill="#7b61ff"/>',
+  image: '<rect x="5" y="8" width="38" height="32" rx="6" fill="#fff"/><circle cx="16" cy="19" r="4" fill="#ffc93c"/><path d="M7 36 L19 25 L28 33 L34 27 L41 35"/>',
+  crm: '<rect x="5" y="9" width="38" height="30" rx="6" fill="#fff"/><circle cx="17" cy="21" r="5" fill="#21c7d6"/><path d="M9 34 q8 -10 16 0"/><path d="M28 20 H38 M28 27 H36"/>',
+  cursor: '<path d="M13 6 L13 37 L21 30 L26 42 L32 39 L27 28 L38 27 Z" fill="#fff"/>',
+  search: '<circle cx="20" cy="20" r="12" fill="#fff"/><path d="M29 29 L41 41" stroke-width="6"/>',
+  db: '<ellipse cx="24" cy="12" rx="15" ry="6" fill="#fff"/><path d="M9 12 V34 q0 6 15 6 q15 0 15 -6 V12" fill="#fff"/><path d="M9 23 q0 6 15 6 q15 0 15 -6"/>',
+  key: '<circle cx="15" cy="24" r="9" fill="#ffc93c"/><path d="M24 24 H42 M36 24 V31 M42 24 V30"/>',
+  gear: '<circle cx="24" cy="24" r="14" stroke-width="7" stroke-dasharray="4.4 4.4"/><circle cx="24" cy="24" r="10" fill="#fff"/><circle cx="24" cy="24" r="4" fill="#21c7d6"/>',
+  clock: '<circle cx="24" cy="24" r="18" fill="#fff"/><path d="M24 12 V24 L32 29"/>',
+  sun: '<circle cx="24" cy="24" r="9" fill="#ffc93c"/><path d="M24 5 V10 M24 38 V43 M5 24 H10 M38 24 H43 M10 10 L14 14 M34 34 L38 38 M38 10 L34 14 M14 34 L10 38"/>',
+  moon: '<path d="M34 8 a17 17 0 1 0 8 25 a14 14 0 0 1 -8 -25 z" fill="#ffe28a"/>',
+  pencil: '<path d="M8 40 L10 30 L32 8 L40 16 L18 38 Z" fill="#ffc93c"/><path d="M28 12 L36 20"/>',
+  send: '<path d="M6 22 L42 7 L34 41 L24 30 Z" fill="#fff"/><path d="M42 7 L24 30"/>',
+  folder: '<path d="M5 13 q0 -4 4 -4 h10 l5 5 h15 q4 0 4 4 v18 q0 4 -4 4 H9 q-4 0 -4 -4 Z" fill="#fff"/>',
+  logs: '<rect x="5" y="7" width="38" height="34" rx="6" fill="#1f2140"/><path d="M11 16 H30 M11 23 H36 M11 30 H26" stroke="#7cf3b0"/>',
+  funnel: '<path d="M5 9 H43 L29 25 V39 L19 34 V25 Z" fill="#fff"/>',
+  eye: '<path d="M4 24 q20 -20 40 0 q-20 20 -40 0 Z" fill="#fff"/><circle cx="24" cy="24" r="6" fill="#21c7d6"/>',
+  person: '<circle cx="24" cy="15" r="8" fill="#fff"/><path d="M8 42 q0 -14 16 -14 q16 0 16 14 Z" fill="#fff"/>',
+  warn: '<path d="M24 6 L44 40 H4 Z" fill="#ffc93c"/><path d="M24 18 V29 M24 34 V35"/>',
+  flag: '<path d="M12 6 V42"/><path d="M12 8 H38 L32 16 L38 24 H12 Z" fill="#ff8fa0"/>',
+  bug: '<ellipse cx="24" cy="27" rx="10" ry="13" fill="#ff8fa0"/><circle cx="24" cy="12" r="5" fill="#fff"/><path d="M14 22 L6 18 M34 22 L42 18 M14 30 L5 30 M34 30 L43 30 M15 38 L8 43 M33 38 L40 43 M24 16 V40"/>',
+  stack: '<rect x="6" y="8" width="36" height="10" rx="4" fill="#fff"/><rect x="6" y="20" width="36" height="10" rx="4" fill="#fff"/><rect x="6" y="32" width="36" height="10" rx="4" fill="#fff"/><circle cx="13" cy="13" r="2" fill="#0a8a5f" stroke="none"/><circle cx="13" cy="25" r="2" fill="#0a8a5f" stroke="none"/><circle cx="13" cy="37" r="2" fill="#0a8a5f" stroke="none"/>',
+  spark: '<path d="M24 4 Q26 22 44 24 Q26 26 24 44 Q22 26 4 24 Q22 22 24 4 Z" fill="#ffc93c"/>',
+  x: '<path d="M12 12 L36 36 M36 12 L12 36" stroke="#d92d48" stroke-width="6"/>',
+  tick: '<path d="M10 25 L21 36 L39 12" stroke="#0a8a5f" stroke-width="7"/>',
+  bulb: '<path d="M24 5 a13 13 0 0 1 7 24 v5 h-14 v-5 a13 13 0 0 1 7 -24 z" fill="#ffe28a"/><path d="M18 40 H30 M20 44 H28"/>',
+  chat: '<path d="M6 10 q0 -4 4 -4 h28 q4 0 4 4 v18 q0 4 -4 4 H22 L12 42 V32 h-2 q-4 0 -4 -4 Z" fill="#fff"/><circle cx="16" cy="19" r="2.2" fill="#1f2140" stroke="none"/><circle cx="24" cy="19" r="2.2" fill="#1f2140" stroke="none"/><circle cx="32" cy="19" r="2.2" fill="#1f2140" stroke="none"/>',
+  loop: '<path d="M9 24 a15 15 0 0 1 27 -9 M39 24 a15 15 0 0 1 -27 9"/><path d="M36 6 V16 H26 M12 42 V32 H22"/>',
+  ticket: '<path d="M5 14 q0 -4 4 -4 H39 q4 0 4 4 v5 a5 5 0 0 0 0 10 v5 q0 4 -4 4 H9 q-4 0 -4 -4 v-5 a5 5 0 0 0 0 -10 Z" fill="#fff"/><path d="M17 12 V36" stroke-dasharray="3 4"/>',
+  doc: '<path d="M10 5 H29 L39 15 V41 q0 2 -2 2 H10 q-2 0 -2 -2 V7 q0 -2 2 -2 Z" fill="#fff"/><path d="M29 5 V15 H39"/><path d="M14 24 H32 M14 31 H32"/>',
+  bot: '<rect x="8" y="14" width="32" height="26" rx="9" fill="#fff"/><path d="M24 14 V8"/><circle cx="24" cy="6" r="3" fill="#d92d48"/><circle cx="17" cy="26" r="3.5" fill="#1f2140" stroke="none"/><circle cx="31" cy="26" r="3.5" fill="#1f2140" stroke="none"/><path d="M18 34 H30"/>',
+  lock: '<rect x="9" y="21" width="30" height="21" rx="5" fill="#ffc93c"/><path d="M15 21 V15 a9 9 0 0 1 18 0 V21"/><circle cx="24" cy="31" r="3" fill="#1f2140" stroke="none"/>',
+  unlock: '<rect x="9" y="21" width="30" height="21" rx="5" fill="#06d6a0"/><path d="M15 21 V15 a9 9 0 0 1 17 -3"/><circle cx="24" cy="31" r="3" fill="#1f2140" stroke="none"/>',
+  infinity: '<path d="M24 24 C18 12 6 12 6 24 C6 36 18 36 24 24 C30 12 42 12 42 24 C42 36 30 36 24 24 Z"/>',
+  flow: '<rect x="4" y="6" width="14" height="10" rx="3" fill="#fff"/><rect x="30" y="6" width="14" height="10" rx="3" fill="#fff"/><rect x="17" y="32" width="14" height="10" rx="3" fill="#21c7d6"/><path d="M11 16 V24 H24 V32 M37 16 V24 H24"/>',
+  book: '<path d="M6 10 q9 -3 18 3 q9 -6 18 -3 V37 q-9 -3 -18 3 q-9 -6 -18 -3 Z" fill="#fff"/><path d="M24 13 V40"/>',
+  target: '<circle cx="24" cy="24" r="17" fill="#fff"/><circle cx="24" cy="24" r="10" fill="#ff8fa0"/><circle cx="24" cy="24" r="3.5" fill="#1f2140" stroke="none"/>',
+  gauge: '<path d="M6 34 a18 18 0 0 1 36 0 Z" fill="#fff"/><path d="M24 34 L34 20"/><circle cx="24" cy="34" r="3" fill="#1f2140" stroke="none"/>',
+  globe: '<circle cx="24" cy="24" r="17" fill="#fff"/><path d="M7 24 H41 M24 7 q-12 17 0 34 M24 7 q12 17 0 34"/>',
+  calendar: '<rect x="6" y="9" width="36" height="33" rx="6" fill="#fff"/><path d="M6 19 H42 M16 5 V13 M32 5 V13"/><rect x="12" y="25" width="7" height="6" rx="1" fill="#21c7d6" stroke="none"/><rect x="21" y="25" width="7" height="6" rx="1" fill="#ffc93c" stroke="none"/><rect x="30" y="25" width="7" height="6" rx="1" fill="#ff8fa0" stroke="none"/>',
+  play: '<circle cx="24" cy="24" r="18" fill="#06d6a0"/><path d="M20 15 L34 24 L20 33 Z" fill="#fff"/>',
+  share: '<circle cx="12" cy="24" r="6" fill="#fff"/><circle cx="36" cy="12" r="6" fill="#21c7d6"/><circle cx="36" cy="36" r="6" fill="#ffc93c"/><path d="M17 21 L31 14 M17 27 L31 34"/>',
+  users: '<circle cx="16" cy="16" r="7" fill="#fff"/><path d="M3 41 q0 -12 13 -12 q13 0 13 12 Z" fill="#fff"/><circle cx="34" cy="18" r="6" fill="#21c7d6"/><path d="M28 31 q12 -2 17 10 H31 Z" fill="#21c7d6"/>',
+  slides: '<rect x="5" y="7" width="38" height="27" rx="4" fill="#fff"/><path d="M24 34 V42 M16 42 H32"/><rect x="10" y="13" width="11" height="15" fill="#21c7d6"/><path d="M26 15 H38 M26 21 H36 M26 27 H38"/>',
+  table: '<rect x="5" y="8" width="38" height="32" rx="5" fill="#fff"/><path d="M5 18 H43 M5 28 H43 M18 8 V40 M31 8 V40"/>',
+  form: '<rect x="7" y="5" width="34" height="38" rx="6" fill="#fff"/><rect x="12" y="11" width="24" height="8" rx="2" fill="#d3f5f8"/><rect x="12" y="23" width="24" height="8" rx="2" fill="#d3f5f8"/><rect x="12" y="35" width="13" height="5" rx="2" fill="#0b7a85" stroke="none"/>',
+  list: '<rect x="6" y="8" width="36" height="32" rx="6" fill="#fff"/><circle cx="14" cy="17" r="2.5" fill="#1f2140" stroke="none"/><circle cx="14" cy="24" r="2.5" fill="#1f2140" stroke="none"/><circle cx="14" cy="31" r="2.5" fill="#1f2140" stroke="none"/><path d="M21 17 H36 M21 24 H36 M21 31 H32"/>',
+  toggle: '<rect x="4" y="14" width="40" height="20" rx="10" fill="#06d6a0"/><circle cx="34" cy="24" r="7" fill="#fff"/>',
+  star: '<path d="M24 5 L29.5 18 L43 19 L33 28 L36 42 L24 35 L12 42 L15 28 L5 19 L18.5 18 Z" fill="#ffc93c"/>',
+  window: '<rect x="5" y="8" width="38" height="32" rx="6" fill="#fff"/><path d="M5 17 H43"/><circle cx="11" cy="12.5" r="1.6" fill="#1f2140" stroke="none"/><circle cx="17" cy="12.5" r="1.6" fill="#1f2140" stroke="none"/>',
+  stop: '<path d="M16 5 H32 L43 16 V32 L32 43 H16 L5 32 V16 Z" fill="#ff5d73"/><path d="M15 24 H33" stroke="#fff" stroke-width="6"/>',
+  rec: '<circle cx="24" cy="24" r="16" fill="#d92d48"/>',
+  hourglass: '<path d="M12 6 H36 M12 42 H36"/><path d="M14 6 q0 14 10 18 q-10 4 -10 18 H34 q0 -14 -10 -18 q10 -4 10 -18 Z" fill="#ffe28a"/>',
+  legacy: '<rect x="5" y="9" width="38" height="30" rx="3" fill="#dfe3f2"/><rect x="9" y="14" width="30" height="16" fill="#1f2140"/><path d="M12 20 H24 M12 25 H30" stroke="#7cf3b0" stroke-width="3"/><path d="M14 35 H34" stroke-width="3"/>',
+  plugoff: '<path d="M17 6 V16 M31 6 V16"/><rect x="11" y="16" width="26" height="14" rx="6" fill="#fff"/><path d="M24 30 V42"/><path d="M6 6 L42 42" stroke="#d92d48" stroke-width="5"/>',
+  rows: '<rect x="5" y="8" width="38" height="9" rx="3" fill="#fff"/><rect x="5" y="20" width="38" height="9" rx="3" fill="#fff"/><rect x="5" y="32" width="38" height="9" rx="3" fill="#fff"/>',
+  link: '<path d="M20 28 a8 8 0 0 1 0 -11 l6 -6 a8 8 0 0 1 11 11 l-3 3"/><path d="M28 20 a8 8 0 0 1 0 11 l-6 6 a8 8 0 0 1 -11 -11 l3 -3"/>',
+  hand: '<path d="M14 26 V12 q0 -3 3 -3 t3 3 V22 V8 q0 -3 3 -3 t3 3 V22 V10 q0 -3 3 -3 t3 3 V24 V16 q0 -3 3 -3 t3 3 V30 q0 12 -12 12 q-8 0 -12 -8 L8 26 q-1 -3 2 -4 q3 -1 4 4 Z" fill="#fff"/>',
+};
+
+function ic(name, size) {
+  return '<svg class="ic" viewBox="0 0 48 48" width="' + size + '" height="' + size + '" fill="none" stroke="#1f2140" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">' + IC[name] + "</svg>";
+}
+// <i data-ic="mail" data-s="56"></i>  ->  inline svg (done once, before the timeline is built)
+document.querySelectorAll("i[data-ic]").forEach((el) => {
+  el.innerHTML = ic(el.dataset.ic, +(el.dataset.s || 48));
+});
+
+      // ---------------- characters ----------------
+const INK = "#1f2140";
+function blob(body, belly, extra) {
+  return `<svg viewBox="0 0 240 290">
+    <ellipse cx="120" cy="280" rx="80" ry="10" fill="rgba(31,33,64,.12)"/>
+    <g class="fx"><g class="inner">
+      <g class="arm-l"><path d="M44 170 q-36 6 -40 44" stroke="${body}" stroke-width="20" stroke-linecap="round" fill="none"/></g>
+      <g class="arm-r"><path d="M196 170 q36 6 40 44" stroke="${body}" stroke-width="20" stroke-linecap="round" fill="none"/></g>
+      <ellipse cx="88" cy="262" rx="26" ry="14" fill="${body}"/><ellipse cx="152" cy="262" rx="26" ry="14" fill="${body}"/>
+      <path d="M112 44 q6 -34 34 -26 q-18 6 -16 28z" fill="${body}"/>
+      <rect x="30" y="40" width="180" height="222" rx="90" fill="${body}"/>
+      <ellipse cx="120" cy="196" rx="58" ry="46" fill="${belly}"/>
+      ${extra}
+      <ellipse cx="74" cy="156" rx="14" ry="9" fill="#ff9bb3" opacity=".8"/><ellipse cx="166" cy="156" rx="14" ry="9" fill="#ff9bb3" opacity=".8"/>
+      <g class="eyes">
+        <ellipse cx="92" cy="122" rx="21" ry="23" fill="#fff"/><ellipse cx="148" cy="122" rx="21" ry="23" fill="#fff"/>
+        <circle cx="95" cy="126" r="10" fill="${INK}"/><circle cx="151" cy="126" r="10" fill="${INK}"/>
+        <circle cx="99" cy="121" r="3.5" fill="#fff"/><circle cx="155" cy="121" r="3.5" fill="#fff"/>
+      </g>
+      <path class="m-happy" d="M100 158 q20 24 40 0" stroke="${INK}" stroke-width="6" stroke-linecap="round" fill="none"/>
+      <path class="m-sad" d="M102 170 q18 -16 36 0" stroke="${INK}" stroke-width="6" stroke-linecap="round" fill="none" opacity="0"/>
+      <ellipse class="m-talk" cx="120" cy="164" rx="14" ry="11" fill="#7a1f3a" opacity="0"/>
+    </g></g>
+  </svg>`;
+}
+// Sam wears a headset in the "day in the life" scene
+const HEADSET = `<path d="M44 112 q0 -62 76 -62 q76 0 76 62" stroke="${INK}" stroke-width="7" fill="none" stroke-linecap="round" class="hs" opacity="0"/><rect x="26" y="104" width="24" height="42" rx="10" fill="${INK}" class="hs" opacity="0"/><rect x="190" y="104" width="24" height="42" rx="10" fill="${INK}" class="hs" opacity="0"/><path d="M200 146 q-6 22 -50 26" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round" class="hs" opacity="0"/><circle cx="148" cy="172" r="7" fill="${INK}" class="hs" opacity="0"/>`;
+
+const BOT = `<svg viewBox="0 0 260 320">
+  <ellipse cx="130" cy="312" rx="90" ry="10" fill="rgba(31,33,64,.12)"/>
+  <g class="fx"><g class="inner">
+    <g class="ant"><line x1="130" y1="40" x2="130" y2="10" stroke="${INK}" stroke-width="6"/><circle class="bulb" cx="130" cy="10" r="12" fill="#c2410c" stroke="${INK}" stroke-width="4"/></g>
+    <g class="arm-l"><rect x="22" y="200" width="36" height="80" rx="18" fill="#05b98a"/></g>
+    <g class="arm-r"><rect x="202" y="200" width="36" height="80" rx="18" fill="#05b98a"/></g>
+    <rect x="66" y="188" width="128" height="110" rx="28" fill="#038a66" stroke="${INK}" stroke-width="5"/>
+    <text x="130" y="258" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-weight="800" font-size="30" fill="#fff">BYTE</text>
+    <rect class="head" x="30" y="40" width="200" height="150" rx="40" fill="#06d6a0" stroke="${INK}" stroke-width="5"/>
+    <rect x="54" y="62" width="152" height="106" rx="26" fill="${INK}"/>
+    <g class="eyes-n"><rect x="88" y="94" width="22" height="32" rx="11" fill="#7cf3ff"/><rect x="150" y="94" width="22" height="32" rx="11" fill="#7cf3ff"/></g>
+    <g class="eyes-h" opacity="0"><path d="M86 118 q13 -22 26 0 M148 118 q13 -22 26 0" stroke="#7cf3ff" stroke-width="7" stroke-linecap="round" fill="none"/></g>
+    <g class="eyes-a" opacity="0"><path d="M84 96 l28 14 M176 96 l-28 14" stroke="#ff5d73" stroke-width="7" stroke-linecap="round"/><circle cx="100" cy="122" r="9" fill="#ff5d73"/><circle cx="160" cy="122" r="9" fill="#ff5d73"/></g>
+    <g class="eyes-q" opacity="0"><rect x="88" y="104" width="22" height="18" rx="9" fill="#7cf3ff"/><rect x="150" y="96" width="22" height="30" rx="11" fill="#7cf3ff"/></g>
+    <path class="m-n" d="M112 146 h36" stroke="#7cf3ff" stroke-width="6" stroke-linecap="round"/>
+    <rect class="m-talk" x="112" y="138" width="36" height="14" rx="7" fill="#7cf3ff" opacity="0"/>
+  </g></g>
+</svg>`;
+
+// Delegate: the "AI intern" - navy body, cyan face screen, the deck's bolt on the chest, an INTERN name tag.
+const NAVY = "#121a30", CYAN = "#21c7d6";
+const DLG = `<svg viewBox="0 0 240 300">
+  <ellipse cx="120" cy="290" rx="80" ry="10" fill="rgba(31,33,64,.12)"/>
+  <g class="fx"><g class="inner">
+    <g class="arm-l"><path d="M56 192 q-38 4 -44 44" stroke="${NAVY}" stroke-width="24" stroke-linecap="round" fill="none"/><circle cx="12" cy="238" r="14" fill="${CYAN}" stroke="${INK}" stroke-width="4"/></g>
+    <g class="arm-r"><path d="M184 192 q38 4 44 44" stroke="${NAVY}" stroke-width="24" stroke-linecap="round" fill="none"/><circle cx="228" cy="238" r="14" fill="${CYAN}" stroke="${INK}" stroke-width="4"/></g>
+    <rect x="78" y="264" width="34" height="20" rx="10" fill="${NAVY}" stroke="${INK}" stroke-width="4"/><rect x="128" y="264" width="34" height="20" rx="10" fill="${NAVY}" stroke="${INK}" stroke-width="4"/>
+    <rect x="52" y="152" width="136" height="122" rx="44" fill="${NAVY}" stroke="${INK}" stroke-width="5"/>
+    <circle cx="120" cy="205" r="30" fill="${CYAN}" stroke="${INK}" stroke-width="4"/>
+    <path d="M126 184 l-18 26 h15 l-7 22 l22 -30 h-15 z" fill="${NAVY}"/>
+    <rect x="80" y="245" width="80" height="25" rx="12" fill="#fff" stroke="${INK}" stroke-width="3"/>
+    <text x="120" y="263" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-weight="800" font-size="15" fill="${INK}">INTERN</text>
+    <circle cx="34" cy="104" r="16" fill="${CYAN}" stroke="${INK}" stroke-width="4"/><circle cx="206" cy="104" r="16" fill="${CYAN}" stroke="${INK}" stroke-width="4"/>
+    <rect x="38" y="42" width="164" height="128" rx="50" fill="${NAVY}" stroke="${INK}" stroke-width="5"/>
+    <rect x="58" y="60" width="124" height="92" rx="34" fill="${CYAN}"/>
+    <g class="eyes-n"><rect x="86" y="86" width="20" height="34" rx="10" fill="${NAVY}"/><rect x="134" y="86" width="20" height="34" rx="10" fill="${NAVY}"/></g>
+    <g class="eyes-h" opacity="0"><path d="M84 110 q12 -22 24 0 M132 110 q12 -22 24 0" stroke="${NAVY}" stroke-width="7" stroke-linecap="round" fill="none"/></g>
+    <g class="eyes-a" opacity="0"><path d="M82 88 l26 12 M158 88 l-26 12" stroke="#d92d48" stroke-width="7" stroke-linecap="round"/><circle cx="96" cy="112" r="8" fill="${NAVY}"/><circle cx="144" cy="112" r="8" fill="${NAVY}"/></g>
+    <g class="eyes-q" opacity="0"><rect x="86" y="98" width="20" height="20" rx="10" fill="${NAVY}"/><rect x="134" y="86" width="20" height="34" rx="10" fill="${NAVY}"/></g>
+    <path class="m-n" d="M104 134 q16 14 32 0" stroke="${NAVY}" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <rect class="m-talk" x="106" y="130" width="28" height="12" rx="6" fill="${NAVY}" opacity="0"/>
+    <g class="ant"><path d="M120 42 v-16" stroke="${INK}" stroke-width="6" stroke-linecap="round"/><circle class="bulb" cx="120" cy="20" r="11" fill="#ffc93c" stroke="${INK}" stroke-width="4"/></g>
+  </g></g>
+</svg>`;
+
+const KINDS = {
+  sam: { svg: () => blob("#7b61ff", "#a594ff", HEADSET), ar: "196 170", al: "44 170", o: "120 275", mo: "120 164" },
+  byte: { svg: () => BOT, ar: "220 205", al: "40 205", o: "130 312", mo: "130 145" },
+  dlg: { svg: () => DLG, ar: "184 192", al: "56 192", o: "120 288", mo: "120 136" },
+};
+document.querySelectorAll(".char").forEach((el) => {
+  const k = KINDS[el.dataset.kind];
+  el.innerHTML = k.svg();
+  el.dataset.ar = k.ar; el.dataset.al = k.al; el.dataset.o = k.o; el.dataset.mo = k.mo;
+});
+
+      // ---------------- captions (word-by-word, timed from the voice) ----------------
+const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const capEl = document.getElementById("captions");
+Object.keys(T.lines).forEach((id) => {
+  const ln = T.lines[id];
+  const div = document.createElement("div");
+  div.className = "cline";
+  div.id = "cap-" + id;
+  div.innerHTML = "<span>" + ln.words.map((w, i) => '<span class="cw" id="cw-' + id + "-" + i + '">' + esc(w.w) + "</span>").join(" ") + "</span>";
+  capEl.appendChild(div);
+});
+
+// ---------------- timeline helpers ----------------
+const tl = gsap.timeline({ paused: true });
+const E = "power2.out";
+const POP = "back.out(1.5)";
+const S = (id) => T.scenes[id].start;
+const SE = (id) => T.scenes[id].start + T.scenes[id].dur;
+const L = (id, off = 0) => T.lines[id].start + off;
+const LE = (id, off = 0) => T.lines[id].start + T.lines[id].dur + off;
+const W = (id, i) => T.lines[id].start + T.lines[id].words[i].t;
+const D = (sel) => document.querySelector(sel).dataset;
+const $$ = (sel) => gsap.utils.toArray(sel);
+
+function enter(scene) {
+  tl.fromTo("#" + scene + " .eyebrow, #" + scene + " h2", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.18, ease: E }, S(scene) + 0.25);
+}
+function leave(scene) { tl.to("#" + scene, { opacity: 0, duration: 0.5, ease: "power2.in" }, SE(scene) - 0.55); }
+function show(sel, t, o = {}) {
+  tl.fromTo(sel, { opacity: 0, scale: o.s ?? 0.8, y: o.y ?? 24, x: o.x ?? 0 },
+    { opacity: 1, scale: 1, y: 0, x: 0, duration: o.d ?? 0.8, ease: o.ease ?? POP, transformOrigin: o.origin ?? "50% 50%" }, t);
+}
+function fade(sel, t, d = 0.6) { tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power1.out" }, t); }
+function hide(sel, t, d = 0.4) { tl.to(sel, { opacity: 0, duration: d }, t); }
+function pulse(sel, t, scale = 1.08) { tl.fromTo(sel, { scale: 1 }, { scale, duration: 0.25, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "50% 50%", immediateRender: false }, t); }
+function shake(sel, t, amp = 12) { tl.to(sel, { x: "+=" + amp, duration: 0.08, yoyo: true, repeat: 7, ease: "none" }, t); }
+function move(sel, t, dx, dy, d = 0.9, ease = "power2.inOut") { tl.to(sel, { x: "+=" + dx, y: "+=" + dy, duration: d, ease }, t); }
+function typeText(sel, text, t0, dur) {
+  const n = text.length;
+  for (let i = 1; i <= n; i++) tl.set(sel, { textContent: text.slice(0, i) }, t0 + (dur * i) / n);
+}
+// stroke-draw an svg path (arrow) from start to end. The path is fully hidden until drawn (an SVG marker
+// ignores the dash trick and would otherwise show its arrowhead early); the head appears as the stroke ends.
+function prep(sel) {
+  $$(sel).forEach((p) => {
+    const len = p.getTotalLength ? p.getTotalLength() : 0;
+    tl.set(p, { strokeDasharray: len, strokeDashoffset: len, opacity: 0 }, 0);
+  });
+}
+function draw(sel, t, d = 0.8) {
+  $$(sel).forEach((p) => {
+    tl.set(p, { opacity: 1 }, t + d * 0.7);
+    tl.to(p, { strokeDashoffset: 0, duration: d, ease: "power1.inOut" }, t);
+  });
+}
+// a token that flies between two absolute page positions (dx, dy are offsets from its own left/top)
+function fly(sel, t, fx, fy, tx, ty, d = 0.9, ease = "power2.inOut") {
+  tl.fromTo(sel, { x: fx, y: fy, opacity: 0, scale: 0.7 }, { x: tx, y: ty, opacity: 1, scale: 1, duration: d, ease, immediateRender: true }, t);
+}
+// sound-wave bars: each bar bounces at its own rate between t0 and t1
+function wave(sel, t0, t1) {
+  $$(sel).forEach((b, i) => {
+    const per = 0.28 + (i % 4) * 0.07;
+    const reps = Math.max(1, Math.floor((t1 - t0) / per) - 1);
+    tl.fromTo(b, { scaleY: 0.25 }, { scaleY: 1, duration: per, yoyo: true, repeat: reps, ease: "sine.inOut", transformOrigin: "50% 50%", immediateRender: false }, t0 + i * 0.03);
+  });
+}
+function blinkEl(sel, t0, t1, per = 0.5) {
+  const reps = Math.max(1, Math.floor((t1 - t0) / per) - 1);
+  tl.fromTo(sel, { opacity: 1 }, { opacity: 0.15, duration: per, yoyo: true, repeat: reps, ease: "steps(1)", immediateRender: false }, t0);
+}
+
+
+// page-space centre of an element (from offset boxes, so it ignores any running transforms)
+function ctr(sel) {
+  let el = document.querySelector(sel);
+  let x = el.offsetWidth / 2, y = el.offsetHeight / 2;
+  while (el && el.id !== "root") { x += el.offsetLeft + (el.offsetParent && el.offsetParent.id !== "root" ? el.offsetParent.clientLeft : 0); y += el.offsetTop + (el.offsetParent && el.offsetParent.id !== "root" ? el.offsetParent.clientTop : 0); el = el.offsetParent; }
+  return { x, y };
+}
+// move a cursor icon (arrow tip at ~ (0.27*size, 0.15*size) of its box) so its tip lands on the target element
+function curTo(cur, t, target, d = 0.9, dx = 0, dy = 0) {
+  const c = document.querySelector(cur), p = ctr(target), cp = ctr(cur);
+  const sz = c.offsetWidth || 54;
+  tl.to(cur, { x: p.x + dx - cp.x + 0.23 * sz, y: p.y + dy - cp.y + 0.35 * sz, duration: d, ease: "power2.inOut" }, t);
+}
+
+// move an absolutely positioned element (child of a scene section) through page points (top-left corners), one hop each
+function route(sel, t, pts, per = 0.5, ease = "power1.inOut") {
+  const el = document.querySelector(sel);
+  const bx = el.offsetLeft, by = el.offsetTop;
+  pts.forEach(([px, py], i) => tl.to(sel, { x: px - bx, y: py - by, duration: per, ease }, t + i * per));
+}
+
+// characters ------------------------------------------------------
+// put a character's bottom-centre at (cx, by) at scale s (works for any .char, whatever its base position)
+function stage(sel, cx, by, s = 1) {
+  const el = document.querySelector(sel);
+  const bx = el.offsetLeft + el.offsetWidth / 2, bby = el.offsetTop + el.offsetHeight;
+  return { x: cx - bx, y: by - bby, scale: s };
+}
+function put(sel, t, cx, by, s, d = 1.4, ease = "power2.inOut") {
+  tl.to(sel, Object.assign(stage(sel, cx, by, s), { duration: d, ease, transformOrigin: "50% 100%" }), t);
+}
+// (state must be set at the moment it is needed, in time order, or a later scene overwrites an earlier scene's start values)
+function place(sel, cx, by, s, t = 0) { tl.set(sel, Object.assign(stage(sel, cx, by, s), { transformOrigin: "50% 100%" }), t); }
+function bob(sel, t0, t1, amp = 6, period = 1.8) {
+  const reps = Math.max(1, Math.floor((t1 - t0) / (period / 2)) - 1);
+  tl.to(sel + " .inner", { y: -amp, duration: period / 2, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0);
+}
+function breathe(sel, t0, t1) {
+  const reps = Math.max(1, Math.floor((t1 - t0) / 1.6) - 1);
+  tl.to(sel + " .fx", { scaleY: 1.03, svgOrigin: D(sel).o, duration: 1.6, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0);
+}
+function wobble(sel, t, times = 3, deg = 6) { tl.to(sel + " .fx", { rotation: deg, svgOrigin: D(sel).o, duration: 0.45, yoyo: true, repeat: times * 2 - 1, ease: "sine.inOut" }, t); }
+function waveArm(sel, t, times = 3) { tl.to(sel + " .arm-r", { rotation: -55, svgOrigin: D(sel).ar, duration: 0.45, yoyo: true, repeat: times * 2 - 1, ease: "sine.inOut" }, t); }
+function armUp(sel, side, t, deg, hold) {
+  const o = D(sel)[side === "r" ? "ar" : "al"];
+  tl.to(sel + " .arm-" + side, { rotation: side === "r" ? -deg : deg, svgOrigin: o, duration: 0.6, ease: "sine.inOut" }, t);
+  tl.to(sel + " .arm-" + side, { rotation: 0, svgOrigin: o, duration: 0.6, ease: "sine.inOut" }, t + hold);
+}
+function jump(sel, t, h = 50, n = 2) { tl.to(sel + " .fx", { y: -h, duration: 0.45, yoyo: true, repeat: n * 2 - 1, ease: "sine.inOut" }, t); }
+function cheer(sel, t) { armUp(sel, "r", t, 140, 2.0); armUp(sel, "l", t, 140, 2.0); jump(sel, t + 0.2, 45, 2); }
+function nod(sel, t) { tl.to(sel + " .fx", { y: 10, duration: 0.3, yoyo: true, repeat: 3, ease: "sine.inOut" }, t); }
+function typing(sel, t0, t1) {           // both arms tap while a task is being done
+  const reps = Math.max(1, Math.floor((t1 - t0) / 0.3) - 1);
+  tl.to(sel + " .arm-r", { rotation: -20, svgOrigin: D(sel).ar, duration: 0.3, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0);
+  tl.to(sel + " .arm-l", { rotation: 20, svgOrigin: D(sel).al, duration: 0.3, yoyo: true, repeat: reps, ease: "sine.inOut" }, t0 + 0.15);
+}
+function blink(sel, t) {
+  const g = document.querySelector(sel).querySelector(".eyes") ? ".eyes" : ".eyes-n";
+  tl.to(sel + " " + g, { scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.12, yoyo: true, repeat: 1 }, t);
+}
+function wiggle(sel, t, n = 2) { tl.to(sel + " .ant", { rotation: 16, svgOrigin: "120 40", duration: 0.3, yoyo: true, repeat: n * 2 - 1, ease: "sine.inOut" }, t); }
+function mood(sel, m, t) {
+  tl.set(sel + " .m-happy", { opacity: m === "happy" ? 1 : 0 }, t);
+  tl.set(sel + " .m-sad", { opacity: m === "sad" ? 1 : 0 }, t);
+}
+function headset(sel, on, t) { tl.set(sel + " .hs", { opacity: on ? 1 : 0 }, t); }
+function talk(sel, t0, t1) {
+  tl.set(sel + " .m-n", { opacity: 0 }, t0);
+  tl.set(sel + " .m-talk", { opacity: 1 }, t0);
+  tl.fromTo(sel + " .m-talk", { scaleY: 0.3 }, { scaleY: 1.5, svgOrigin: D(sel).mo, duration: 0.24, yoyo: true, repeat: Math.max(1, Math.floor((t1 - t0) / 0.24) - 1), ease: "sine.inOut", immediateRender: false }, t0);
+  tl.set(sel + " .m-talk", { opacity: 0 }, t1);
+  tl.set(sel + " .m-n", { opacity: 1 }, t1);
+}
+function face(sel, f, t) {
+  ["n", "h", "a", "q"].forEach((x) => tl.set(sel + " .eyes-" + x, { opacity: x === f ? 1 : 0 }, t));
+  tl.set(sel + " .bulb", { fill: { n: "#c2410c", h: "#0a8a5f", a: "#d92d48", q: "#0a7fbf" }[f] }, t);
+}
+
+// ===================== captions timeline + idle life =====================
+const capIds = Object.keys(T.lines);
+capIds.forEach((id, n) => {
+  const ln = T.lines[id];
+  const t0 = ln.start, t1 = ln.start + ln.dur;
+  const nextStart = n + 1 < capIds.length ? T.lines[capIds[n + 1]].start : Infinity;
+  tl.fromTo("#cap-" + id, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.2, ease: "power1.out" }, t0 - 0.05);
+  // the caption leaves 0.3 s after its line, but never later than the next caption arrives (short gaps inside one sentence)
+  const hideAt = Math.max(t1, Math.min(t1 + 0.3, nextStart - 0.17));
+  tl.to("#cap-" + id, { opacity: 0, duration: Math.min(0.2, Math.max(0.08, nextStart - 0.05 - hideAt)) }, hideAt);
+  ln.words.forEach((w, i) => {
+    const a = t0 + w.t;
+    const b = i + 1 < ln.words.length ? t0 + ln.words[i + 1].t : t1;
+    const sel = "#cw-" + id + "-" + i;
+    tl.to(sel, { color: "#1f2140", backgroundColor: "rgba(255,201,60,0.75)", duration: 0.08 }, a);
+    tl.to(sel, { backgroundColor: "rgba(255,201,60,0)", duration: 0.15 }, Math.max(a + 0.09, b - 0.05));
+  });
+  talk("#byte", t0 + 0.02, t1 - 0.02);   // Byte narrates: his mouth moves with the voice
+});
+bob("#sam", 0.5, T.total - 1, 5, 2.0);
+bob("#byte", 0.8, T.total - 1, 5, 2.2);
+bob("#dlg", 0.6, T.total - 1, 6, 1.9);
+breathe("#sam", 0.5, T.total - 1);
+for (let t = 4; t < T.total - 2; t += 4.7) { blink("#sam", t); blink("#byte", t + 1.1); blink("#dlg", t + 2.3); }
+tl.set("#dlg", { opacity: 0 }, 0);
+fade("#badge", S("s2"), 0.8);
+
+
+      // ===================== 1 · The in-between =====================
+enter("s1");
+prep("#a1a, #a1b, #a1c");
+tl.set("#k1a, #k1b, #k1c, #k1d, #g1a, #g1b, #g1c, #mb1, #c1a, #c1b, #c1c", { opacity: 0 }, 0);
+tl.set("#s1 i.ck", { opacity: 0 }, 0);
+place("#sam", 190, 895, 0.95, 0);
+mood("#sam", "sad", L("s1b", 3.8));
+["a", "b", "c", "d"].forEach((k, i) => {
+  show("#k1" + k, W("s1a", 3) + i * 0.25, { y: 30, s: 0.8, d: 0.5 });
+  fade("#k1" + k + " i.ck", W("s1a", 4) + 0.3 + i * 0.25, 0.25); pulse("#k1" + k + " i.ck", W("s1a", 4) + 0.3 + i * 0.25, 1.3);
+});
+// the expensive part happens between the tasks
+[["#g1a", "#a1a", "s1b", 9], ["#g1b", "#a1b", "s1bx", 1], ["#g1c", "#a1c", "s1bx", 7]].forEach(([g, a, ln, w]) => { draw(a, W(ln, w) - 0.2, 0.5); show(g, W(ln, w), { y: 20, s: 0.7, d: 0.5 }); shake(g, W(ln, w) + 0.6, 6); });
+// Maestro is built for that in-between
+show("#mb1", W("s1c", 1), { y: 24, s: 0.92, d: 0.7 });
+mood("#sam", "happy", W("s1c", 3));
+["#c1a", "#c1b", "#c1c"].forEach((s, i) => { show(s, W("s1d", [3, 5, 8][i]), { y: 16, s: 0.7, d: 0.5 }); pulse(s, W("s1d", [3, 5, 8][i]) + 0.4, 1.1); });
+cheer("#sam", W("s1d", 8));
+leave("s1");
+
+      // ===================== 2 · Two products on one engine =====================
+enter("s2");
+prep("#s2l, #s2r");
+tl.set("#au2, #or2, #en2, #d2a, #d2b", { opacity: 0 }, 0);
+put("#sam", S("s2") + 0.1, 125, 1043, 1, 1.0);
+show("#en2", W("s2a", 5), { y: 30, s: 0.95, d: 0.8 });
+show("#d2a", W("s2a", 8), { s: 0.5, d: 0.5 }); show("#d2b", W("s2a", 9), { s: 0.5, d: 0.5 });
+tl.to("#en2 svg", { rotation: 360, duration: 3, ease: "power1.inOut", transformOrigin: "50% 50%" }, W("s2a", 7));
+show("#au2", W("s2b", 0), { y: 30, s: 0.9, d: 0.7 }); draw("#s2l", W("s2b", 1), 0.5);
+show("#au2a", W("s2b", 7), { s: 0.6, d: 0.4 }); show("#au2b", W("s2b", 9), { s: 0.6, d: 0.4 });
+pulse("#au2", W("s2b", 13), 1.03);
+show("#or2", W("s2c", 0), { y: 30, s: 0.9, d: 0.7 }); draw("#s2r", W("s2c", 1), 0.5);
+show("#or2a", W("s2c", 9), { s: 0.6, d: 0.4 }); show("#or2b", W("s2c", 10), { s: 0.6, d: 0.4 }); show("#or2c", W("s2c", 12), { s: 0.6, d: 0.4 });
+pulse("#or2", W("s2c", 4), 1.03);
+leave("s2");
+
+      // ===================== 3 · Maestro Orchestrate =====================
+enter("s3");
+
+tl.set("#a3a, #a3b, #a3c, #a3d, #tr3, #g3a, #g3b, #g3c, #g3d, #g3e, #g3f, #g3g, #w3a, #w3b, #w3c, #n3a, #n3b, #f3a, #a3x, #f3b, #c3a, #c3b, #c3c, #e3", { opacity: 0 }, 0);
+mood("#sam", "happy", S("s3") + 0.5);
+show("#a3a", W("s3b", 2), { y: 20, s: 0.7, d: 0.5 });
+show("#a3b", W("s3b", 4), { y: 20, s: 0.7, d: 0.5 });
+show("#a3c", W("s3b", 6), { y: 20, s: 0.7, d: 0.5 });
+show("#a3d", W("s3b", 8), { y: 20, s: 0.7, d: 0.5 });
+// the long-running instance, with waits
+show("#tr3", W("s3c", 2), { y: 24, s: 0.96, d: 0.6 });
+show("#g3a", W("s3c", 3), { s: 0.6, d: 0.4 });
+show("#g3b", W("s3c", 7), { s: 0.8, d: 0.5, origin: "0% 50%" });
+show("#g3c", W("s3c", 8) + 0.3, { s: 0.6, d: 0.4 });
+show("#g3d", W("s3c", 8) + 0.5, { s: 0.8, d: 0.5, origin: "0% 50%" });
+show("#g3e", W("s3c", 10) + 0.1, { s: 0.6, d: 0.4 });
+show("#g3f", W("s3c", 10) + 0.3, { s: 0.8, d: 0.5, origin: "0% 50%" });
+show("#w3a", W("s3c", 16), { y: 12, s: 0.8, d: 0.4 });
+show("#w3b", W("s3c", 18), { y: 12, s: 0.8, d: 0.4 });
+show("#w3c", W("s3c", 21), { y: 12, s: 0.8, d: 0.4 });
+// no cap, survives failures
+show("#n3a", W("s3d", 3), { y: 20, s: 0.7, d: 0.5 });
+show("#n3b", W("s3d", 7), { y: 20, s: 0.7, d: 0.5 });
+show("#f3a", W("s3d", 11), { y: 20, s: 0.7, d: 0.5 }); shake("#f3a", W("s3d", 11) + 0.5, 6);
+fade("#a3x", W("s3d", 13), 0.4);
+show("#f3b", W("s3d", 13) + 0.2, { y: 20, s: 0.7, d: 0.5 });
+show("#g3g", W("s3d", 13) + 0.5, { s: 0.6, d: 0.5 });
+// pick a canvas
+show("#c3a", W("s3e", 4), { y: 30, s: 0.85, d: 0.6 });
+show("#c3b", W("s3e", 5), { y: 30, s: 0.85, d: 0.6 });
+show("#c3c", W("s3e", 7), { y: 30, s: 0.85, d: 0.6 });
+show("#e3", W("s3f", 6), { y: 20, s: 0.95, d: 0.7 });
+pulse("#e3", W("s3f", 11), 1.04);
+leave("s3");
+
+      // ===================== 4 · BPMN =====================
+enter("s4");
+prep("#p4a, #p4b, #p4c, #p4d, #p4e, #p4f, #p4g");
+tl.set("#e4s, #t4a, #g4, #t4b, #t4c, #t4d, #e4e, #d4, #v4, #b4, #i4, #u4, #x4, #y4, #r4", { opacity: 0 }, 0);
+// the diagram builds while it is being signed off
+show("#e4s", S("s4") + 0.8, { s: 0.5, d: 0.5 });
+show("#t4a", W("s4a", 2), { y: 20, s: 0.8, d: 0.5 }); draw("#p4a", W("s4a", 2) - 0.1, 0.4);
+show("#g4", W("s4a", 4), { s: 0.5, d: 0.5 }); draw("#p4b", W("s4a", 4) - 0.1, 0.4);
+show("#t4b", W("s4a", 5), { y: 20, s: 0.8, d: 0.5 }); draw("#p4c", W("s4a", 5) - 0.1, 0.5);
+show("#t4c", W("s4a", 6), { y: 20, s: 0.8, d: 0.5 }); draw("#p4d", W("s4a", 6) - 0.1, 0.5);
+show("#b4", W("s4a", 7), { y: 20, s: 0.7, d: 0.5 }); pulse("#b4", W("s4a", 7) + 0.6, 1.08);
+show("#i4", W("s4a", 9), { y: 20, s: 0.7, d: 0.5 }); pulse("#i4", W("s4a", 9) + 0.6, 1.08);
+// BPMN 2.0 extended with UiPath tasks
+show("#u4", W("s4b", 4), { y: 20, s: 0.7, d: 0.5 });
+pulse("#t4b", W("s4b", 11), 1.08); pulse("#t4a", W("s4b", 12), 1.08);
+show("#t4d", W("s4b", 14), { y: 20, s: 0.8, d: 0.5 }); draw("#p4e", W("s4b", 14) - 0.2, 0.5); draw("#p4f", W("s4b", 14) - 0.2, 0.5);
+show("#e4e", W("s4b", 14) + 0.9, { s: 0.5, d: 0.5 }); draw("#p4g", W("s4b", 14) + 0.7, 0.4);
+// DMN decision tables
+show("#d4", W("s4c", 4), { y: 30, s: 0.85, d: 0.7 });
+show("#v4", W("s4c", 7), { y: 16, s: 0.7, d: 0.5 }); pulse("#v4", W("s4c", 7) + 0.6, 1.08);
+// the signed-off diagram is the one that runs
+show("#x4", W("s4d", 7), { y: 16, s: 0.8, d: 0.5 });
+const rp = [[193, 417], [375, 417], [573, 417], [805, 331], [1100, 331], [1100, 417], [1322, 417]];
+tl.set("#r4", { x: rp[0][0], y: rp[0][1], opacity: 1 }, W("s4d", 11));
+for (let i = 1; i < rp.length; i++) tl.to("#r4", { x: rp[i][0], y: rp[i][1], duration: 0.45, ease: "power1.inOut" }, W("s4d", 11) + 0.1 + (i - 1) * 0.5);
+tl.to("#r4", { opacity: 0, duration: 0.3 }, W("s4d", 11) + 3.3);
+show("#y4", W("s4d", 12), { y: 16, s: 0.8, d: 0.5 }); shake("#y4", W("s4d", 12) + 0.6, 6);
+leave("s4");
+
+      // ===================== 5 · Case =====================
+enter("s5");
+prep("#q5a, #q5b, #q5c");
+tl.set("#k5a, #k5b, #k5c, #k5d, #u5a, #u5b, #u5c, #u5d, #o5a, #o5b, #o5c, #m5, #h5", { opacity: 0 }, 0);
+tl.set("#s5 .col .fl, #s5 .col .sla, #s5 .col .sm", { opacity: 0 }, 0);
+["a", "b", "c", "d"].forEach((k, i) => show("#k5" + k, W("s5a", [11, 12, 13, 15][i]), { y: 16, s: 0.7, d: 0.5 }));
+// stages, milestones, SLAs
+["a", "b", "c", "d"].forEach((k, i) => show("#u5" + k, W("s5b", 1) + i * 0.3, { y: 30, s: 0.88, d: 0.6 }));
+["a", "b", "c", "d"].forEach((k, i) => fade("#u5" + k + " .fl", W("s5b", 3) + i * 0.2, 0.4));
+["a", "b", "c", "d"].forEach((k, i) => { fade("#u5" + k + " .sla", W("s5b", 5) + i * 0.2, 0.4); pulse("#u5" + k + " .sla", W("s5b", 5) + 0.3 + i * 0.2, 1.15); });
+// events, AI decisions and human judgment decide the order
+draw("#q5a", W("s5c", 1), 0.9); show("#o5a", W("s5c", 1), { y: 16, s: 0.7, d: 0.5 });
+draw("#q5b", W("s5c", 2), 0.9); show("#o5b", W("s5c", 2), { y: 16, s: 0.7, d: 0.5 });
+draw("#q5c", W("s5c", 5), 0.9); show("#o5c", W("s5c", 5), { y: 16, s: 0.7, d: 0.5 });
+// Case Manager governs; Stage Managers drive each phase; people stay in the loop
+show("#m5", W("s5d", 1), { y: 24, s: 0.95, d: 0.7 });
+["a", "b", "c", "d"].forEach((k, i) => { fade("#u5" + k + " .sm", W("s5d", 7) + i * 0.25, 0.4); pulse("#u5" + k + " .sm", W("s5d", 7) + 0.3 + i * 0.25, 1.25); });
+show("#h5", W("s5dx", 1), { y: 20, s: 0.7, d: 0.6 }); pulse("#h5", W("s5dx", 7), 1.08);
+leave("s5");
+
+      // ===================== 6 · Flow =====================
+enter("s6");
+prep("#m6a, #m6b, #m6c, #m6d, #m6e, #z6a, #z6b");
+tl.set("#w6, #n6a, #n6b, #n6c, #n6d, #n6e, #p6, #ca6, #rf6, #cc6, #fl6, #vs6, #gt6", { opacity: 0 }, 0);
+show("#w6", W("s6a", 0) + 0.2, { y: 30, s: 0.95, d: 0.8 });
+// agents, APIs, data, documents, human steps: all nodes on one canvas
+[["a", 0], ["b", 1], ["c", 2], ["d", 3], ["e", 5]].forEach(([k, w]) => show("#n6" + k, W("s6b", w), { y: 18, s: 0.7, d: 0.5 }));
+draw("#m6a", W("s6b", 1) - 0.3, 0.4); draw("#m6b", W("s6b", 2) - 0.3, 0.4); draw("#m6c", W("s6b", 3) - 0.3, 0.6); draw("#m6d", W("s6b", 5) - 0.3, 0.4);
+// describe it and a coding agent builds it
+show("#p6", W("s6c", 0), { y: 24, s: 0.92, d: 0.6 });
+typeText("#pt6", "Build a refund flow. An agent checks the order, calls the payments API, a person approves.", W("s6c", 0) + 0.3, 3.0);
+draw("#m6e", W("s6c", 6), 0.5);
+show("#ca6", W("s6c", 6), { y: 18, s: 0.7, d: 0.5 }); pulse("#w6", W("s6c", 7) + 0.4, 1.02);
+show("#rf6", W("s6c", 11), { y: 18, s: 0.7, d: 0.5 });
+// same flow file: cloud canvas or VS Code, lives in Git
+show("#fl6", W("s6d", 4), { y: 24, s: 0.85, d: 0.6 });
+show("#cc6", W("s6d", 7), { y: 18, s: 0.7, d: 0.5 }); draw("#z6a", W("s6d", 7) + 0.2, 0.5);
+show("#vs6", W("s6d", 11), { y: 18, s: 0.7, d: 0.5 }); draw("#z6b", W("s6d", 11) + 0.2, 0.5);
+show("#gt6", W("s6d", 15), { y: 18, s: 0.7, d: 0.5 });
+leave("s6");
+
+      // ===================== 7 · Control =====================
+enter("s7");
+prep("#s7l");
+tl.set("#t7, #r7a, #r7b, #r7c, #r7d, #c7a, #c7b, #c7c, #c7d, #c7e, #c7f, #c7g, #h7, #d7a, #d7b, #d7c, #d7d, #d7e, #l7, #p7a, #p7b, #p7c, #p7d", { opacity: 0 }, 0);
+show("#t7", W("s7a", 7) - 0.5, { y: 24, s: 0.96, d: 0.7 });
+["a", "b", "c", "d"].forEach((k, i) => show("#r7" + k, W("s7a", 9) + i * 0.15, { y: 12, s: 0.96, d: 0.4 }));
+// the controls, one per word
+[["a", 0], ["b", 1], ["c", 2], ["d", 3], ["e", 4], ["f", 6]].forEach(([k, w]) => { show("#c7" + k, W("s7b", w), { y: 14, s: 0.7, d: 0.4 }); pulse("#c7" + k, W("s7b", w) + 0.35, 1.1); });
+tl.to("#r7c", { backgroundColor: "#ffe9ec", duration: 0.3 }, W("s7b", 10));
+tl.set("#r7c .ck i", { opacity: 1 }, W("s7b", 10));
+show("#c7g", W("s7b", 10), { y: 14, s: 0.7, d: 0.4 });
+["a", "b", "d"].forEach((k, i) => tl.set("#r7" + k + " .ck i", { opacity: 1 }, W("s7b", 16) + i * 0.15));
+tl.to("#r7a, #r7b, #r7d", { backgroundColor: "#ffe9ec", duration: 0.3 }, W("s7b", 16));
+// every step and variable recorded
+show("#h7", W("s7c", 3), { y: 20, s: 0.96, d: 0.6 });
+draw("#s7l", W("s7c", 4), 1.6);
+["a", "b", "c", "d", "e"].forEach((k, i) => show("#d7" + k, W("s7c", 5) + i * 0.3, { s: 0.3, d: 0.4 }));
+fade("#l7", W("s7c", 5) + 0.3, 0.6);
+show("#p7a", W("s7cx", 1), { y: 14, s: 0.7, d: 0.4 });
+show("#p7b", W("s7cx", 2), { y: 14, s: 0.7, d: 0.4 });
+show("#p7c", W("s7cx", 6), { y: 14, s: 0.7, d: 0.4 }); pulse("#p7c", W("s7cx", 8), 1.08);
+show("#p7d", W("s7cx", 13), { y: 14, s: 0.7, d: 0.4 });
+leave("s7");
+
+      // ===================== 8 · Maestro Automate =====================
+enter("s8");
+prep("#a8");
+tl.set("#gn8a, #gn8b, #gn8c, #gn8d, #gy8a, #gy8b, #gy8c, #x8a, #x8b, #x8c, #x8d, #x8e, #y8a, #y8b, #y8c, #y8d, #m8, #ed8, #cl8a, #cl8b, #cl8c, #tp8, #tb8, #ea8, #lv8, #ex8a, #ex8b, #ex8c, #ex8d", { opacity: 0 }, 0);
+tl.set("#pr8, #bk8", { opacity: 0 }, 0);
+// the idea: an event comes in, agents reason, APIs act, it finishes within minutes or hours
+show("#gn8a", W("s8b", 1), { y: 16, s: 0.7, d: 0.5 }); fade("#gy8a", W("s8b", 3), 0.4);
+show("#gn8b", W("s8b", 4), { y: 16, s: 0.7, d: 0.5 }); fade("#gy8b", W("s8b", 5), 0.4);
+show("#gn8c", W("s8b", 6), { y: 16, s: 0.7, d: 0.5 }); fade("#gy8c", W("s8b", 9), 0.4);
+show("#gn8d", W("s8b", 11), { y: 16, s: 0.7, d: 0.5 }); pulse("#gn8d", W("s8b", 13), 1.08);
+hide("#gn8a, #gn8b, #gn8c, #gn8d, #gy8a, #gy8b, #gy8c", LE("s8b", 0.4), 0.5);
+// order intake end to end
+show("#x8a", W("s8c", 4), { y: 16, s: 0.7, d: 0.5 }); fade("#y8a", W("s8c", 8), 0.4);
+show("#x8b", W("s8c", 9), { y: 16, s: 0.7, d: 0.5 }); fade("#y8b", W("s8cx", 0), 0.4);
+show("#x8c", W("s8cx", 1), { y: 16, s: 0.7, d: 0.5 }); fade("#y8c", W("s8cx", 2), 0.4);
+show("#x8d", W("s8cx", 3), { y: 16, s: 0.7, d: 0.5 }); fade("#y8d", W("s8cx", 6), 0.4);
+show("#x8e", W("s8cx", 7), { y: 16, s: 0.7, d: 0.5 });
+show("#m8", W("s8cx", 12), { y: 16, s: 0.7, d: 0.5 }); pulse("#m8", W("s8cx", 12) + 0.6, 1.1);
+// build in your editor with a coding agent
+show("#ed8", W("s8d", 4), { y: 30, s: 0.92, d: 0.7 });
+draw("#a8", W("s8d", 10) - 0.2, 0.5);
+show("#cl8a", W("s8d", 10), { y: 14, s: 0.7, d: 0.4 });
+show("#cl8b", W("s8d", 12), { y: 14, s: 0.7, d: 0.4 });
+show("#cl8c", W("s8d", 14), { y: 14, s: 0.7, d: 0.4 });
+// probes, breakpoints, evaluation
+fade("#pr8", W("s8e", 3), 0.4); show("#tp8", W("s8e", 3), { s: 0.6, d: 0.4 });
+fade("#bk8", W("s8e", 5), 0.4); show("#tb8", W("s8e", 5), { s: 0.6, d: 0.4 });
+show("#ea8", W("s8e", 7), { y: 14, s: 0.7, d: 0.5 });
+show("#lv8", W("s8e", 12), { y: 14, s: 0.7, d: 0.5 }); pulse("#lv8", W("s8e", 12) + 0.5, 1.1);
+// existing automation as nodes
+show("#ex8a", W("s8f", 2), { y: 14, s: 0.7, d: 0.4 });
+show("#ex8b", W("s8f", 3), { y: 14, s: 0.7, d: 0.4 });
+show("#ex8c", W("s8f", 6), { y: 14, s: 0.7, d: 0.4 });
+show("#ex8d", W("s8f", 10), { y: 14, s: 0.7, d: 0.5 }); pulse("#ex8d", W("s8f", 12), 1.06);
+leave("s8");
+
+      // ===================== 9 · Choosing =====================
+enter("s9");
+prep("#cv9");
+tl.set("#au9, #or9, #au9a, #au9b, #or9a, #or9b, #eo9, #cn9, #sm9, #nr9", { opacity: 0 }, 0);
+show("#au9", W("s9b", 1), { y: 30, s: 0.9, d: 0.7 });
+show("#au9a", W("s9b", 6), { y: 14, s: 0.7, d: 0.4 }); show("#au9b", W("s9b", 11), { y: 14, s: 0.7, d: 0.4 });
+show("#or9", W("s9c", 1), { y: 30, s: 0.9, d: 0.7 });
+show("#or9a", W("s9c", 6), { y: 14, s: 0.7, d: 0.4 }); show("#or9b", W("s9c", 10), { y: 14, s: 0.7, d: 0.4 });
+show("#eo9", W("s9d", 3), { y: 14, s: 0.7, d: 0.5 }); shake("#eo9", W("s9d", 3) + 0.6, 6);
+draw("#cv9", W("s9d", 7), 1.4);
+show("#cn9", W("s9d", 9), { y: 14, s: 0.7, d: 0.5 });
+show("#sm9", W("s9dx", 0), { y: 14, s: 0.7, d: 0.5 }); pulse("#sm9", W("s9dx", 2), 1.08);
+show("#nr9", W("s9dx", 6), { y: 14, s: 0.7, d: 0.5 });
+leave("s9");
+
+      // ===================== 10 · Close =====================
+enter("s10");
+prep("#ar10");
+tl.set("#st10a, #st10b, #bo10, #vs10, #sw10, #cb10, #cc10, #cf10, #bn10", { opacity: 0 }, 0);
+show("#st10a", W("s10a", 2), { y: 30, s: 0.92, d: 0.7 });
+show("#bo10", W("s10a", 6), { y: 14, s: 0.7, d: 0.5 });
+show("#vs10", W("s10a", 9), { y: 14, s: 0.7, d: 0.4 }); show("#sw10", W("s10a", 11), { y: 14, s: 0.7, d: 0.4 });
+show("#st10b", W("s10a", 14) - 0.6, { y: 30, s: 0.92, d: 0.7 }); draw("#ar10", W("s10a", 14) - 0.6, 0.4);
+show("#cb10", W("s10a", 15), { y: 14, s: 0.7, d: 0.4 }); show("#cc10", W("s10a", 16), { y: 14, s: 0.7, d: 0.4 }); show("#cf10", W("s10a", 18), { y: 14, s: 0.7, d: 0.4 });
+show("#bn10", W("s10b", 0), { y: 30, s: 0.92, d: 0.9 });
+mood("#sam", "happy", W("s10b", 0));
+cheer("#sam", W("s10b", 7));
+leave("s10");
+
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

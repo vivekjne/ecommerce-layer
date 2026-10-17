@@ -1,0 +1,240 @@
+{
+  "_notes": "One sentence per line. [shown|spoken]. 'gap' = silence before the next line. Source: uipath.com product pages for Maestro Orchestrate, Maestro Automate, Maestro BPMN, Maestro Case and Maestro Flow (read 2026-10-17); every statement is a paraphrase of those pages.",
+  "scenes": [
+    {
+      "id": "s1",
+      "lines": [
+        {
+          "id": "s1a",
+          "text": "Most companies have automated tasks."
+        },
+        {
+          "id": "s1b",
+          "text": "But the expensive part happens between the tasks: a claim waiting on an approval,",
+          "gap": 0.15
+        },
+        {
+          "id": "s1bx",
+          "text": "an invoice waiting on a person, an agent handing off to a robot."
+        },
+        {
+          "id": "s1c",
+          "text": "UiPath Maestro is built for that in-between."
+        },
+        {
+          "id": "s1d",
+          "text": "In five minutes: two products, one engine, and how to choose."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "lines": [
+        {
+          "id": "s2a",
+          "text": "UiPath Maestro has two products on one engine: durable, stateful execution built for the enterprise."
+        },
+        {
+          "id": "s2b",
+          "text": "Maestro Automate is for short-running workflows of AI agents and APIs, finished within minutes or hours."
+        },
+        {
+          "id": "s2c",
+          "text": "Maestro Orchestrate is for long-running business processes that coordinate agents, robots, and people."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "lines": [
+        {
+          "id": "s3a",
+          "text": "Start with Orchestrate."
+        },
+        {
+          "id": "s3b",
+          "text": "It coordinates AI agents, robots, and people across the systems you already run."
+        },
+        {
+          "id": "s3c",
+          "text": "An instance can hold its state for hours, days, or weeks while it waits on a person, a system, or an event."
+        },
+        {
+          "id": "s3d",
+          "text": "There is no cap on duration or concurrency, and it survives failures and redeployments."
+        },
+        {
+          "id": "s3e",
+          "text": "You pick the canvas: [BPMN|Bee Pee Em En], Case, or Flow."
+        },
+        {
+          "id": "s3f",
+          "text": "The canvas changes how you build. What runs underneath stays the same."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "lines": [
+        {
+          "id": "s4a",
+          "text": "Maestro [BPMN|Bee Pee Em En] is for a process that business and IT both sign off on."
+        },
+        {
+          "id": "s4b",
+          "text": "You model it in [BPMN|Bee Pee Em En,] 2.0, extended with UiPath tasks for robots, agents, and sub-processes."
+        },
+        {
+          "id": "s4c",
+          "text": "Business rules live in [DMN|D M N] decision tables, versioned alongside the model."
+        },
+        {
+          "id": "s4d",
+          "text": "And the diagram you sign off on is the one that runs. No re-implementation step."
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "lines": [
+        {
+          "id": "s5a",
+          "text": "Maestro Case is for work that doesn't follow a straight line: claims, loans, disputes, and referrals."
+        },
+        {
+          "id": "s5b",
+          "text": "You model stages, milestones, and [SLAs|S L As] up front."
+        },
+        {
+          "id": "s5c",
+          "text": "Then events, AI decisions, and human judgment decide the order."
+        },
+        {
+          "id": "s5d",
+          "text": "A Case Manager agent governs the lifecycle, Stage Manager agents drive each phase,",
+          "gap": 0.15
+        },
+        {
+          "id": "s5dx",
+          "text": "and people stay in the loop where judgment matters."
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "lines": [
+        {
+          "id": "s6a",
+          "text": "Maestro Flow is the developer-first canvas."
+        },
+        {
+          "id": "s6b",
+          "text": "Agents, APIs, data, documents, and human steps are all nodes on one canvas."
+        },
+        {
+          "id": "s6c",
+          "text": "Describe what you want and a coding agent builds it, or refine it visually."
+        },
+        {
+          "id": "s6d",
+          "text": "The same flow file opens in the cloud canvas or in [VS Code|V S Code], and lives in Git."
+        }
+      ]
+    },
+    {
+      "id": "s7",
+      "lines": [
+        {
+          "id": "s7a",
+          "text": "Whichever canvas you pick, you stay in control of live instances."
+        },
+        {
+          "id": "s7b",
+          "text": "Retry, cancel, pause, resume, migrate, or go to a step, one at a time or in bulk."
+        },
+        {
+          "id": "s7c",
+          "text": "Every step and variable is recorded,",
+          "gap": 0.15
+        },
+        {
+          "id": "s7cx",
+          "text": "and policy, access control, and a tamper-evident audit trail come from the UiPath Platform."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "lines": [
+        {
+          "id": "s8a",
+          "text": "Now Maestro Automate."
+        },
+        {
+          "id": "s8b",
+          "text": "An event comes in, agents reason, APIs act, and the workflow finishes within minutes or hours."
+        },
+        {
+          "id": "s8c",
+          "text": "Take order intake: an order arrives by webhook, an agent validates it,",
+          "gap": 0.15
+        },
+        {
+          "id": "s8cx",
+          "text": "checks stock and credit over API, and creates the order in the ERP."
+        },
+        {
+          "id": "s8d",
+          "text": "Build it in your editor with a coding agent like Claude Code, Codex, or Copilot."
+        },
+        {
+          "id": "s8e",
+          "text": "Debug it with probes and breakpoints, and evaluate it before it goes live."
+        },
+        {
+          "id": "s8f",
+          "text": "Your existing robots, API workflows, and agents are called as nodes, not rebuilt."
+        }
+      ]
+    },
+    {
+      "id": "s9",
+      "lines": [
+        {
+          "id": "s9a",
+          "text": "So which one?"
+        },
+        {
+          "id": "s9b",
+          "text": "Choose Automate when the workflow is short-running and the builder wants speed."
+        },
+        {
+          "id": "s9c",
+          "text": "Choose Orchestrate when the process runs long and carries the business."
+        },
+        {
+          "id": "s9d",
+          "text": "It is not either-or. A workflow that outgrows Automate converts to Orchestrate:",
+          "gap": 0.15
+        },
+        {
+          "id": "s9dx",
+          "text": "same canvas, same file, nothing to rebuild."
+        }
+      ]
+    },
+    {
+      "id": "s10",
+      "lines": [
+        {
+          "id": "s10a",
+          "text": "To start, create a project under Business Orchestration in [VS Code|V S Code] or Studio Web, and pick [BPMN|Bee Pee Em En], Case, or Flow."
+        },
+        {
+          "id": "s10b",
+          "text": "Orchestrate the whole process, not just the tasks."
+        }
+      ]
+    }
+  ]
+}
