@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+/*#include style.css*/
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute">
+      <defs>
+        <marker id="ahInk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1f2140" /></marker>
+        <marker id="ahTeal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0b7a85" /></marker>
+        <marker id="ahRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d92d48" /></marker>
+        <marker id="ahMint" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0a8a5f" /></marker>
+      </defs>
+    </svg>
+
+    <div id="root" data-composition-id="main" data-start="0" data-duration="{{total}}" data-width="1920" data-height="1080">
+      <audio id="vo" src="assets/voiceover.mp3" data-start="0" data-duration="{{total}}" data-volume="1"></audio>
+      <audio id="bgm" src="assets/music.mp3" data-start="0" data-duration="{{total}}" data-volume="1" data-fade-in="2" data-fade-out="4"></audio>
+
+      <div id="badge">UiPath Agent Builder</div>
+
+      <!--#include scenes/s1.html-->
+      <!--#include scenes/s2.html-->
+      <!--#include scenes/s3.html-->
+      <!--#include scenes/s4.html-->
+      <!--#include scenes/s5.html-->
+      <!--#include scenes/s6.html-->
+      <!--#include scenes/s7.html-->
+      <!--#include scenes/s8.html-->
+      <!--#include scenes/s9.html-->
+      <!--#include scenes/s10.html-->
+      <!--#include scenes/s11.html-->
+      <!--#include scenes/s12.html-->
+      <!--#include scenes/s13.html-->
+
+      <div id="captions"></div>
+
+      <div class="char" id="sam" data-kind="sam"></div>
+      <div class="char" id="byte" data-kind="byte"></div>
+      <div class="char" id="dlg" data-kind="dlg"></div>
+    </div>
+
+    <script>
+      const T = /*__TIMING__*/ null;
+      /*#include js/icons.js*/
+      /*#include js/chars.js*/
+      /*#include js/helpers.js*/
+
+      /*#include scenes/s1.js*/
+      /*#include scenes/s2.js*/
+      /*#include scenes/s3.js*/
+      /*#include scenes/s4.js*/
+      /*#include scenes/s5.js*/
+      /*#include scenes/s6.js*/
+      /*#include scenes/s7.js*/
+      /*#include scenes/s8.js*/
+      /*#include scenes/s9.js*/
+      /*#include scenes/s10.js*/
+      /*#include scenes/s11.js*/
+      /*#include scenes/s12.js*/
+      /*#include scenes/s13.js*/
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

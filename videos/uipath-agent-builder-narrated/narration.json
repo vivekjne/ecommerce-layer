@@ -1,0 +1,812 @@
+{
+  "_notes": "Narration is the user's supplied script (emojis dropped); only change is that long sentences are split at a comma ('gap' 0.15) so captions stay within two lines. [shown|spoken] respells for the voice only.",
+  "scenes": [
+    {
+      "id": "s1",
+      "lines": [
+        {
+          "id": "s1a",
+          "text": "Hi everyone, welcome back to Build with [Treesa|Tree suh]!"
+        },
+        {
+          "id": "s1b",
+          "text": "If you are starting with UiPath Agent Builder, concepts like prompts, tools, context, memory,",
+          "gap": 0.15
+        },
+        {
+          "id": "s1bx",
+          "text": "escalations, guardrails and evaluations can feel like a lot at first."
+        },
+        {
+          "id": "s1c",
+          "text": "So in this video, I'm going to simplify the complete Agent Builder journey."
+        },
+        {
+          "id": "s1d",
+          "text": "We'll start with the basic building blocks of an agent, then see how we give it data,",
+          "gap": 0.15
+        },
+        {
+          "id": "s1dx",
+          "text": "instructions, knowledge and tools, and finally how we debug, evaluate and deploy it."
+        },
+        {
+          "id": "s1e",
+          "text": "By the end of this video, you should have a clear mental model of how an agent is actually built in UiPath."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "lines": [
+        {
+          "id": "s2a",
+          "text": "Let's start with the big picture."
+        },
+        {
+          "id": "s2b",
+          "text": "An agent needs instructions, knowledge, capabilities and a way to involve humans when required."
+        },
+        {
+          "id": "s2c",
+          "text": "First, we have the Prompt."
+        },
+        {
+          "id": "s2d",
+          "text": "The prompt defines the agent's role, goal, instructions, constraints and expected behaviour."
+        },
+        {
+          "id": "s2e",
+          "text": "Next are Tools."
+        },
+        {
+          "id": "s2f",
+          "text": "Tools allow the agent to interact with the outside world."
+        },
+        {
+          "id": "s2g",
+          "text": "Instead of only generating text, the agent can call an API, run an automation,",
+          "gap": 0.15
+        },
+        {
+          "id": "s2gx",
+          "text": "execute an activity, invoke another agent or connect through an [MCP|M C P] server."
+        },
+        {
+          "id": "s2h",
+          "text": "Then we have Context."
+        },
+        {
+          "id": "s2i",
+          "text": "Context gives the agent access to relevant enterprise knowledge while it is reasoning."
+        },
+        {
+          "id": "s2j",
+          "text": "And we have Escalations,",
+          "gap": 0.15
+        },
+        {
+          "id": "s2jx",
+          "text": "which allow the agent to involve a human when approval, review or assistance is required."
+        },
+        {
+          "id": "s2k",
+          "text": "You'll also see Memory in this handbook."
+        },
+        {
+          "id": "s2l",
+          "text": "Memory allows the agent to learn from previous executions and reuse relevant past experience in future runs."
+        },
+        {
+          "id": "s2m",
+          "text": "So a simple mental model is:"
+        },
+        {
+          "id": "s2n",
+          "text": "Prompt tells the agent what to do."
+        },
+        {
+          "id": "s2o",
+          "text": "Context tells it what it needs to know."
+        },
+        {
+          "id": "s2p",
+          "text": "Tools give it the ability to take action."
+        },
+        {
+          "id": "s2q",
+          "text": "Memory helps it learn from previous experiences."
+        },
+        {
+          "id": "s2r",
+          "text": "And escalations tell it when to involve a human."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "lines": [
+        {
+          "id": "s3a",
+          "text": "Now, where do we actually build all of this?"
+        },
+        {
+          "id": "s3b",
+          "text": "UiPath Agent Builder gives us two ways to work with an agent: Form View and Canvas View."
+        },
+        {
+          "id": "s3c",
+          "text": "Form View gives us a structured configuration experience."
+        },
+        {
+          "id": "s3d",
+          "text": "Canvas View gives us a visual, node-based representation of the agent."
+        },
+        {
+          "id": "s3e",
+          "text": "The important thing to understand is that these are not two different agents."
+        },
+        {
+          "id": "s3f",
+          "text": "They represent the same underlying agent definition."
+        },
+        {
+          "id": "s3g",
+          "text": "If you change something in one view, it remains synchronized with the other."
+        },
+        {
+          "id": "s3h",
+          "text": "Inside the workspace, we also have areas such as Project Explorer, Data Manager, Errors,",
+          "gap": 0.15
+        },
+        {
+          "id": "s3hx",
+          "text": "Properties, Development options and Deployment Configuration."
+        },
+        {
+          "id": "s3i",
+          "text": "At the bottom, we have some very useful capabilities that we'll come back to later:"
+        },
+        {
+          "id": "s3j",
+          "text": "Execution Trail, History and Evaluations."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "lines": [
+        {
+          "id": "s4a",
+          "text": "Before making the agent intelligent, we should first define its contract."
+        },
+        {
+          "id": "s4b",
+          "text": "What information does the agent receive?"
+        },
+        {
+          "id": "s4c",
+          "text": "And what information should it return?"
+        },
+        {
+          "id": "s4d",
+          "text": "That is where Data Manager comes in."
+        },
+        {
+          "id": "s4e",
+          "text": "Imagine we are creating an IT support agent."
+        },
+        {
+          "id": "s4f",
+          "text": "Inputs could include: a customer [ID|I D], a ticket description, a priority, or some document text."
+        },
+        {
+          "id": "s4g",
+          "text": "The outputs might be: a classification, a summary, a recommended action, or a final resolution."
+        },
+        {
+          "id": "s4h",
+          "text": "So the flow becomes: application or workflow, to input arguments, to the agent,",
+          "gap": 0.15
+        },
+        {
+          "id": "s4hx",
+          "text": "to output arguments, and finally to the next application or process."
+        },
+        {
+          "id": "s4i",
+          "text": "This is important because an agent shouldn't just return random free-form text",
+          "gap": 0.15
+        },
+        {
+          "id": "s4ix",
+          "text": "when another system needs to consume the result."
+        },
+        {
+          "id": "s4j",
+          "text": "Clearly defined inputs and outputs make the agent much easier to integrate into real automation."
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "lines": [
+        {
+          "id": "s5a",
+          "text": "Now we come to one of the most important parts: Prompts."
+        },
+        {
+          "id": "s5b",
+          "text": "Think of the system prompt as the operating instructions for your agent."
+        },
+        {
+          "id": "s5c",
+          "text": "It should explain:"
+        },
+        {
+          "id": "s5d",
+          "text": "Who are you? What are you trying to achieve? What constraints should you follow?"
+        },
+        {
+          "id": "s5e",
+          "text": "When should you use a tool? When should you retrieve context? When should you escalate to a human?"
+        },
+        {
+          "id": "s5f",
+          "text": "And what should the final response look like?"
+        },
+        {
+          "id": "s5g",
+          "text": "Then we have the user prompt, which provides the actual task for that particular execution."
+        },
+        {
+          "id": "s5h",
+          "text": "For example: Analyse this incident and recommend the next action."
+        },
+        {
+          "id": "s5i",
+          "text": "Agent Builder also allows us to reference different capabilities from the prompt."
+        },
+        {
+          "id": "s5j",
+          "text": "So instead of writing isolated instructions, we can connect our prompt to inputs,",
+          "gap": 0.15
+        },
+        {
+          "id": "s5jx",
+          "text": "tools, context, memory, escalations and outputs."
+        },
+        {
+          "id": "s5k",
+          "text": "And this is an important prompt-engineering principle for agents:"
+        },
+        {
+          "id": "s5l",
+          "text": "Don't only tell the agent what it should achieve."
+        },
+        {
+          "id": "s5m",
+          "text": "Tell it when and how it should use the capabilities available to it."
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "lines": [
+        {
+          "id": "s6a",
+          "text": "This is where an AI agent becomes much more useful than a normal chatbot."
+        },
+        {
+          "id": "s6b",
+          "text": "Without tools, the model can reason and generate an answer."
+        },
+        {
+          "id": "s6c",
+          "text": "With tools, it can actually do something."
+        },
+        {
+          "id": "s6d",
+          "text": "In UiPath, tools can include Integration Service activities, published automations, APIs,",
+          "gap": 0.15
+        },
+        {
+          "id": "s6dx",
+          "text": "custom integrations, other agents, functions, [MCP|M C P] servers and more."
+        },
+        {
+          "id": "s6e",
+          "text": "The basic tool execution loop is simple."
+        },
+        {
+          "id": "s6f",
+          "text": "First, the agent decides which tool is required."
+        },
+        {
+          "id": "s6g",
+          "text": "Then it prepares the inputs."
+        },
+        {
+          "id": "s6h",
+          "text": "It executes the tool."
+        },
+        {
+          "id": "s6i",
+          "text": "It reads the result."
+        },
+        {
+          "id": "s6j",
+          "text": "And based on that result, it decides what to do next."
+        },
+        {
+          "id": "s6k",
+          "text": "For example, imagine an employee asks: Can you check the status of my laptop request?"
+        },
+        {
+          "id": "s6l",
+          "text": "The agent may decide that it needs to call an asset-management API."
+        },
+        {
+          "id": "s6m",
+          "text": "It passes the employee [ID|I D]."
+        },
+        {
+          "id": "s6n",
+          "text": "The tool returns the request status."
+        },
+        {
+          "id": "s6o",
+          "text": "The agent interprets that result and then responds to the employee."
+        },
+        {
+          "id": "s6p",
+          "text": "One thing people often underestimate here is the tool description."
+        },
+        {
+          "id": "s6q",
+          "text": "A tool description isn't only documentation for developers."
+        },
+        {
+          "id": "s6r",
+          "text": "It helps the agent understand what the tool does and when it should use it."
+        },
+        {
+          "id": "s6s",
+          "text": "So clear tool names, descriptions, inputs and outputs matter a lot."
+        }
+      ]
+    },
+    {
+      "id": "s7",
+      "lines": [
+        {
+          "id": "s7a",
+          "text": "Tools help the agent act."
+        },
+        {
+          "id": "s7b",
+          "text": "Context helps the agent know."
+        },
+        {
+          "id": "s7c",
+          "text": "Imagine an [HR|H R] agent answering questions about company leave policies."
+        },
+        {
+          "id": "s7d",
+          "text": "We don't want it to rely only on what the underlying [LLM|L L M] already knows."
+        },
+        {
+          "id": "s7e",
+          "text": "We want it to use our actual company policy."
+        },
+        {
+          "id": "s7f",
+          "text": "Through Context Grounding, the agent can retrieve relevant enterprise knowledge while reasoning."
+        },
+        {
+          "id": "s7g",
+          "text": "That knowledge might come from policies, product documentation,",
+          "gap": 0.15
+        },
+        {
+          "id": "s7gx",
+          "text": "process documentation, internal knowledge bases or business information."
+        },
+        {
+          "id": "s7h",
+          "text": "The flow is essentially: user request, retrieve relevant context,",
+          "gap": 0.15
+        },
+        {
+          "id": "s7hx",
+          "text": "use enterprise knowledge, and then make a grounded decision."
+        },
+        {
+          "id": "s7i",
+          "text": "So one very simple rule to remember is:"
+        },
+        {
+          "id": "s7j",
+          "text": "Better context leads to better decisions."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "lines": [
+        {
+          "id": "s8a",
+          "text": "Context tells the agent what is relevant right now."
+        },
+        {
+          "id": "s8b",
+          "text": "Memory allows it to benefit from what happened before."
+        },
+        {
+          "id": "s8c",
+          "text": "UiPath currently provides concepts such as episodic memory and escalation memory."
+        },
+        {
+          "id": "s8d",
+          "text": "Episodic Memory helps the agent remember similar previous cases,",
+          "gap": 0.15
+        },
+        {
+          "id": "s8dx",
+          "text": "including inputs, outputs, outcomes and feedback."
+        },
+        {
+          "id": "s8e",
+          "text": "Suppose an agent previously handled a particular type of support request successfully."
+        },
+        {
+          "id": "s8f",
+          "text": "When it encounters a similar request later, that previous experience can help guide the new execution."
+        },
+        {
+          "id": "s8g",
+          "text": "Escalation Memory is particularly interesting."
+        },
+        {
+          "id": "s8h",
+          "text": "Imagine an agent previously encountered an uncertain case and escalated it to a human."
+        },
+        {
+          "id": "s8i",
+          "text": "The human resolved it."
+        },
+        {
+          "id": "s8j",
+          "text": "If the agent later encounters a sufficiently similar situation,",
+          "gap": 0.15
+        },
+        {
+          "id": "s8jx",
+          "text": "it can use that previous human decision as useful context."
+        },
+        {
+          "id": "s8k",
+          "text": "Memories are organised inside Memory Spaces, and these can be shared across agents."
+        },
+        {
+          "id": "s8l",
+          "text": "The broader idea is powerful:"
+        },
+        {
+          "id": "s8m",
+          "text": "Instead of treating every execution as if the system has never seen anything before,",
+          "gap": 0.15
+        },
+        {
+          "id": "s8mx",
+          "text": "the agent can learn from relevant past experiences."
+        }
+      ]
+    },
+    {
+      "id": "s9",
+      "lines": [
+        {
+          "id": "s9a",
+          "text": "But an agent should not always make every decision autonomously."
+        },
+        {
+          "id": "s9b",
+          "text": "There are situations where a human should remain involved."
+        },
+        {
+          "id": "s9c",
+          "text": "That is where Escalations come in."
+        },
+        {
+          "id": "s9d",
+          "text": "An agent might escalate for: approval, review, correction, or exception handling."
+        },
+        {
+          "id": "s9e",
+          "text": "For example, imagine an agent processing refund requests."
+        },
+        {
+          "id": "s9f",
+          "text": "If the refund is below a certain threshold, perhaps it can continue automatically."
+        },
+        {
+          "id": "s9g",
+          "text": "But if the amount is high, we may want a human to approve it before the next action happens."
+        },
+        {
+          "id": "s9h",
+          "text": "This is an important concept in agentic automation."
+        },
+        {
+          "id": "s9i",
+          "text": "Human-in-the-loop doesn't mean the automation failed."
+        },
+        {
+          "id": "s9j",
+          "text": "It means we intentionally designed the system so that AI handles what it can,",
+          "gap": 0.15
+        },
+        {
+          "id": "s9jx",
+          "text": "while humans retain control over important decisions."
+        }
+      ]
+    },
+    {
+      "id": "s10",
+      "lines": [
+        {
+          "id": "s10a",
+          "text": "Once agents can take actions, we also need boundaries."
+        },
+        {
+          "id": "s10b",
+          "text": "That is where Guardrails become important."
+        },
+        {
+          "id": "s10c",
+          "text": "Before allowing a tool to execute, we might want to check:"
+        },
+        {
+          "id": "s10d",
+          "text": "Is this action allowed? Are the inputs valid? Is sensitive information involved?"
+        },
+        {
+          "id": "s10e",
+          "text": "Does this require approval? Should this action be logged or monitored?"
+        },
+        {
+          "id": "s10f",
+          "text": "If the request passes the guardrail, the tool can execute."
+        },
+        {
+          "id": "s10g",
+          "text": "If it doesn't, we can block the action or escalate it."
+        },
+        {
+          "id": "s10h",
+          "text": "This is especially important when an agent can update systems, send messages,",
+          "gap": 0.15
+        },
+        {
+          "id": "s10hx",
+          "text": "change records or trigger business processes."
+        },
+        {
+          "id": "s10i",
+          "text": "Agent autonomy should never mean unlimited access."
+        },
+        {
+          "id": "s10j",
+          "text": "It should mean autonomy inside clearly defined boundaries."
+        }
+      ]
+    },
+    {
+      "id": "s11",
+      "lines": [
+        {
+          "id": "s11a",
+          "text": "Behind the agent is the model that powers its reasoning."
+        },
+        {
+          "id": "s11b",
+          "text": "Agent Builder gives us controls such as the model itself, temperature, maximum tokens and maximum iterations."
+        },
+        {
+          "id": "s11c",
+          "text": "Temperature controls how deterministic or creative the generation should be."
+        },
+        {
+          "id": "s11d",
+          "text": "For many business processes, lower temperature is usually useful",
+          "gap": 0.15
+        },
+        {
+          "id": "s11dx",
+          "text": "because we want consistent behaviour rather than creativity."
+        },
+        {
+          "id": "s11e",
+          "text": "Maximum tokens controls how much the model can generate in a response."
+        },
+        {
+          "id": "s11f",
+          "text": "And maximum iterations controls how many reasoning loops the agent can go through."
+        },
+        {
+          "id": "s11g",
+          "text": "That loop might look like:"
+        },
+        {
+          "id": "s11h",
+          "text": "Think. Use a tool or retrieve context. Observe the result. Think again."
+        },
+        {
+          "id": "s11i",
+          "text": "And continue until the task is completed."
+        },
+        {
+          "id": "s11j",
+          "text": "But more iterations do not automatically mean a better agent."
+        },
+        {
+          "id": "s11k",
+          "text": "We want enough room for reasoning without allowing unnecessary loops."
+        }
+      ]
+    },
+    {
+      "id": "s12",
+      "lines": [
+        {
+          "id": "s12a",
+          "text": "Finally, building the agent is only the beginning."
+        },
+        {
+          "id": "s12b",
+          "text": "Before putting it into production, we need to understand how it behaves."
+        },
+        {
+          "id": "s12c",
+          "text": "That's where the Execution Trail becomes extremely useful."
+        },
+        {
+          "id": "s12d",
+          "text": "Instead of only looking at the final answer, we can inspect what happened during the run."
+        },
+        {
+          "id": "s12e",
+          "text": "What tool did the agent call? What inputs did it send? What context did it retrieve?"
+        },
+        {
+          "id": "s12f",
+          "text": "What output came back? Where did an error happen?"
+        },
+        {
+          "id": "s12g",
+          "text": "We can also use History to look at previous executions."
+        },
+        {
+          "id": "s12h",
+          "text": "Then we have Evaluations."
+        },
+        {
+          "id": "s12i",
+          "text": "This is how we move from: It worked when I tested it once,",
+          "gap": 0.15
+        },
+        {
+          "id": "s12ix",
+          "text": "to: We have evidence that this agent behaves consistently across different scenarios."
+        },
+        {
+          "id": "s12j",
+          "text": "We can create evaluation sets, define expected outcomes, run multiple tests",
+          "gap": 0.15
+        },
+        {
+          "id": "s12jx",
+          "text": "and improve the prompts, tools and context based on the results."
+        },
+        {
+          "id": "s12k",
+          "text": "Once we are satisfied, we can publish and deploy the agent, observe how it behaves in production,",
+          "gap": 0.15
+        },
+        {
+          "id": "s12kx",
+          "text": "collect feedback and continue improving it."
+        }
+      ]
+    },
+    {
+      "id": "s13",
+      "lines": [
+        {
+          "id": "s13a",
+          "text": "So if you want one checklist for building an agent in UiPath, think about it in this order:"
+        },
+        {
+          "id": "s13b",
+          "text": "Define the goal."
+        },
+        {
+          "id": "s13c",
+          "text": "Define your inputs and outputs."
+        },
+        {
+          "id": "s13d",
+          "text": "Write clear prompts."
+        },
+        {
+          "id": "s13e",
+          "text": "Configure the model."
+        },
+        {
+          "id": "s13f",
+          "text": "Add the right tools."
+        },
+        {
+          "id": "s13g",
+          "text": "Provide the right context."
+        },
+        {
+          "id": "s13h",
+          "text": "Use memory where it adds value."
+        },
+        {
+          "id": "s13i",
+          "text": "Define escalation paths."
+        },
+        {
+          "id": "s13j",
+          "text": "Add guardrails."
+        },
+        {
+          "id": "s13k",
+          "text": "Debug the execution."
+        },
+        {
+          "id": "s13l",
+          "text": "Evaluate the behaviour."
+        },
+        {
+          "id": "s13m",
+          "text": "Then publish, observe and improve."
+        },
+        {
+          "id": "s13n",
+          "text": "Because a good agent is not simply an agent that works once."
+        },
+        {
+          "id": "s13o",
+          "text": "A good agent is one that behaves reliably across many different real-world situations."
+        },
+        {
+          "id": "s13p",
+          "text": "If you found this useful, save the Agent Builder cheat sheet",
+          "gap": 0.15
+        },
+        {
+          "id": "s13px",
+          "text": "and share this video with someone who is starting their journey with UiPath agents."
+        },
+        {
+          "id": "s13q",
+          "text": "And if you enjoy practical content around UiPath, automation, AI agents and agentic automation,",
+          "gap": 0.15
+        },
+        {
+          "id": "s13qx",
+          "text": "subscribe to Build with [Treesa|Tree suh]."
+        },
+        {
+          "id": "s13r",
+          "text": "Thanks for watching, and I'll see you in the next video!"
+        }
+      ]
+    }
+  ]
+}
