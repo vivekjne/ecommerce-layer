@@ -1,0 +1,888 @@
+1
+00:00:01,700 --> 00:00:04,693
+Hi everyone, welcome back to Build with
+Treesa!
+
+2
+00:00:04,713 --> 00:00:10,811
+If you are starting with UiPath Agent
+Builder, concepts like prompts, tools,
+context, memory,
+
+3
+00:00:10,831 --> 00:00:15,728
+escalations, guardrails and evaluations
+can feel like a lot at first.
+
+4
+00:00:15,748 --> 00:00:20,451
+So in this video, I'm going to simplify
+the complete Agent Builder journey.
+
+5
+00:00:20,471 --> 00:00:25,198
+We'll start with the basic building blocks
+of an agent, then see how we give it data,
+
+6
+00:00:25,218 --> 00:00:30,675
+instructions, knowledge and tools, and
+finally how we debug, evaluate and deploy
+it.
+
+7
+00:00:30,695 --> 00:00:37,071
+By the end of this video, you should have
+a clear mental model of how an agent is
+actually built in UiPath.
+
+8
+00:00:38,621 --> 00:00:40,501
+Let's start with the big picture.
+
+9
+00:00:40,521 --> 00:00:46,851
+An agent needs instructions, knowledge,
+capabilities and a way to involve humans
+when required.
+
+10
+00:00:46,871 --> 00:00:48,520
+First, we have the Prompt.
+
+11
+00:00:48,540 --> 00:00:54,523
+The prompt defines the agent's role, goal,
+instructions, constraints and expected
+behaviour.
+
+12
+00:00:54,543 --> 00:00:55,849
+Next are Tools.
+
+13
+00:00:55,869 --> 00:00:59,334
+Tools allow the agent to interact with the
+outside world.
+
+14
+00:00:59,354 --> 00:01:04,934
+Instead of only generating text, the agent
+can call an API, run an automation,
+
+15
+00:01:04,954 --> 00:01:10,235
+execute an activity, invoke another agent
+or connect through an MCP server.
+
+16
+00:01:10,255 --> 00:01:11,788
+Then we have Context.
+
+17
+00:01:11,808 --> 00:01:17,003
+Context gives the agent access to relevant
+enterprise knowledge while it is
+reasoning.
+
+18
+00:01:17,023 --> 00:01:18,525
+And we have Escalations,
+
+19
+00:01:18,545 --> 00:01:24,377
+which allow the agent to involve a human
+when approval, review or assistance is
+required.
+
+20
+00:01:24,397 --> 00:01:26,961
+You'll also see Memory in Agent Builder.
+
+21
+00:01:26,981 --> 00:01:34,345
+Memory allows the agent to learn from
+previous executions and reuse relevant
+past experience in future runs.
+
+22
+00:01:34,365 --> 00:01:36,346
+So a simple mental model is:
+
+23
+00:01:36,366 --> 00:01:38,425
+Prompt tells the agent what to do.
+
+24
+00:01:38,445 --> 00:01:40,628
+Context tells it what it needs to know.
+
+25
+00:01:40,648 --> 00:01:43,203
+Tools give it the ability to take action.
+
+26
+00:01:43,223 --> 00:01:46,217
+Memory helps it learn from previous
+experiences.
+
+27
+00:01:46,237 --> 00:01:49,191
+And escalations tell it when to involve a
+human.
+
+28
+00:01:50,741 --> 00:01:53,190
+Now, where do we actually build all of
+this?
+
+29
+00:01:53,210 --> 00:01:59,371
+UiPath Agent Builder gives us two ways to
+work with an agent: Form View and Canvas
+View.
+
+30
+00:01:59,391 --> 00:02:02,953
+Form View gives us a structured
+configuration experience.
+
+31
+00:02:02,973 --> 00:02:07,897
+Canvas View gives us a visual, node-based
+representation of the agent.
+
+32
+00:02:07,917 --> 00:02:12,349
+The important thing to understand is that
+these are not two different agents.
+
+33
+00:02:12,369 --> 00:02:15,606
+They represent the same underlying agent
+definition.
+
+34
+00:02:15,626 --> 00:02:19,705
+If you change something in one view, it
+remains synchronized with the other.
+
+35
+00:02:19,725 --> 00:02:25,615
+Inside the workspace, we also have areas
+such as Project Explorer, Data Manager,
+Errors,
+
+36
+00:02:25,635 --> 00:02:29,534
+Properties, Development options and
+Deployment Configuration.
+
+37
+00:02:29,554 --> 00:02:34,302
+At the bottom, we have some very useful
+capabilities that we'll come back to
+later:
+
+38
+00:02:34,322 --> 00:02:37,277
+Execution Trail, History and Evaluations.
+
+39
+00:02:38,827 --> 00:02:43,089
+Before making the agent intelligent, we
+should first define its contract.
+
+40
+00:02:43,109 --> 00:02:45,476
+What information does the agent receive?
+
+41
+00:02:45,496 --> 00:02:47,547
+And what information should it return?
+
+42
+00:02:47,567 --> 00:02:49,861
+That is where Data Manager comes in.
+
+43
+00:02:49,881 --> 00:02:52,927
+Imagine we are creating an IT support
+agent.
+
+44
+00:02:52,947 --> 00:02:59,300
+Inputs could include: a customer ID, a
+ticket description, a priority, or some
+document text.
+
+45
+00:02:59,320 --> 00:03:05,799
+The outputs might be: a classification, a
+summary, a recommended action, or a final
+resolution.
+
+46
+00:03:05,819 --> 00:03:11,133
+So the flow becomes: application or
+workflow, to input arguments, to the
+agent,
+
+47
+00:03:11,153 --> 00:03:15,714
+to output arguments, and finally to the
+next application or process.
+
+48
+00:03:15,734 --> 00:03:20,461
+This is important because an agent
+shouldn't just return random free-form
+text
+
+49
+00:03:20,481 --> 00:03:23,486
+when another system needs to consume the
+result.
+
+50
+00:03:23,506 --> 00:03:29,815
+Clearly defined inputs and outputs make
+the agent much easier to integrate into
+real automation.
+
+51
+00:03:31,365 --> 00:03:34,856
+Now we come to one of the most important
+parts: Prompts.
+
+52
+00:03:34,876 --> 00:03:39,231
+Think of the system prompt as the
+operating instructions for your agent.
+
+53
+00:03:39,251 --> 00:03:40,473
+It should explain:
+
+54
+00:03:40,493 --> 00:03:44,544
+Who are you? What are you trying to
+achieve? What constraints should you
+follow?
+
+55
+00:03:44,564 --> 00:03:49,982
+When should you use a tool? When should
+you retrieve context? When should you
+escalate to a human?
+
+56
+00:03:50,002 --> 00:03:52,317
+And what should the final response look
+like?
+
+57
+00:03:52,337 --> 00:03:57,943
+Then we have the user prompt, which
+provides the actual task for that
+particular execution.
+
+58
+00:03:57,963 --> 00:04:02,173
+For example: Analyse this incident and
+recommend the next action.
+
+59
+00:04:02,193 --> 00:04:06,839
+Agent Builder also allows us to reference
+different capabilities from the prompt.
+
+60
+00:04:06,859 --> 00:04:11,803
+So instead of writing isolated
+instructions, we can connect our prompt to
+inputs,
+
+61
+00:04:11,823 --> 00:04:15,488
+tools, context, memory, escalations and
+outputs.
+
+62
+00:04:15,508 --> 00:04:19,493
+And this is an important
+prompt-engineering principle for agents:
+
+63
+00:04:19,513 --> 00:04:22,077
+Don't only tell the agent what it should
+achieve.
+
+64
+00:04:22,097 --> 00:04:25,803
+Tell it when and how it should use the
+capabilities available to it.
+
+65
+00:04:27,353 --> 00:04:32,084
+This is where an AI agent becomes much
+more useful than a normal chatbot.
+
+66
+00:04:32,104 --> 00:04:35,768
+Without tools, the model can reason and
+generate an answer.
+
+67
+00:04:35,788 --> 00:04:38,280
+With tools, it can actually do something.
+
+68
+00:04:38,300 --> 00:04:44,851
+In UiPath, tools can include Integration
+Service activities, published automations,
+APIs,
+
+69
+00:04:44,871 --> 00:04:49,858
+custom integrations, other agents,
+functions, MCP servers and more.
+
+70
+00:04:49,878 --> 00:04:52,413
+The basic tool execution loop is simple.
+
+71
+00:04:52,433 --> 00:04:55,574
+First, the agent decides which tool is
+required.
+
+72
+00:04:55,594 --> 00:04:57,332
+Then it prepares the inputs.
+
+73
+00:04:57,352 --> 00:04:58,885
+It executes the tool.
+
+74
+00:04:58,905 --> 00:05:00,371
+It reads the result.
+
+75
+00:05:00,391 --> 00:05:03,587
+And based on that result, it decides what
+to do next.
+
+76
+00:05:03,607 --> 00:05:09,234
+For example, imagine an employee asks: Can
+you check the status of my laptop request?
+
+77
+00:05:09,254 --> 00:05:13,768
+The agent may decide that it needs to call
+an asset-management API.
+
+78
+00:05:13,788 --> 00:05:15,705
+It passes the employee ID.
+
+79
+00:05:15,725 --> 00:05:17,978
+The tool returns the request status.
+
+80
+00:05:17,998 --> 00:05:22,168
+The agent interprets that result and then
+responds to the employee.
+
+81
+00:05:22,188 --> 00:05:26,258
+One thing people often underestimate here
+is the tool description.
+
+82
+00:05:26,278 --> 00:05:30,305
+A tool description isn't only
+documentation for developers.
+
+83
+00:05:30,325 --> 00:05:34,368
+It helps the agent understand what the
+tool does and when it should use it.
+
+84
+00:05:34,388 --> 00:05:38,905
+So clear tool names, descriptions, inputs
+and outputs matter a lot.
+
+85
+00:05:40,455 --> 00:05:42,267
+Tools help the agent act.
+
+86
+00:05:42,287 --> 00:05:44,253
+Context helps the agent know.
+
+87
+00:05:44,273 --> 00:05:49,175
+Imagine an HR agent answering questions
+about company leave policies.
+
+88
+00:05:49,195 --> 00:05:53,916
+We don't want it to rely only on what the
+underlying LLM already knows.
+
+89
+00:05:53,936 --> 00:05:56,710
+We want it to use our actual company
+policy.
+
+90
+00:05:56,730 --> 00:06:02,143
+Through Context Grounding, the agent can
+retrieve relevant enterprise knowledge
+while reasoning.
+
+91
+00:06:02,163 --> 00:06:05,909
+That knowledge might come from policies,
+product documentation,
+
+92
+00:06:05,929 --> 00:06:10,674
+process documentation, internal knowledge
+bases or business information.
+
+93
+00:06:10,694 --> 00:06:14,984
+The flow is essentially: user request,
+retrieve relevant context,
+
+94
+00:06:15,004 --> 00:06:18,512
+use enterprise knowledge, and then make a
+grounded decision.
+
+95
+00:06:18,532 --> 00:06:21,253
+So one very simple rule to remember is:
+
+96
+00:06:21,273 --> 00:06:24,054
+Better context leads to better decisions.
+
+97
+00:06:25,604 --> 00:06:28,790
+Context tells the agent what is relevant
+right now.
+
+98
+00:06:28,810 --> 00:06:31,923
+Memory allows it to benefit from what
+happened before.
+
+99
+00:06:31,943 --> 00:06:37,601
+UiPath currently provides concepts such as
+episodic memory and escalation memory.
+
+100
+00:06:37,621 --> 00:06:41,992
+Episodic Memory helps the agent remember
+similar previous cases,
+
+101
+00:06:42,012 --> 00:06:45,285
+including inputs, outputs, outcomes and
+feedback.
+
+102
+00:06:45,305 --> 00:06:50,744
+Suppose an agent previously handled a
+particular type of support request
+successfully.
+
+103
+00:06:50,764 --> 00:06:56,966
+When it encounters a similar request
+later, that previous experience can help
+guide the new execution.
+
+104
+00:06:56,986 --> 00:07:00,010
+Escalation Memory is particularly
+interesting.
+
+105
+00:07:00,030 --> 00:07:05,614
+Imagine an agent previously encountered an
+uncertain case and escalated it to a
+human.
+
+106
+00:07:05,634 --> 00:07:07,165
+The human resolved it.
+
+107
+00:07:07,185 --> 00:07:11,340
+If the agent later encounters a
+sufficiently similar situation,
+
+108
+00:07:11,360 --> 00:07:15,345
+it can use that previous human decision as
+useful context.
+
+109
+00:07:15,365 --> 00:07:20,769
+Memories are organised inside Memory
+Spaces, and these can be shared across
+agents.
+
+110
+00:07:20,789 --> 00:07:22,768
+The broader idea is powerful:
+
+111
+00:07:22,788 --> 00:07:27,825
+Instead of treating every execution as if
+the system has never seen anything before,
+
+112
+00:07:27,845 --> 00:07:31,012
+the agent can learn from relevant past
+experiences.
+
+113
+00:07:32,562 --> 00:07:36,310
+But an agent should not always make every
+decision autonomously.
+
+114
+00:07:36,330 --> 00:07:39,845
+There are situations where a human should
+remain involved.
+
+115
+00:07:39,865 --> 00:07:41,845
+That is where Escalations come in.
+
+116
+00:07:41,865 --> 00:07:47,087
+An agent might escalate for: approval,
+review, correction, or exception handling.
+
+117
+00:07:47,107 --> 00:07:51,149
+For example, imagine an agent processing
+refund requests.
+
+118
+00:07:51,169 --> 00:07:56,127
+If the refund is below a certain
+threshold, perhaps it can continue
+automatically.
+
+119
+00:07:56,147 --> 00:08:01,322
+But if the amount is high, we may want a
+human to approve it before the next action
+happens.
+
+120
+00:08:01,342 --> 00:08:04,914
+This is an important concept in agentic
+automation.
+
+121
+00:08:04,934 --> 00:08:07,938
+Human-in-the-loop doesn't mean the
+automation failed.
+
+122
+00:08:07,958 --> 00:08:12,687
+It means we intentionally designed the
+system so that AI handles what it can,
+
+123
+00:08:12,707 --> 00:08:16,045
+while humans retain control over important
+decisions.
+
+124
+00:08:17,595 --> 00:08:21,125
+Once agents can take actions, we also need
+boundaries.
+
+125
+00:08:21,145 --> 00:08:23,600
+That is where Guardrails become important.
+
+126
+00:08:23,620 --> 00:08:27,094
+Before allowing a tool to execute, we
+might want to check:
+
+127
+00:08:27,114 --> 00:08:32,122
+Is this action allowed? Are the inputs
+valid? Is sensitive information involved?
+
+128
+00:08:32,142 --> 00:08:36,283
+Does this require approval? Should this
+action be logged or monitored?
+
+129
+00:08:36,303 --> 00:08:39,827
+If the request passes the guardrail, the
+tool can execute.
+
+130
+00:08:39,847 --> 00:08:43,053
+If it doesn't, we can block the action or
+escalate it.
+
+131
+00:08:43,073 --> 00:08:47,821
+This is especially important when an agent
+can update systems, send messages,
+
+132
+00:08:47,841 --> 00:08:50,737
+change records or trigger business
+processes.
+
+133
+00:08:50,757 --> 00:08:54,102
+Agent autonomy should never mean unlimited
+access.
+
+134
+00:08:54,122 --> 00:08:57,614
+It should mean autonomy inside clearly
+defined boundaries.
+
+135
+00:08:59,164 --> 00:09:02,643
+Behind the agent is the model that powers
+its reasoning.
+
+136
+00:09:02,663 --> 00:09:10,061
+Agent Builder gives us controls such as
+the model itself, temperature, maximum
+tokens and maximum iterations.
+
+137
+00:09:10,081 --> 00:09:15,025
+Temperature controls how deterministic or
+creative the generation should be.
+
+138
+00:09:15,045 --> 00:09:19,095
+For many business processes, lower
+temperature is usually useful
+
+139
+00:09:19,115 --> 00:09:22,900
+because we want consistent behaviour
+rather than creativity.
+
+140
+00:09:22,920 --> 00:09:27,644
+Maximum tokens controls how much the model
+can generate in a response.
+
+141
+00:09:27,664 --> 00:09:32,725
+And maximum iterations controls how many
+reasoning loops the agent can go through.
+
+142
+00:09:32,745 --> 00:09:34,268
+That loop might look like:
+
+143
+00:09:34,288 --> 00:09:39,148
+Think. Use a tool or retrieve context.
+Observe the result. Think again.
+
+144
+00:09:39,168 --> 00:09:41,866
+And continue until the task is completed.
+
+145
+00:09:41,886 --> 00:09:45,913
+But more iterations do not automatically
+mean a better agent.
+
+146
+00:09:45,933 --> 00:09:50,020
+We want enough room for reasoning without
+allowing unnecessary loops.
+
+147
+00:09:51,570 --> 00:09:54,702
+Finally, building the agent is only the
+beginning.
+
+148
+00:09:54,722 --> 00:09:58,600
+Before putting it into production, we need
+to understand how it behaves.
+
+149
+00:09:58,620 --> 00:10:01,886
+That's where the Execution Trail becomes
+extremely useful.
+
+150
+00:10:01,906 --> 00:10:06,835
+Instead of only looking at the final
+answer, we can inspect what happened
+during the run.
+
+151
+00:10:06,855 --> 00:10:12,241
+What tool did the agent call? What inputs
+did it send? What context did it retrieve?
+
+152
+00:10:12,261 --> 00:10:15,000
+What output came back? Where did an error
+happen?
+
+153
+00:10:15,020 --> 00:10:18,588
+We can also use History to look at
+previous executions.
+
+154
+00:10:18,608 --> 00:10:20,374
+Then we have Evaluations.
+
+155
+00:10:20,394 --> 00:10:23,739
+This is how we move from: It worked when I
+tested it once,
+
+156
+00:10:23,759 --> 00:10:29,023
+to: We have evidence that this agent
+behaves consistently across different
+scenarios.
+
+157
+00:10:29,043 --> 00:10:34,165
+We can create evaluation sets, define
+expected outcomes, run multiple tests
+
+158
+00:10:34,185 --> 00:10:38,149
+and improve the prompts, tools and context
+based on the results.
+
+159
+00:10:38,169 --> 00:10:44,001
+Once we are satisfied, we can publish and
+deploy the agent, observe how it behaves
+in production,
+
+160
+00:10:44,021 --> 00:10:46,680
+collect feedback and continue improving
+it.
+
+161
+00:10:48,231 --> 00:10:53,775
+So if you want one checklist for building
+an agent in UiPath, think about it in this
+order:
+
+162
+00:10:53,795 --> 00:10:54,992
+Define the goal.
+
+163
+00:10:55,012 --> 00:10:57,010
+Define your inputs and outputs.
+
+164
+00:10:57,030 --> 00:10:58,466
+Write clear prompts.
+
+165
+00:10:58,486 --> 00:10:59,914
+Configure the model.
+
+166
+00:10:59,934 --> 00:11:01,305
+Add the right tools.
+
+167
+00:11:01,325 --> 00:11:03,087
+Provide the right context.
+
+168
+00:11:03,107 --> 00:11:05,144
+Use memory where it adds value.
+
+169
+00:11:05,164 --> 00:11:07,002
+Define escalation paths.
+
+170
+00:11:07,022 --> 00:11:08,340
+Add guardrails.
+
+171
+00:11:08,360 --> 00:11:09,955
+Debug the execution.
+
+172
+00:11:09,975 --> 00:11:11,523
+Evaluate the behaviour.
+
+173
+00:11:11,543 --> 00:11:13,832
+Then publish, observe and improve.
+
+174
+00:11:13,852 --> 00:11:17,602
+Because a good agent is not simply an
+agent that works once.
+
+175
+00:11:17,622 --> 00:11:23,526
+A good agent is one that behaves reliably
+across many different real-world
+situations.
+
+176
+00:11:23,546 --> 00:11:26,919
+If you found this useful, save the Agent
+Builder cheat sheet
+
+177
+00:11:26,939 --> 00:11:31,729
+and share this video with someone who is
+starting their journey with UiPath agents.
+
+178
+00:11:31,749 --> 00:11:38,825
+And if you enjoy practical content around
+UiPath, automation, AI agents and agentic
+automation,
+
+179
+00:11:38,845 --> 00:11:40,806
+subscribe to Build with Treesa.
+
+180
+00:11:40,826 --> 00:11:44,006
+Thanks for watching, and I'll see you in
+the next video!

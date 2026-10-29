@@ -1,0 +1,13 @@
+0:00 Intro: simplifying the Agent Builder journey
+0:37 What makes a UiPath agent
+1:49 The Agent Builder workspace: Form View and Canvas View
+2:37 Data Manager: inputs and outputs
+3:30 Prompts: the agent's instructions
+4:26 Tools: from reasoning to action
+5:39 Context: giving the agent knowledge
+6:24 Memory: learn from past experiences
+7:31 Escalations: human in the loop
+8:16 Guardrails: safe and responsible agents
+8:58 Model settings
+9:50 Debug, evaluate and deploy
+10:47 The build checklist and wrap-up
