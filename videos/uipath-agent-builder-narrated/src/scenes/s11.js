@@ -2,15 +2,27 @@
 enter("s11");
 tl.set("#ms11, #lh11, #r11, #g11", { opacity: 0 }, 0);
 tl.set("#ms11 [id^=m11], #lp11 .tok, #lp11 .ar", { opacity: 0 }, 0);
-show("#ms11", W("s11b", 0), { y: 30, s: 0.92, d: 0.7 });
-[[0, 8], [1, 10], [2, 12], [3, 15]].forEach(([i, w]) => { fade("#m11" + i, W("s11b", w), 0.5); });
-tl.to("#kn11", { x: -110, duration: 1.4, ease: "power2.inOut" }, W("s11d", 5));
-pulse("#m111", W("s11c", 1), 1.04); pulse("#m112", W("s11e", 0) + 0.3, 1.04); pulse("#m113", W("s11f", 0) + 0.3, 1.04);
-tl.to("#tb11", { scaleX: 0.35, duration: 1.0, ease: "power2.inOut" }, W("s11e", 3));
-tl.to(".dt11:nth-child(4), .dt11:nth-child(5)", { backgroundColor: "#0b7a85", duration: 0.4, stagger: 0.3 }, W("s11f", 4));
-fade("#lh11", W("s11g", 0), 0.5);
-[["l110", 0], ["l111", 1], ["l112", 7], ["l113", 10]].forEach(([id, w], i) => { show("#" + id, W("s11h", w), { y: 12, s: 0.8, d: 0.4 }); if (i) fade("#z11" + (i - 1), W("s11h", w) - 0.2, 0.3); });
-fade("#z113", W("s11i", 0), 0.3); show("#l114", W("s11i", 0) + 0.2, { y: 12, s: 0.8, d: 0.5 });
-show("#r11", W("s11j", 2), { y: 12, s: 0.8, d: 0.5 }); shake("#r11", W("s11j", 2) + 0.5, 6);
-show("#g11", W("s11k", 0) + 0.2, { y: 12, s: 0.8, d: 0.6 });
+pop("#ms11", K("s11a", "model"), { y: 30, s: 0.92, d: 0.7 });
+// the four controls
+[[0, "model", 0], [1, "temperature", 0], [2, "maximum", 0], [3, "maximum", 1]].forEach(([i, kw, n]) => { const t = K("s11b", kw, n); fade("#m11" + i, t, 0.5); pulse("#m11" + i, t + 0.3, 1.03); });
+// temperature: deterministic <-> creative, and for business processes, low
+tl.to("#kn11", { x: -110, duration: 0.9, ease: "power2.inOut" }, K("s11c", "deterministic"));
+tl.to("#kn11", { x: 210, duration: 1.1, ease: "power2.inOut" }, K("s11c", "creative"));
+tl.to("#kn11", { x: -90, duration: 1.2, ease: "power2.inOut" }, K("s11d", "lower"));
+tl.to("#kn11", { backgroundColor: "#0a8a5f", duration: 0.4 }, K("s11dx", "consistent"));
+// maximum tokens: the response grows up to the limit
+tl.fromTo("#tb11", { scaleX: 0.15 }, { scaleX: 0.9, duration: 1.8, ease: "power1.inOut" }, K("s11e", "generate"));
+// maximum iterations: one reasoning loop at a time
+tl.to(".dt11", { backgroundColor: "#0b7a85", duration: 0.3, stagger: 0.5 }, K("s11f", "loops"));
+// the loop itself, with a dot going round it
+fade("#lh11", K("s11g", "loop"), 0.5);
+const st = [["#l110", K("s11h", "think", 0)], ["#l111", K("s11h", "use")], ["#l112", K("s11h", "observe")], ["#l113", K("s11h", "think", 1)]];
+st.forEach(([sel, t], i) => { pop(sel, t, { y: 12, s: 0.8, d: 0.4 }); if (i) fade("#z11" + (i - 1), t - 0.3, 0.3); });
+fade("#z113", K("s11i", "continue") - 0.2, 0.3); pop("#l114", K("s11i", "continue"), { y: 12, s: 0.8, d: 0.5 });
+trail("#d11", st.map(([sel, t]) => [sel, t + 0.3]).concat([["#l114", K("s11i", "completed") + 0.3]]), 0.5);
+// more is not better: too many loops, then enough room
+pop("#r11", K("s11j", "more"), { y: 12, s: 0.8, d: 0.5 }); shake("#r11", K("s11j", "more") + 0.5, 6);
+tl.to(".dt11", { backgroundColor: "#d92d48", duration: 0.3, stagger: 0.1 }, K("s11j", "automatically"));
+pop("#g11", K("s11k", "enough"), { y: 12, s: 0.8, d: 0.6 });
+tl.to(".dt11:nth-child(n+4)", { backgroundColor: "#ffffff", duration: 0.4 }, K("s11k", "enough")); tl.to(".dt11:nth-child(-n+3)", { backgroundColor: "#0b7a85", duration: 0.4 }, K("s11k", "enough"));
 leave("s11");

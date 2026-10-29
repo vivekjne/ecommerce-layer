@@ -92,6 +92,37 @@ function route(sel, t, pts, per = 0.5, ease = "power1.inOut") {
   pts.forEach(([px, py], i) => tl.to(sel, { x: px - bx, y: py - by, duration: per, ease }, t + i * per));
 }
 
+// ---------------- anchors: tie an animation to a spoken word ----------------
+// K("s4g", "summary") is the time that word is spoken in line s4g (the 2nd occurrence: K("s4g", "a", 1)).
+// Cues land LEAD seconds early so a pop-in is complete as the word is said. An unknown word is an error.
+const LEAD = 0.12;
+const norm = (s) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+function K(id, kw, nth = 0) {
+  const ln = T.lines[id];
+  if (!ln) throw new Error("K: unknown line " + id);
+  let c = 0;
+  for (let i = 0; i < ln.words.length; i++) {
+    if (norm(ln.words[i].w) === norm(kw) && c++ === nth) return Math.max(ln.start - 0.1, ln.start + ln.words[i].t - LEAD);
+  }
+  throw new Error("K: no word '" + kw + "' (#" + nth + ") in " + id);
+}
+const pop = (sel, t, o = {}) => show(sel, t, Object.assign({ y: 16, s: 0.7, d: 0.5 }, o));
+// a dot that hops between elements, arriving at each one at the given time: trail("#dot", [["#a", t1], ["#b", t2]])
+function trail(dot, stops, dur = 0.55) {
+  const d = document.querySelector(dot), hx = d.offsetWidth / 2, hy = d.offsetHeight / 2;
+  stops.forEach(([sel, t], i) => {
+    const c = ctr(sel), top = document.querySelector(sel).offsetHeight / 2;   // ride on the box's top edge so the dot never covers its text
+    const to = { x: c.x - d.offsetLeft - hx, y: c.y - top - d.offsetTop - hy + 2 };
+    if (i === 0) tl.fromTo(dot, { opacity: 0, scale: 0.3, ...to }, { opacity: 1, scale: 1, duration: 0.25, ease: POP }, t);
+    else tl.to(dot, { ...to, duration: dur, ease: "power2.inOut" }, t - dur);
+  });
+  tl.to(dot, { opacity: 0, duration: 0.3 }, stops[stops.length - 1][1] + 0.25);
+}
+// a bar that fills from the left
+function grow(sel, t, d = 0.9, to = 1, from = 0) { tl.fromTo(sel, { scaleX: from }, { scaleX: to, duration: d, ease: "power2.out", transformOrigin: "0% 50%" }, t); }
+// a background colour flash (from -> to -> from)
+function flash(sel, t, from, to, d = 0.35) { tl.to(sel, { backgroundColor: to, duration: d }, t); tl.to(sel, { backgroundColor: from, duration: d }, t + d + 0.5); }
+
 // characters ------------------------------------------------------
 // put a character's bottom-centre at (cx, by) at scale s (works for any .char, whatever its base position)
 function stage(sel, cx, by, s = 1) {

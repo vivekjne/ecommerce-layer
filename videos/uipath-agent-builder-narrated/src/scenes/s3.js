@@ -1,16 +1,26 @@
 // ===================== 3 · Workspace =====================
 enter("s3");
-tl.set("#f3, #v3, #sy3, #s3t, #w3a, #w3b, #w3c, #w3d, #w3e, #w3f, #bp3, #bl3, #t3a, #t3b, #t3c", { opacity: 0 }, 0);
-tl.set("#n3a, #n3b, #n3c", { opacity: 0 }, 0);
-show("#f3", W("s3b", 11), { y: 30, s: 0.9, d: 0.7 }); pulse("#f3", W("s3c", 0) + 0.2, 1.03);
-show("#v3", W("s3b", 13), { y: 30, s: 0.9, d: 0.7 });
-["a", "b", "c"].forEach((k, i) => show("#n3" + k, W("s3d", 0) + 0.4 + i * 0.4, { x: -20, y: 0, s: 0.7, d: 0.5 }));
-show("#sy3", W("s3e", 6), { s: 0.4, d: 0.5 }); tl.to("#sy3", { rotation: 360, duration: 1.2, ease: "power2.inOut" }, W("s3f", 0));
-show("#s3t", W("s3f", 4), { y: 16, s: 0.85, d: 0.6 });
-pulse("#v3", W("s3g", 3), 1.04); pulse("#f3", W("s3g", 7), 1.04);
+prep("#j3a, #j3b");
+tl.set("#f3, #v3, #sy3, #x3, #s3d, #s3t, #w3a, #w3b, #w3c, #w3d, #w3e, #w3f, #bp3, #bl3, #t3a, #t3b, #t3c, #n3a, #n3b, #n3c", { opacity: 0 }, 0);
+pop("#f3", K("s3b", "form"), { y: 30, s: 0.9, d: 0.7 });
+pop("#v3", K("s3b", "canvas"), { y: 30, s: 0.9, d: 0.7 });
+// Form View: a structured configuration, filled in field by field
+["a", "b", "c"].forEach((k, i) => grow("#ff3" + k, K("s3c", "structured") + i * 0.45, 0.7));
+// Canvas View: a node-based picture of the same agent
+pop("#n3a", K("s3d", "visual"), { x: -20, y: 0 }); pop("#n3b", K("s3d", "nodebased"), { x: -20, y: 0 }); pop("#n3c", K("s3d", "agent"), { x: -20, y: 0 });
+trail("#d3", [["#n3a", K("s3d", "visual") + 0.4], ["#n3b", K("s3d", "nodebased") + 0.4], ["#n3c", K("s3d", "agent") + 0.4]], 0.5);
+// not two agents: one definition
+pop("#x3", K("s3e", "two")); shake("#x3", K("s3e", "two") + 0.5, 6); hide("#x3", K("s3f", "same") - 0.1, 0.3);
+draw("#j3a", K("s3f", "same"), 0.6); draw("#j3b", K("s3f", "same"), 0.6); pop("#s3d", K("s3f", "same") + 0.2, { s: 0.8, d: 0.6 });
+pop("#sy3", K("s3f", "same") + 0.3, { s: 0.4 });
+// change one view and the other follows
+flash("#fi3b", K("s3g", "change"), "#eef0fa", "#ffc93c");
+tl.to("#sy3", { rotation: 360, duration: 1.2, ease: "power2.inOut" }, K("s3g", "synchronized"));
+pulse("#n3b", K("s3g", "synchronized") + 0.5, 1.15); flash("#n3b", K("s3g", "synchronized") + 0.5, "#ffffff", "#ffc93c");
+pop("#s3t", K("s3g", "synchronized") + 0.6);
 // the other areas of the workspace
-[["a", "s3h", 9], ["b", "s3h", 11], ["c", "s3h", 13], ["d", "s3hx", 0], ["e", "s3hx", 1], ["f", "s3hx", 4]].forEach(([k, ln, w]) => show("#w3" + k, W(ln, w), { x: 30, y: 0, s: 0.85, d: 0.5 }));
-// the bottom panel
-show("#bp3", W("s3i", 2), { y: 24, s: 0.95, d: 0.7 }); fade("#bl3", W("s3i", 3), 0.4);
-show("#t3a", W("s3j", 0), { y: 14, s: 0.7, d: 0.5 }); show("#t3b", W("s3j", 2), { y: 14, s: 0.7, d: 0.5 }); show("#t3c", W("s3j", 4), { y: 14, s: 0.7, d: 0.5 });
+[["a", "s3h", "project"], ["b", "s3h", "data"], ["c", "s3h", "errors"], ["d", "s3hx", "properties"], ["e", "s3hx", "development"], ["f", "s3hx", "deployment"]].forEach(([k, ln, kw]) => pop("#w3" + k, K(ln, kw), { x: 30, y: 0, s: 0.85 }));
+// the bottom panel and its three tabs
+pop("#bp3", K("s3i", "bottom"), { y: 24, s: 0.95, d: 0.7 }); fade("#bl3", K("s3i", "bottom") + 0.2, 0.4);
+pop("#t3a", K("s3j", "execution")); pop("#t3b", K("s3j", "history")); pop("#t3c", K("s3j", "evaluations"));
 leave("s3");

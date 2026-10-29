@@ -23,6 +23,14 @@ for (const m of src.matchAll(/\bL\("([^"]+)"(?:\s*,\s*(-?[\d.]+))?\)/g)) {
   if (off < -0.5) report(`L("${id}", ${off}) - starts more than 0.5s before its line`);
   if (off > line.dur - 0.1) report(`L("${id}", ${off}) - line is only ${line.dur.toFixed(2)}s long`);
 }
+// K("line", "word"[, nth]) must name a word that is actually spoken in that line
+const normw = (s) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+for (const m of src.matchAll(/\bK\("([^"]+)"\s*,\s*"([^"]+)"(?:\s*,\s*(\d+))?\)/g)) {
+  const line = timing.lines[m[1]];
+  if (!line) { report(`K("${m[1]}") - unknown line`); continue; }
+  const hits = line.words.filter((w) => normw(w.w) === normw(m[2])).length;
+  if (hits <= +(m[3] || 0)) report(`K("${m[1]}", "${m[2]}", ${m[3] || 0}) - the line has ${hits} such word(s): ${line.words.map((w) => w.w).join(" ")}`);
+}
 for (const m of src.matchAll(/\bLE\("([^"]+)"/g)) {
   if (!timing.lines[m[1]]) report(`LE("${m[1]}") - unknown line`);
 }
@@ -35,7 +43,7 @@ for (const m of src.matchAll(/\b(?:S|SE)\("([^"]+)"/g)) {
   if (!timing.scenes[m[1]]) report(`scene "${m[1]}" - unknown`);
 }
 // every narrated line should be used by at least one cue or be a plain caption-only line
-const used = new Set([...src.matchAll(/\bLE?\("([^"]+)"/g)].map((m) => m[1]));
+const used = new Set([...src.matchAll(/\b(?:LE?|K|W)\("([^"]+)"/g)].map((m) => m[1]));
 const idle = Object.keys(timing.lines).filter((id) => !used.has(id));
 console.log(`${Object.keys(timing.lines).length} lines, ${idle.length} without a visual cue: ${idle.join(" ") || "-"}`);
 console.log(problems ? `${problems} cue problem(s)` : "all cues sit inside their narration lines");
