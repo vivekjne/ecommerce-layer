@@ -24,9 +24,9 @@ Avoid "Demo" or "Live demo": the screens are illustrations, not recordings of th
 
 | File | Look | Best for |
 | --- | --- | --- |
-| `thumbnail-A.png` | "HOW TO BUILD AN AI AGENT", Byte the robot, five building-block icons, "About 12 minutes" | **Default.** Matches the recommended title |
-| `thumbnail-B.png` | "BUILD AN AGENT IN THIS ORDER" with the checklist as chips | A/B test: promises a takeaway, readable at phone size |
-| `thumbnail-C.png` | Dark background, "Not a chatbot. An agent." with Reason + Act tiles | Feeds that are mostly light; the strongest curiosity hook |
+| `thumbnail-A.png` | Title "UiPath Agent Builder - A beginner's guide" under a "Build with Treesa" tag, five building-block icons, Byte the robot, "How to build an AI agent" | **Default.** Matches the recommended title |
+| `thumbnail-B.png` | Same title and tag, with the build checklist as chips and Sam | A/B test: promises a takeaway, readable at phone size |
+| `thumbnail-C.png` | Dark background, same title and tag, Reason + Act tiles and "Not a chatbot. An agent." | Feeds that are mostly light; the strongest curiosity hook |
 
 If "Test & compare" is available in YouTube Studio, upload A, B and C as a test. They use only the video's own
 characters, icons and palette (no UiPath logo, no product screenshots). Tweak or rebuild with
@@ -148,4 +148,3 @@ Not a chatbot. An agent. A beginner guide to building one in UiPath Agent Builde
 2. **Voice.** The narrator is a synthetic voice that says "welcome back to Build with Treesa". Make sure that is how you want to present it, and keep the disclosure line in the description.
 3. **Facts.** Product behaviour (episodic and escalation memory, Memory Spaces, Context Grounding, the Execution Trail and History) is narrated exactly as your script states it and was not checked against UiPath's pages. Check it against the current documentation.
 4. **Affiliation.** The video and thumbnails use text only, with no UiPath logo or screenshots. If you are not publishing on UiPath's behalf, consider adding: `This is an independent explainer and is not produced or endorsed by UiPath.`
-5. **Length in thumbnail A.** It says "12 minutes"; the video is 11:46. Change it in `build-thumbnails.mjs` if you want it exact.

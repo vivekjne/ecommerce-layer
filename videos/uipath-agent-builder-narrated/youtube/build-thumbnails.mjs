@@ -41,58 +41,58 @@ const page = (css, body, extra = "") => `<!doctype html><html><head><meta charse
 <script>${icons}\n${chars}\n${poses}\n${extra}</script></body></html>`;
 const tile = (x, y, ic, label, bg = "#fff") => `<div class="ntile" style="left:${x}px;top:${y}px;background:${bg}"><i data-ic="${ic}" data-s="66"></i><span>${label}</span></div>`;
 
-// A: the promise of the title, big and simple
+// Every thumbnail: "Build with Treesa" tag on top, the title "UiPath Agent Builder - A beginner's guide" as the headline.
+
+// A: the title, big and simple, with the five building blocks
 const A = page(`
-.glow{position:absolute;left:760px;top:60px;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,#8fe9f2 0,rgba(143,233,242,0) 68%)}
-.l1{position:absolute;left:54px;top:140px;font-size:84px;font-weight:900;letter-spacing:-.03em}
-.l2{position:absolute;left:46px;top:226px;font-size:178px;font-weight:900;letter-spacing:-.05em;color:#0b7a85;line-height:1.1;background:linear-gradient(transparent 66%,#ffc93c 66%,#ffc93c 90%,transparent 90%)}
+.glow{position:absolute;left:760px;top:330px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,#8fe9f2 0,rgba(143,233,242,0) 68%)}
+.l1{position:absolute;left:54px;top:118px;font-size:96px;font-weight:900;letter-spacing:-.04em;white-space:nowrap}
+.l2{position:absolute;left:46px;top:222px;font-size:128px;font-weight:900;letter-spacing:-.05em;color:#0b7a85;line-height:1.1;white-space:nowrap;background:linear-gradient(transparent 66%,#ffc93c 66%,#ffc93c 90%,transparent 90%)}
 `, `
 <div class="glow"></div>
-<div class="pill" style="left:56px;top:48px;background:#0b7a85;color:#fff;font-size:34px;padding:12px 30px;letter-spacing:.01em">UiPath Agent Builder - A beginner's guide</div>
-<div class="l1">HOW TO BUILD AN</div>
-<div class="l2">AI AGENT</div>
-${tile(60, 470, "pencil", "Prompt")}${tile(200, 470, "gear", "Tools")}${tile(340, 470, "book", "Context")}${tile(480, 470, "loop", "Memory")}${tile(620, 470, "person", "Human")}
-<div class="pill" style="left:56px;top:632px;background:#1f2140;color:#fff;font-size:34px;padding:10px 28px">About 12 minutes</div>
-<div class="char" data-kind="byte" style="left:870px;top:120px;width:380px"></div>
+<div class="pill" style="left:56px;top:44px;background:#0b7a85;color:#fff;font-size:34px;padding:12px 30px;letter-spacing:.02em">Build with Treesa</div>
+<div class="l1">UiPath Agent Builder -</div>
+<div class="l2">A beginner's guide</div>
+${tile(60, 440, "pencil", "Prompt")}${tile(200, 440, "gear", "Tools")}${tile(340, 440, "book", "Context")}${tile(480, 440, "loop", "Memory")}${tile(620, 440, "person", "Human")}
+<div class="pill" style="left:56px;top:620px;background:#1f2140;color:#fff;font-size:34px;padding:10px 28px">How to build an AI agent</div>
+<div class="char" data-kind="byte" style="left:960px;top:385px;width:250px"></div>
 `, `happy(".char");`);
 
-// B: the whole journey as a checklist, no reading of small text needed
+// B: the whole journey as a checklist
 const B = page(`
-.l1{position:absolute;left:54px;top:60px;font-size:96px;font-weight:900;letter-spacing:-.04em;line-height:1}
-.l2{position:absolute;left:54px;top:166px;font-size:96px;font-weight:900;letter-spacing:-.04em;line-height:1;color:#0b7a85}
-.n{position:absolute;width:56px;height:56px;border-radius:50%;background:#0b7a85;color:#fff;border:5px solid #1f2140;font-weight:900;font-size:28px;display:flex;align-items:center;justify-content:center}
+.l1{position:absolute;left:54px;top:104px;font-size:86px;font-weight:900;letter-spacing:-.04em;line-height:1;white-space:nowrap}
+.l2{position:absolute;left:54px;top:196px;font-size:104px;font-weight:900;letter-spacing:-.045em;line-height:1;color:#0b7a85;white-space:nowrap}
 `, `
-<div class="l1">BUILD AN AGENT</div>
-<div class="l2">IN THIS ORDER</div>
-<div class="tk" style="left:60px;top:320px"><i data-ic="target" data-s="46"></i>Goal</div>
-<div class="tk" style="left:290px;top:320px"><i data-ic="db" data-s="46"></i>Inputs and outputs</div>
-<div class="tk" style="left:690px;top:320px"><i data-ic="pencil" data-s="46"></i>Prompts</div>
-<div class="tk" style="left:60px;top:432px"><i data-ic="gear" data-s="46"></i>Tools</div>
-<div class="tk" style="left:290px;top:432px"><i data-ic="book" data-s="46"></i>Context</div>
-<div class="tk" style="left:570px;top:432px"><i data-ic="loop" data-s="46"></i>Memory</div>
-<div class="tk" style="left:60px;top:544px"><i data-ic="lock" data-s="46"></i>Guardrails</div>
-<div class="tk" style="left:350px;top:544px;background:#d9f7ea;border-color:#0a8a5f"><i data-ic="tick" data-s="46"></i>Evaluate and deploy</div>
-<div class="pill" style="left:56px;top:650px;background:#1f2140;color:#fff;font-size:32px;padding:8px 26px">UiPath Agent Builder - A beginner's guide</div>
-<div class="char" data-kind="sam" style="left:1000px;top:330px;width:240px"></div>
-<div class="char" data-kind="byte" style="left:1060px;top:60px;width:170px"></div>
+<div class="pill" style="left:56px;top:34px;background:#0b7a85;color:#fff;font-size:32px;padding:10px 28px;letter-spacing:.02em">Build with Treesa</div>
+<div class="l1">UiPath Agent Builder -</div>
+<div class="l2">A beginner's guide</div>
+<div class="tk" style="left:60px;top:340px"><i data-ic="target" data-s="46"></i>Goal</div>
+<div class="tk" style="left:290px;top:340px"><i data-ic="db" data-s="46"></i>Inputs and outputs</div>
+<div class="tk" style="left:690px;top:340px"><i data-ic="pencil" data-s="46"></i>Prompts</div>
+<div class="tk" style="left:60px;top:445px"><i data-ic="gear" data-s="46"></i>Tools</div>
+<div class="tk" style="left:290px;top:445px"><i data-ic="book" data-s="46"></i>Context</div>
+<div class="tk" style="left:570px;top:445px"><i data-ic="loop" data-s="46"></i>Memory</div>
+<div class="tk" style="left:60px;top:550px"><i data-ic="lock" data-s="46"></i>Guardrails</div>
+<div class="tk" style="left:350px;top:550px;background:#d9f7ea;border-color:#0a8a5f"><i data-ic="tick" data-s="46"></i>Evaluate and deploy</div>
+<div class="pill" style="left:56px;top:650px;background:#1f2140;color:#fff;font-size:32px;padding:8px 26px">The 12-step build checklist</div>
+<div class="char" data-kind="sam" style="left:980px;top:330px;width:260px"></div>
 `, "");
 
 // C: dark, text-led, for feeds that are mostly light
 const C = page(`
 body{background:radial-gradient(circle at 85% 20%,#1c2c5c 0,transparent 55%),radial-gradient(circle at 10% 100%,#0e4a55 0,transparent 50%),#121a30;color:#fff}
-.t1{position:absolute;left:56px;top:150px;font-size:118px;white-space:nowrap;font-weight:900;letter-spacing:-.045em;line-height:1.02}
-.t2{position:absolute;left:56px;top:276px;font-size:118px;white-space:nowrap;font-weight:900;letter-spacing:-.045em;line-height:1.02;color:#ffc93c}
-.ntile{background:#fff}
+.t1{position:absolute;left:56px;top:122px;font-size:96px;white-space:nowrap;font-weight:900;letter-spacing:-.04em;line-height:1.02}
+.t2{position:absolute;left:52px;top:226px;font-size:128px;white-space:nowrap;font-weight:900;letter-spacing:-.05em;line-height:1.02;color:#ffc93c}
 `, `
-<div class="pill" style="left:56px;top:48px;background:#21c7d6;color:#121a30;font-size:34px;padding:12px 30px;letter-spacing:.01em">UiPath Agent Builder - A beginner's guide</div>
-<div class="t1">Not a chatbot.</div>
-<div class="t2">An agent.</div>
-<div style="position:absolute;left:820px;top:300px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(80,222,235,.8) 0,rgba(80,222,235,0) 68%)"></div>
-<div class="char" data-kind="byte" style="left:900px;top:330px;width:290px"></div>
-${tile(60, 470, "chat", "Reason")}
-<div style="position:absolute;left:190px;top:500px;font-size:58px;font-weight:900;color:#ffc93c">+</div>
-${tile(260, 470, "gear", "Act", "#ffc93c")}
-<div class="pill" style="left:56px;top:650px;background:#fff;color:#121a30;font-size:34px;padding:10px 28px">About 12 minutes</div>
+<div class="pill" style="left:56px;top:44px;background:#21c7d6;color:#121a30;font-size:34px;padding:12px 30px;letter-spacing:.02em">Build with Treesa</div>
+<div class="t1">UiPath Agent Builder -</div>
+<div class="t2">A beginner's guide</div>
+<div style="position:absolute;left:820px;top:330px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(80,222,235,.8) 0,rgba(80,222,235,0) 68%)"></div>
+<div class="char" data-kind="byte" style="left:960px;top:385px;width:250px"></div>
+${tile(60, 440, "chat", "Reason")}
+<div style="position:absolute;left:190px;top:470px;font-size:58px;font-weight:900;color:#ffc93c">+</div>
+${tile(260, 440, "gear", "Act", "#ffc93c")}
+<div class="pill" style="left:56px;top:620px;background:#fff;color:#121a30;font-size:34px;padding:10px 28px">Not a chatbot. An agent.</div>
 `, `happy(".char[data-kind=byte]");`);
 
 for (const [k, html] of Object.entries({ A, B, C })) {
