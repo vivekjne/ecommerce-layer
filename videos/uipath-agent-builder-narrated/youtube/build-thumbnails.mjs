@@ -48,11 +48,11 @@ const A = page(`
 .l2{position:absolute;left:46px;top:226px;font-size:178px;font-weight:900;letter-spacing:-.05em;color:#0b7a85;line-height:1.1;background:linear-gradient(transparent 66%,#ffc93c 66%,#ffc93c 90%,transparent 90%)}
 `, `
 <div class="glow"></div>
-<div class="pill" style="left:56px;top:48px;background:#0b7a85;color:#fff;font-size:34px;padding:12px 30px;letter-spacing:.03em">UiPath Agent Builder</div>
+<div class="pill" style="left:56px;top:48px;background:#0b7a85;color:#fff;font-size:34px;padding:12px 30px;letter-spacing:.01em">UiPath Agent Builder - A beginner's guide</div>
 <div class="l1">HOW TO BUILD AN</div>
 <div class="l2">AI AGENT</div>
 ${tile(60, 470, "pencil", "Prompt")}${tile(200, 470, "gear", "Tools")}${tile(340, 470, "book", "Context")}${tile(480, 470, "loop", "Memory")}${tile(620, 470, "person", "Human")}
-<div class="pill" style="left:56px;top:632px;background:#1f2140;color:#fff;font-size:34px;padding:10px 28px">Beginner guide · 12 minutes</div>
+<div class="pill" style="left:56px;top:632px;background:#1f2140;color:#fff;font-size:34px;padding:10px 28px">About 12 minutes</div>
 <div class="char" data-kind="byte" style="left:870px;top:120px;width:380px"></div>
 `, `happy(".char");`);
 
@@ -72,7 +72,7 @@ const B = page(`
 <div class="tk" style="left:570px;top:432px"><i data-ic="loop" data-s="46"></i>Memory</div>
 <div class="tk" style="left:60px;top:544px"><i data-ic="lock" data-s="46"></i>Guardrails</div>
 <div class="tk" style="left:350px;top:544px;background:#d9f7ea;border-color:#0a8a5f"><i data-ic="tick" data-s="46"></i>Evaluate and deploy</div>
-<div class="pill" style="left:56px;top:650px;background:#1f2140;color:#fff;font-size:32px;padding:8px 26px">UiPath Agent Builder</div>
+<div class="pill" style="left:56px;top:650px;background:#1f2140;color:#fff;font-size:32px;padding:8px 26px">UiPath Agent Builder - A beginner's guide</div>
 <div class="char" data-kind="sam" style="left:1000px;top:330px;width:240px"></div>
 <div class="char" data-kind="byte" style="left:1060px;top:60px;width:170px"></div>
 `, "");
@@ -84,7 +84,7 @@ body{background:radial-gradient(circle at 85% 20%,#1c2c5c 0,transparent 55%),rad
 .t2{position:absolute;left:56px;top:276px;font-size:118px;white-space:nowrap;font-weight:900;letter-spacing:-.045em;line-height:1.02;color:#ffc93c}
 .ntile{background:#fff}
 `, `
-<div class="pill" style="left:56px;top:48px;background:#21c7d6;color:#121a30;font-size:34px;padding:12px 30px;letter-spacing:.03em">UiPath Agent Builder</div>
+<div class="pill" style="left:56px;top:48px;background:#21c7d6;color:#121a30;font-size:34px;padding:12px 30px;letter-spacing:.01em">UiPath Agent Builder - A beginner's guide</div>
 <div class="t1">Not a chatbot.</div>
 <div class="t2">An agent.</div>
 <div style="position:absolute;left:820px;top:300px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(80,222,235,.8) 0,rgba(80,222,235,0) 68%)"></div>
@@ -92,7 +92,7 @@ body{background:radial-gradient(circle at 85% 20%,#1c2c5c 0,transparent 55%),rad
 ${tile(60, 470, "chat", "Reason")}
 <div style="position:absolute;left:190px;top:500px;font-size:58px;font-weight:900;color:#ffc93c">+</div>
 ${tile(260, 470, "gear", "Act", "#ffc93c")}
-<div class="pill" style="left:56px;top:650px;background:#fff;color:#121a30;font-size:34px;padding:10px 28px">Beginner guide</div>
+<div class="pill" style="left:56px;top:650px;background:#fff;color:#121a30;font-size:34px;padding:10px 28px">About 12 minutes</div>
 `, `happy(".char[data-kind=byte]");`);
 
 for (const [k, html] of Object.entries({ A, B, C })) {

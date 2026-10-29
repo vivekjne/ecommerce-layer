@@ -24,7 +24,7 @@ Avoid "Demo" or "Live demo": the screens are illustrations, not recordings of th
 
 | File | Look | Best for |
 | --- | --- | --- |
-| `thumbnail-A.png` | "HOW TO BUILD AN AI AGENT", Byte the robot, five building-block icons, "Beginner guide · 12 minutes" | **Default.** Matches the recommended title |
+| `thumbnail-A.png` | "HOW TO BUILD AN AI AGENT", Byte the robot, five building-block icons, "About 12 minutes" | **Default.** Matches the recommended title |
 | `thumbnail-B.png` | "BUILD AN AGENT IN THIS ORDER" with the checklist as chips | A/B test: promises a takeaway, readable at phone size |
 | `thumbnail-C.png` | Dark background, "Not a chatbot. An agent." with Reason + Act tiles | Feeds that are mostly light; the strongest curiosity hook |
 
