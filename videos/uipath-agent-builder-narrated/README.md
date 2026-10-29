@@ -58,3 +58,16 @@ captions show the original text.
 
 Not verifiable by the author: how the voice sounds and how the animation feels in motion. Both were checked from
 measurements and still frames, not by watching or listening.
+
+## Measured on the final file (`uipath-agent-builder-guide.mp4`)
+
+| Check | Result |
+| --- | --- |
+| Format | 1920x1080, 30 fps, H.264 + AAC, 11:46, 29.0 MiB (CRF 35) |
+| `hyperframes check` | 0 errors; 110/110 text contrast checks pass WCAG AA |
+| Visual review | snapshots of every scene, several per scene, viewed and fixed |
+| Loudness | -14.5 LUFS integrated, true peak -2.8 dBFS |
+| Whisper on the final MP4 audio (voice + music) | 99.4% of words understood; the flags are the channel name ("Treesa" heard as "Teresa"/"Trisa") and a UK/US spelling |
+
+`scripts/finalize.mjs` raises the child-process buffer so loudness measurement works on videos longer than about
+ten minutes (the default 1 MB buffer truncated ffmpeg's log).
